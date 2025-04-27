@@ -4,6 +4,12 @@
 	(generator_version "8.0")
 	(uuid "99c400c7-afc0-4272-be57-42501d4a5e0c")
 	(paper "A4")
+	(title_block
+		(title "BASM SOUNDCARD")
+		(rev "1")
+		(company "BUCHAREST APPLIED STEAM MUSEUM")
+		(comment 1 "Updated RGB LED P/N to WS2812B-2020")
+	)
 	(lib_symbols
 		(symbol "Device:C"
 			(pin_numbers hide)
@@ -3244,6 +3250,81 @@
 		)
 	)
 	(symbol
+		(lib_id "LED:SK6812MINI")
+		(at 97.79 58.42 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2fb34a40-5de4-458a-ba0d-d75d8ba50f72")
+		(property "Reference" "D302"
+			(at 102.108 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WS2812B-2020"
+			(at 105.918 65.278 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(at 99.06 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/2686/SK6812MINI_REV.01-1-2.pdf"
+			(at 100.33 67.945 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller"
+			(at 97.79 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "1d7f22e2-bdd6-4e2f-a9e6-ca3039a09224")
+		)
+		(pin "3"
+			(uuid "506c1419-c75c-49b9-aa10-33a146886cdd")
+		)
+		(pin "4"
+			(uuid "fdb13ba7-b763-4083-b20b-24449280724c")
+		)
+		(pin "1"
+			(uuid "1c48d02d-7729-49fb-92f5-7c56bbfbf6bd")
+		)
+		(instances
+			(project "basmsoundcard"
+				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0/56e71c46-1e9f-4234-b489-780fdafeb799"
+					(reference "D302")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 260.35 109.22 270)
 		(unit 1)
@@ -3306,6 +3387,81 @@
 			(project "basmsoundcard"
 				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0/56e71c46-1e9f-4234-b489-780fdafeb799"
 					(reference "C308")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "LED:SK6812MINI")
+		(at 166.37 58.42 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3863099d-d493-41c8-a697-06daae84802e")
+		(property "Reference" "D304"
+			(at 170.688 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WS2812B-2020"
+			(at 174.498 65.278 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(at 167.64 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/2686/SK6812MINI_REV.01-1-2.pdf"
+			(at 168.91 67.945 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller"
+			(at 166.37 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "813f871a-02c7-418d-aa48-a00352fce0ae")
+		)
+		(pin "3"
+			(uuid "dd671fd4-731c-4352-a78f-33d5f3e16148")
+		)
+		(pin "4"
+			(uuid "83b7def1-5c88-4357-a197-41d011082165")
+		)
+		(pin "1"
+			(uuid "80b22076-35fc-48b3-8359-a6b92487536b")
+		)
+		(instances
+			(project "basmsoundcard"
+				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0/56e71c46-1e9f-4234-b489-780fdafeb799"
+					(reference "D304")
 					(unit 1)
 				)
 			)
@@ -3514,81 +3670,6 @@
 		)
 	)
 	(symbol
-		(lib_id "LED:SK6812MINI")
-		(at 132.08 58.42 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4c9b4a76-73ab-4610-9962-3dc803217dfa")
-		(property "Reference" "D303"
-			(at 136.398 52.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SK6812MINI"
-			(at 140.208 65.278 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "LED_SMD:LED_SK6812MINI_PLCC4_3.5x3.5mm_P1.75mm"
-			(at 133.35 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/2686/SK6812MINI_REV.01-1-2.pdf"
-			(at 134.62 67.945 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "RGB LED with integrated controller"
-			(at 132.08 58.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "8e985169-be5c-4bd3-bf4d-ccd2d38f0c13")
-		)
-		(pin "3"
-			(uuid "caf4ce84-d301-4b82-a59f-e9b42b820b7a")
-		)
-		(pin "4"
-			(uuid "3743fd0c-af26-4816-8196-d433617a4336")
-		)
-		(pin "1"
-			(uuid "c6fc89ac-c79f-4681-99c5-bf6d39b7e5c0")
-		)
-		(instances
-			(project "basmsoundcard"
-				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0/56e71c46-1e9f-4234-b489-780fdafeb799"
-					(reference "D303")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 269.24 130.81 0)
 		(unit 1)
@@ -3739,7 +3820,7 @@
 				)
 			)
 		)
-		(property "Value" "SK6812MINI"
+		(property "Value" "WS2812B-2020"
 			(at 71.628 65.278 0)
 			(effects
 				(font
@@ -3747,7 +3828,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_SK6812MINI_PLCC4_3.5x3.5mm_P1.75mm"
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
 			(at 64.77 66.04 0)
 			(effects
 				(font
@@ -3866,31 +3947,31 @@
 	)
 	(symbol
 		(lib_id "LED:SK6812MINI")
-		(at 166.37 58.42 0)
+		(at 132.08 58.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "71afffb8-1c7a-4ba1-aebf-14fd02bb212b")
-		(property "Reference" "D304"
-			(at 170.688 51.816 0)
+		(uuid "75a62f1c-84b1-4244-8f45-e2b5110541e4")
+		(property "Reference" "D303"
+			(at 136.398 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "SK6812MINI"
-			(at 174.244 65.278 0)
+		(property "Value" "WS2812B-2020"
+			(at 140.208 65.278 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_SK6812MINI_PLCC4_3.5x3.5mm_P1.75mm"
-			(at 167.64 66.04 0)
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(at 133.35 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3900,7 +3981,7 @@
 			)
 		)
 		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/2686/SK6812MINI_REV.01-1-2.pdf"
-			(at 168.91 67.945 0)
+			(at 134.62 67.945 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3910,7 +3991,7 @@
 			)
 		)
 		(property "Description" "RGB LED with integrated controller"
-			(at 166.37 58.42 0)
+			(at 132.08 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3919,21 +4000,21 @@
 			)
 		)
 		(pin "2"
-			(uuid "1c7044b7-22ff-443b-bf22-df4d2f124459")
+			(uuid "76aeea86-6b48-484d-b4eb-3a33eef55116")
 		)
 		(pin "3"
-			(uuid "2d561921-7a27-4b53-9dd0-c07d59355d9b")
+			(uuid "2f6491b8-3482-43b9-a443-f461bbaabb8b")
 		)
 		(pin "4"
-			(uuid "9f8be021-51b2-420c-96e4-f5f67ff17db0")
+			(uuid "3be7be5c-3ec4-4d66-a34d-a57d83c696c9")
 		)
 		(pin "1"
-			(uuid "1d60a2a1-545d-49d5-973c-d5cd7d7d2b1f")
+			(uuid "9280f29c-e959-4292-8f33-cf095f9f3481")
 		)
 		(instances
 			(project "basmsoundcard"
 				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0/56e71c46-1e9f-4234-b489-780fdafeb799"
-					(reference "D304")
+					(reference "D303")
 					(unit 1)
 				)
 			)
@@ -4069,81 +4150,6 @@
 			(project "basmsoundcard"
 				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0/56e71c46-1e9f-4234-b489-780fdafeb799"
 					(reference "C305")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:SK6812MINI")
-		(at 97.79 58.42 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "7cf3a925-cbdd-4b02-928c-0985a0458714")
-		(property "Reference" "D302"
-			(at 102.108 51.816 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SK6812MINI"
-			(at 105.664 65.278 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "LED_SMD:LED_SK6812MINI_PLCC4_3.5x3.5mm_P1.75mm"
-			(at 99.06 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/2686/SK6812MINI_REV.01-1-2.pdf"
-			(at 100.33 67.945 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "RGB LED with integrated controller"
-			(at 97.79 58.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2ecc8d52-19b6-4706-8dc4-49840a9e3bbf")
-		)
-		(pin "3"
-			(uuid "152c32c1-d47a-4297-9cec-60e8c84bd3d8")
-		)
-		(pin "4"
-			(uuid "d85d62aa-e6e4-43f6-83e7-63720e8ae753")
-		)
-		(pin "1"
-			(uuid "1fcfc1c3-2cb5-49bc-a4b5-1ab5f8b8e017")
-		)
-		(instances
-			(project "basmsoundcard"
-				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0/56e71c46-1e9f-4234-b489-780fdafeb799"
-					(reference "D302")
 					(unit 1)
 				)
 			)

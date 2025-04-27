@@ -4,6 +4,12 @@
 	(generator_version "8.0")
 	(uuid "a2ae8555-7422-4c55-bf44-8cc769543ba0")
 	(paper "A4")
+	(title_block
+		(title "BASM SOUNDCARD")
+		(rev "1")
+		(company "BUCHAREST APPLIED STEAM MUSEUM")
+		(comment 1 "Changed 10u Cap. Footprints to 0603")
+	)
 	(lib_symbols
 		(symbol "Mechanical:MountingHole"
 			(pin_names
@@ -112,7 +118,7 @@
 		)
 		(uuid "2f803428-4bce-45a6-acca-f3c3d7573728")
 	)
-	(text "SPI CS PULL-UP ?\nCODEC IN2, OUT2 PULL-DOWNs ?\nFOOTPRINT SELECN. {JACK, SW}"
+	(text "SPI CS PULL-UP ?\nCODEC IN2, OUT2 PULL-DOWNs ?\nFOOTPRINT SELECN. {SW}"
 		(exclude_from_sim no)
 		(at 183.388 116.078 0)
 		(effects
