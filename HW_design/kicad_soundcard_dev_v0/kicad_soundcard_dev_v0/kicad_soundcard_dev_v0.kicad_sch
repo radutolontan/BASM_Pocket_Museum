@@ -2,13 +2,15 @@
 	(version 20231120)
 	(generator "eeschema")
 	(generator_version "8.0")
-	(uuid "a2ae8555-7422-4c55-bf44-8cc769543ba0")
+	(uuid "4bede6f6-420d-49b9-8d53-bd69095749c2")
 	(paper "A4")
 	(title_block
-		(title "BASM SOUNDCARD")
+		(title "BASM SOUNDCARD DEV V0")
+		(date "2025-04-29")
 		(rev "1")
 		(company "BUCHAREST APPLIED STEAM MUSEUM")
-		(comment 1 "Changed 10u Cap. Footprints to 0603")
+		(comment 1 "Replaced MCU w. ESP32 C6 MINI ")
+		(comment 2 "Added SD Card, Aux Insertion Monitoring")
 	)
 	(lib_symbols
 		(symbol "Mechanical:MountingHole"
@@ -95,8 +97,8 @@
 		)
 	)
 	(rectangle
-		(start 203.2 30.48)
-		(end 254 68.58)
+		(start 200.66 34.29)
+		(end 251.46 72.39)
 		(stroke
 			(width 0)
 			(type dash)
@@ -104,49 +106,11 @@
 		(fill
 			(type none)
 		)
-		(uuid f5f480a5-b96e-451f-9209-033a08685075)
-	)
-	(text "MECHANICAL"
-		(exclude_from_sim no)
-		(at 218.694 35.814 0)
-		(effects
-			(font
-				(size 2.54 2.54)
-				(thickness 0.762)
-				(bold yes)
-			)
-		)
-		(uuid "2f803428-4bce-45a6-acca-f3c3d7573728")
-	)
-	(text "SPI CS PULL-UP ?\nCODEC IN2, OUT2 PULL-DOWNs ?\nFOOTPRINT SELECN. {SW}"
-		(exclude_from_sim no)
-		(at 183.388 116.078 0)
-		(effects
-			(font
-				(size 3.81 3.81)
-				(thickness 0.254)
-				(bold yes)
-				(color 255 4 28 1)
-			)
-			(justify left)
-		)
-		(uuid "3ed97959-4c86-4584-a4fe-90ed197d61df")
-	)
-	(text "[2] MCU\n"
-		(exclude_from_sim no)
-		(at 135.382 22.606 0)
-		(effects
-			(font
-				(size 2.54 2.54)
-				(thickness 0.762)
-				(bold yes)
-			)
-		)
-		(uuid "444260ad-e078-4e79-beb7-c40d4c4ad6c0")
+		(uuid 6a3056a6-0a59-4404-a921-8019bc7f9ab3)
 	)
 	(text "[4] STEREO AUDIO CODEC\n\n"
 		(exclude_from_sim no)
-		(at 152.4 86.36 0)
+		(at 149.86 90.17 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -154,11 +118,23 @@
 				(bold yes)
 			)
 		)
-		(uuid "8bdd4e99-e5f5-4c31-88da-eb7dce7ef279")
+		(uuid "0845bd46-78cf-4854-9e6c-b6fed1e79ecf")
 	)
-	(text "I2C Bus Topology: ESP32 <> Pull-up Resistors <> ICP20100 (BARO) <> LSM6DSL (MPU) <> RC FILTER <> ES8388 (CODEC)\nSPI Bus Topology: ESP32 <> MicroSD Card\nI2S Bus Topology: ESP32 <> Resistors (counter. Signal Reflection) <> ES8388 (CODEC)"
+	(text "[1] POWER"
 		(exclude_from_sim no)
-		(at 16.764 157.734 0)
+		(at 59.436 26.67 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "0d0a0455-a968-468c-b51d-f939d15c7429")
+	)
+	(text "I2C  Bus Topology: ESP32 <> Pull-up Resistors <> ICP20100 (BARO) <> LSM6DSL (MPU) <> RC FILTER <> ES8388 (CODEC)\nSDIO Bus Topology: ESP32 <> Pull-up Resistors <> MicroSD Card\nI2S  Bus Topology: ESP32 <> Resistors (counter. Signal Reflection) <> ES8388 (CODEC)"
+		(exclude_from_sim no)
+		(at 14.224 153.924 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -166,11 +142,11 @@
 			)
 			(justify left)
 		)
-		(uuid "9fa75b4d-9aff-4b4a-8c2c-c8090e99e993")
+		(uuid "415c3432-2c18-43be-ae87-8942484542c8")
 	)
-	(text "[1] POWER"
+	(text "[2] MCU\n"
 		(exclude_from_sim no)
-		(at 61.976 22.86 0)
+		(at 132.842 26.416 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -178,11 +154,11 @@
 				(bold yes)
 			)
 		)
-		(uuid "ba50115f-8952-400b-8969-5b25d1f4d3d4")
+		(uuid "49c0a075-4e32-43b2-8807-38d1b9b3685c")
 	)
 	(text "[3] SENSORS & FEEDBACK\n\n"
 		(exclude_from_sim no)
-		(at 76.454 87.376 0)
+		(at 73.914 91.186 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -190,32 +166,31 @@
 				(bold yes)
 			)
 		)
-		(uuid "e0fa1e07-fd9f-4683-90d9-b88c8a440446")
+		(uuid "82168852-4d20-4d71-ab0d-fdb956f9d576")
 	)
-	(text "BACKLOG"
+	(text "MECHANICAL"
 		(exclude_from_sim no)
-		(at 183.388 101.092 0)
+		(at 216.154 39.624 0)
 		(effects
 			(font
-				(size 5.08 5.08)
-				(thickness 0.635)
-				(color 255 4 28 1)
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
 			)
-			(justify left)
 		)
-		(uuid "ed422238-66f9-429a-a81b-df1ba36ba334")
+		(uuid "d2f1deb1-3529-469a-8305-5b2c8f325a8f")
 	)
 	(symbol
 		(lib_id "Mechanical:MountingHole")
-		(at 209.55 45.72 0)
+		(at 207.01 49.53 0)
 		(unit 1)
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(uuid "6d9315f8-282b-419d-a1e5-bbe1f7efe5f0")
+		(uuid "852bf57b-2321-4e35-953a-ae8af15c3a16")
 		(property "Reference" "H1"
-			(at 212.09 44.4499 0)
+			(at 209.55 48.2599 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -224,7 +199,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 215.392 45.974 0)
+			(at 212.852 49.784 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -233,7 +208,7 @@
 			)
 		)
 		(property "Footprint" "MountingHole:MountingHole_3.5mm"
-			(at 209.55 45.72 0)
+			(at 207.01 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -242,7 +217,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 209.55 45.72 0)
+			(at 207.01 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -251,7 +226,7 @@
 			)
 		)
 		(property "Description" "Mounting Hole without connection"
-			(at 209.55 45.72 0)
+			(at 207.01 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -260,8 +235,8 @@
 			)
 		)
 		(instances
-			(project "basmsoundcard"
-				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0"
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
 					(reference "H1")
 					(unit 1)
 				)
@@ -269,7 +244,7 @@
 		)
 	)
 	(sheet
-		(at 128.27 30.48)
+		(at 49.53 34.29)
 		(size 50.8 38.1)
 		(fields_autoplaced yes)
 		(stroke
@@ -279,123 +254,9 @@
 		(fill
 			(color 0 0 0 0.0000)
 		)
-		(uuid "2905f4e0-ce83-4049-97e7-0d4c806ecfc9")
-		(property "Sheetname" "MCU"
-			(at 128.27 29.7684 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "MCU.kicad_sch"
-			(at 128.27 69.1646 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(instances
-			(project "basmsoundcard"
-				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0"
-					(page "2")
-				)
-			)
-		)
-	)
-	(sheet
-		(at 50.8 92.71)
-		(size 50.8 38.1)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0.0000)
-		)
-		(uuid "56e71c46-1e9f-4234-b489-780fdafeb799")
-		(property "Sheetname" "sense_feedback"
-			(at 50.8 91.9984 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "sense_feedback.kicad_sch"
-			(at 50.8 131.3946 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(instances
-			(project "basmsoundcard"
-				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0"
-					(page "3")
-				)
-			)
-		)
-	)
-	(sheet
-		(at 128.27 92.71)
-		(size 50.8 38.1)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0.0000)
-		)
-		(uuid "c2cb32c2-6225-4acf-ac1d-a568474071fb")
-		(property "Sheetname" "Audio CODEC"
-			(at 128.27 91.9984 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "codec.kicad_sch"
-			(at 128.27 131.3946 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(instances
-			(project "basmsoundcard"
-				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0"
-					(page "4")
-				)
-			)
-		)
-	)
-	(sheet
-		(at 52.07 30.48)
-		(size 50.8 38.1)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0.0000)
-		)
-		(uuid "ecb2e5dd-f522-45e0-9551-839f8340da93")
+		(uuid "17afeba3-86f9-4a78-9898-2f2df319c871")
 		(property "Sheetname" "Power"
-			(at 52.07 29.7684 0)
+			(at 49.53 33.5784 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -404,7 +265,7 @@
 			)
 		)
 		(property "Sheetfile" "Power.kicad_sch"
-			(at 52.07 69.1646 0)
+			(at 49.53 72.9746 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -413,9 +274,123 @@
 			)
 		)
 		(instances
-			(project "basmsoundcard"
-				(path "/a2ae8555-7422-4c55-bf44-8cc769543ba0"
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
 					(page "1")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 48.26 96.52)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "25cd3a62-fe69-4650-b2bc-b323d83e7d4b")
+		(property "Sheetname" "sense_feedback"
+			(at 48.26 95.8084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sense_feedback.kicad_sch"
+			(at 48.26 135.2046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 125.73 34.29)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a9edb54b-78ab-4303-9451-17f7b6324437")
+		(property "Sheetname" "MCU"
+			(at 125.73 33.5784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "MCU.kicad_sch"
+			(at 125.73 72.9746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 125.73 96.52)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "cb98dcad-1c57-4901-83cc-dd6912400953")
+		(property "Sheetname" "Audio CODEC"
+			(at 125.73 95.8084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "codec.kicad_sch"
+			(at 125.73 135.2046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "4")
 				)
 			)
 		)
