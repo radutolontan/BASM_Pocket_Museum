@@ -6,11 +6,10 @@
 	(paper "A4")
 	(title_block
 		(title "BASM SOUNDCARD DEV V0")
-		(date "2025-04-29")
-		(rev "1")
+		(date "2025-05-06")
+		(rev "2")
 		(company "BUCHAREST APPLIED STEAM MUSEUM")
-		(comment 1 "Replaced MCU w. ESP32 C6 MINI ")
-		(comment 2 "Added SD Card, Aux Insertion Monitoring")
+		(comment 1 "See MCU & Sense & CODEC")
 	)
 	(lib_symbols
 		(symbol "Mechanical:MountingHole"
