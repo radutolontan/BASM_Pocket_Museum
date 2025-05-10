@@ -6583,6 +6583,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/Jst-BM04B_SRSS_TB_LF_SN/C160390"
+			(at 226.06 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "JST"
+			(at 226.06 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "BM04B-SRSS-TB(LF)(SN)"
+			(at 226.06 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "f3c3cc51-e8ff-4bb7-8da6-e2a01feffe8c")
 		)
@@ -6661,6 +6688,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 147.32 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 147.32 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
+			(at 147.32 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "9784af8d-d3f4-461c-90cb-90618066d389")
 		)
@@ -6722,6 +6776,33 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 191.77 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/2043-CL10A106MQ8NNNC/C1691"
+			(at 191.77 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 191.77 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL10A106MQ8NNNC"
 			(at 191.77 26.67 0)
 			(effects
 				(font
@@ -6866,6 +6947,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 191.77 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 191.77 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
+			(at 191.77 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "c0bbe01c-f316-4757-ab66-4bc04d00d885")
 		)
@@ -6928,6 +7036,33 @@
 			)
 		)
 		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
+			(at 238.76 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
+			(at 238.76 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "LRC"
+			(at 238.76 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "LESD5D5.0CT1G"
 			(at 238.76 118.11 0)
 			(effects
 				(font
@@ -7062,6 +7197,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 210.82 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 210.82 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 210.82 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
 			(at 210.82 54.61 0)
 			(effects
 				(font
@@ -7205,6 +7367,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 113.03 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 113.03 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
+			(at 113.03 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "15f56794-6167-48ad-b19f-df3ca5fb2862")
 		)
@@ -7264,6 +7453,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 149.86 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/25860-0402WGF4700TCE/C25117"
+			(at 149.86 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 149.86 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF4700TCE"
 			(at 149.86 73.66 0)
 			(effects
 				(font
@@ -7333,6 +7549,33 @@
 			)
 		)
 		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
+			(at 234.95 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
+			(at 234.95 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "LRC"
+			(at 234.95 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "LESD5D5.0CT1G"
 			(at 234.95 118.11 0)
 			(effects
 				(font
@@ -7540,6 +7783,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 210.82 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 210.82 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 210.82 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "13baad15-4917-4d7e-80c8-ff6fa056a2da")
 		)
@@ -7609,6 +7879,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26648-0402WGF5101TCE/C25905"
+			(at 33.02 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 33.02 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF5101TCE"
+			(at 33.02 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "308e210d-bc75-4dd5-a49e-03a9a9d344f4")
 		)
@@ -7670,6 +7967,33 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 203.2 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/XkbConnection-X6511WVS_06HC60D48R1/C2883803"
+			(at 203.2 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "XKB Connection "
+			(at 203.2 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "X6511WVS-06H-C60D48R1"
 			(at 203.2 138.43 0)
 			(effects
 				(font
@@ -7826,6 +8150,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 219.71 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 219.71 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
+			(at 219.71 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "b9fd6425-37c3-4e42-96c1-dd1b3dce0af2")
 		)
@@ -7896,6 +8247,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
+			(at 246.38 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "LRC"
+			(at 246.38 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "LESD5D5.0CT1G"
+			(at 246.38 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "352a562e-9ddb-4f32-bef8-62c41124751b")
 		)
@@ -7955,6 +8333,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 210.82 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 210.82 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 210.82 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
 			(at 210.82 49.53 0)
 			(effects
 				(font
@@ -8060,6 +8465,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/Lrc-L8050QLT1G/C49581"
+			(at 66.04 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "LRC "
+			(at 66.04 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "L8050QLT1G"
+			(at 66.04 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "60aeefae-343d-46ea-994c-36ca810d7e49")
 		)
@@ -8124,6 +8556,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 234.95 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 234.95 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 234.95 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
 			(at 234.95 33.02 0)
 			(effects
 				(font
@@ -8199,6 +8658,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 210.82 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 210.82 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 210.82 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "47eaa1d4-d446-49c9-82e8-6874d2ec5fb7")
 		)
@@ -8258,6 +8744,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 223.52 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 223.52 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 223.52 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
 			(at 223.52 63.5 0)
 			(effects
 				(font
@@ -8468,6 +8981,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26648-0402WGF5101TCE/C25905"
+			(at 40.64 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 40.64 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF5101TCE"
+			(at 40.64 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "c792d035-25e0-4125-862c-abffce101a62")
 		)
@@ -8669,6 +9209,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 210.82 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 210.82 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 210.82 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "ad72fca6-c3a1-4631-85fb-d47c0cfe0cb2")
 		)
@@ -8730,6 +9297,33 @@
 			)
 		)
 		(property "Description" "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 273.05 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/Jst-BM04B_SRSS_TB_LF_SN/C160390"
+			(at 273.05 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "JST"
+			(at 273.05 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "BM04B-SRSS-TB(LF)(SN)"
 			(at 273.05 140.97 0)
 			(effects
 				(font
@@ -8882,6 +9476,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 215.9 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 215.9 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
+			(at 215.9 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "8e4ff68f-0729-4757-b8e7-3ad3fadd6dde")
 		)
@@ -8943,6 +9564,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 231.14 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 231.14 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 231.14 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
 			(at 231.14 33.02 0)
 			(effects
 				(font
@@ -9115,6 +9763,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/Lrc-L8050QLT1G/C49581"
+			(at 66.04 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "LRC "
+			(at 66.04 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "L8050QLT1G"
+			(at 66.04 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "f6aeb449-9602-47c0-b5c6-c9e6fc7ad174")
 		)
@@ -9254,6 +9929,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 46.99 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 46.99 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
+			(at 46.99 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "e9aa8ada-a28f-411d-9205-30185ec42133")
 		)
@@ -9316,6 +10018,33 @@
 			)
 		)
 		(property "Description" "ESP32-C6-MINI-1 is a module that supports 2.4 GHz Wi-Fi 6 (802.11 ax), Bluetooth® 5 (LE), Zigbee and Thread (802.15.4)"
+			(at 99.06 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/ESPRESSIFINC-ESP32_C6_MINI_1N4/C5736265"
+			(at 99.06 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Espressif Systems "
+			(at 99.06 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "ESP32-C6-MINI-1-N4"
 			(at 99.06 81.28 0)
 			(effects
 				(font
@@ -9544,6 +10273,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 255.27 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 255.27 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 255.27 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "a9801321-2b8a-4e65-a0f6-d23a390a65df")
 		)
@@ -9744,6 +10500,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 149.86 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 149.86 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
+			(at 149.86 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "fd2b9325-85d7-4853-b928-d8dca71d1a35")
 		)
@@ -9813,6 +10596,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 162.56 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 162.56 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 162.56 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "613e2bfa-5d0d-4da0-8360-544abd2a2f9c")
 		)
@@ -9874,6 +10684,33 @@
 			)
 		)
 		(property "Description" "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 250.19 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/Jst-BM04B_SRSS_TB_LF_SN/C160390"
+			(at 250.19 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "JST"
+			(at 250.19 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "BM04B-SRSS-TB(LF)(SN)"
 			(at 250.19 140.97 0)
 			(effects
 				(font
@@ -10025,6 +10862,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/ck-PTS636SK25SMTRLFS/C2689642"
+			(at 113.03 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "C&K "
+			(at 113.03 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "PTS636SK25SMTRLFS"
+			(at 113.03 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "192331bc-d68c-447d-b154-9d0fe56d3f89")
 		)
@@ -10086,6 +10950,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 227.33 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 227.33 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 227.33 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
 			(at 227.33 33.02 0)
 			(effects
 				(font
@@ -10163,6 +11054,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 223.52 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 223.52 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
+			(at 223.52 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "50ff5146-7fe4-4f30-9b34-3662a65adc69")
 		)
@@ -10224,6 +11142,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 46.99 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 46.99 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 46.99 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
 			(at 46.99 146.05 0)
 			(effects
 				(font
@@ -10301,6 +11246,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 87.63 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 87.63 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
+			(at 87.63 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "09e2991a-a00c-4f83-9f80-233613957dac")
 		)
@@ -10361,6 +11333,33 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
+			(at 147.32 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/ck-PTS636SK25SMTRLFS/C2689642"
+			(at 147.32 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "C&K "
+			(at 147.32 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "PTS636SK25SMTRLFS"
 			(at 147.32 144.78 0)
 			(effects
 				(font
@@ -10505,6 +11504,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
+			(at 146.05 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 146.05 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0402WGF1002TCE"
+			(at 146.05 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "66f7b2b4-983f-4939-bc4f-017692372f21")
 		)
@@ -10567,6 +11593,33 @@
 			)
 		)
 		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
+			(at 250.19 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
+			(at 250.19 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "LRC"
+			(at 250.19 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "LESD5D5.0CT1G"
 			(at 250.19 118.11 0)
 			(effects
 				(font
@@ -10642,6 +11695,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 210.82 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 210.82 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 210.82 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "348aba6a-760d-47c9-9e26-d4d34fe92df3")
 		)
@@ -10703,6 +11783,33 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 262.89 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/XkbConnection-X6511WVS_06HC60D48R1/C2883803"
+			(at 262.89 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "XKB Connection "
+			(at 262.89 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "X6511WVS-06H-C60D48R1"
 			(at 262.89 105.41 0)
 			(effects
 				(font
@@ -10859,6 +11966,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/2043-CL10A106MQ8NNNC/C1691"
+			(at 76.2 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 76.2 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL10A106MQ8NNNC"
+			(at 76.2 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "936148ae-a44a-4fca-b7b2-b4dda4bf61f4")
 		)
@@ -10995,6 +12129,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
+			(at 242.57 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "LRC"
+			(at 242.57 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "LESD5D5.0CT1G"
+			(at 242.57 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "3e64a83b-0580-4f01-ac50-2a04ec7e2f46")
 		)
@@ -11054,6 +12215,33 @@
 			)
 		)
 		(property "Description" "Micro SD Card Socket with two card detection pins"
+			(at 259.08 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/hrs_hirose-DM3AT_SFPEJM5/C114218"
+			(at 259.08 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "HRS(Hirose) "
+			(at 259.08 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "DM3AT-SF-PEJM5"
 			(at 259.08 49.53 0)
 			(effects
 				(font

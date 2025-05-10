@@ -2815,6 +2815,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 63.5 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 63.5 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 63.5 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "db1c23e0-410c-4054-b26a-3b35ecc51c98")
 		)
@@ -2874,6 +2901,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 234.95 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 234.95 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 234.95 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
 			(at 234.95 124.46 0)
 			(effects
 				(font
@@ -3016,6 +3070,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 247.65 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 247.65 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 247.65 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "4029096c-1937-408a-af2f-56713f335367")
 		)
@@ -3082,6 +3163,33 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 243.84 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 243.84 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 243.84 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
 			(at 243.84 109.22 0)
 			(effects
 				(font
@@ -3360,6 +3468,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/Stmicroelectronics-LSM6DSLTR/C126672"
+			(at 144.78 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "STMicroelectronics "
+			(at 144.78 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "LSM6DSLTR"
+			(at 144.78 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "7"
 			(uuid "9184c3e5-df6c-46af-890d-01c5d477f504")
 		)
@@ -3463,6 +3598,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 144.78 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 144.78 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 144.78 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "0730a43b-a615-4b9a-aec7-19dd1189f44e")
 		)
@@ -3528,6 +3690,33 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 120.65 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 120.65 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 120.65 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
 			(at 120.65 128.27 0)
 			(effects
 				(font
@@ -3733,6 +3922,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 76.2 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 76.2 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 76.2 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "7f93ed01-246b-4ca6-9f37-cc14de5353c4")
 		)
@@ -3867,6 +4083,33 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 234.95 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 234.95 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 234.95 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
 			(at 234.95 45.72 0)
 			(effects
 				(font
@@ -4277,6 +4520,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/TdkInvensense-ICP20100/C5343527"
+			(at 262.89 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "TDK InvenSense "
+			(at 262.89 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "ICP-20100"
+			(at 262.89 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "6"
 			(uuid "c4552285-fc83-4608-9930-5bccafe0ee57")
 		)
@@ -4360,6 +4630,33 @@
 			)
 		)
 		(property "Description" ""
+			(at 213.36 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 213.36 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 213.36 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
 			(at 213.36 64.77 0)
 			(effects
 				(font
@@ -4640,6 +4937,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 132.08 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 132.08 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 132.08 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9b3b0cce-d427-4f03-926d-142779f7501c")
 		)
@@ -4699,6 +5023,33 @@
 			)
 		)
 		(property "Description" ""
+			(at 110.49 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 110.49 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 110.49 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
 			(at 110.49 64.77 0)
 			(effects
 				(font
@@ -4915,6 +5266,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 200.66 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 200.66 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 200.66 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9ba8ce6a-a746-4746-8162-d6cfb79f43d2")
 		)
@@ -4982,6 +5360,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 120.65 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 120.65 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 120.65 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "f081ff0b-778b-4d1a-8d2f-9b4b3acabf31")
 		)
@@ -5041,6 +5446,33 @@
 			)
 		)
 		(property "Description" ""
+			(at 179.07 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 179.07 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 179.07 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
 			(at 179.07 64.77 0)
 			(effects
 				(font
@@ -5189,6 +5621,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 234.95 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 234.95 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 234.95 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "36ff3188-9462-47e0-8635-618c5402ad49")
 		)
@@ -5249,6 +5708,33 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 152.4 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 152.4 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 152.4 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
 			(at 152.4 106.68 0)
 			(effects
 				(font
@@ -5452,6 +5938,33 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 97.79 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 97.79 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 97.79 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
 			(at 97.79 45.72 0)
 			(effects
 				(font
@@ -5726,6 +6239,33 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 257.81 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 257.81 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
+			(at 257.81 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "74997e4f-14ac-49cf-bfd7-19e539c13ea6")
 		)
@@ -5987,6 +6527,33 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 139.7 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
+			(at 139.7 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 139.7 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05B104KO5NNNC"
 			(at 139.7 106.68 0)
 			(effects
 				(font
@@ -6588,6 +7155,33 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 166.37 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 166.37 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 166.37 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
 			(at 166.37 45.72 0)
 			(effects
 				(font
