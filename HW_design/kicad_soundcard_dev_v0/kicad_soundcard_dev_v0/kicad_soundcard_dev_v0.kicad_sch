@@ -1,0 +1,429 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "4bede6f6-420d-49b9-8d53-bd69095749c2")
+	(paper "A4")
+	(title_block
+		(title "BASM SOUNDCARD DEV V0")
+		(date "2025-05-06")
+		(rev "2")
+		(company "BUCHAREST APPLIED STEAM MUSEUM")
+		(comment 1 "See MCU & Sense & CODEC")
+	)
+	(lib_symbols
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim yes)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+		)
+	)
+	(rectangle
+		(start 200.66 34.29)
+		(end 251.46 72.39)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 6a3056a6-0a59-4404-a921-8019bc7f9ab3)
+	)
+	(text "[4] STEREO AUDIO CODEC\n\n"
+		(exclude_from_sim no)
+		(at 149.86 90.17 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "0845bd46-78cf-4854-9e6c-b6fed1e79ecf")
+	)
+	(text "[1] POWER"
+		(exclude_from_sim no)
+		(at 59.436 26.67 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "0d0a0455-a968-468c-b51d-f939d15c7429")
+	)
+	(text "I2C  Bus Topology: ESP32 <> Pull-up Resistors <> ICP20100 (BARO) <> LSM6DSL (MPU) <> RC FILTER <> ES8388 (CODEC)\nSDIO Bus Topology: ESP32 <> Pull-up Resistors <> MicroSD Card\nI2S  Bus Topology: ESP32 <> Resistors (counter. Signal Reflection) <> ES8388 (CODEC)"
+		(exclude_from_sim no)
+		(at 14.224 153.924 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.3175)
+			)
+			(justify left)
+		)
+		(uuid "415c3432-2c18-43be-ae87-8942484542c8")
+	)
+	(text "[2] MCU\n"
+		(exclude_from_sim no)
+		(at 132.842 26.416 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "49c0a075-4e32-43b2-8807-38d1b9b3685c")
+	)
+	(text "[3] SENSORS & FEEDBACK\n\n"
+		(exclude_from_sim no)
+		(at 73.914 91.186 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "82168852-4d20-4d71-ab0d-fdb956f9d576")
+	)
+	(text "MECHANICAL"
+		(exclude_from_sim no)
+		(at 216.154 39.624 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "d2f1deb1-3529-469a-8305-5b2c8f325a8f")
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 207.01 49.53 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "852bf57b-2321-4e35-953a-ae8af15c3a16")
+		(property "Reference" "H1"
+			(at 209.55 48.2599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 212.852 49.784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.5mm"
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet
+		(at 49.53 34.29)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "17afeba3-86f9-4a78-9898-2f2df319c871")
+		(property "Sheetname" "Power"
+			(at 49.53 33.5784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Power.kicad_sch"
+			(at 49.53 72.9746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "1")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 48.26 96.52)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "25cd3a62-fe69-4650-b2bc-b323d83e7d4b")
+		(property "Sheetname" "sense_feedback"
+			(at 48.26 95.8084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sense_feedback.kicad_sch"
+			(at 48.26 135.2046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 125.73 34.29)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a9edb54b-78ab-4303-9451-17f7b6324437")
+		(property "Sheetname" "MCU"
+			(at 125.73 33.5784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "MCU.kicad_sch"
+			(at 125.73 72.9746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 125.73 96.52)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "cb98dcad-1c57-4901-83cc-dd6912400953")
+		(property "Sheetname" "Audio CODEC"
+			(at 125.73 95.8084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "codec.kicad_sch"
+			(at 125.73 135.2046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "0")
+		)
+	)
+)
