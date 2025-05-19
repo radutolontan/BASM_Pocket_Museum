@@ -1,0 +1,1 @@
+![screenshot](Resources/schematic_functional.png)
