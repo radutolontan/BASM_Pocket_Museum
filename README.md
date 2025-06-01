@@ -6,9 +6,9 @@
 # Software Design
 The software stack can be split between the following tasks:
 ## 1. Sensor Task
-**MVP** - Responsible with initializing, collecting and processing sensor data. To allow HW expansions and IC replacements, the Sensor Task will make use of a Hardware Abstraction Layer (HAL).
+**MVP** - Responsible with initializing, collecting and processing sensor data. By processing we refer to filtering of raw data and post-rpocessing required to obtain associated values *(ex. acceleration is integrated once to obtain velocity)*. To allow HW expansions and IC replacements, the Sensor Task will make use of a Hardware Abstraction Layer (HAL).
 ## 2. Evaluator Task
-**MVP** - Responsible for gauging completion of missions. The evaluator will be a class-instance structure where missions can be defined based on a time - value scenario *(ex. gravity is aligned with the i_hat + j_hat vector of the IMU for 10 seconds)*. The evaluator task constantly checks if any of the missions has been completed & uploads mission logs and play time to the SD card.
+**MVP** - Responsible for gauging completion of missions. The evaluator will be a class-instance structure where missions can be defined based on a time - value scenario *(ex. gravity is aligned with the i_hat + j_hat vector of the IMU for 10 seconds)*. The evaluator task constantly checks if any of the missions has been completed & uploads mission logs and play time to the uSD card.
 ## 3. Display Task
 **MVP** - Manages the primary user feedback tool - the 2x3 RGB LED display. This will be used to show - 
 #### a. Raw sensor outputs  - from Sensor Task
