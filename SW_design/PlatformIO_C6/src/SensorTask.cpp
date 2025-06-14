@@ -1,8 +1,8 @@
 #include "SensorTask.h"
-#include <LSM6DSLSensor.h>
-
-#include "ICP201XXDriverHAL.h"
+#include "ICP201XXHAL.h"
+#include "LSM6DXXHAL.h"
 #include "SensorHAL.h"
+
 #include <Wire.h>
 
 // ESP32 GPIO for I2C Bus
@@ -10,11 +10,11 @@
 #define I2C_SCL_PIN 2
 #define I2C_BITRATE 100000
 
-// Instantiate ICP201xx HAL Wrapper
-ICP201XXDriverHAL pressureSensor(Wire);
+// Instantiate ICP20100 HAL Wrapper
+ICP201XXHAL pressureSensor(Wire);
 
-// Instantiate LSM6DSL with LSB address bit = 
-LSM6DSLSensor LSM(&Wire, LSM6DSL_ACC_GYRO_I2C_ADDRESS_LOW);
+// Instantiate LSM6DSL HAL Wrapper 
+LSM6DXXHAL imuSensor(Wire);
 
 // Global variables
 float last_reading = 0.0;
@@ -48,18 +48,16 @@ void runSensorTask(void* parameter) {
                 Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
                 Wire.setClock(I2C_BITRATE);
 
-
                 // =============== ICP20100 SENSOR ==================
                 if (pressureSensor.begin()){
-                    Serial.println("ICP201XX initialized successfully");
+                    Serial.println("ICP20100 initialized successfully");
                 }
 
-                // =============== LSM6DSL SENSOR ===================
-                // // Initlialize components.
-                // LSM.begin();
-                // LSM.Enable_X();
-                // LSM.Enable_G();
-
+                 // =============== LSM6DSL SENSOR ==================
+                if (imuSensor.begin()){
+                    Serial.println("LSM6DSL initialized successfully");
+                }
+                 
                 delay(1000);
                 last_read_time = millis();
                 current_state = SensorState::SLEEP;
@@ -82,30 +80,15 @@ void runSensorTask(void* parameter) {
                     Serial.println(sensorData.pressure);
                 }
 
-                // // ================ LSM6DSL SENSOR ===================
-                // // Read accelerometer and gyroscope.
-                // int32_t accelerometer[3];
-                // int32_t gyroscope[3];
-                // uint8_t address;
-                // LSM.Get_X_Axes(accelerometer);
-                // LSM.Get_G_Axes(gyroscope);
-                // LSM.ReadID(&address);
-
-                // // Output data.
-                // Serial.print("ADDR: ");
-                // Serial.print(address);
-                // Serial.print(" | Acc[mg]: ");
-                // Serial.print(accelerometer[0]);
-                // Serial.print(" ");
-                // Serial.print(accelerometer[1]);
-                // Serial.print(" ");
-                // Serial.print(accelerometer[2]);
-                // Serial.print(" | Gyr[mdps]: ");
-                // Serial.print(gyroscope[0]);
-                // Serial.print(" ");
-                // Serial.print(gyroscope[1]);
-                // Serial.print(" ");
-                // Serial.println(gyroscope[2]);
+                // ================ LSM6DSL SENSOR ===================
+                if (imuSensor.read(sensorData)) {
+                    Serial.println(sensorData.accel_x);
+                    Serial.println(sensorData.accel_y);
+                    Serial.println(sensorData.accel_z);
+                    Serial.println(sensorData.gyro_x);
+                    Serial.println(sensorData.gyro_y);
+                    Serial.println(sensorData.gyro_z);
+                }
 
                 last_read_time = millis();
                 current_state = SensorState::PROCESS;
