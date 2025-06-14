@@ -1,0 +1,6 @@
+[submodule "SW_design/PlatformIO_C6/lib/pressure.arduino.ICP201XX"]
+	path = SW_design/PlatformIO_C6/lib/pressure.arduino.ICP201XX
+	url = git@github.com:tdk-invn-oss/pressure.arduino.ICP201XX.git
+[submodule "SW_design/PlatformIO_C6/lib/LSM6DSL"]
+	path = SW_design/PlatformIO_C6/lib/LSM6DSL
+	url = git@github.com:stm32duino/LSM6DSL.git
