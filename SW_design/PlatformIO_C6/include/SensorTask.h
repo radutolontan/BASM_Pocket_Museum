@@ -2,8 +2,9 @@
 #define SENSOR_TASK_H
 
 #include <Arduino.h>
+#include <SensorHAL.h> 
 
-// Sensor states
+// ===== Sensor Task States =====
 enum class SensorState {
     BOOT,
     INIT,
@@ -12,18 +13,36 @@ enum class SensorState {
     SLEEP
 };
 
-// Globals accessible from other files
-extern float last_reading;
-extern unsigned long last_read_time;
-extern SensorState current_state;
+class SensorTask {
+public:
+    SensorTask();  // Empty constructor
 
-// Initializes the Sensor Task
-void setupSensorTask();
+    // Called once during setup
+    void setupSensorTask();
 
-// Runs the Sensor Task state machine
-void runSensorTask(void* parameter);
+    // FreeRTOS-compatible entry point
+    static void runSensorTaskWrapper(void* param); 
 
-// Safely request a state change from other modules
-void setSensorState(SensorState new_state);
+    // Main run loop 
+    void runSensorTask();
+
+    // Request a state change (safe external interface)
+    void setSensorState(SensorState newState);
+
+    // Public Variables
+    SensorState current_state;
+    SensorData current_reading;
+    SensorData last_reading;
+
+private:
+    unsigned long lastReadTime;
+
+    // Private state handling functions
+    void run_boot();
+    void run_init();
+    void run_read();
+    void run_process();
+    void run_sleep();
+};
 
 #endif // SENSOR_TASK_H

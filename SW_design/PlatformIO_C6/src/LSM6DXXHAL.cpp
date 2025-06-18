@@ -2,6 +2,7 @@
 #include "LSM6DXXHAL.h"
 // Manufacturer's HW Driver
 #include <LSM6DSLSensor.h>
+#include <globals.h>
 #include <Wire.h>
 
 LSM6DXXHAL::LSM6DXXHAL(TwoWire& wire)
