@@ -64,24 +64,24 @@ void SensorTask::runSensorTask() {
 // ======== STATE METHODS ==========
 
 void SensorTask::run_boot(){
-    Serial.println("BOOT: Waiting for INIT command...");
+    Serial.println("[SensorTask] - Waiting for INIT command...");
     delay(500);
 };
 
 void SensorTask::run_init(){
-    Serial.println("INIT: Configuring sensors...");
+    Serial.println("[SensorTask] - Configuring sensors...");
     // SENSOR I2C BUS INIT.
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
     Wire.setClock(I2C_BITRATE);
 
     // ICP20100 SENSOR 
     if (pressureSensor.begin()){
-        Serial.println("ICP20100 initialized successfully");
+        Serial.println("[SensorTask] - ICP20100 initialized successfully");
     }
 
     // LSM6DSL SENSOR 
     if (imuSensor.begin()){
-        Serial.println("LSM6DSL initialized successfully");
+        Serial.println("[SensorTask] - LSM6DSL initialized successfully");
     }
         
     delay(1000);
@@ -89,7 +89,7 @@ void SensorTask::run_init(){
 };
 
 void SensorTask::run_read(){
-    Serial.println("READ: Sampling sensor...");
+    Serial.println("[SensorTask] - Sampling sensor...");
     // =============== ICP20100 SENSOR ==================
     if (pressureSensor.read(current_reading)) {
         Serial.println("[SensorTask] - sensorData.temperature = " + String(current_reading.temperature));
@@ -117,5 +117,5 @@ void SensorTask::run_sleep(){
 };
 
 void SensorTask::run_process(){
-    Serial.println("PROCESS: Processing data...");
+    Serial.println("[SensorTask] - Processing data...");
 };

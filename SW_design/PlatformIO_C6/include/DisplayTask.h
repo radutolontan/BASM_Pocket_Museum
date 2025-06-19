@@ -34,6 +34,7 @@ public:
 
 private:
     Adafruit_NeoPixel strip;
+    std::vector<uint32_t> colors_lib;  
     unsigned long lastStateChange;
     unsigned long lastUpdateTime;
 
@@ -46,6 +47,7 @@ private:
     // Helper methods
     void displayGitShaPattern();
     uint32_t getRandomColor();
+    void import_colorlib();
 
     // Static helper function (only visible inside cpp file)
     static uint32_t hashStringToSeed(const char* str);
