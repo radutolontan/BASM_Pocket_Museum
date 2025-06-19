@@ -1,12 +1,8 @@
 // SensorHAL.h
 #pragma once
 
-struct SensorData {
-    float temperature;
-    float pressure;
-    float accel_x, accel_y, accel_z;
-    float gyro_x, gyro_y, gyro_z;
-};
+// Shared Data Buffer holds the SensorData types
+#include "SharedDataBuffer.h"
 
 class SensorHAL {
 public:

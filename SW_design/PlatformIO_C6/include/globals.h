@@ -18,5 +18,8 @@
 #define SPI_SCK_PIN   19
 #define SPI_CS_PIN    23
 
+// ICP20100 HW Configuration
+#define ICP201000_LSB_ADDRESS_BIT 0
+
 // =========== TASK RATES ===============
 #define SENSOR_READ_INTERVAL 200 // milliseconds

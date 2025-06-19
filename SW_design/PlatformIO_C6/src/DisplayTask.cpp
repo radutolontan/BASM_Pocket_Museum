@@ -52,11 +52,13 @@ void DisplayTask::runDisplayTask() {
 }
 
 void DisplayTask::run_boot(){
+    // ✅ DEBUG: Print StateMachine State Change
     Serial.println("[DisplayTask] - Waiting for INIT command...");
     delay(500);
 };
 
 void DisplayTask::run_init(){
+    // ✅ DEBUG: Print StateMachine State Change    
     Serial.println("[DisplayTask] - Configuring Display...");
     strip.begin();                              // Initialize the NeoPixel library
     strip.setBrightness(NEOPIXEL_BRIGHTNESS);   // Set brightness 
@@ -65,6 +67,7 @@ void DisplayTask::run_init(){
 };
 
 void DisplayTask::run_display_sense(){
+    // ✅ DEBUG: Print StateMachine State Change   
     Serial.println("[DisplayTask] - Updating sensor display...");
 };
 

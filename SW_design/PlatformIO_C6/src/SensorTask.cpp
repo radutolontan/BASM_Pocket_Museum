@@ -2,8 +2,12 @@
 #include "ICP201XXHAL.h"
 #include "LSM6DXXHAL.h"
 #include "SensorHAL.h"
+#include "SharedDataBuffer.h"
 #include <Wire.h>
 #include "globals.h"
+
+// TO DO: IN RUN_READ, GUARD AGANST STALE READINGS FROM SENSORS
+
 
 // Instantiate ICP20100 HAL Wrapper
 ICP201XXHAL pressureSensor(Wire);
@@ -64,11 +68,13 @@ void SensorTask::runSensorTask() {
 // ======== STATE METHODS ==========
 
 void SensorTask::run_boot(){
+    // ✅ DEBUG: Print StateMachine State Change
     Serial.println("[SensorTask] - Waiting for INIT command...");
     delay(500);
 };
 
 void SensorTask::run_init(){
+    // ✅ DEBUG: Print StateMachine State Change
     Serial.println("[SensorTask] - Configuring sensors...");
     // SENSOR I2C BUS INIT.
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
@@ -76,11 +82,13 @@ void SensorTask::run_init(){
 
     // ICP20100 SENSOR 
     if (pressureSensor.begin()){
+        // ✅ DEBUG: Conifrm Sensor Read successful
         Serial.println("[SensorTask] - ICP20100 initialized successfully");
     }
 
     // LSM6DSL SENSOR 
     if (imuSensor.begin()){
+        // ✅ DEBUG: Conifrm Sensor Read successful
         Serial.println("[SensorTask] - LSM6DSL initialized successfully");
     }
         
@@ -89,6 +97,7 @@ void SensorTask::run_init(){
 };
 
 void SensorTask::run_read(){
+    // ✅ DEBUG: Print StateMachine State Change
     Serial.println("[SensorTask] - Sampling sensor...");
     // =============== ICP20100 SENSOR ==================
     if (pressureSensor.read(current_reading)) {
@@ -105,7 +114,9 @@ void SensorTask::run_read(){
         Serial.println("[SensorTask] - sensorData.gyro_z = " + String(current_reading.gyro_z));
     }
     lastReadTime = millis();
-    last_reading = current_reading;
+
+    // After reading is complete, add it to the shared_data_buffer
+    SharedBuffer::addReading(current_reading);
 };
 
 void SensorTask::run_sleep(){
@@ -117,5 +128,6 @@ void SensorTask::run_sleep(){
 };
 
 void SensorTask::run_process(){
+    // ✅ DEBUG: Print StateMachine State Change
     Serial.println("[SensorTask] - Processing data...");
 };

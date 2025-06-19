@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 #include <SensorHAL.h> 
+#include "SharedDataBuffer.h"
+
 
 // ===== Sensor Task States =====
 enum class SensorState {
@@ -32,8 +34,7 @@ public:
     // Public Variables
     SensorState current_state;
     SensorData current_reading;
-    SensorData last_reading;
-
+    
 private:
     unsigned long lastReadTime;
 

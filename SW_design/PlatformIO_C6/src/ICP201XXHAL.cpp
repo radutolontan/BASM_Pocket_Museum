@@ -4,8 +4,7 @@
 #include <ICP201xx.h>
 #include <Wire.h>
 #include <globals.h>
-// ICP20100 HW Configuration
-#define ICP201000_LSB_ADDRESS_BIT 0
+
 
 ICP201XXHAL::ICP201XXHAL(TwoWire& wire)
     : icp_hw(wire, ICP201000_LSB_ADDRESS_BIT) {}

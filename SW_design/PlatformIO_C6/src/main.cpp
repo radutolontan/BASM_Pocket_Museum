@@ -1,12 +1,15 @@
 #include <Arduino.h>
 #include "SensorTask.h"
 #include "DisplayTask.h"
+#include "SharedDataBuffer.h"
 
 SensorTask sensorTask;
 DisplayTask displayTask;
 
 void setup() {
     Serial.begin(115200);
+    // Initialized Shared Data Buffer & MUTEX protection
+    SharedBuffer::init();  
     // Initialize all State Machines
     sensorTask.setupSensorTask();
     displayTask.setupDisplayTask();

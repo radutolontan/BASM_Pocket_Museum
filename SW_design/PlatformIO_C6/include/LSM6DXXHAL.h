@@ -4,6 +4,9 @@
 #include "SensorHAL.h"
 // Manufacturer's HW Driver
 #include <LSM6DSLSensor.h>
+// Shared Data Buffer
+#include "SharedDataBuffer.h"
+
 
 class LSM6DXXHAL : public SensorHAL {
 public:
