@@ -33203,6 +33203,17 @@
 			(thermal_bridge_angle 45)
 			(uuid "93d25707-5253-4784-b8bd-db9473c72682")
 		)
+		(model "/home/radu-tolontan/code/BASM_card/HW_design/CAD Models/SK6812-EC20.STEP"
+			(offset
+				(xyz -0.68 4.2 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 180 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "B.Cu")
@@ -34181,6 +34192,17 @@
 			(thermal_bridge_angle 45)
 			(uuid "e9623e31-158b-4465-a32c-923fc050bd84")
 		)
+		(model "/home/radu-tolontan/code/BASM_card/HW_design/CAD Models/SK6812-EC20.STEP"
+			(offset
+				(xyz -0.68 4.2 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 180 0)
+			)
+		)
 	)
 	(footprint "SK_RGB:SK68xx-EC20"
 		(layer "B.Cu")
@@ -34369,6 +34391,17 @@
 			(pintype "input")
 			(thermal_bridge_angle 45)
 			(uuid "3b9efebe-6879-4dbb-8cae-9fd8bd57db72")
+		)
+		(model "/home/radu-tolontan/code/BASM_card/HW_design/CAD Models/SK6812-EC20.STEP"
+			(offset
+				(xyz -0.68 4.2 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 180 0)
+			)
 		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
@@ -38102,6 +38135,17 @@
 			(thermal_bridge_angle 45)
 			(uuid "1e6c9098-0423-4986-a7e8-01c54e0e5898")
 		)
+		(model "/home/radu-tolontan/code/BASM_card/HW_design/CAD Models/SK6812-EC20.STEP"
+			(offset
+				(xyz -0.68 4.2 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 180 0)
+			)
+		)
 	)
 	(footprint "SK_RGB:SK68xx-EC20"
 		(layer "B.Cu")
@@ -38291,6 +38335,17 @@
 			(thermal_bridge_angle 45)
 			(uuid "68a89b69-636c-424e-8eee-7aea5491482d")
 		)
+		(model "/home/radu-tolontan/code/BASM_card/HW_design/CAD Models/SK6812-EC20.STEP"
+			(offset
+				(xyz -0.68 4.2 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 180 0)
+			)
+		)
 	)
 	(footprint "SK_RGB:SK68xx-EC20"
 		(layer "B.Cu")
@@ -38479,6 +38534,17 @@
 			(pintype "input")
 			(thermal_bridge_angle 45)
 			(uuid "46ed1203-5ae7-45ad-adcc-46a7a4b094d6")
+		)
+		(model "/home/radu-tolontan/code/BASM_card/HW_design/CAD Models/SK6812-EC20.STEP"
+			(offset
+				(xyz -0.68 4.2 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 180 0)
+			)
 		)
 	)
 	(footprint "Resistor_SMD:R_0603_1608Metric"
