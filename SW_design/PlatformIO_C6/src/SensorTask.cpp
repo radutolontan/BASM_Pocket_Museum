@@ -121,9 +121,9 @@ void SensorTask::run_read(){
 
 void SensorTask::run_sleep(){
     if (millis() - lastReadTime >= SENSOR_READ_INTERVAL) {
-        current_state = SensorState::READ;
+        setSensorState(SensorState::READ);
     } else {
-        delay(100);
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 };
 

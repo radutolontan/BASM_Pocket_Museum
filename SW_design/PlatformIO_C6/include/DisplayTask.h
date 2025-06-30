@@ -9,7 +9,8 @@ enum class DisplayState {
     BOOT,
     INIT,
     DISPLAY_SENSE,
-    DISPLAY_SHOW
+    DISPLAY_SHOW,
+    SLEEP
 };
 
 // DisplayTask class handles the display state machine
@@ -43,8 +44,10 @@ private:
     void run_init();
     void run_display_sense();
     void run_display_show();
+    void run_display_sleep();
 
     // Helper methods
+    void displayPressure(float pressure);
     void displayGitShaPattern();
     uint32_t getRandomColor();
     void import_colorlib();

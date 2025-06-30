@@ -6,45 +6,60 @@
 namespace SharedBuffer {
     // FIFO BUFFER for Last MAX_BUFFER_SIZE readings
     std::deque<SensorData> sensorBuffer;
-    // FreeRTOS MUTEX (used to lock the Buffer)
+    // FreeRTOS MUTEX (used to lock access to the sensorBuffer)
     SemaphoreHandle_t bufferMutex = nullptr;
 
     void init() {
-        // Create MUTEX
+        // Initialize MUTEX
         bufferMutex = xSemaphoreCreateMutex();
     }
 
-void addReading(const SensorData& data) {
-    // Assume control of the Buffer and Lock it ; Wait FOREVER Until possible 
-    if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
-        sensorBuffer.push_back(data);
+    void addReading(const SensorData& data) {
+        // Assume control of the Buffer and Lock it ; portMAX_DELAY <> NO TIMEOUT
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            sensorBuffer.push_back(data);
 
-        // If buffer has over-flown, remove the oldest value
-        if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
-            sensorBuffer.pop_front();
+            // If buffer has over-flown, remove the oldest value
+            if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
+                sensorBuffer.pop_front();
+            }
+
+            // ✅ DEBUG: Print buffer size
+            Serial.printf("[SharedBuffer] Buffer size: %d\n", sensorBuffer.size());
+
+            // ✅ DEBUG: Print only the last entry (just added)
+            const SensorData& latest = sensorBuffer.back();
+            Serial.printf("[SharedBuffer] Latest: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f]\n",
+                        latest.temperature,
+                        latest.pressure,
+                        latest.accel_x, latest.accel_y, latest.accel_z,
+                        latest.gyro_x, latest.gyro_y, latest.gyro_z);
+
+            // Release MUTEX
+            xSemaphoreGive(bufferMutex);
         }
-
-        // ✅ DEBUG: Print buffer size
-        Serial.printf("[SharedBuffer] Buffer size: %d\n", sensorBuffer.size());
-
-        // ✅ DEBUG: Print only the last entry (just added)
-        const SensorData& latest = sensorBuffer.back();
-        Serial.printf("[SharedBuffer] Latest: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f]\n",
-                      latest.temperature,
-                      latest.pressure,
-                      latest.accel_x, latest.accel_y, latest.accel_z,
-                      latest.gyro_x, latest.gyro_y, latest.gyro_z);
-
-        // Release MUTEX
-        xSemaphoreGive(bufferMutex);
     }
-}
+
     std::deque<SensorData> getReadings() {
         std::deque<SensorData> copy;
+        // Assume control of the Buffer and Lock it ; portMAX_DELAY <> NO TIMEOUT
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Use a local snapshot of the buffer
             copy = sensorBuffer;
             xSemaphoreGive(bufferMutex);
         }
         return copy;
+    }
+
+    void capture_start(){
+        // Function used to capture start time & tare sensor data
+        start_time_us = micros();
+    }
+
+    long getElapsedTime(){
+        // Find the elapsed time
+        long elapsed_time_us = micros() - start_time_us;
+        float elapsed_time_s = static_cast<float>(elapsed_time_us / 1000000);
+        return elapsed_time_s;
     }
 }

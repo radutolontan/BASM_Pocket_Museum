@@ -6,8 +6,9 @@
 
 class SensorHAL {
 public:
-    // begin returns 0 on SUCCESSFUL initialization 
+    // SensorHAL::begin() returns True on SUCCESSFUL initialization 
     virtual bool begin() = 0;
+    // SensorHAL::read() returns True on SUCCESSFUL read 
     virtual bool read(SensorData& data) = 0;
     virtual ~SensorHAL() = default;
 };

@@ -10,10 +10,12 @@ void setup() {
     Serial.begin(115200);
     // Initialized Shared Data Buffer & MUTEX protection
     SharedBuffer::init();  
+
     // Initialize all State Machines
     sensorTask.setupSensorTask();
     displayTask.setupDisplayTask();
-    // Create FreeRTOS task for running state machines
+
+    // Create FreeRTOS task for running  SENSORTASK state machine
     xTaskCreatePinnedToCore(
         SensorTask::runSensorTaskWrapper, // Function to run
         "SensorTask",                     // Name
@@ -23,15 +25,16 @@ void setup() {
         nullptr,                          // Task handle
         0                                 // Core (0 or 1)
     );
-        // Create FreeRTOS task for running state machines
+
+        // Create FreeRTOS task for running DISPLAYTASK state machine
     xTaskCreatePinnedToCore(
         DisplayTask::runDisplayTaskWrapper, // Function to run
-        "DisplayTask",                     // Name
-        4096,                             // Stack size in words
-        &displayTask,                      // Pass object as parameter
-        1,                                // Priority
-        nullptr,                          // Task handle
-        0                                 // Core (0 or 1)
+        "DisplayTask",                      // Name
+        4096,                               // Stack size in words
+        &displayTask,                       // Pass object as parameter
+        1,                                  // Priority
+        nullptr,                            // Task handle
+        0                                   // Core (0 or 1)
     );
 
 
@@ -40,6 +43,9 @@ void setup() {
     Serial.println("Main: Triggering INIT state from setup()");
     sensorTask.setSensorState(SensorState::INIT);
     displayTask.setDisplayState(DisplayState::INIT);
+
+    // Capture start conditions (time & vals)
+    SharedBuffer::capture_start();  
 }
 
 void loop() {
