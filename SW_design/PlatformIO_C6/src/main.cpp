@@ -43,9 +43,6 @@ void setup() {
     Serial.println("Main: Triggering INIT state from setup()");
     sensorTask.setSensorState(SensorState::INIT);
     displayTask.setDisplayState(DisplayState::INIT);
-
-    // Capture start conditions (time & vals)
-    SharedBuffer::capture_start();  
 }
 
 void loop() {

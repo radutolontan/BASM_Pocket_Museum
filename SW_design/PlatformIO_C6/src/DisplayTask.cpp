@@ -144,9 +144,7 @@ void DisplayTask::displayPressure(float pressure_float) {
         // RED + BLUE         RED + BLUE + YELLOW         RED + BLUE
         // 2^9 + 2^8 + 2^6     + 2^5 + 2^4 + 2^3         + 2^2 + 2^0
         // Set pixel colors after reversing the display order for logical reading (Left to Righ)
-        // strip.setPixelColor(NEOPIXEL_COUNT - LED - 1, colors_lib[led_bits]); 
-        strip.setPixelColor(NEOPIXEL_COUNT - LED - 1, 
-                            colors_lib[led_bits] * (2 + sin(0.2 * SharedBuffer::getElapsedTime()))); 
+        strip.setPixelColor(NEOPIXEL_COUNT - LED - 1, colors_lib[led_bits]); 
     }
     // Update the display
     strip.show();

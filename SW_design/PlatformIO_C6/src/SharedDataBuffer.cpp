@@ -51,15 +51,5 @@ namespace SharedBuffer {
         return copy;
     }
 
-    void capture_start(){
-        // Function used to capture start time & tare sensor data
-        start_time_us = micros();
-    }
 
-    long getElapsedTime(){
-        // Find the elapsed time
-        long elapsed_time_us = micros() - start_time_us;
-        float elapsed_time_s = static_cast<float>(elapsed_time_us / 1000000);
-        return elapsed_time_s;
-    }
 }
