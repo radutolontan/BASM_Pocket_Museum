@@ -9,7 +9,7 @@
 
 // CLASS Constructor
 DisplayTask::DisplayTask() 
-: strip(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800) // initialize WS2812B strip
+: strip(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800) // initialize SK6805-EC20 strip
 {
 
 }
@@ -37,7 +37,7 @@ void DisplayTask::runDisplayTask() {
             }
             case DisplayState::INIT:{
                 run_init();
-                vTaskDelay(pdMS_TO_TICKS(5000)); // To view the GITSHA
+                vTaskDelay(pdMS_TO_TICKS(3000)); // To view the GITSHA
                 setDisplayState(DisplayState::DISPLAY_SENSE);
                 break;
             }

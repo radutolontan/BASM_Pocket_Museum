@@ -1,13 +1,13 @@
 #pragma once
 
 // ============= SW VERSION ==============
-#define GIT_SHA "AF293_KIX_CDG"
+#define GIT_SHA "Teacher_Demos"
 
 // ===== ESP32 PERIPHERAL ALLOCATION =====
 // [WS2812B]
 #define NEOPIXEL_PIN 8
 #define NEOPIXEL_COUNT 3
-#define NEOPIXEL_BRIGHTNESS 10  // int[0,255]
+#define NEOPIXEL_BRIGHTNESS 70  // int[0,255]
 // #include <Adafruit_NeoPixel.h>
 // #define NEOPIXEL_OFF Adafruit_NeoPixel::Color(0, 0, 0)
 // #define NEOPIXEL_RED Adafruit_NeoPixel::Color(255, 0, 0)
