@@ -9,7 +9,7 @@
 #define PIN_CS   23    // You can change this to any available pin
 
 // Use VSPI bus (common for SPI peripherals on ESP32)
-SPIClass spiBus(1);  // Use 1 for VSPI (instead of VSPI macro)
+// SPIClass SPI(1);  // Use 1 for VSPI (instead of VSPI macro)
 
 // Function prototype
 void listDir(const char *dirname, uint8_t levels);
@@ -29,9 +29,9 @@ void setup() {
   Serial.println("Initializing SD card...");
 
   // Begin SPI with custom pins
-  spiBus.begin(PIN_SCK, PIN_MISO, PIN_MOSI, PIN_CS);
+  SPI.begin(PIN_SCK, PIN_MISO, PIN_MOSI, PIN_CS);
 
-  if (!SD.begin(PIN_CS, spiBus)) {
+  if (!SD.begin(PIN_CS, SPI)) {
     Serial.println("Card Mount Failed!");
     return;
   }
