@@ -20,3 +20,25 @@ Furthermore, it will be used on boot-up to indicate SW version as well as succes
 ## 5. Logger Task
 **NOT MVP** - Manages logging of sensor data to the on-board uSD card. Will be activated using one of the on-board tactile push-buttons, and when enabled, it will provide feedback to the user on logging status using the Display Task.
 
+# SD Card Formatting
+In order to read and write to the SD card, it has to be formatted to **FAT32** and **MBR**. Insert the microSD card into a compatible card reader, connect to a Linux machine, and locate it using the following Terminal command: use a Terminal to:
+```bash
+lsblk
+``` 
+Then, in a Terminal, using its ***/dev/sdX*** identity:
+```bash
+sudo umount /dev/sdX*
+sudo wipefs --all /dev/sdX
+sudo fdisk /dev/sdX
+``` 
+Within ***fdisk***, configure the following proerties:
+* Press ***o*** → create a new DOS (MBR) partition table 
+* Press ***n*** → create a new primary partition
+* Accept all defaults
+* Press ***t***, then type ***c*** → change type to W95 FAT32 (LBA)
+* Press ***w*** → write changes
+
+Finally, format to FAT32 using:
+```bash
+sudo mkfs.vfat -F 32 -n SDCARD /dev/sdX1
+``` 
