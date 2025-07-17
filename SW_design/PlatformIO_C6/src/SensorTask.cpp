@@ -19,7 +19,7 @@ LSM6DXXHAL imuSensor(Wire);
 SensorTask::SensorTask() {}
 
 void SensorTask::setupSensorTask() {
-    current_state = SensorState::BOOT;
+    setSensorState(SensorState::BOOT);
 }
 
 void SensorTask::setSensorState(SensorState new_state) {
@@ -98,20 +98,20 @@ void SensorTask::run_init(){
 
 void SensorTask::run_read(){
     // ✅ DEBUG: Print StateMachine State Change
-    Serial.println("[SensorTask] - Sampling sensor...");
+    // Serial.println("[SensorTask] - Sampling sensor...");
     // =============== ICP20100 SENSOR ==================
     if (pressureSensor.read(current_reading)) {
-        Serial.println("[SensorTask] - sensorData.temperature = " + String(current_reading.temperature));
-        Serial.println("[SensorTask] - sensorData.pressured = " + String(current_reading.pressure));
+        // Serial.println("[SensorTask] - sensorData.temperature = " + String(current_reading.temperature));
+        // Serial.println("[SensorTask] - sensorData.pressured = " + String(current_reading.pressure));
     }
     // ================ LSM6DSL SENSOR ===================
     if (imuSensor.read(current_reading)) {
-        Serial.println("[SensorTask] - sensorData.accel_x = " + String(current_reading.accel_x));
-        Serial.println("[SensorTask] - sensorData.accel_y = " + String(current_reading.accel_y));
-        Serial.println("[SensorTask] - sensorData.accel_z = " + String(current_reading.accel_z));
-        Serial.println("[SensorTask] - sensorData.gyro_x = " + String(current_reading.gyro_x));
-        Serial.println("[SensorTask] - sensorData.gyro_y = " + String(current_reading.gyro_y));
-        Serial.println("[SensorTask] - sensorData.gyro_z = " + String(current_reading.gyro_z));
+        // Serial.println("[SensorTask] - sensorData.accel_x = " + String(current_reading.accel_x));
+        // Serial.println("[SensorTask] - sensorData.accel_y = " + String(current_reading.accel_y));
+        // Serial.println("[SensorTask] - sensorData.accel_z = " + String(current_reading.accel_z));
+        // Serial.println("[SensorTask] - sensorData.gyro_x = " + String(current_reading.gyro_x));
+        // Serial.println("[SensorTask] - sensorData.gyro_y = " + String(current_reading.gyro_y));
+        // Serial.println("[SensorTask] - sensorData.gyro_z = " + String(current_reading.gyro_z));
     }
     lastReadTime = millis();
 
@@ -129,5 +129,5 @@ void SensorTask::run_sleep(){
 
 void SensorTask::run_process(){
     // ✅ DEBUG: Print StateMachine State Change
-    Serial.println("[SensorTask] - Processing data...");
+    // Serial.println("[SensorTask] - Processing data...");
 };

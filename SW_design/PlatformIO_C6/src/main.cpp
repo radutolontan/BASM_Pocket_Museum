@@ -1,19 +1,23 @@
 #include <Arduino.h>
 #include "SensorTask.h"
 #include "DisplayTask.h"
+#include "SDManager.h"
 #include "SharedDataBuffer.h"
 
 SensorTask sensorTask;
 DisplayTask displayTask;
+SDManager sDManager;
 
 void setup() {
     Serial.begin(115200);
-    // Initialized Shared Data Buffer & MUTEX protection
+    
+    // Initialize Shared Data Buffer & MUTEX protection
     SharedBuffer::init();  
 
     // Initialize all State Machines
     sensorTask.setupSensorTask();
     displayTask.setupDisplayTask();
+    sDManager.setupSDTask();
 
     // Create FreeRTOS task for running  SENSORTASK state machine
     xTaskCreatePinnedToCore(
@@ -23,7 +27,7 @@ void setup() {
         &sensorTask,                      // Pass object as parameter
         1,                                // Priority
         nullptr,                          // Task handle
-        0                                 // Core (0 or 1)
+        0                                 // Core (only 0 for ESP32 C6 MINI)
     );
 
         // Create FreeRTOS task for running DISPLAYTASK state machine
@@ -34,7 +38,18 @@ void setup() {
         &displayTask,                       // Pass object as parameter
         1,                                  // Priority
         nullptr,                            // Task handle
-        0                                   // Core (0 or 1)
+        0                                   // Core (only 0 for ESP32 C6 MINI)
+    );
+
+    // Create FreeRTOS task for running DISPLAYTASK state machine
+    xTaskCreatePinnedToCore(
+        SDManager::runSDTaskWrapper,        // Function to run
+        "DisplayTask",                      // Name
+        4096,                               // Stack size in words
+        &sDManager,                         // Pass object as parameter
+        2,                                  // Priority
+        nullptr,                            // Task handle
+        0                                   // Core (only 0 for ESP32 C6 MINI)
     );
 
 
@@ -43,6 +58,7 @@ void setup() {
     Serial.println("Main: Triggering INIT state from setup()");
     sensorTask.setSensorState(SensorState::INIT);
     displayTask.setDisplayState(DisplayState::INIT);
+    // sDManager switches from BOOT to WAIT_FOR_INSERT internally 
 }
 
 void loop() {

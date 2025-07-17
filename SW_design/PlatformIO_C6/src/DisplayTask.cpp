@@ -15,7 +15,7 @@ DisplayTask::DisplayTask()
 }
 
 void DisplayTask::setupDisplayTask() {
-    current_state = DisplayState::BOOT;
+    setDisplayState(DisplayState::BOOT);
 }
 
 void DisplayTask::setDisplayState(DisplayState new_state) {
@@ -79,7 +79,7 @@ void DisplayTask::run_init(){
 
 void DisplayTask::run_display_sense(){
     // ✅ DEBUG: Print StateMachine State Change   
-    Serial.println("[DisplayTask] - Updating sensor display...");
+    // Serial.println("[DisplayTask] - Updating sensor display...");
     auto readings = SharedBuffer::getReadings();
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
