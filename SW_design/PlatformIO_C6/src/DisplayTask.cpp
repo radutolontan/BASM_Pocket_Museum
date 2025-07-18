@@ -37,47 +37,46 @@ void DisplayTask::runDisplayTask() {
             }
             case DisplayState::INIT:{
                 run_init();
-                vTaskDelay(pdMS_TO_TICKS(3000)); // To view the GITSHA
-                setDisplayState(DisplayState::DISPLAY_SENSE);
                 break;
             }
-            case DisplayState::DISPLAY_SENSE:{
-                run_display_sense();
-                setDisplayState(DisplayState::SLEEP);
+            case DisplayState::DISPLAY_PRESSURE:{
+                run_display_pressure();
                 break;
             }
-            case DisplayState::DISPLAY_SHOW:{
-                run_display_show();
-                setDisplayState(DisplayState::DISPLAY_SENSE);
-                break;
-            }
-            case DisplayState::SLEEP:{
-                run_display_sleep();
+            case DisplayState::DISPLAY_ACCEL:{
+                run_display_accel();
                 break;
             }
         }
 
-        vTaskDelay(pdMS_TO_TICKS(10));
+        // Wait until running the next step of the state machine
+        vTaskDelay(pdMS_TO_TICKS(DISPLAY_UPDATE_INTERVAL));
     }
 }
 
 void DisplayTask::run_boot(){
     // ✅ DEBUG: Print StateMachine State Change
     Serial.println("[DisplayTask] - Waiting for INIT command...");
-    delay(500);
+    // Import color-lib for otehr methods to use
+    import_colorlib();                          // Import color library
+
 };
 
 void DisplayTask::run_init(){
     // ✅ DEBUG: Print StateMachine State Change    
+    // Configure Display
     Serial.println("[DisplayTask] - Configuring Display...");
     strip.begin();                              // Initialize the NeoPixel library
     strip.setBrightness(NEOPIXEL_BRIGHTNESS);   // Set brightness 
     strip.show();                               // Update strip to apply brightness and clear LEDs
+    // Display the GIT SHA Pattern on the display to confirm correct SW version
     displayGitShaPattern();                     // Display GIT SHA to confirm correct SW version
-    import_colorlib();                          // Import color library
+    vTaskDelay(pdMS_TO_TICKS(3000));            // To view the GITSHA
+    // When done, trandisition to DisplayState::DISPLAY_SENSE
+    setDisplayState(DisplayState::DISPLAY_PRESSURE);
 };
 
-void DisplayTask::run_display_sense(){
+void DisplayTask::run_display_pressure(){
     // ✅ DEBUG: Print StateMachine State Change   
     // Serial.println("[DisplayTask] - Updating sensor display...");
     auto readings = SharedBuffer::getReadings();
@@ -87,17 +86,10 @@ void DisplayTask::run_display_sense(){
     }
 };
 
-void DisplayTask::run_display_show(){
+void DisplayTask::run_display_accel(){
 
 };
 
-void DisplayTask::run_display_sleep(){
-    if (millis() - lastUpdateTime >= DISPLAY_UPDATE_INTERVAL) {
-        setDisplayState(DisplayState::DISPLAY_SENSE);
-    } else {
-        vTaskDelay(pdMS_TO_TICKS(10));
-    }
-};
 
 // import_colorslib method deffinition
 void DisplayTask::import_colorlib() {

@@ -6,11 +6,10 @@
 
 // Display states
 enum class DisplayState {
-    BOOT,
-    INIT,
-    DISPLAY_SENSE,
-    DISPLAY_SHOW,
-    SLEEP
+    BOOT,             // Waiting for INIT
+    INIT,             // Sets up LEDs, shows Git SHA
+    DISPLAY_PRESSURE, // Displays pressure reading via NeoPixels
+    DISPLAY_ACCEL     // (Planned) display accel vector or status
 };
 
 // DisplayTask class handles the display state machine
@@ -42,9 +41,8 @@ private:
     // State handling methods
     void run_boot();
     void run_init();
-    void run_display_sense();
-    void run_display_show();
-    void run_display_sleep();
+    void run_display_pressure();
+    void run_display_accel();
 
     // Helper methods
     void displayPressure(float pressure);

@@ -29,11 +29,11 @@ namespace SharedBuffer {
 
             // ✅ DEBUG: Print only the last entry (just added)
             const SensorData& latest = sensorBuffer.back();
-            // Serial.printf("[SharedBuffer] Latest: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f]\n",
-            //             latest.temperature,
-            //             latest.pressure,
-            //             latest.accel_x, latest.accel_y, latest.accel_z,
-            //             latest.gyro_x, latest.gyro_y, latest.gyro_z);
+            Serial.printf("[SharedBuffer] Latest: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f]\n",
+                        latest.temperature,
+                        latest.pressure,
+                        latest.accel_x, latest.accel_y, latest.accel_z,
+                        latest.gyro_x, latest.gyro_y, latest.gyro_z);
 
             // Release MUTEX
             xSemaphoreGive(bufferMutex);

@@ -16,6 +16,9 @@ void SDManager::setSDState(SDState new_state){
     // TO DO: add checks for correct state transitions
 }
 
+// ==================== NOT YET IMPLEMENTED =====================
+
+
 bool SDManager::enqueueRequest(const SDRequest& req) {
     if (sdQueue == nullptr) return false;
     return xQueueSend(sdQueue, &req, portMAX_DELAY) == pdTRUE;
@@ -31,6 +34,8 @@ void SDManager::handleRequest(const SDRequest& req) {
         req.callback(true, req.data, req.length);
     }
 }
+
+// ==============================================================
 
 void SDManager::runSDTaskWrapper(void* param) {
     auto* instance = static_cast<SDManager*>(param);
@@ -73,13 +78,12 @@ void SDManager::runSDTask() {
                 break;
 
             case SDState::ERROR:
-                Serial.println("SDManager: ERROR state. Waiting for card removal.");
-                if (!stableCardInserted) {
-                    current_state = SDState::WAIT_FOR_INSERT;
-                }
+                run_error();
+                // State transitions out of ERROR are handled internally                
                 break;
         }
 
+        // Wait until running the next step of the state machine
         vTaskDelay(pdMS_TO_TICKS(50));
     }
 }
@@ -164,6 +168,13 @@ void SDManager::run_unmounting(){
     SD.end();
     // Transition state to Ready for Insert
     setSDState(SDState::WAIT_FOR_INSERT);
+}
+
+void SDManager::run_error(){
+    Serial.println("[SDManager] - ERROR");
+    if (!stableCardInserted) {
+        setSDState(SDState::WAIT_FOR_INSERT);
+    }
 }
 
 bool SDManager::debounceCardDetect(bool rawState) {
