@@ -4,6 +4,9 @@
 #define GIT_SHA "Teacher_Demos"
 
 // ===== ESP32 PERIPHERAL ALLOCATION =====
+// [GPIOs]
+#define DISPLAY_MODE_PUSHBUTTON_PIN 9
+
 // [WS2812B]
 #define NEOPIXEL_PIN 8
 #define NEOPIXEL_COUNT 3
@@ -28,6 +31,10 @@
 #define ICP201000_LSB_ADDRESS_BIT 0
 
 // =========== TASK RATES ===============
+// NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * DISPLAY_UPDATE_INTERVAL
 #define SENSOR_READ_INTERVAL 100 // milliseconds
-#define DISPLAY_UPDATE_INTERVAL 100 // milliseconds
+#define DISPLAY_UPDATE_INTERVAL 20 // milliseconds
+
+#define GPIO_DEBOUNCE_DELAY 50 // [ms]
+
 

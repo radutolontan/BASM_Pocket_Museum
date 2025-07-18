@@ -7,6 +7,8 @@
 #include <cmath>
 #include <cstdint>
 
+#define GPIO_DEBOUNCE_DELAY 50 // [ms]
+
 // CLASS Constructor
 DisplayTask::DisplayTask() 
 : strip(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800) // initialize SK6805-EC20 strip
@@ -16,6 +18,8 @@ DisplayTask::DisplayTask()
 
 void DisplayTask::setupDisplayTask() {
     setDisplayState(DisplayState::BOOT);
+    // GPIO for Push-button which toggles display mode
+    pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT);
 }
 
 void DisplayTask::setDisplayState(DisplayState new_state) {
@@ -30,6 +34,12 @@ void DisplayTask::runDisplayTaskWrapper(void* param) {
 
 void DisplayTask::runDisplayTask() {
     while (true) {
+        // Check for a debounced signal and a rising edge
+        bool rawState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN); 
+        if (debounceButton(rawState) && stableButtonState == HIGH) {
+            cycleDisplayState();  // Trigger mode change
+        }
+        // Run the state machine
         switch (current_state) {
             case DisplayState::BOOT:{
                 run_boot();
@@ -87,9 +97,45 @@ void DisplayTask::run_display_pressure(){
 };
 
 void DisplayTask::run_display_accel(){
-
+    strip.setPixelColor(0, colors_lib[0]); 
+    strip.setPixelColor(1, colors_lib[0]); 
+    strip.setPixelColor(2, colors_lib[0]); 
+    strip.show();
 };
 
+bool DisplayTask::debounceButton(bool rawState) {
+    // Check if the rawstate reading of the button is different from the button's stable state
+    if (rawState != stableButtonState) {
+        // If enough time has elapsed to check for debounce
+        if (millis() - lastButtonChange >= GPIO_DEBOUNCE_DELAY) {
+            // Capture the button state
+            stableButtonState = rawState;
+            lastButtonChange = millis();
+            return true;
+        }
+    } else {
+        lastButtonChange = millis();
+    }
+    return false;
+}
+
+void DisplayTask::cycleDisplayState() {
+    switch (current_state) {
+        // If in PRESSURE DISPLAY -> DISPLAY ACCEL
+        case DisplayState::DISPLAY_PRESSURE:
+            setDisplayState(DisplayState::DISPLAY_ACCEL);
+            break;
+        // If in ACCEL DISPLAY -> PRESSURE ACCEL
+        case DisplayState::DISPLAY_ACCEL:
+            setDisplayState(DisplayState::DISPLAY_PRESSURE);
+            break;
+        default:
+            // Skip state change in BOOT or INIT
+            break;
+    }
+
+    Serial.printf("[DisplayTask] - Switched to state: %d\n", static_cast<int>(current_state));
+}
 
 // import_colorslib method deffinition
 void DisplayTask::import_colorlib() {

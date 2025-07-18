@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include <globals.h>
 
 // Display states
 enum class DisplayState {
@@ -37,6 +38,14 @@ private:
     std::vector<uint32_t> colors_lib;  
     unsigned long lastStateChange;
     unsigned long lastUpdateTime;
+
+    // Button debounce state
+    bool stableButtonState = LOW;
+    unsigned long lastButtonChange = 0;
+
+    // Button helper methods
+    bool debounceButton(bool rawState);
+    void cycleDisplayState();
 
     // State handling methods
     void run_boot();
