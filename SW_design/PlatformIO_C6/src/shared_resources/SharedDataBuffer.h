@@ -12,6 +12,22 @@ struct SensorData {
     float gyro_x, gyro_y, gyro_z;
 };
 
+struct SensorStats {
+    // Aggregated sensor readings 
+    SensorData minReading;
+    SensorData maxReading;
+    SensorData sumReading;
+    SensorData sumSquaresReading;
+    SensorData meanReading;
+    SensorData stddevReading;
+    size_t count = 0;
+
+    // Functions to reset aggregates; compute statistics
+    void reset();
+    void addSample(const SensorData& s);
+    void computeStats();
+};
+
 namespace SharedBuffer {
     // FIFO Buffer for storing last sensor readings
     extern std::deque<SensorData> sensorBuffer;
@@ -22,4 +38,9 @@ namespace SharedBuffer {
     void init();
     void addReading(const SensorData& data);
     std::deque<SensorData> getReadings();
+
+    // Access aggregated stats
+    extern SensorStats aggregatedStats;
+    void resetAggregates();
+    SensorStats getAggregatedStats();
 }

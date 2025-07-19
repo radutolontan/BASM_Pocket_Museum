@@ -1,10 +1,10 @@
 #ifndef SENSOR_TASK_H
 #define SENSOR_TASK_H
 
-#include <Arduino.h>
-#include <SensorHAL.h> 
-#include "SharedDataBuffer.h"
+#include "sensors/SensorHAL.h"
+#include "shared_resources/SharedDataBuffer.h"
 
+#include <Arduino.h>
 
 // ===== Sensor Task States =====
 enum class SensorState {

@@ -1,8 +1,8 @@
 #include <Arduino.h>
-#include "SensorTask.h"
-#include "DisplayTask.h"
-#include "SDManager.h"
-#include "SharedDataBuffer.h"
+#include "sensors/SensorTask.h"
+#include "display/DisplayTask.h"
+#include "storage/SDManager.h"
+#include "shared_resources/SharedDataBuffer.h"
 
 SensorTask sensorTask;
 DisplayTask displayTask;

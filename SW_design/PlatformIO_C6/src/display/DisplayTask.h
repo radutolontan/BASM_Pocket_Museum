@@ -1,9 +1,10 @@
 #ifndef DISPLAY_TASK_H
 #define DISPLAY_TASK_H
 
+#include "shared_resources/globals.h"
+
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
-#include <globals.h>
 
 // Display states
 enum class DisplayState {

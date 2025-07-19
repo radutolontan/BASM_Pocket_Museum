@@ -1,7 +1,8 @@
-#include "DisplayTask.h"
+#include "display/DisplayTask.h"
+#include "shared_resources/SharedDataBuffer.h"
+#include "shared_resources/globals.h"
+
 #include <Adafruit_NeoPixel.h>
-#include <SharedDataBuffer.h>
-#include "globals.h"
 #include <random>
 #include <bitset>
 #include <cmath>
@@ -120,6 +121,8 @@ bool DisplayTask::debounceButton(bool rawState) {
 }
 
 void DisplayTask::cycleDisplayState() {
+    // Before switching, compute the aggregate sensor data for the last time
+    SensorStats stats = SharedBuffer::getAggregatedStats();
     switch (current_state) {
         // If in PRESSURE DISPLAY -> DISPLAY ACCEL
         case DisplayState::DISPLAY_PRESSURE:
@@ -133,6 +136,8 @@ void DisplayTask::cycleDisplayState() {
             // Skip state change in BOOT or INIT
             break;
     }
+    // Reset the aggregate data
+    SharedBuffer::resetAggregates();
 
     Serial.printf("[DisplayTask] - Switched to state: %d\n", static_cast<int>(current_state));
 }

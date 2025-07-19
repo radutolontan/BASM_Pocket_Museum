@@ -1,10 +1,12 @@
-#include "SensorTask.h"
-#include "ICP201XXHAL.h"
-#include "LSM6DXXHAL.h"
-#include "SensorHAL.h"
-#include "SharedDataBuffer.h"
+#include "sensors/SensorTask.h"
+#include "sensors/ICP201XXHAL.h"
+#include "sensors/LSM6DXXHAL.h"
+#include "sensors/SensorHAL.h"
+#include "shared_resources/SharedDataBuffer.h"
+#include "shared_resources/globals.h"
+
 #include <Wire.h>
-#include "globals.h"
+
 
 // TO DO: IN RUN_READ, GUARD AGANST STALE READINGS FROM SENSORS
 

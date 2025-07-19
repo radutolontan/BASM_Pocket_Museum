@@ -1,9 +1,11 @@
 // ICP201XXHAL.cpp
-#include "ICP201XXHAL.h"
+#include "sensors/ICP201XXHAL.h"
+#include "shared_resources/globals.h"
+
 // Manufacturer's HW Driver
 #include <ICP201xx.h>
 #include <Wire.h>
-#include <globals.h>
+
 
 
 ICP201XXHAL::ICP201XXHAL(TwoWire& wire)

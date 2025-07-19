@@ -2,7 +2,7 @@
 #pragma once
 
 // Shared Data Buffer holds the SensorData types
-#include "SharedDataBuffer.h"
+#include "shared_resources/SharedDataBuffer.h"
 
 class SensorHAL {
 public:

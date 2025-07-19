@@ -1,7 +1,8 @@
-#include "SDManager.h"
+#include "storage/SDManager.h"
+#include "shared_resources/globals.h" 
+
 #include <SD.h>
 #include <SPI.h>
-#include "globals.h" 
 
 #define DEBOUNCE_DELAY_MS 300
 
