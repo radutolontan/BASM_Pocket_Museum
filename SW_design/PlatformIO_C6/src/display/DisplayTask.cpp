@@ -70,7 +70,9 @@ void DisplayTask::run_boot(){
     Serial.println("[DisplayTask] - Waiting for INIT command...");
     // Import color-lib for otehr methods to use
     import_colorlib();                          // Import color library
-
+    // Initialize button state
+    stableButtonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
+    lastButtonChange = millis();
 };
 
 void DisplayTask::run_init(){

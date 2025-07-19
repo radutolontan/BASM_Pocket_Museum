@@ -60,6 +60,7 @@ namespace SharedBuffer {
     // Allow external control of aggregate reset
     void resetAggregates() {
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // After assuming control of the semaphore, reset the aggregated stats
             aggregatedStats.reset();
             xSemaphoreGive(bufferMutex);
         }
@@ -69,42 +70,10 @@ namespace SharedBuffer {
     SensorStats getAggregatedStats() {
         SensorStats copy;
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // After assuming control of the semaphore, compute all the statistics
             aggregatedStats.computeStats();
             copy = aggregatedStats;
-
-            // ✅ DEBUG: Print all aggregate stats
-            Serial.printf("[SharedBuffer] getAggregatedStats (Samples: %d)\n", aggregatedStats.count);
-
-            const auto& min = copy.minReading;
-            const auto& max = copy.maxReading;
-            const auto& mean = copy.meanReading;
-            const auto& stddev = copy.stddevReading;
-
-            Serial.printf("  Temperature: Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.temperature, max.temperature, mean.temperature, stddev.temperature);
-
-            Serial.printf("  Pressure   : Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.pressure, max.pressure, mean.pressure, stddev.pressure);
-
-            Serial.printf("  Accel X    : Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.accel_x, max.accel_x, mean.accel_x, stddev.accel_x);
-
-            Serial.printf("  Accel Y    : Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.accel_y, max.accel_y, mean.accel_y, stddev.accel_y);
-
-            Serial.printf("  Accel Z    : Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.accel_z, max.accel_z, mean.accel_z, stddev.accel_z);
-
-            Serial.printf("  Gyro X     : Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.gyro_x, max.gyro_x, mean.gyro_x, stddev.gyro_x);
-
-            Serial.printf("  Gyro Y     : Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.gyro_y, max.gyro_y, mean.gyro_y, stddev.gyro_y);
-
-            Serial.printf("  Gyro Z     : Min=%.2f Max=%.2f Mean=%.2f StdDev=%.2f\n",
-                        min.gyro_z, max.gyro_z, mean.gyro_z, stddev.gyro_z);
-
-                xSemaphoreGive(bufferMutex);
+            xSemaphoreGive(bufferMutex);
         }
         return copy;
     }
@@ -122,7 +91,7 @@ void SensorStats::reset() {
     stddevReading = {};
     count = 0;
 }
-
+// Rolling addition of new readings
 void SensorStats::addSample(const SensorData& s) {
     minReading.temperature = std::min(minReading.temperature, s.temperature);
     maxReading.temperature = std::max(maxReading.temperature, s.temperature);
@@ -166,7 +135,7 @@ void SensorStats::addSample(const SensorData& s) {
 
     count++;
 }
-
+// Mean & STDDEV only computed when computeStates is querried
 void SensorStats::computeStats() {
     if (count == 0) return;
 
