@@ -7,7 +7,7 @@
 
 // Define your SDRequest structure (customize as needed)
 struct SDRequest {
-    enum class Type { READ, WRITE } type;
+    enum class Type { READ, WRITE, ENSURE_FILE_EXISTS } type;
     const char* filename;
     uint8_t* data;
     size_t length;
@@ -28,19 +28,22 @@ public:
     SDManager() = default;
 
     // Initialize the SDManager Task
-    void setupSDTask();
+    void setupSDManager();
 
     // Runs the SDManager State Machine
-    void runSDTask();
+    void runSDManager();
 
     // FreeRTOS-compatible entry point
-    static void runSDTaskWrapper(void* param);
+    static void runSDManagerWrapper(void* param);
 
     // Safely request a state change from other modules
     void setSDState(SDState new_state);
 
     // Public interface to enqueue SD requests
     bool enqueueRequest(const SDRequest& req);
+
+    // Method which allows cues to only be started when everything is setup on the SD manager
+    bool isReady();
 
 private:
     // Helper functions

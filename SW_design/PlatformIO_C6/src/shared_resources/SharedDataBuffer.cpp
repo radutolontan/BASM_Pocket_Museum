@@ -10,14 +10,15 @@ namespace SharedBuffer {
     std::deque<SensorData> sensorBuffer;
     // FreeRTOS MUTEX (used to lock access to the sensorBuffer)
     SemaphoreHandle_t bufferMutex = nullptr;
+
     // Initialize storage for aggregatedstats
-    SensorStats aggregatedStats;
+    SensorStats aggregates_Display_cycle; // Used for aggregating statistics while in a particular display mode
 
     void init() {
         // Initialize MUTEX
         bufferMutex = xSemaphoreCreateMutex();
         // Reset aggregates on initialization
-        aggregatedStats.reset();
+        aggregates_Display_cycle.reset();
     }
 
     void addReading(const SensorData& data) {
@@ -31,15 +32,15 @@ namespace SharedBuffer {
             }
 
             // Update aggregates
-            aggregatedStats.addSample(data);
+            aggregates_Display_cycle.addSample(data);
 
             // ✅ DEBUG: Print only the last entry (just added)
-            const SensorData& latest = sensorBuffer.back();
-            Serial.printf("[SharedBuffer] Latest: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f]\n",
-                        latest.temperature,
-                        latest.pressure,
-                        latest.accel_x, latest.accel_y, latest.accel_z,
-                        latest.gyro_x, latest.gyro_y, latest.gyro_z);
+            // const SensorData& latest = sensorBuffer.back();
+            // Serial.printf("[SharedBuffer] Latest: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f]\n",
+            //             latest.temperature,
+            //             latest.pressure,
+            //             latest.accel_x, latest.accel_y, latest.accel_z,
+            //             latest.gyro_x, latest.gyro_y, latest.gyro_z);
 
             // Release MUTEX
             xSemaphoreGive(bufferMutex);
@@ -61,7 +62,7 @@ namespace SharedBuffer {
     void resetAggregates() {
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
             // After assuming control of the semaphore, reset the aggregated stats
-            aggregatedStats.reset();
+            aggregates_Display_cycle.reset();
             xSemaphoreGive(bufferMutex);
         }
     }
@@ -71,8 +72,9 @@ namespace SharedBuffer {
         SensorStats copy;
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
             // After assuming control of the semaphore, compute all the statistics
-            aggregatedStats.computeStats();
-            copy = aggregatedStats;
+            aggregates_Display_cycle.computeStats();
+            copy = aggregates_Display_cycle;
+
             xSemaphoreGive(bufferMutex);
         }
         return copy;

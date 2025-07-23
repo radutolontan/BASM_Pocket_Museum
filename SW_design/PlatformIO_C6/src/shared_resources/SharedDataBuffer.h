@@ -14,6 +14,8 @@ struct SensorData {
 
 struct SensorStats {
     // Aggregated sensor readings 
+    // These can be computed simmultaneously and mapped to different events
+    // (i.e a display mode is changed ; a mission is started)
     SensorData minReading;
     SensorData maxReading;
     SensorData sumReading;
@@ -39,8 +41,10 @@ namespace SharedBuffer {
     void addReading(const SensorData& data);
     std::deque<SensorData> getReadings();
 
-    // Access aggregated stats
-    extern SensorStats aggregatedStats;
+    // Aggregated stats for different actions
+    extern SensorStats aggregates_Display_cycle; // Aggregated stats while in a display mode
+
+    // Methods to access & reset aggregated stats
     void resetAggregates();
     SensorStats getAggregatedStats();
 }

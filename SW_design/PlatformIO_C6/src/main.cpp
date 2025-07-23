@@ -3,10 +3,12 @@
 #include "display/DisplayTask.h"
 #include "storage/SDManager.h"
 #include "shared_resources/SharedDataBuffer.h"
+#include "evaluators/EvaluatorTask.h"
 
 SensorTask sensorTask;
 DisplayTask displayTask;
 SDManager sDManager;
+EvaluatorTask evaluatorTask;
 
 void setup() {
     Serial.begin(115200);
@@ -17,7 +19,8 @@ void setup() {
     // Initialize all State Machines
     sensorTask.setupSensorTask();
     displayTask.setupDisplayTask();
-    sDManager.setupSDTask();
+    sDManager.setupSDManager();
+    evaluatorTask.setupEvaluatorTask(displayTask); // Some evaluators need reference to other tasks and data structurses
 
     // Create FreeRTOS task for running  SENSORTASK state machine
     xTaskCreatePinnedToCore(
@@ -30,7 +33,7 @@ void setup() {
         0                                 // Core (only 0 for ESP32 C6 MINI)
     );
 
-        // Create FreeRTOS task for running DISPLAYTASK state machine
+    // Create FreeRTOS task for running DISPLAYTASK state machine
     xTaskCreatePinnedToCore(
         DisplayTask::runDisplayTaskWrapper, // Function to run
         "DisplayTask",                      // Name
@@ -41,10 +44,10 @@ void setup() {
         0                                   // Core (only 0 for ESP32 C6 MINI)
     );
 
-    // Create FreeRTOS task for running DISPLAYTASK state machine
+    // Create FreeRTOS task for running SDMANAGER state machine
     xTaskCreatePinnedToCore(
-        SDManager::runSDTaskWrapper,        // Function to run
-        "DisplayTask",                      // Name
+        SDManager::runSDManagerWrapper,     // Function to run
+        "SDManager",                        // Name
         4096,                               // Stack size in words
         &sDManager,                         // Pass object as parameter
         2,                                  // Priority
@@ -52,12 +55,22 @@ void setup() {
         0                                   // Core (only 0 for ESP32 C6 MINI)
     );
 
-
+     // Create FreeRTOS task for running EVALUATORTASK state machine
+    xTaskCreatePinnedToCore(
+        EvaluatorTask::runEvaluatorTaskWrapper, // Function to run
+        "EvaluatorTask",                        // Name
+        4096,                                   // Stack size in words
+        &evaluatorTask,                         // Pass object as parameter
+        3,                                      // Priority
+        nullptr,                                // Task handle
+        0                                       // Core (only 0 for ESP32 C6 MINI)
+    );
 
     // ✅ Trigger INIT state immediately after setup
     Serial.println("Main: Triggering INIT state from setup()");
     sensorTask.setSensorState(SensorState::INIT);
     displayTask.setDisplayState(DisplayState::INIT);
+    evaluatorTask.setEvaluatorState(EvaluatorState::INIT);
     // sDManager switches from BOOT to WAIT_FOR_INSERT internally 
 }
 

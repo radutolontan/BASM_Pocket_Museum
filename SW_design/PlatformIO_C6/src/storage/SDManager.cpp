@@ -6,7 +6,7 @@
 
 #define DEBOUNCE_DELAY_MS 300
 
-void SDManager::setupSDTask() {
+void SDManager::setupSDManager() {
     // Go straight to boot mode
     setSDState(SDState::BOOT);
 }
@@ -21,29 +21,79 @@ void SDManager::setSDState(SDState new_state){
 
 
 bool SDManager::enqueueRequest(const SDRequest& req) {
-    if (sdQueue == nullptr) return false;
-    return xQueueSend(sdQueue, &req, portMAX_DELAY) == pdTRUE;
+        if (sdQueue == nullptr) {
+        Serial.println("[SDManager] - enqueueRequest failed: queue is nullptr!");
+        return false;
+    }
+    bool result = xQueueSend(sdQueue, &req, portMAX_DELAY) == pdTRUE;
+    Serial.printf("[SDManager] enqueueRequest: %s\n", result ? "SUCCESS" : "FAILURE");
+    return result;
 }
 
 void SDManager::handleRequest(const SDRequest& req) {
-    Serial.printf("SDManager: Handling %s request on %s\n",
-                  req.type == SDRequest::Type::READ ? "READ" : "WRITE",
-                  req.filename);
+    vTaskDelay(pdMS_TO_TICKS(8000));
+    Serial.printf("[SDManager] Handling request: %d for file: %s\n", (int)req.type, req.filename);
+    switch (req.type) {
+        // Handle read
+        case SDRequest::Type::READ:
+            break;
+        // Handle Write
+        case SDRequest::Type::WRITE:{
+            //  Open the requested file
+            File file = SD.open(req.filename, FILE_WRITE);
+            if (!file) {
+                Serial.printf("[SDManager] Failed to open file for writing: %s\n", req.filename);
+                if (req.callback) {
+                    req.callback(false, req.data, req.length);
+                }
+                return;
+            }
 
-    // Placeholder: Call callback
-    if (req.callback) {
-        req.callback(true, req.data, req.length);
+            size_t written = file.write(req.data, req.length);
+            file.close();
+
+            if (written != req.length) {
+                Serial.printf("[SDManager] Partial write: wrote %u of %u bytes to %s\n",
+                              (unsigned int)written, (unsigned int)req.length, req.filename);
+                if (req.callback) {
+                    req.callback(false, req.data, req.length);
+                }
+            } else {
+                Serial.printf("[SDManager] Successfully wrote %u bytes to %s\n",
+                              (unsigned int)written, req.filename);
+                if (req.callback) {
+                    req.callback(true, req.data, req.length);
+                }
+            }
+
+            break;
+        }
+        case SDRequest::Type::ENSURE_FILE_EXISTS:
+            // Check if file already exists
+            if (!SD.exists(req.filename)) {
+                // If it doesn't, try to create the file
+                File file = SD.open(req.filename, FILE_WRITE);
+                if (file) {
+                    // File created successfully
+                    file.println("timestamp,mode"); // Optional: CSV header
+                    file.close();
+                    Serial.printf("[SDManager] - Created file: %s\n", req.filename);
+                } else {
+                    Serial.printf("[SDManager] - Failed to create file: %s\n", req.filename);
+                }
+            }
+            break;
     }
 }
 
 // ==============================================================
 
-void SDManager::runSDTaskWrapper(void* param) {
+void SDManager::runSDManagerWrapper(void* param) {
     auto* instance = static_cast<SDManager*>(param);
-    instance->runSDTask();
+    instance->runSDManager();
 }
 
-void SDManager::runSDTask() {
+void SDManager::runSDManager() {
     while (true) {
         // Raw reading of SD_CARD_DETECT_PIN
         bool rawState = digitalRead(SD_CARD_DETECT_PIN) == HIGH;
@@ -156,9 +206,11 @@ void SDManager::run_ready(){
         Serial.println("[SDManager] - Card removed → UNMOUNTING");
         // If card was removed, transition state to UNMOUNTING
         setSDState(SDState::UNMOUNTING);
-    } else {
+    } else { 
         SDRequest req;
+        // Process the next request in the cue
         if (xQueueReceive(sdQueue, &req, 10 / portTICK_PERIOD_MS)) {
+            Serial.println("[SDManager] - We have something the Cue! :)");
             handleRequest(req);
         }
     }

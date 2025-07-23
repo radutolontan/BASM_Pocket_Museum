@@ -24,8 +24,13 @@ void DisplayTask::setupDisplayTask() {
 }
 
 void DisplayTask::setDisplayState(DisplayState new_state) {
-    // Optional: Add safety checks or mutex here
+    // Future: Add safety checks or mutex here
     current_state = new_state;
+}
+
+DisplayState DisplayTask::getDisplayState() const {
+    // Return the current_state
+    return current_state;
 }
 
 void DisplayTask::runDisplayTaskWrapper(void* param) {

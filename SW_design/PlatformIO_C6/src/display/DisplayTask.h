@@ -31,14 +31,17 @@ public:
     // Safely request a state change from other modules
     void setDisplayState(DisplayState newState);
 
-    // Public Variables
-    DisplayState current_state;
+    // Method to safely access DisplayTask state
+    DisplayState getDisplayState() const;
 
 private:
     Adafruit_NeoPixel strip;
     std::vector<uint32_t> colors_lib;  
     unsigned long lastStateChange;
     unsigned long lastUpdateTime;
+
+    // Public Variables
+    DisplayState current_state;
 
     // Button debounce state
     bool stableButtonState = LOW;
