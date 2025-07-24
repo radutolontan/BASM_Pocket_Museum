@@ -1,33 +1,51 @@
 
 # Hardware Design
 ## Board ID - Development V0
-![screenshot](Resources/schematic_functional.png)
+![screenshot](Resources/schematic_functional_dev_v0.png)
 
 # Software Architecture
+![screenshot](Resources/task_structure.svg)
 The software stack can be split between the following tasks:
-## 1. Sensor Task
-Responsible with initializing, managing, collecting and processing sensor data. Pushes each new reading to the ***shared_data_buffer***.
+## 1. SensorTask
+Responsible with initializing, managing, collecting and processing sensor data. Pushes each new reading to the ***shared_data_buffer***. 
+Uses the ***SensorHAL*** virtual layer, as implemented into ***specific_sensor_HAL*** to standardize high-level I/O across all sesnors.
 ### States
 * **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
 * **INIT** - initializes I2C bus for comms to sensors, configures and confirms communications to sensors
 * **READ** - captures one sample for each sensor value. New, raw values are pushed to the ***shared_data_buffer***.
 * **PROCESS** - post-processing required to obtain associated values *(ex. acceleration is integrated once to obtain velocity)*
 * **SLEEP** - the state machine waits in this state until a new **READ->PROCESS** cycle is started
+## 2. EvaluatorTask
+Responsible for gauging player effort. The EvaluatorTask owns multiple instances of the abstract base class ***EvaluatorBase***. 
+EvaluatorBase standardizes I/O across all evaluators, such as ***DisplaySessionEvaluator*** (which captures aggregate statistics on sensor data while a specific ***DisplayTask*** mode is showing).
+### States
+* **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
+* **INIT** - initializes and confirms appropriate logging is setup for all evaluators
+* **RUNNING** - checks progress on all evaluators, and allows access to the SDManager cue
+* **ERROR** - NOT IMPLEMENTED
+## 3. DisplayTask
+Manages the primary user feedback tool - a chain of NeoPixel RGB LEDs organized across three zones: 
+* 3 LEDs for conveying DisplayState - tells the user what quantities are being measured & additional device info
+* 3 LEDs for conveying scalar values and magnitudes of vector quantities
+* 3 LEDs for conveying qualitative cartesian components for vector quantities magnitudes
 
-### ***shared_data_buffer***
-The shared data space for all tasks
+A push-button is used to cycle through DisplayStates. A set of aggregateStats (belonging to ***shared_data_buffer*** is reset every time DisplayState is cycled)
+### States
+* **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
+* **INIT** - initializes the RGB LED strip and displays a color code for the GIT SHA (used to confirm proper code in use)
+* **DISPLAY_PRESSURE** - reads the last pressure value from ***shared_data_buffer*** and displays it using a color code
+* **DISPLAY_ACCEL** - NOT IMPLEMENTED
+* **DISPLAY_SENSOR*** - multiple DisplayStates to be added for new sensors and physical quantities measured
 
- To allow HW expansions and IC replacements, the Sensor Task will make use of a Hardware Abstraction Layer (HAL).
-
-## 2. Evaluator Task
-**MVP** - Responsible for gauging completion of missions. The evaluator will be a class-instance structure where missions can be defined based on a time - value scenario *(ex. gravity is aligned with the i_hat + j_hat vector of the IMU for 10 seconds)*. The evaluator task constantly checks if any of the missions has been completed & uploads mission logs and play time to the uSD card.
-## 3. Display Task
-**MVP** - Manages the primary user feedback tool - the 2x3 RGB LED display. This will be used to show - 
-#### a. Raw sensor outputs  - from Sensor Task
-#### b. Successful completion of missions - from Evaluator Task
-#### c. Recording status - from Logger Task
-Furthermore, it will be used on boot-up to indicate SW version as well as successful initialization of all tasks.
-
+## 4. SDManager
+Owns operation of the microSD card. It manages access to the resource using a separate state machine.
+### States
+* **BOOT** - default state on boot-up; transition to INIT automatically after initializing SD cue
+* **WAIT_FOR_INSERT** - checks and debounces the state of the SD detect GPIO
+* **MOUNTING** - starts SPI communications, mounts the SD card & checks SD card metadata
+* **READY** - allows fulfillment of read/write requests in the cue
+* **UNMOUNTING** - unnmounts the SD card if detected removed
+* **ERROR** - NOT IMPLEMENTED
 
 # SD Card Formatting
 In order to read and write to the SD card, it has to be formatted to **FAT32** and **MBR**. Insert the microSD card into a compatible card reader, connect to a Linux machine, and locate it using the following Terminal command: use a Terminal to:
@@ -51,46 +69,3 @@ Finally, format to FAT32 using:
 ```bash
 sudo mkfs.vfat -F 32 -n SDCARD /dev/sdX1
 ``` 
-
-
-flowchart TD
-    %% Core Tasks
-    SensorTask[SensorTask\n(reads sensors, writes data)]
-    DisplayTask[DisplayTask\n(reads data, updates LEDs)]
-    SDManager[SDManager\n(logs data to SD card)]
-
-    %% Shared Resource
-    SharedBuffer[(SharedDataBuffer\n(FIFO + Mutex))]
-
-    %% HAL Interfaces
-    ICP[ICP201XXHAL\n(Pressure Sensor)]
-    LSM[LSM6DXXHAL\n(IMU)]
-
-    %% External Interfaces
-    NeoPixel[NeoPixel LED Strip]
-    Button[Pushbutton GPIO]
-    SD[SD Card]
-
-    %% Aggregates
-    Aggregates[Aggregated Stats\n(min/max/mean/stddev)]
-
-    %% Relationships
-    SensorTask --> ICP
-    SensorTask --> LSM
-    SensorTask -->|addReading()| SharedBuffer
-
-    DisplayTask -->|getReadings(), getAggregatedStats()| SharedBuffer
-    DisplayTask --> NeoPixel
-    Button -->|State Toggle| DisplayTask
-
-    SDManager -->|getReadings()| SharedBuffer
-    SDManager --> SD
-
-    SharedBuffer --> Aggregates
-
-    %% Styling
-    style SharedBuffer fill:#f0f0f0,stroke:#333,stroke-width:2px
-    style SensorTask fill:#c6e2ff,stroke:#333
-    style DisplayTask fill:#ffd580,stroke:#333
-    style SDManager fill:#d1ffbd,stroke:#333
-    style Aggregates fill:#fdfd96,stroke:#666,stroke-dasharray: 5 5
