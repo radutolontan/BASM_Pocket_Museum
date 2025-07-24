@@ -1,10 +1,10 @@
 
 # Hardware Design
 ## Board ID - Development V0
-![screenshot](Resources/schematic_functional_dev_v0.png)
+![diagram_HW](Resources/schematic_functional_dev_v0.png)
 
 # Software Architecture
-![screenshot](Resources/task_structure.svg)
+![diagram_SW](Resources/task_structure.svg)
 The software stack can be split between the following tasks:
 ## 1. SensorTask
 Responsible with initializing, managing, collecting and processing sensor data. Pushes each new reading to the ***shared_data_buffer***. 
