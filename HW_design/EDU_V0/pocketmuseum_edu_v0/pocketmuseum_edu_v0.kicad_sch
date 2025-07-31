@@ -1,0 +1,426 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "4bede6f6-420d-49b9-8d53-bd69095749c2")
+	(paper "A4")
+	(title_block
+		(title "BASM POCKETMUSEUM EDU V0")
+		(date "2025-06-30")
+	)
+	(lib_symbols
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim yes)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+		)
+	)
+	(rectangle
+		(start 200.66 34.29)
+		(end 251.46 72.39)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 6a3056a6-0a59-4404-a921-8019bc7f9ab3)
+	)
+	(text "[1] POWER"
+		(exclude_from_sim no)
+		(at 59.436 26.67 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "0d0a0455-a968-468c-b51d-f939d15c7429")
+	)
+	(text "I2C  Bus Topology: ESP32 <> Pull-up Resistors <> ICP20100 (BARO) \n							<> Level Shifter <> Pull-up Resistors <> ICM20948 (9-Axis IMU)\nSPI Bus Topology: ESP32 <> Pull-up Resistors <> MicroSD Card\nWS2812B Bus Topology: ESP32 <> Data Line Resistor <> RGB LED #1 <> ... <> RGB LED #9"
+		(exclude_from_sim no)
+		(at 22.606 153.924 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.3175)
+			)
+			(justify left)
+		)
+		(uuid "415c3432-2c18-43be-ae87-8942484542c8")
+	)
+	(text "[2] MCU\n"
+		(exclude_from_sim no)
+		(at 132.842 26.416 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "49c0a075-4e32-43b2-8807-38d1b9b3685c")
+	)
+	(text "[3] SENSORS\n\n"
+		(exclude_from_sim no)
+		(at 61.468 89.662 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "82168852-4d20-4d71-ab0d-fdb956f9d576")
+	)
+	(text "MECHANICAL"
+		(exclude_from_sim no)
+		(at 216.154 39.624 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "d2f1deb1-3529-469a-8305-5b2c8f325a8f")
+	)
+	(text "[4] FEEDBACK\n\n\n"
+		(exclude_from_sim no)
+		(at 137.16 89.408 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.762)
+				(bold yes)
+			)
+		)
+		(uuid "e14ce63e-d41f-4401-ac24-5bf9b54a8c1f")
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 207.01 49.53 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "852bf57b-2321-4e35-953a-ae8af15c3a16")
+		(property "Reference" "H1"
+			(at 209.55 48.2599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 212.852 49.784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.5mm"
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "kicad_soundcard_dev_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet
+		(at 49.53 34.29)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "17afeba3-86f9-4a78-9898-2f2df319c871")
+		(property "Sheetname" "Power"
+			(at 49.53 33.5784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Power.kicad_sch"
+			(at 49.53 72.9746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "1")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 49.53 96.52)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "36cdbd28-8810-4657-96de-41aba4386ff5")
+		(property "Sheetname" "Sensors"
+			(at 49.53 95.8084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Sensors.kicad_sch"
+			(at 49.53 135.2046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 125.73 96.52)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "664aaabd-6e0d-4189-b255-c2e12e3ff15c")
+		(property "Sheetname" "Feedback"
+			(at 125.73 95.8084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Feddback.kicad_sch"
+			(at 125.73 135.2046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 125.73 34.29)
+		(size 50.8 38.1)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a9edb54b-78ab-4303-9451-17f7b6324437")
+		(property "Sheetname" "MCU"
+			(at 125.73 33.5784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "MCU.kicad_sch"
+			(at 125.73 72.9746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "0")
+		)
+	)
+)

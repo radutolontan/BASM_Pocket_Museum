@@ -1,0 +1,4961 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "ff4b3995-7034-4616-b2dd-d263cd9df22a")
+	(paper "A4")
+	(lib_symbols
+		(symbol "Device:C"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 0.635 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Unpolarized capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 0.762) (xy 2.032 0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "SK68xx:SK6805-EC20"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SK6805-EC20_1_1"
+				(rectangle
+					(start -12.7 12.7)
+					(end -1.27 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin power_in line
+					(at -6.35 15.24 270)
+					(length 2.54)
+					(name "VDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 1.27 6.35 180)
+					(length 2.54)
+					(name "DOUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -6.35 -2.54 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -15.24 6.35 0)
+					(length 2.54)
+					(name "DIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "power:+3.3V"
+			(power)
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "+3.3V"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "+3.3V_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "+3.3V_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "power:GND"
+			(power)
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "GND"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "GND_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "GND_1_1"
+				(pin power_in line
+					(at 0 0 270)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(junction
+		(at 104.14 151.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0d841227-33c6-49e0-b6f0-67222a9777a1")
+	)
+	(junction
+		(at 69.85 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0d85d875-824f-4715-a217-48439e641910")
+	)
+	(junction
+		(at 104.14 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2e8b9211-2dfb-4575-b943-f068f0884dcc")
+	)
+	(junction
+		(at 138.43 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3169ed2b-951e-4122-abb9-73ae599b0358")
+	)
+	(junction
+		(at 138.43 151.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4657c5d3-311c-4b81-b357-71a252510ac5")
+	)
+	(junction
+		(at 69.85 151.13)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "72b45fc1-ec27-4bb2-8ae5-1eddf2df8806")
+	)
+	(junction
+		(at 69.85 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "96726442-6061-4630-9d71-e6fb7efb8398")
+	)
+	(junction
+		(at 138.43 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b926af7c-7f2a-44fd-818a-87f41906ecc0")
+	)
+	(junction
+		(at 104.14 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "debd92b5-8baf-475a-a7ee-f510f8b0343c")
+	)
+	(no_connect
+		(at 146.05 163.83)
+		(uuid "7fad7abf-6927-44a5-b123-e734e97ce72f")
+	)
+	(wire
+		(pts
+			(xy 104.14 118.11) (xy 104.14 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "01d08f81-2c0b-4a2f-9d24-6fddcd4a1eaf")
+	)
+	(wire
+		(pts
+			(xy 146.05 109.22) (xy 148.59 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0695f25b-459c-4f8c-a5bf-9ddf2720835e")
+	)
+	(wire
+		(pts
+			(xy 138.43 118.11) (xy 138.43 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "164d4143-347c-4660-9aa0-2ccdb18eda28")
+	)
+	(wire
+		(pts
+			(xy 104.14 151.13) (xy 104.14 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1a482692-c49e-452f-9dd7-de878682062a")
+	)
+	(wire
+		(pts
+			(xy 135.89 96.52) (xy 138.43 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20cfff67-bfb6-4472-a76a-f22a2cb51845")
+	)
+	(wire
+		(pts
+			(xy 67.31 151.13) (xy 69.85 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "218737b4-744f-47f2-a39a-ea5a146b4a6d")
+	)
+	(wire
+		(pts
+			(xy 104.14 41.91) (xy 104.14 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "22a51f91-221a-48bd-95fc-77fc6d3717f0")
+	)
+	(wire
+		(pts
+			(xy 138.43 96.52) (xy 138.43 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "22f18e38-3c4b-499f-a7ca-751732aac6b6")
+	)
+	(wire
+		(pts
+			(xy 127 151.13) (xy 127 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2663a9ab-d743-416a-9f0a-690cfa5f13a8")
+	)
+	(wire
+		(pts
+			(xy 77.47 109.22) (xy 95.25 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2a5c7622-11b2-4542-a331-107c0bb5cabf")
+	)
+	(wire
+		(pts
+			(xy 138.43 96.52) (xy 138.43 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2a977810-0570-43d4-ab3b-e019021746d4")
+	)
+	(wire
+		(pts
+			(xy 101.6 96.52) (xy 104.14 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2fe7fad0-7c7b-41ca-aa77-d320e7c163a4")
+	)
+	(wire
+		(pts
+			(xy 138.43 63.5) (xy 138.43 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "325f6467-7ae9-40d3-b968-6b96b0baaa3c")
+	)
+	(wire
+		(pts
+			(xy 69.85 41.91) (xy 69.85 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3558fb1b-2fae-496f-91ff-693fbb696f6a")
+	)
+	(wire
+		(pts
+			(xy 138.43 41.91) (xy 138.43 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ca266f5-564c-4ae4-a340-8bb4c7a89f6a")
+	)
+	(wire
+		(pts
+			(xy 59.69 96.52) (xy 58.42 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ded7693-a50c-44f8-868b-83b4f3671dbc")
+	)
+	(wire
+		(pts
+			(xy 104.14 41.91) (xy 104.14 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "479d4a2d-1f4a-4dee-af5e-99361506e76f")
+	)
+	(wire
+		(pts
+			(xy 69.85 172.72) (xy 69.85 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4cd7e5bf-68d7-4454-89c3-7c74430ce491")
+	)
+	(wire
+		(pts
+			(xy 69.85 96.52) (xy 69.85 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4d8620ed-2adc-43ba-99a3-7c1e13a908de")
+	)
+	(wire
+		(pts
+			(xy 93.98 151.13) (xy 92.71 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "51a85a2d-c37c-4415-81bf-ce1fb299e844")
+	)
+	(wire
+		(pts
+			(xy 69.85 63.5) (xy 69.85 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "528fbc49-687d-4d6c-8149-f40101a870b7")
+	)
+	(wire
+		(pts
+			(xy 92.71 96.52) (xy 92.71 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "533edd38-31c2-46fc-8993-b35c39fcd138")
+	)
+	(wire
+		(pts
+			(xy 43.18 109.22) (xy 60.96 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "585c76f9-57b3-4295-b923-57f07b7d62f6")
+	)
+	(wire
+		(pts
+			(xy 127 41.91) (xy 127 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ac091e8-c48c-47b5-b4bc-8cd803ab5224")
+	)
+	(wire
+		(pts
+			(xy 58.42 151.13) (xy 58.42 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6875c741-fe44-4e7b-afe3-858699326b71")
+	)
+	(wire
+		(pts
+			(xy 111.76 109.22) (xy 129.54 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6c9b6c93-cd3f-4002-849c-aef708086e47")
+	)
+	(wire
+		(pts
+			(xy 69.85 151.13) (xy 69.85 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e966861-ba79-4540-8a99-02d55465f03f")
+	)
+	(wire
+		(pts
+			(xy 127 96.52) (xy 127 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "743ada1f-fb7d-4ea5-a661-36db74b65436")
+	)
+	(wire
+		(pts
+			(xy 93.98 96.52) (xy 92.71 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a6fb3a6-d531-4272-9553-7a59431e4537")
+	)
+	(wire
+		(pts
+			(xy 67.31 96.52) (xy 69.85 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7aacc22b-a1bb-48e9-ba0c-b456e3aa420a")
+	)
+	(wire
+		(pts
+			(xy 111.76 54.61) (xy 129.54 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "84baaf5a-3985-4773-b9f8-6a73f4f675eb")
+	)
+	(wire
+		(pts
+			(xy 69.85 96.52) (xy 69.85 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8be903fc-2a13-4026-8160-e393c13326c7")
+	)
+	(wire
+		(pts
+			(xy 69.85 118.11) (xy 69.85 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ec97251-0442-4d7a-9d10-53230275aa42")
+	)
+	(wire
+		(pts
+			(xy 59.69 41.91) (xy 58.42 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "956ec201-dd97-4aa8-a211-8a3f2a8ff562")
+	)
+	(wire
+		(pts
+			(xy 58.42 41.91) (xy 58.42 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9e5b7fa7-3bce-4b68-9279-90e220399f57")
+	)
+	(wire
+		(pts
+			(xy 104.14 63.5) (xy 104.14 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a5eafc95-aec5-46f6-9484-8c1b27739002")
+	)
+	(wire
+		(pts
+			(xy 135.89 151.13) (xy 138.43 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a6995a1b-da7a-4568-8729-ae507c79ab8d")
+	)
+	(wire
+		(pts
+			(xy 101.6 151.13) (xy 104.14 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a77f1d14-ee42-4952-acd3-6ad374e701d0")
+	)
+	(wire
+		(pts
+			(xy 93.98 41.91) (xy 92.71 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a7e43c88-c791-4303-8ac4-c0a94f0d7ddc")
+	)
+	(wire
+		(pts
+			(xy 128.27 151.13) (xy 127 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a9917bca-7aa0-4c8a-9d32-ee4d01925dd4")
+	)
+	(wire
+		(pts
+			(xy 138.43 151.13) (xy 138.43 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad74ae86-b0a3-4613-ba83-e9da666eca2e")
+	)
+	(wire
+		(pts
+			(xy 128.27 41.91) (xy 127 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "adb5e7bd-d970-4ba2-92f0-4f3be9d4aa40")
+	)
+	(wire
+		(pts
+			(xy 67.31 41.91) (xy 69.85 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b1534695-25b8-4681-bb93-a2fdaa6b7a16")
+	)
+	(wire
+		(pts
+			(xy 104.14 151.13) (xy 104.14 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b366978a-c2b9-4e6e-b3be-bc12d4e687dc")
+	)
+	(wire
+		(pts
+			(xy 77.47 163.83) (xy 95.25 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3983fb4-764d-4b75-b049-34a4cd9613e4")
+	)
+	(wire
+		(pts
+			(xy 104.14 172.72) (xy 104.14 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b80f64fa-c73f-498e-a7b9-5f1fa3191bed")
+	)
+	(wire
+		(pts
+			(xy 59.69 151.13) (xy 58.42 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c33d4e71-9b41-497c-bf75-c776bb0a0618")
+	)
+	(wire
+		(pts
+			(xy 92.71 41.91) (xy 92.71 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3b1aab0-3c78-49df-91de-17e70df8d42e")
+	)
+	(wire
+		(pts
+			(xy 138.43 172.72) (xy 138.43 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3e611fa-f981-4d9b-9ae4-6624f947b308")
+	)
+	(wire
+		(pts
+			(xy 104.14 96.52) (xy 104.14 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c6bbb2cf-e74b-4166-bcbd-53db4519dc80")
+	)
+	(wire
+		(pts
+			(xy 92.71 151.13) (xy 92.71 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c8b45a7f-c5ee-4d55-acfd-cc1498510fbb")
+	)
+	(wire
+		(pts
+			(xy 69.85 151.13) (xy 69.85 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cbb1f774-9e32-4e3d-b44d-55216f486f6a")
+	)
+	(wire
+		(pts
+			(xy 135.89 41.91) (xy 138.43 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d571ad02-ac66-4aed-8749-c70a91658680")
+	)
+	(wire
+		(pts
+			(xy 43.18 163.83) (xy 60.96 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7f4a18e-b6dd-4e91-a6b9-d2ec2add5ab6")
+	)
+	(wire
+		(pts
+			(xy 69.85 41.91) (xy 69.85 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dbc693aa-f1a6-4b68-87bf-a304eb330a18")
+	)
+	(wire
+		(pts
+			(xy 104.14 96.52) (xy 104.14 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "df9ddbd3-b78a-48b3-a8b5-44ee8bc2e279")
+	)
+	(wire
+		(pts
+			(xy 77.47 54.61) (xy 95.25 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e11d4294-7c28-4dba-b001-39d3c26fc337")
+	)
+	(wire
+		(pts
+			(xy 58.42 96.52) (xy 58.42 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2e89221-f08d-4fd7-84bd-2488e000f1f2")
+	)
+	(wire
+		(pts
+			(xy 111.76 163.83) (xy 129.54 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f673be81-797f-4d67-bb78-f22245044662")
+	)
+	(wire
+		(pts
+			(xy 146.05 54.61) (xy 149.86 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f74698db-3ba2-4ce7-9f5f-a3eed62e9387")
+	)
+	(wire
+		(pts
+			(xy 128.27 96.52) (xy 127 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f7a03215-c84e-4034-b386-2d9b9e5cbd75")
+	)
+	(wire
+		(pts
+			(xy 101.6 41.91) (xy 104.14 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fab972e9-9df7-4063-9acb-1af607557573")
+	)
+	(wire
+		(pts
+			(xy 138.43 151.13) (xy 138.43 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fbaf4099-9fb1-47ff-9efb-15d14098cbf5")
+	)
+	(wire
+		(pts
+			(xy 138.43 41.91) (xy 138.43 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fda6b4cd-5779-4471-8e70-216d482d660e")
+	)
+	(rectangle
+		(start 29.21 25.4)
+		(end 170.18 74.93)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 8e87e6d8-442b-45d1-86d6-1dd64c1dc14b)
+	)
+	(rectangle
+		(start 29.21 134.62)
+		(end 170.18 184.15)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid a5adef07-3d4a-4d40-9782-c20deaa35ae3)
+	)
+	(rectangle
+		(start 29.21 80.01)
+		(end 170.18 129.54)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid ab17e487-9ed9-4707-8b46-b4d46966af64)
+	)
+	(text "RGB LEDs [Scalar Display]"
+		(exclude_from_sim no)
+		(at 48.768 30.226 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+				(thickness 0.3048)
+				(bold yes)
+			)
+		)
+		(uuid "bf372890-548d-408b-a997-5a1d57d30055")
+	)
+	(text "RGB LEDs [Vector Display]"
+		(exclude_from_sim no)
+		(at 48.768 139.446 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+				(thickness 0.3048)
+				(bold yes)
+			)
+		)
+		(uuid "ccaad68b-94fb-4c24-b281-31bdbab19b90")
+	)
+	(text "RGB LEDs [Mode Display]"
+		(exclude_from_sim no)
+		(at 48.768 84.836 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+				(thickness 0.3048)
+				(bold yes)
+			)
+		)
+		(uuid "ec691de4-1780-4ff8-bc29-583b192fa52a")
+	)
+	(label "WS2812B_Chain7"
+		(at 78.74 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "2904e01a-2ba0-4357-afe4-320236b7e25b")
+	)
+	(label "WS2812B_Chain2"
+		(at 113.03 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "2f635a38-ebff-4d81-915e-59a55216c6c4")
+	)
+	(label "WS2812B_Chain8"
+		(at 113.03 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "5a282b0d-a4bf-48b1-b462-52b5cc82d8e9")
+	)
+	(label "WS2812B_Chain3"
+		(at 43.18 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "7eada55d-2dde-4d85-82e2-d3749316a5ee")
+	)
+	(label "WS2812B_Chain5"
+		(at 113.03 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "9d394fce-87d4-4a38-ba5a-23b2ea68b095")
+	)
+	(label "WS2812B_Chain6"
+		(at 148.59 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "b492a693-b849-4838-a9a8-82ed17918157")
+	)
+	(label "WS2812B_Chain6"
+		(at 43.18 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "ca3c4a3a-cc7a-4830-add8-f7d9717af398")
+	)
+	(label "WS2812B_Chain4"
+		(at 78.74 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "d5c99041-e965-4705-b8ad-391cda3bee06")
+	)
+	(label "WS2812B_Chain3"
+		(at 149.86 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "d89b8412-db93-4305-bfe3-e3d3e6889c73")
+	)
+	(label "WS2812B_Chain1"
+		(at 78.74 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "dfafdbbe-fe1c-4a89-8e6e-c67e4039667d")
+	)
+	(global_label "WS2812B_D"
+		(shape input)
+		(at 60.96 54.61 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "8f9c314c-b498-4784-9dda-a509a7c3a472")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 46.9683 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 104.14 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0020d2aa-2d28-4fb0-9177-35536601e653")
+		(property "Reference" "#PWR073"
+			(at 104.14 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 106.172 30.734 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 104.14 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c28b1d6f-9615-4979-98ff-da46efbced96")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR073")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 76.2 170.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "069ed8a1-562d-4642-b813-5e6cb705260e")
+		(property "Reference" "D407"
+			(at 75.184 155.956 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 78.994 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 76.2 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 76.2 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 76.2 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 76.2 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 76.2 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 76.2 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "167e93f8-a922-4841-ab4c-200ca7c4637d")
+		)
+		(pin "4"
+			(uuid "035052f5-d3d8-4705-a1b0-65595305632e")
+		)
+		(pin "2"
+			(uuid "34492a5e-ec6f-40ce-8625-6e452252d2d3")
+		)
+		(pin "1"
+			(uuid "e33994a5-d53f-4202-9e26-dbb7a7223a1f")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D407")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 69.85 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "09a08a83-b98b-4f7b-b249-f4cfe8f7cf23")
+		(property "Reference" "#PWR088"
+			(at 69.85 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 71.882 139.954 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 69.85 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "90242fd2-4c6f-448b-aa20-2c8e71116582")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR088")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 76.2 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "10141184-e134-48bf-a9e0-078621a938ed")
+		(property "Reference" "D401"
+			(at 75.184 46.736 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 78.994 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 76.2 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 76.2 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 76.2 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 76.2 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 76.2 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 76.2 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "2c59366d-9017-4b57-a568-fd3bd4fb1f7e")
+		)
+		(pin "4"
+			(uuid "d253c6ee-215b-4427-a9bf-224c366eb14b")
+		)
+		(pin "2"
+			(uuid "f2329fe2-3ff6-48bf-8654-cee73572ba10")
+		)
+		(pin "1"
+			(uuid "7b6ccfd2-5306-4b02-911f-0997ca186204")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D401")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 97.79 41.91 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "10c062b4-1b1e-4223-8622-fba5fad49b57")
+		(property "Reference" "C402"
+			(at 99.06 38.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 99.314 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 101.6 40.9448 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 97.79 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 97.79 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 97.79 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 97.79 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 97.79 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "17609e72-ed2c-4d6f-a13a-a294829afff2")
+		)
+		(pin "2"
+			(uuid "f83458a1-79b2-49ac-82e0-3680975d0fb4")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C402")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 138.43 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1309fcf5-6c4b-408c-8b72-69660af36d2a")
+		(property "Reference" "#PWR076"
+			(at 138.43 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 140.462 30.734 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 138.43 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ad3f43be-ebf3-4489-9d17-be2923a04e2e")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR076")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 127 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "156a8229-a4e1-4caf-8736-f81a3d25c808")
+		(property "Reference" "#PWR084"
+			(at 127 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 127 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 127 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 127 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e94f193e-2966-4cbc-8e31-d0dc02c9272c")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR084")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 63.5 96.52 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1a766f75-283d-42ef-bc00-8be6c3ddf852")
+		(property "Reference" "C404"
+			(at 64.77 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 65.024 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 67.31 95.5548 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 63.5 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 63.5 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 63.5 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 63.5 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 63.5 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "31f518de-7d6e-429f-9cdd-d867d957dab0")
+		)
+		(pin "2"
+			(uuid "f5161f31-e71d-4ce1-957b-74a3eb2cb6fd")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C404")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 92.71 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2bb2bfda-9d39-4f8b-a682-8be102bd33ba")
+		(property "Reference" "#PWR081"
+			(at 92.71 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 92.71 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 92.71 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 92.71 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 92.71 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bbc67f1b-6a62-4ce7-8152-24b4ad1de984")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR081")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 138.43 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2c870bea-406b-422a-a3db-d37da3770b77")
+		(property "Reference" "#PWR094"
+			(at 138.43 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 140.462 139.954 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "959cf541-8fb7-4cb3-95f6-a4c730b40145")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR094")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 58.42 43.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2eeed585-fdf2-49d5-9485-e8eb91eb51be")
+		(property "Reference" "#PWR069"
+			(at 58.42 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 58.42 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 58.42 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.42 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 58.42 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2eb27638-c5bd-4452-b508-06d0fdbdaf19")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR069")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 144.78 170.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3cb1eb70-8b8a-4a75-aa82-7c3bbe8d04c5")
+		(property "Reference" "D409"
+			(at 143.764 155.956 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 147.574 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 144.78 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 144.78 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 144.78 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 144.78 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 144.78 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 144.78 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "98ce4bca-0236-4f48-a1f6-c243bad7516a")
+		)
+		(pin "4"
+			(uuid "d3900ec1-c273-4cc8-b955-ff13cef91403")
+		)
+		(pin "2"
+			(uuid "205e196d-191d-461b-af77-3955ce45e73f")
+		)
+		(pin "1"
+			(uuid "63ba18ec-07d2-4166-aed2-2abb52091827")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D409")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 69.85 90.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3dd816da-9d12-41f4-84c6-5cdb71ac8e8b")
+		(property "Reference" "#PWR079"
+			(at 69.85 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 71.882 85.344 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 69.85 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ab4fd986-5483-4621-b97e-8d9563e952cb")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR079")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 63.5 151.13 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4d085963-4ae2-41b2-ada2-715ae054df10")
+		(property "Reference" "C407"
+			(at 64.77 147.32 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 65.024 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 67.31 150.1648 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 63.5 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 63.5 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 63.5 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 63.5 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 63.5 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2de8304c-4a72-463e-9e1e-b9c821b2e2bc")
+		)
+		(pin "2"
+			(uuid "fbe560b7-26da-4c3a-b5b3-11efd9a64bf4")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C407")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 138.43 66.04 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "53450d67-05dd-4ed4-8889-4fc8e15645e5")
+		(property "Reference" "#PWR077"
+			(at 138.43 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 138.43 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 138.43 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bfaeaedc-9864-485a-b636-79eea1bfad90")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR077")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 58.42 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5d6ed355-3314-4939-afff-4c2d74a9eb20")
+		(property "Reference" "#PWR078"
+			(at 58.42 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 58.42 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 58.42 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.42 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 58.42 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b2feff64-9df2-4cb9-a519-5aef4285a53a")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR078")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 69.85 175.26 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "636eda4a-f1a3-45ac-9c82-4e26088961e2")
+		(property "Reference" "#PWR089"
+			(at 69.85 181.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 69.85 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 69.85 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "710b1071-3898-4591-b917-6b62948ccd5c")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR089")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 138.43 90.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "67554f6b-0a55-4981-b1ee-5b821ea98aa7")
+		(property "Reference" "#PWR085"
+			(at 138.43 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 140.462 85.344 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 138.43 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "69eb36db-d396-4630-9a97-a48ef8d0f016")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR085")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 97.79 96.52 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "714c897a-7170-49e5-848e-6d4843e8b50e")
+		(property "Reference" "C405"
+			(at 99.06 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 99.314 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 101.6 95.5548 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 97.79 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 97.79 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 97.79 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 97.79 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 97.79 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "18c7b10d-abab-48fb-83a9-08fbecb046af")
+		)
+		(pin "2"
+			(uuid "2f6f2dd6-aac6-4d29-b527-ae58c94c9ab2")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C405")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 104.14 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "76fcd673-8038-43d9-b6c4-2c8d94623d0d")
+		(property "Reference" "#PWR091"
+			(at 104.14 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 106.172 139.954 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 104.14 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3631db4d-298c-4e68-a596-fc46a719fcae")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR091")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 97.79 151.13 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "80948975-ea05-4549-bca3-1ee186a351da")
+		(property "Reference" "C408"
+			(at 99.06 147.32 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 99.314 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 101.6 150.1648 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 97.79 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 97.79 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 97.79 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 97.79 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 97.79 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "00172813-03b8-4aa6-9d86-09028a3d4f13")
+		)
+		(pin "2"
+			(uuid "962c7837-803c-4795-9461-bd9797e80ab5")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C408")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 110.49 170.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8595ad54-3929-4f61-997a-a55f6953afdd")
+		(property "Reference" "D408"
+			(at 109.474 155.956 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 113.284 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 110.49 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 110.49 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 110.49 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 110.49 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 110.49 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 110.49 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "b309716b-49d5-4cb3-8c22-06f6b813a959")
+		)
+		(pin "4"
+			(uuid "71eaa597-251a-4e48-9699-969d0306e187")
+		)
+		(pin "2"
+			(uuid "84f16969-10ae-45b6-baca-3c72c1f7646d")
+		)
+		(pin "1"
+			(uuid "58cbd6bf-1795-4a08-b564-4d7d2ea7474b")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D408")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 69.85 66.04 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "896b4d82-1620-4144-b570-10ef6453a966")
+		(property "Reference" "#PWR071"
+			(at 69.85 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 69.85 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 69.85 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "757d870e-dba8-4d2c-bb31-54d3a2109bfb")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR071")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 92.71 152.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "89b1ad91-61b9-414b-af98-dca71bba9f44")
+		(property "Reference" "#PWR090"
+			(at 92.71 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 92.71 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 92.71 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 92.71 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 92.71 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "81a3c2ca-7474-4ec0-85a5-f3cffb55b149")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR090")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 127 152.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9081bead-48c0-42c1-a4fb-b458ea5d796a")
+		(property "Reference" "#PWR093"
+			(at 127 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 127 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 127 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 127 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "04486764-78be-4310-b1d3-a3908d2da219")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR093")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 132.08 96.52 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9542d975-a33d-44be-80d6-ae6556d4a8da")
+		(property "Reference" "C406"
+			(at 133.35 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 133.604 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 135.89 95.5548 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 132.08 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 132.08 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 132.08 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 132.08 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 132.08 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "986acf17-b01a-4218-b8c7-7079be4007d3")
+		)
+		(pin "2"
+			(uuid "99cacbc7-5e1a-496f-b864-3c5302a265fb")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C406")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 92.71 43.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "96d21a4f-cecd-44d1-9b9b-8e7150c3bb23")
+		(property "Reference" "#PWR072"
+			(at 92.71 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 92.71 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 92.71 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 92.71 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 92.71 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "20be2613-6583-4e59-9eed-5f343f949708")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR072")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 76.2 115.57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a24b7091-aec4-45ef-b780-26923892fec8")
+		(property "Reference" "D404"
+			(at 75.184 101.346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 78.994 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 76.2 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 76.2 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 76.2 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 76.2 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 76.2 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 76.2 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "ec4f56a1-d25f-4ad3-9cf6-223beceef0f0")
+		)
+		(pin "4"
+			(uuid "76f5aaab-5825-4b56-bfbe-f795f624d6f6")
+		)
+		(pin "2"
+			(uuid "a3264f0d-b8c7-4f6b-9447-214c485b7914")
+		)
+		(pin "1"
+			(uuid "7151c8b6-ebfd-4bb7-9d70-7f42b24ac727")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D404")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 58.42 152.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b473dfac-4b02-4f45-b591-bf213ab794c0")
+		(property "Reference" "#PWR087"
+			(at 58.42 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 58.42 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 58.42 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.42 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 58.42 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8042a46e-baf7-4b81-a739-c28ee60cd9cb")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR087")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 110.49 115.57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b68326dd-2207-4aab-8980-e591734fa76c")
+		(property "Reference" "D405"
+			(at 109.474 101.346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 113.284 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 110.49 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 110.49 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 110.49 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 110.49 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 110.49 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 110.49 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "4a4db99b-11a5-4439-bda4-3d7355adbfff")
+		)
+		(pin "4"
+			(uuid "64e16069-29ed-4ef7-8a8c-28f0a16810f6")
+		)
+		(pin "2"
+			(uuid "653d81e7-74a0-436d-9bc1-54cf11ce0c42")
+		)
+		(pin "1"
+			(uuid "5b65cd19-ad83-4f81-8988-dc4c825f167a")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D405")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 69.85 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bff4539d-cfdd-4323-b192-4eaa9e918d05")
+		(property "Reference" "#PWR070"
+			(at 69.85 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 71.882 30.734 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4b384aeb-f2ad-4253-b720-7834a455cdb4")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR070")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 144.78 115.57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c34a7f61-aa3a-4758-9fb9-7f8f46106e92")
+		(property "Reference" "D406"
+			(at 143.764 101.346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 147.574 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 144.78 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 144.78 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 144.78 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 144.78 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 144.78 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 144.78 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "b38a6be0-51f6-4d01-b146-5931c497bbe6")
+		)
+		(pin "4"
+			(uuid "be0539df-dc2f-401d-9c70-230a6c9a04be")
+		)
+		(pin "2"
+			(uuid "9346f618-b105-4b74-9f45-dbbf408c8d4f")
+		)
+		(pin "1"
+			(uuid "eecf6f53-20c0-4fca-8a4b-a26b47c4ba4d")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D406")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 132.08 151.13 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c458e12f-5acc-4cfd-8020-64c1ebbfe8f9")
+		(property "Reference" "C409"
+			(at 133.35 147.32 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 133.604 144.78 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 135.89 150.1648 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 132.08 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 132.08 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 132.08 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 132.08 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 132.08 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bfee5602-d5eb-4439-ab53-72035bc1ac90")
+		)
+		(pin "2"
+			(uuid "3a4ca7eb-bd7d-4b8b-848b-3cbfec601b4b")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C409")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 104.14 90.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c471083a-3c33-465a-bfe6-a84158e40291")
+		(property "Reference" "#PWR082"
+			(at 104.14 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 106.172 85.344 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 104.14 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2f759c27-8879-4988-8e46-70c7b7fc7d55")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR082")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 104.14 120.65 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c63108e9-96ec-4a50-a4b4-2cb09a298513")
+		(property "Reference" "#PWR083"
+			(at 104.14 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.14 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 104.14 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ee240a70-c517-4e76-b660-9ae19ec3ff41")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR083")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 110.49 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "db9e7c54-62c9-4f1d-a03d-917f0673639c")
+		(property "Reference" "D402"
+			(at 109.474 46.736 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 113.284 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 110.49 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 110.49 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 110.49 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 110.49 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 110.49 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 110.49 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "344856c2-9faf-475b-bf50-e2156e1e3e8e")
+		)
+		(pin "4"
+			(uuid "99c4b7df-435a-48ab-835c-a7a117e5cf67")
+		)
+		(pin "2"
+			(uuid "367b0f59-031d-4cc8-b1f3-be4fb9807789")
+		)
+		(pin "1"
+			(uuid "f064d8c5-dbc7-4823-89a8-4cdcdc47d9fb")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D402")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 138.43 120.65 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dd5ea41a-f08b-4b25-b51f-83bfedafa643")
+		(property "Reference" "#PWR086"
+			(at 138.43 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 138.43 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 138.43 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "faf7c26f-d138-4e76-a6ed-6091d6485b95")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR086")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SK68xx:SK6805-EC20")
+		(at 144.78 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "df2bde61-af55-47e2-8d3e-cfe637b0e7ae")
+		(property "Reference" "D403"
+			(at 143.764 46.736 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SK6805-EC20"
+			(at 147.574 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SK_RGB:SK68xx-EC20"
+			(at 144.78 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.normandled.com/upload/201906/EC20-6812(SK6812-2020)%20LED%20Datasheet.pdf"
+			(at 144.78 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 144.78 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/OpscoOptoelectronics-SK6805EC20/C2890036"
+			(at 144.78 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics "
+			(at 144.78 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "SK6805-EC20"
+			(at 144.78 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "a1e364fb-3bbb-4349-bd45-c9fea92a5fb0")
+		)
+		(pin "4"
+			(uuid "b16f1fe2-1ed7-44de-abbd-ac47cc76e7f6")
+		)
+		(pin "2"
+			(uuid "f09c36b7-39a2-449a-9497-921b79829266")
+		)
+		(pin "1"
+			(uuid "76188f90-5d03-49a5-8dec-a8ac96c411d9")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "D403")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 104.14 66.04 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e18be9be-234b-4755-8921-2a434d12e1fd")
+		(property "Reference" "#PWR074"
+			(at 104.14 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.14 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 104.14 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0fbd4088-8fec-468e-82cf-595df20bedee")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR074")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 127 43.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e3fc0653-db54-4e6c-a7cb-a6b84f058138")
+		(property "Reference" "#PWR075"
+			(at 127 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 127 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 127 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 127 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ae28b784-2626-49d9-802a-5b7483b074a3")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR075")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 138.43 175.26 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f4ccf722-a6e0-46f6-a138-8c2f3f17b237")
+		(property "Reference" "#PWR095"
+			(at 138.43 181.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 138.43 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 138.43 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "99a5a375-2162-444e-ae36-b27459dd14cc")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR095")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 69.85 120.65 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f9d7288d-5f89-4293-8e99-d12517798268")
+		(property "Reference" "#PWR080"
+			(at 69.85 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 69.85 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 69.85 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "29dbcff4-bd77-41ef-a83d-ba822c8a06a8")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR080")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 63.5 41.91 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "fc606ae2-fd80-4976-af1d-61ff2f4353f6")
+		(property "Reference" "C401"
+			(at 64.77 38.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 65.024 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 67.31 40.9448 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 63.5 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 63.5 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 63.5 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 63.5 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 63.5 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "64ae374a-6542-4d97-a4d8-ba3fe9a8a189")
+		)
+		(pin "2"
+			(uuid "27c3da91-3b1f-4154-a87b-2fbd0a0c87bc")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C401")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 104.14 175.26 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fc93bcc1-4aff-4fdb-acba-56a79c8a95ea")
+		(property "Reference" "#PWR092"
+			(at 104.14 181.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.14 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 104.14 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b2a68c6e-9cf4-4fdc-9977-01bbbb9f6e77")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR092")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 132.08 41.91 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "fdb07d25-874b-4ba4-92b3-ad5ccbdf8b19")
+		(property "Reference" "C403"
+			(at 133.35 38.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 133.604 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 135.89 40.9448 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 132.08 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 132.08 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/15107-CL05A105KP5NNNC/C14445"
+			(at 132.08 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics "
+			(at 132.08 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "CL05A105KP5NNNC"
+			(at 132.08 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4e81cc1b-0e5c-4aec-b7ba-bd7beedc6886")
+		)
+		(pin "2"
+			(uuid "5dee6866-6997-4b6d-bd1a-edafb0e09136")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "C403")
+					(unit 1)
+				)
+			)
+		)
+	)
+)
