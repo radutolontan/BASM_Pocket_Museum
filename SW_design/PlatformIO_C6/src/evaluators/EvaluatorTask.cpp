@@ -2,7 +2,9 @@
 #include "evaluators/DisplaySessionEvaluator.h"
 #include "shared_resources/globals.h"
 
-EvaluatorTask::EvaluatorTask() {}
+EvaluatorTask::EvaluatorTask(SDManager& sdManagerRef) 
+    : sdManager(sdManagerRef)  // ← Initialize member reference
+{}
 
 void EvaluatorTask::setupEvaluatorTask(DisplayTask& displayTaskRef) {
     // During setup, set the entry point to BOOT
@@ -52,11 +54,19 @@ void EvaluatorTask::runEvaluatorTask() {
 
 void EvaluatorTask::run_boot() {
     Serial.println("[EvaluatorTask] - BOOT");
-    vTaskDelay(pdMS_TO_TICKS(200));
+    // Confirm SDManager is ready before switching to INIT
+    // Wait indefinitely until SDManager is ready
+    while (!sdManager.isReady()) {
+        Serial.println("[EvaluatorTask] - Waiting for SDManager to be READY...");
+        vTaskDelay(pdMS_TO_TICKS(200));
+    }
+    // Transition to INIT
+    setEvaluatorState(EvaluatorState::INIT);
 }
 
 void EvaluatorTask::run_init() {
     Serial.println("[EvaluatorTask] - INIT");
+
     // Setup each evaluator’s log file
     for (auto* evaluator : evaluators) {
         evaluator->initializeLogFile();

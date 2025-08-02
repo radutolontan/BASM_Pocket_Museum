@@ -55,13 +55,13 @@ void DisplaySessionEvaluator::logAggregateStats() {
     String entry = String(millis() / 1000) + "," + modeName + "\n";
 
     // Create write request
-    SDRequest req{
-        .type = SDRequest::Type::WRITE,
-        .filename = filename.c_str(),
-        .data = (uint8_t*)entry.c_str(),
-        .length = static_cast<size_t>(entry.length()),
-        .callback = nullptr
-    };
+    SDRequest req{};
+    req.type = SDRequest::Type::WRITE;
+    strncpy(req.filename, "/display_session_log.csv", sizeof(req.filename));
+    req.data = (uint8_t*)entry.c_str();
+    req.length = static_cast<size_t>(entry.length());
+    req.callback = nullptr;
+    
 
     // Send the log request to evaluatorTask
     evaluatorTask.enqueueSDRequest(req);
@@ -71,13 +71,13 @@ void DisplaySessionEvaluator::logAggregateStats() {
 void DisplaySessionEvaluator::initializeLogFile() {
     String filename = "/display_session_log.csv";
 
-    SDRequest req{
-        .type = SDRequest::Type::ENSURE_FILE_EXISTS,
-        .filename = filename.c_str(),
-        .data = nullptr,
-        .length = 0,
-        .callback = nullptr
-    };
+    SDRequest req{};
+    req.type = SDRequest::Type::ENSURE_FILE_EXISTS;
+    strncpy(req.filename, filename.c_str(), sizeof(req.filename));
+    req.filename[sizeof(req.filename) - 1] = '\0';  // Ensure null termination
+    req.data = nullptr;
+    req.length = 0;
+    req.callback = nullptr;
 
     evaluatorTask.enqueueSDRequest(req);
 }

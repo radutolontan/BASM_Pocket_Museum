@@ -14,7 +14,7 @@ enum class EvaluatorState {
 
 class EvaluatorTask {
 public:
-    EvaluatorTask(); 
+    EvaluatorTask(SDManager& sdManager); 
     // method to setup the EvaluatorTask - initialize all evaluators being used
     // it passes other tasks and data structures to evaluators
     void setupEvaluatorTask(DisplayTask& displayTaskRef); 
@@ -32,5 +32,6 @@ private:
     void run_running(); // Private method for running the BOOT state
     void run_error(); // Private method for running the BOOT state
 
-    SDManager sdManager; // EvaluatorTask owns the SDManager and controls the write que
+    // Reference to SDManager
+    SDManager& sdManager; // EvaluatorTask owns the SDManager and controls the write que
 };

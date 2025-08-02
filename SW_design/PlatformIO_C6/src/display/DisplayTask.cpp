@@ -105,9 +105,9 @@ void DisplayTask::run_display_pressure(){
 };
 
 void DisplayTask::run_display_accel(){
-    strip.setPixelColor(0, colors_lib[0]); 
-    strip.setPixelColor(1, colors_lib[0]); 
-    strip.setPixelColor(2, colors_lib[0]); 
+    strip.setPixelColor(0, colors_lib[1]); 
+    strip.setPixelColor(1, colors_lib[1]); 
+    strip.setPixelColor(2, colors_lib[1]); 
     strip.show();
 };
 

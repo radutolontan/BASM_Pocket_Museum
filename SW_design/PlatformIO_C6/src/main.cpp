@@ -4,14 +4,15 @@
 #include "storage/SDManager.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "evaluators/EvaluatorTask.h"
+#include "shared_resources/globals.h"
 
 SensorTask sensorTask;
 DisplayTask displayTask;
 SDManager sDManager;
-EvaluatorTask evaluatorTask;
+EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager 
 
 void setup() {
-    Serial.begin(115200);
+    Serial0.begin(115200);
     
     // Initialize Shared Data Buffer & MUTEX protection
     SharedBuffer::init();  
@@ -70,8 +71,8 @@ void setup() {
     Serial.println("Main: Triggering INIT state from setup()");
     sensorTask.setSensorState(SensorState::INIT);
     displayTask.setDisplayState(DisplayState::INIT);
-    evaluatorTask.setEvaluatorState(EvaluatorState::INIT);
     // sDManager switches from BOOT to WAIT_FOR_INSERT internally 
+    // EvaluatorTask switches from BOOT to INIT internally after confirming SDManager readiness
 }
 
 void loop() {

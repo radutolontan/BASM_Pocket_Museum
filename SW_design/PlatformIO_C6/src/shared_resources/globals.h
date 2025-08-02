@@ -1,7 +1,7 @@
 #pragma once
 
 // ============= SW VERSION ==============
-#define GIT_SHA "Teacher_Demos"
+#define GIT_SHA "amfostbou2025"
 
 // ===== ESP32 PERIPHERAL ALLOCATION =====
 // [GPIOs]

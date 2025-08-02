@@ -31,8 +31,7 @@ bool SDManager::enqueueRequest(const SDRequest& req) {
 }
 
 void SDManager::handleRequest(const SDRequest& req) {
-    vTaskDelay(pdMS_TO_TICKS(8000));
-    Serial.printf("[SDManager] Handling request: %d for file: %s\n", (int)req.type, req.filename);
+    Serial.printf("[SDManager] - Handling request: %d for file: %s\n", (int)req.type, req.filename);
     switch (req.type) {
         // Handle read
         case SDRequest::Type::READ:
@@ -75,7 +74,7 @@ void SDManager::handleRequest(const SDRequest& req) {
                 File file = SD.open(req.filename, FILE_WRITE);
                 if (file) {
                     // File created successfully
-                    file.println("timestamp,mode"); // Optional: CSV header
+                    file.println("timestamp,mode"); // CSV header
                     file.close();
                     Serial.printf("[SDManager] - Created file: %s\n", req.filename);
                 } else {
@@ -210,7 +209,6 @@ void SDManager::run_ready(){
         SDRequest req;
         // Process the next request in the cue
         if (xQueueReceive(sdQueue, &req, 10 / portTICK_PERIOD_MS)) {
-            Serial.println("[SDManager] - We have something the Cue! :)");
             handleRequest(req);
         }
     }
@@ -230,7 +228,16 @@ void SDManager::run_error(){
     }
 }
 
+bool SDManager::isReady() const {
+    // Serial.printf("[SDManager::isReady] current_state = %d (%s), sdQueue = %p\n",
+    //               static_cast<int>(current_state),
+    //               current_state == SDState::READY ? "READY" : "NOT READY",
+    //               sdQueue);
+    return current_state == SDState::READY && sdQueue != nullptr;
+}
+
 bool SDManager::debounceCardDetect(bool rawState) {
+
     // Implementation for non-blocking debounce for confirming SD Card insertion/desertion is correct
     if (rawState != stableCardInserted) {
         // Detected a possible change — check if it's stable

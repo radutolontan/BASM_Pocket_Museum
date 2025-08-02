@@ -8,19 +8,19 @@
 // Define your SDRequest structure (customize as needed)
 struct SDRequest {
     enum class Type { READ, WRITE, ENSURE_FILE_EXISTS } type;
-    const char* filename;
+    char filename[64];
     uint8_t* data;
     size_t length;
     std::function<void(bool success, uint8_t* data, size_t length)> callback;
 };
 
 enum class SDState {
-    BOOT,            // Initial one-time setup & checks
-    WAIT_FOR_INSERT, // No card present, ready for action
-    MOUNTING,        // Mounting card after insertion
-    READY,           // Card is mounted and OPERATIONAL
-    UNMOUNTING,      // Clean unmount on removal
-    ERROR            // Mount / unexpected failure
+    BOOT = 0,            // Initial one-time setup & checks
+    WAIT_FOR_INSERT = 1, // No card present, ready for action
+    MOUNTING = 2,        // Mounting card after insertion
+    READY = 3,           // Card is mounted and OPERATIONAL
+    UNMOUNTING = 4,      // Clean unmount on removal
+    ERROR = 5            // Mount / unexpected failure
 };
 
 class SDManager {
@@ -42,8 +42,8 @@ public:
     // Public interface to enqueue SD requests
     bool enqueueRequest(const SDRequest& req);
 
-    // Method which allows cues to only be started when everything is setup on the SD manager
-    bool isReady();
+    // Public method which tracks readiness of SDManager
+    bool isReady() const;
 
 private:
     // Helper functions
