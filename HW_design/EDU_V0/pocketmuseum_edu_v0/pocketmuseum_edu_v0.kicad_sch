@@ -5,8 +5,9 @@
 	(uuid "4bede6f6-420d-49b9-8d53-bd69095749c2")
 	(paper "A4")
 	(title_block
-		(title "BASM POCKETMUSEUM EDU V0")
-		(date "2025-06-30")
+		(title "POCKETMUSEUM EDU V0")
+		(date "2025-08-01")
+		(company "Bucharest Applied STEAM Museum")
 	)
 	(lib_symbols
 		(symbol "Mechanical:MountingHole"
@@ -118,7 +119,7 @@
 	)
 	(text "I2C  Bus Topology: ESP32 <> Pull-up Resistors <> ICP20100 (BARO) \n							<> Level Shifter <> Pull-up Resistors <> ICM20948 (9-Axis IMU)\nSPI Bus Topology: ESP32 <> Pull-up Resistors <> MicroSD Card\nWS2812B Bus Topology: ESP32 <> Data Line Resistor <> RGB LED #1 <> ... <> RGB LED #9"
 		(exclude_from_sim no)
-		(at 22.606 153.924 0)
+		(at 20.574 157.226 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -151,6 +152,17 @@
 			)
 		)
 		(uuid "82168852-4d20-4d71-ab0d-fdb956f9d576")
+	)
+	(text "ADD INTERRUPT PIN AT ESP32\nADD POWER SWITCH\nFIGURE OUT I2C ROUTING"
+		(exclude_from_sim no)
+		(at 238.252 117.602 0)
+		(effects
+			(font
+				(size 3.048 3.048)
+				(color 255 54 93 1)
+			)
+		)
+		(uuid "cb0b8a00-7b3f-4090-b5d7-bd84f33d2813")
 	)
 	(text "MECHANICAL"
 		(exclude_from_sim no)
