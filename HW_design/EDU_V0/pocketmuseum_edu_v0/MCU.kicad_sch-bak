@@ -1036,163 +1036,6 @@
 				)
 			)
 		)
-		(symbol "Diode:ESD9B5.0ST5G"
-			(pin_numbers hide)
-			(pin_names
-				(offset 1.016) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "D"
-				(at 0 2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "ESD9B5.0ST5G"
-				(at 0 -2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "Diode_SMD:D_SOD-923"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode TVS ESD"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "D*SOD?923*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "ESD9B5.0ST5G_0_1"
-				(polyline
-					(pts
-						(xy 1.27 0) (xy -1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 -1.27) (xy 0 0) (xy -2.54 1.27) (xy -2.54 -1.27)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.508 1.27) (xy 0 1.27) (xy 0 -1.27) (xy -0.508 -1.27)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 1.27) (xy 2.54 -1.27) (xy 0 0) (xy 2.54 1.27)
-					)
-					(stroke
-						(width 0.2032)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "ESD9B5.0ST5G_1_1"
-				(pin passive line
-					(at -3.81 0 0)
-					(length 2.54)
-					(name "A1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 3.81 0 180)
-					(length 2.54)
-					(name "A2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-		)
 		(symbol "PCM_Espressif:ESP32-C6-MINI-1/U"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -2594,16 +2437,22 @@
 		)
 	)
 	(junction
+		(at 214.63 26.67)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "07fe96f1-8869-47d4-b572-19ffba40dfc2")
+	)
+	(junction
 		(at 121.92 156.21)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "10444a4d-c1c2-4242-86eb-7f58fb051222")
 	)
 	(junction
-		(at 236.22 69.85)
+		(at 231.14 62.23)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "1c079916-83e1-4a11-9277-79ff7b1797c1")
+		(uuid "1716239b-aa39-4459-b180-644e811f8c61")
 	)
 	(junction
 		(at 33.02 62.23)
@@ -2618,16 +2467,22 @@
 		(uuid "2596b4e2-ba85-428a-a425-91c201909360")
 	)
 	(junction
-		(at 193.04 26.67)
+		(at 195.58 26.67)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3638bbf6-b01f-471f-884e-175330c2012f")
 	)
 	(junction
+		(at 218.44 49.53)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "37476b54-d1c9-4c17-883f-e5ff77f2405b")
+	)
+	(junction
 		(at 218.44 26.67)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "36a2261a-f816-4eb2-a498-aab05b85322e")
+		(uuid "43f06e1e-54e2-45cd-aaa5-e32c1b10c8c2")
 	)
 	(junction
 		(at 66.04 34.29)
@@ -2636,34 +2491,16 @@
 		(uuid "44cb14b2-d9a3-49e9-9f27-b90ade62025e")
 	)
 	(junction
-		(at 218.44 49.53)
+		(at 222.25 26.67)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "45d82079-cdea-4ccc-8a68-ee8d09b3f7af")
+		(uuid "7b3ad8aa-978e-4c82-9ba2-06447f4a56d0")
 	)
 	(junction
-		(at 226.06 72.39)
+		(at 214.63 54.61)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5db26fed-3449-4f52-bff5-995447d3c377")
-	)
-	(junction
-		(at 210.82 26.67)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "63b3a222-13df-4ad1-b1da-2a2c1ac33cd3")
-	)
-	(junction
-		(at 214.63 72.39)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7fc61975-ffa5-4273-89c6-684b860591c4")
-	)
-	(junction
-		(at 222.25 72.39)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8149d077-ffc4-4595-8fab-ba0e706f4df9")
+		(uuid "7dd005f3-9c0d-44b8-811c-d778c4602ce3")
 	)
 	(junction
 		(at 229.87 26.67)
@@ -2672,40 +2509,22 @@
 		(uuid "897f6952-4e60-45ca-8f19-e7d2188b03c2")
 	)
 	(junction
-		(at 214.63 26.67)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "89ce7e31-d5d3-4b82-a74b-e9e3e90e5667")
-	)
-	(junction
-		(at 218.44 72.39)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "9fc4e0ff-5d77-4d6c-91f3-39966868cfcf")
-	)
-	(junction
-		(at 233.68 39.37)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a3c618cd-2a9d-4003-ab50-e35963b4807f")
-	)
-	(junction
 		(at 165.1 156.21)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a423de81-f038-4249-9b83-76499534f104")
 	)
 	(junction
-		(at 214.63 54.61)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a8707130-c064-4fb3-b575-b4f8af74df74")
-	)
-	(junction
 		(at 140.97 72.39)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b9ef58f1-0781-4910-bfd3-22721217c064")
+	)
+	(junction
+		(at 222.25 44.45)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bc70c24c-2f33-4f5b-a5f3-2d4ae36951b4")
 	)
 	(junction
 		(at 226.06 26.67)
@@ -2720,16 +2539,10 @@
 		(uuid "c2b651d7-20cb-4504-9386-5da24d2c26ca")
 	)
 	(junction
-		(at 229.87 41.91)
+		(at 226.06 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "cdb995d9-0e61-4469-a092-13cf529b645f")
-	)
-	(junction
-		(at 210.82 57.15)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "cdffe3b4-2057-45ec-8656-08a646fd6d0c")
+		(uuid "c592a8fc-0c3e-4fa8-b666-3e552af4f345")
 	)
 	(junction
 		(at 99.06 161.29)
@@ -2738,16 +2551,10 @@
 		(uuid "cefa23b6-33d8-4a53-96ca-7f8115fcad7a")
 	)
 	(junction
-		(at 193.04 33.02)
+		(at 195.58 33.02)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d493b542-6912-4595-877f-6baf164ad982")
-	)
-	(junction
-		(at 222.25 46.99)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "dca85d37-f4a4-4cbb-a5ac-d9d3d8bf6601")
 	)
 	(junction
 		(at 151.13 156.21)
@@ -2756,22 +2563,10 @@
 		(uuid "e12731cf-d25e-4331-be2b-203f62d2d6ab")
 	)
 	(junction
-		(at 229.87 72.39)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e14c6318-f6b7-4205-9dab-5d059169f7f3")
-	)
-	(junction
-		(at 185.42 26.67)
+		(at 187.96 26.67)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e68abfb2-65d9-428b-a768-ddfbc5409b51")
-	)
-	(junction
-		(at 226.06 44.45)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "eb569719-224f-4ea3-8e36-7b69341648eb")
 	)
 	(junction
 		(at 33.02 48.26)
@@ -2892,16 +2687,6 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 72.39) (xy 222.25 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "05a1db21-48cf-4c4a-a4b2-4902e56fb392")
-	)
-	(wire
-		(pts
 			(xy 191.77 55.88) (xy 191.77 52.07)
 		)
 		(stroke
@@ -2922,23 +2707,13 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 62.23) (xy 236.22 69.85)
+			(xy 229.87 36.83) (xy 229.87 57.15)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0ba03491-1469-4949-9ec1-9119800fe0f9")
-	)
-	(wire
-		(pts
-			(xy 218.44 49.53) (xy 236.22 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0d2a9c84-2cf9-448f-8fcf-fb8ea2ae93db")
+		(uuid "0c3b83b2-c877-4a90-945a-eb32a7b8c79d")
 	)
 	(wire
 		(pts
@@ -2982,16 +2757,6 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 44.45) (xy 236.22 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "16cde07b-b9b4-42f0-9e52-07f198fe4972")
-	)
-	(wire
-		(pts
 			(xy 151.13 156.21) (xy 156.21 156.21)
 		)
 		(stroke
@@ -2999,16 +2764,6 @@
 			(type default)
 		)
 		(uuid "1763571e-9101-4e7c-a92f-846a9674f66f")
-	)
-	(wire
-		(pts
-			(xy 214.63 26.67) (xy 218.44 26.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17f2eb6c-e716-453b-979c-01d1c1093149")
 	)
 	(wire
 		(pts
@@ -3052,17 +2807,7 @@
 	)
 	(wire
 		(pts
-			(xy 218.44 49.53) (xy 218.44 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "24450477-e0a4-443d-80d1-1f1b90ac5953")
-	)
-	(wire
-		(pts
-			(xy 214.63 29.21) (xy 214.63 26.67)
+			(xy 218.44 29.21) (xy 218.44 26.67)
 		)
 		(stroke
 			(width 0)
@@ -3082,13 +2827,13 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 26.67) (xy 214.63 26.67)
+			(xy 226.06 41.91) (xy 236.22 41.91)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "28392405-fad6-4394-932f-f026f6eda2fa")
+		(uuid "28740e03-cebd-4fcc-939d-5bb13f2bb4a1")
 	)
 	(wire
 		(pts
@@ -3122,36 +2867,6 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 36.83) (xy 210.82 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2d8ff2bb-98c7-42d2-991d-cfb4917a19ff")
-	)
-	(wire
-		(pts
-			(xy 222.25 46.99) (xy 236.22 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2f5ec404-743c-4a16-aba9-be47b7fb74db")
-	)
-	(wire
-		(pts
-			(xy 218.44 69.85) (xy 218.44 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "31f0a3ba-ee6f-49e3-81e1-ea4b679840bf")
-	)
-	(wire
-		(pts
 			(xy 40.64 58.42) (xy 40.64 64.77)
 		)
 		(stroke
@@ -3162,16 +2877,6 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 36.83) (xy 226.06 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "38cd973d-6d95-4ef5-b1ef-26312784e641")
-	)
-	(wire
-		(pts
 			(xy 88.9 46.99) (xy 88.9 34.29)
 		)
 		(stroke
@@ -3179,6 +2884,16 @@
 			(type default)
 		)
 		(uuid "3941425f-f18f-4c08-939c-46dbeebe97a0")
+	)
+	(wire
+		(pts
+			(xy 227.33 66.04) (xy 231.14 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "396919fa-6615-4b50-97b7-664b697d6abe")
 	)
 	(wire
 		(pts
@@ -3222,13 +2937,23 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 36.83) (xy 229.87 41.91)
+			(xy 231.14 66.04) (xy 231.14 62.23)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "44df101d-0732-40db-8a19-64ca15e3280d")
+		(uuid "446531c8-34aa-4da4-ae43-07e2c70a953b")
+	)
+	(wire
+		(pts
+			(xy 231.14 62.23) (xy 236.22 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "498806fd-2a11-4acb-b2bc-5d6fdac109cc")
 	)
 	(wire
 		(pts
@@ -3262,16 +2987,6 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 72.39) (xy 222.25 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "50a50e55-2e80-4942-ae4e-860f76a2e289")
-	)
-	(wire
-		(pts
 			(xy 140.97 54.61) (xy 140.97 59.69)
 		)
 		(stroke
@@ -3282,17 +2997,7 @@
 	)
 	(wire
 		(pts
-			(xy 233.68 72.39) (xy 229.87 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5bfef81a-e731-433e-bcf0-ca478fc2b83f")
-	)
-	(wire
-		(pts
-			(xy 195.58 41.91) (xy 229.87 41.91)
+			(xy 196.85 41.91) (xy 226.06 41.91)
 		)
 		(stroke
 			(width 0)
@@ -3302,23 +3007,13 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 46.99) (xy 222.25 62.23)
+			(xy 226.06 36.83) (xy 226.06 41.91)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "60d4cfb4-dd65-4d87-ad95-7eaf4b4d8058")
-	)
-	(wire
-		(pts
-			(xy 226.06 69.85) (xy 226.06 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "61e1fa19-72e7-4d10-ab87-6b59d85df260")
+		(uuid "5edf3252-a2ad-4318-a485-cd71e7292e83")
 	)
 	(wire
 		(pts
@@ -3332,6 +3027,16 @@
 	)
 	(wire
 		(pts
+			(xy 222.25 26.67) (xy 218.44 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "62c62020-17ad-4a8f-b3aa-b2642c6b58f4")
+	)
+	(wire
+		(pts
 			(xy 116.84 85.09) (xy 130.81 85.09)
 		)
 		(stroke
@@ -3342,17 +3047,17 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 69.85) (xy 229.87 72.39)
+			(xy 222.25 36.83) (xy 222.25 44.45)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "63d32058-2452-4a8b-8648-4b30b6ebe7f8")
+		(uuid "64bf3a70-4796-4861-b123-56ca04ad84eb")
 	)
 	(wire
 		(pts
-			(xy 195.58 44.45) (xy 226.06 44.45)
+			(xy 196.85 44.45) (xy 222.25 44.45)
 		)
 		(stroke
 			(width 0)
@@ -3362,7 +3067,7 @@
 	)
 	(wire
 		(pts
-			(xy 195.58 54.61) (xy 214.63 54.61)
+			(xy 214.63 54.61) (xy 236.22 54.61)
 		)
 		(stroke
 			(width 0)
@@ -3372,7 +3077,7 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 26.67) (xy 193.04 33.02)
+			(xy 195.58 26.67) (xy 195.58 33.02)
 		)
 		(stroke
 			(width 0)
@@ -3402,6 +3107,16 @@
 	)
 	(wire
 		(pts
+			(xy 214.63 36.83) (xy 214.63 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "753cf4ba-117a-4ad8-b869-c2d763617611")
+	)
+	(wire
+		(pts
 			(xy 110.49 161.29) (xy 114.3 161.29)
 		)
 		(stroke
@@ -3409,6 +3124,16 @@
 			(type default)
 		)
 		(uuid "7553042a-7541-4194-969f-56148ce509dd")
+	)
+	(wire
+		(pts
+			(xy 229.87 57.15) (xy 236.22 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "78bbc534-8cb6-4bed-a6da-84b3280553ac")
 	)
 	(wire
 		(pts
@@ -3422,6 +3147,16 @@
 	)
 	(wire
 		(pts
+			(xy 214.63 66.04) (xy 219.71 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a6f5bd8-11b9-42cc-b3df-7e494c793784")
+	)
+	(wire
+		(pts
 			(xy 246.38 137.16) (xy 260.35 137.16)
 		)
 		(stroke
@@ -3432,17 +3167,7 @@
 	)
 	(wire
 		(pts
-			(xy 214.63 54.61) (xy 236.22 54.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8682f681-b044-48be-bee4-7c095ad63541")
-	)
-	(wire
-		(pts
-			(xy 185.42 26.67) (xy 185.42 33.02)
+			(xy 187.96 26.67) (xy 187.96 33.02)
 		)
 		(stroke
 			(width 0)
@@ -3452,17 +3177,7 @@
 	)
 	(wire
 		(pts
-			(xy 214.63 69.85) (xy 214.63 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "87b13c50-427a-4c43-9da5-87b900cee9b4")
-	)
-	(wire
-		(pts
-			(xy 205.74 26.67) (xy 210.82 26.67)
+			(xy 209.55 26.67) (xy 214.63 26.67)
 		)
 		(stroke
 			(width 0)
@@ -3472,23 +3187,13 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 46.99) (xy 222.25 46.99)
+			(xy 195.58 46.99) (xy 236.22 46.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "8c4218fa-716e-474b-b41c-4eb62814fd58")
-	)
-	(wire
-		(pts
-			(xy 233.68 69.85) (xy 233.68 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8d3dadd2-57e3-487e-9021-8d1c8ee218f5")
 	)
 	(wire
 		(pts
@@ -3542,16 +3247,6 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 69.85) (xy 236.22 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9967f11d-e57f-4d01-afb8-c7f601f8958d")
-	)
-	(wire
-		(pts
 			(xy 246.38 142.24) (xy 260.35 142.24)
 		)
 		(stroke
@@ -3559,16 +3254,6 @@
 			(type default)
 		)
 		(uuid "9a8e3566-551e-497d-873d-edb09e496716")
-	)
-	(wire
-		(pts
-			(xy 222.25 69.85) (xy 222.25 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9c21d43c-43b7-4754-b999-9cfa54a8a29a")
 	)
 	(wire
 		(pts
@@ -3622,43 +3307,33 @@
 	)
 	(wire
 		(pts
-			(xy 233.68 39.37) (xy 233.68 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a5b91897-bedc-40b5-a939-070b27536198")
-	)
-	(wire
-		(pts
-			(xy 214.63 72.39) (xy 218.44 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a5c5eaed-5dae-4c86-8bf0-5608a740b924")
-	)
-	(wire
-		(pts
-			(xy 226.06 44.45) (xy 226.06 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a762bef6-be0d-4fbe-b877-f72822613a7f")
-	)
-	(wire
-		(pts
-			(xy 185.42 26.67) (xy 181.61 26.67)
+			(xy 187.96 26.67) (xy 184.15 26.67)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "a7fc881c-c9ea-421b-911e-b7f9df6d7fb3")
+	)
+	(wire
+		(pts
+			(xy 218.44 26.67) (xy 214.63 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8dde46e-132e-448c-8496-6e24fcd034ce")
+	)
+	(wire
+		(pts
+			(xy 196.85 49.53) (xy 218.44 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "adbb45bc-851a-4329-9635-9c11e7c806cf")
 	)
 	(wire
 		(pts
@@ -3672,7 +3347,7 @@
 	)
 	(wire
 		(pts
-			(xy 195.58 49.53) (xy 218.44 49.53)
+			(xy 218.44 49.53) (xy 236.22 49.53)
 		)
 		(stroke
 			(width 0)
@@ -3702,7 +3377,7 @@
 	)
 	(wire
 		(pts
-			(xy 218.44 29.21) (xy 218.44 26.67)
+			(xy 222.25 29.21) (xy 222.25 26.67)
 		)
 		(stroke
 			(width 0)
@@ -3722,6 +3397,16 @@
 	)
 	(wire
 		(pts
+			(xy 226.06 26.67) (xy 222.25 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b8a004c2-cad8-4116-b7df-4e20b3e7ba62")
+	)
+	(wire
+		(pts
 			(xy 199.39 134.62) (xy 207.01 134.62)
 		)
 		(stroke
@@ -3729,36 +3414,6 @@
 			(type default)
 		)
 		(uuid "b94588d3-f2d1-45cb-afa4-c293238c7f10")
-	)
-	(wire
-		(pts
-			(xy 210.82 72.39) (xy 214.63 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bbcc4a6f-1ec1-4de5-a899-79a039e8a868")
-	)
-	(wire
-		(pts
-			(xy 210.82 57.15) (xy 210.82 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bc8209de-9415-4586-811a-521e4befbdab")
-	)
-	(wire
-		(pts
-			(xy 229.87 41.91) (xy 229.87 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bcaf3558-b170-4fea-8073-9822bb93527f")
 	)
 	(wire
 		(pts
@@ -3772,13 +3427,13 @@
 	)
 	(wire
 		(pts
-			(xy 218.44 26.67) (xy 226.06 26.67)
+			(xy 222.25 44.45) (xy 236.22 44.45)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c0f02d22-a85f-4abe-869e-c490e979ae5a")
+		(uuid "c07e6e2b-ba28-4c57-9315-9854b46172b9")
 	)
 	(wire
 		(pts
@@ -3802,23 +3457,13 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 46.99) (xy 193.04 33.02)
+			(xy 195.58 46.99) (xy 195.58 33.02)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "cb782753-4ab5-4406-96b6-d57ce6aad462")
-	)
-	(wire
-		(pts
-			(xy 214.63 36.83) (xy 214.63 54.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cbd06d64-a317-459e-9795-804df7f729f7")
 	)
 	(wire
 		(pts
@@ -3829,16 +3474,6 @@
 			(type default)
 		)
 		(uuid "cc0c3271-f82d-4e1e-a0c6-e1c965d5a0a9")
-	)
-	(wire
-		(pts
-			(xy 214.63 54.61) (xy 214.63 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cce24ef0-8232-47de-931a-038806aa6860")
 	)
 	(wire
 		(pts
@@ -3872,16 +3507,6 @@
 	)
 	(wire
 		(pts
-			(xy 218.44 36.83) (xy 218.44 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d69b9ff5-114e-471c-9e8d-4f0116c1d9b3")
-	)
-	(wire
-		(pts
 			(xy 137.16 156.21) (xy 139.7 156.21)
 		)
 		(stroke
@@ -3892,23 +3517,13 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 78.74) (xy 236.22 82.55)
+			(xy 196.85 62.23) (xy 231.14 62.23)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d74bf6cd-f689-4f24-b40b-bcfcada03d50")
-	)
-	(wire
-		(pts
-			(xy 210.82 57.15) (xy 236.22 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dbbaba12-2284-4139-a121-13a834e8a602")
+		(uuid "db7dca70-6d0a-42f9-be04-681223c0633e")
 	)
 	(wire
 		(pts
@@ -3922,6 +3537,16 @@
 	)
 	(wire
 		(pts
+			(xy 214.63 68.58) (xy 214.63 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc125928-98ad-427c-96c6-eba9677760ef")
+	)
+	(wire
+		(pts
 			(xy 226.06 29.21) (xy 226.06 26.67)
 		)
 		(stroke
@@ -3932,13 +3557,23 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 26.67) (xy 193.04 26.67)
+			(xy 200.66 26.67) (xy 195.58 26.67)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "e2fd004f-1367-49d9-8d28-c40f572c4364")
+	)
+	(wire
+		(pts
+			(xy 196.85 54.61) (xy 214.63 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e36cefe4-e20f-4beb-8d1a-46baf832c5c9")
 	)
 	(wire
 		(pts
@@ -4002,26 +3637,6 @@
 	)
 	(wire
 		(pts
-			(xy 240.03 69.85) (xy 236.22 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ed3c1a80-aa4a-4c4b-b443-b518c11c4836")
-	)
-	(wire
-		(pts
-			(xy 218.44 72.39) (xy 222.25 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ede0dc2d-a8e3-4e23-99bd-e4740e9f4638")
-	)
-	(wire
-		(pts
 			(xy 31.75 64.77) (xy 40.64 64.77)
 		)
 		(stroke
@@ -4029,26 +3644,6 @@
 			(type default)
 		)
 		(uuid "f10a92d5-33f2-42b0-ac5e-8269fa1d78d1")
-	)
-	(wire
-		(pts
-			(xy 210.82 69.85) (xy 210.82 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f6f48982-3448-46c6-a64c-89ba4c8a54a3")
-	)
-	(wire
-		(pts
-			(xy 229.87 72.39) (xy 226.06 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f728a009-f21c-41c2-b53d-58aae10a9909")
 	)
 	(wire
 		(pts
@@ -4072,16 +3667,6 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 41.91) (xy 236.22 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fbb2fbf2-0594-4207-92db-8d0a15a9a40e")
-	)
-	(wire
-		(pts
 			(xy 191.77 52.07) (xy 236.22 52.07)
 		)
 		(stroke
@@ -4089,6 +3674,16 @@
 			(type default)
 		)
 		(uuid "fe061935-948f-43c0-9d97-f3c042b19ff5")
+	)
+	(wire
+		(pts
+			(xy 218.44 36.83) (xy 218.44 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fea7f4fa-4ede-4d77-87a3-377b8ab1df9b")
 	)
 	(wire
 		(pts
@@ -4102,7 +3697,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 29.21) (xy 210.82 26.67)
+			(xy 214.63 29.21) (xy 214.63 26.67)
 		)
 		(stroke
 			(width 0)
@@ -4213,7 +3808,7 @@
 	)
 	(text "R221 added for possible shield disconnection to mittigate EMI"
 		(exclude_from_sim no)
-		(at 211.836 99.822 0)
+		(at 210.312 74.168 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4288,7 +3883,7 @@
 		(uuid "e8a8a497-b8e2-4128-9eda-ae0ce268d281")
 	)
 	(label "SPI_SCK"
-		(at 195.58 49.53 0)
+		(at 196.85 49.53 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4338,7 +3933,7 @@
 		(uuid "2b460eb3-3e88-4dd2-ad89-61cbeb0733c9")
 	)
 	(label "SD_DETECT"
-		(at 240.03 69.85 0)
+		(at 196.85 62.23 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4348,7 +3943,7 @@
 		(uuid "30c23a46-b863-4899-b6a4-0c01b89d9842")
 	)
 	(label "SPI_MISO"
-		(at 195.58 54.61 0)
+		(at 196.85 54.61 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4378,7 +3973,7 @@
 		(uuid "418beb34-03aa-48b9-a198-770a7410aba9")
 	)
 	(label "SPI_MOSI"
-		(at 195.58 44.45 0)
+		(at 196.85 44.45 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4518,7 +4113,7 @@
 		(uuid "ddc8eea9-9cc9-4e4b-9b7b-a378f82ba43c")
 	)
 	(label "SPI_CS"
-		(at 195.58 41.91 0)
+		(at 196.85 41.91 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4769,7 +4364,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 198.12 26.67 0)
+		(at 200.66 26.67 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4777,7 +4372,7 @@
 		(dnp no)
 		(uuid "0834aff2-1864-4eea-8d8b-6662d408dd4f")
 		(property "Reference" "#PWR027"
-			(at 198.12 30.48 0)
+			(at 200.66 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4786,7 +4381,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 194.818 22.606 0)
+			(at 197.358 22.606 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4795,7 +4390,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 198.12 26.67 0)
+			(at 200.66 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4804,7 +4399,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 198.12 26.67 0)
+			(at 200.66 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4813,7 +4408,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 198.12 26.67 0)
+			(at 200.66 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4835,7 +4430,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 181.61 26.67 0)
+		(at 184.15 26.67 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4844,7 +4439,7 @@
 		(fields_autoplaced yes)
 		(uuid "0a1dc503-de57-4c59-b3bd-f0684aeb0cde")
 		(property "Reference" "#PWR025"
-			(at 181.61 33.02 0)
+			(at 184.15 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4853,7 +4448,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 181.61 31.75 0)
+			(at 184.15 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4862,7 +4457,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 181.61 26.67 0)
+			(at 184.15 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4871,7 +4466,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 181.61 26.67 0)
+			(at 184.15 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4880,7 +4475,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 181.61 26.67 0)
+			(at 184.15 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5065,7 +4660,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 189.23 26.67 270)
+		(at 191.77 26.67 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5073,7 +4668,7 @@
 		(dnp no)
 		(uuid "120c414d-40b6-4fb4-ba77-893d5231c10b")
 		(property "Reference" "C206"
-			(at 182.626 21.59 90)
+			(at 185.166 21.59 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5082,7 +4677,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at 182.626 24.13 90)
+			(at 185.166 24.13 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5091,7 +4686,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 185.42 27.6352 0)
+			(at 187.96 27.6352 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5100,7 +4695,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 189.23 26.67 0)
+			(at 191.77 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5109,7 +4704,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 189.23 26.67 0)
+			(at 191.77 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5118,7 +4713,7 @@
 			)
 		)
 		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/2043-CL10A106MQ8NNNC/C1691"
-			(at 189.23 26.67 0)
+			(at 191.77 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5127,7 +4722,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics "
-			(at 189.23 26.67 0)
+			(at 191.77 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5136,7 +4731,7 @@
 			)
 		)
 		(property "Manufacturer P/N" "CL10A106MQ8NNNC"
-			(at 189.23 26.67 0)
+			(at 191.77 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5228,7 +4823,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 189.23 33.02 270)
+		(at 191.77 33.02 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5236,7 +4831,7 @@
 		(dnp no)
 		(uuid "19145331-5092-49e5-b56e-938e2e4e93ea")
 		(property "Reference" "C207"
-			(at 194.31 29.972 90)
+			(at 196.85 29.972 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5245,7 +4840,7 @@
 			)
 		)
 		(property "Value" "0u1"
-			(at 194.31 32.512 90)
+			(at 196.85 32.512 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5254,7 +4849,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 185.42 33.9852 0)
+			(at 187.96 33.9852 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5263,7 +4858,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 189.23 33.02 0)
+			(at 191.77 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5272,7 +4867,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 189.23 33.02 0)
+			(at 191.77 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5281,7 +4876,7 @@
 			)
 		)
 		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/1877-CL05B104KO5NNNC/C1525"
-			(at 189.23 33.02 0)
+			(at 191.77 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5290,7 +4885,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics "
-			(at 189.23 33.02 0)
+			(at 191.77 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5299,7 +4894,7 @@
 			)
 		)
 		(property "Manufacturer P/N" "CL05B104KO5NNNC"
-			(at 189.23 33.02 0)
+			(at 191.77 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5676,7 +5271,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 236.22 82.55 180)
+		(at 214.63 68.58 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5684,7 +5279,7 @@
 		(dnp no)
 		(uuid "38b31a06-6462-4339-b915-ad6277431f42")
 		(property "Reference" "#PWR035"
-			(at 236.22 78.74 0)
+			(at 214.63 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5693,7 +5288,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 231.394 84.328 0)
+			(at 209.804 70.358 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5701,7 +5296,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 236.22 82.55 0)
+			(at 214.63 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5710,7 +5305,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 236.22 82.55 0)
+			(at 214.63 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5719,7 +5314,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 236.22 82.55 0)
+			(at 214.63 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5801,102 +5396,6 @@
 			(project "kicad_soundcard_dev_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
 					(reference "#PWR098")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:ESD9B5.0ST5G")
-		(at 233.68 66.04 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "40837eee-1852-4ecc-bab8-5155aa87047e")
-		(property "Reference" "D207"
-			(at 223.012 78.486 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LESD5D5.0CT1G"
-			(at 220.472 94.742 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
-			(at 233.68 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-			(at 233.68 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-			(at 233.68 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
-			(at 233.68 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 233.68 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "LESD5D5.0CT1G"
-			(at 233.68 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "758a0c40-1a68-4bf4-a05b-48b790a211e7")
-		)
-		(pin "1"
-			(uuid "18afe699-5b69-4d9f-820d-1e88b6dc8e77")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D207")
 					(unit 1)
 				)
 			)
@@ -6095,104 +5594,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Diode:ESD9B5.0ST5G")
-		(at 218.44 66.04 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "46e54e65-2369-4b8c-b2b4-21a0123a9ec1")
-		(property "Reference" "D203"
-			(at 198.882 78.486 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LESD5D5.0CT1G"
-			(at 196.342 94.742 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
-			(at 218.44 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-			(at 218.44 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-			(at 218.44 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
-			(at 218.44 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 218.44 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "LESD5D5.0CT1G"
-			(at 218.44 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "6d8c3764-d301-48ae-a0e1-9fd81cb4dafe")
-		)
-		(pin "1"
-			(uuid "d52920d2-0ee0-479d-811f-f225f4b45c47")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D203")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
-		(at 210.82 33.02 180)
+		(at 214.63 33.02 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6200,7 +5603,7 @@
 		(dnp no)
 		(uuid "4e0e09e5-ac8e-4bec-9f01-b827185bc5b2")
 		(property "Reference" "R209"
-			(at 208.788 21.336 0)
+			(at 212.598 21.336 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6209,7 +5612,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 208.28 23.114 0)
+			(at 212.09 23.114 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6218,7 +5621,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 212.598 33.02 90)
+			(at 216.408 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6227,7 +5630,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 210.82 33.02 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6236,7 +5639,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 210.82 33.02 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6245,7 +5648,7 @@
 			)
 		)
 		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
-			(at 210.82 33.02 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6254,7 +5657,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
-			(at 210.82 33.02 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6263,7 +5666,7 @@
 			)
 		)
 		(property "Manufacturer P/N" "0402WGF1002TCE"
-			(at 210.82 33.02 0)
+			(at 214.63 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6287,102 +5690,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Diode:ESD9B5.0ST5G")
-		(at 226.06 66.04 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "574348ae-c613-489d-9a94-62a51ea396b4")
-		(property "Reference" "D205"
-			(at 210.566 78.486 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LESD5D5.0CT1G"
-			(at 208.28 94.742 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
-			(at 226.06 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-			(at 226.06 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-			(at 226.06 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
-			(at 226.06 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 226.06 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "LESD5D5.0CT1G"
-			(at 226.06 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "fc80aeef-1d36-41b9-9a64-f3d01d18183a")
-		)
-		(pin "1"
-			(uuid "668ca34a-d2f9-408e-8de9-2f0d8fb17041")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D205")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:LED")
 		(at 231.14 124.46 180)
 		(unit 1)
@@ -6391,7 +5698,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5b82e71c-30d6-49c7-9fd3-e22669396e17")
-		(property "Reference" "D208"
+		(property "Reference" "D201"
 			(at 234.315 119.6976 0)
 			(effects
 				(font
@@ -6472,7 +5779,7 @@
 		(instances
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D208")
+					(reference "D201")
 					(unit 1)
 				)
 			)
@@ -6575,104 +5882,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Diode:ESD9B5.0ST5G")
-		(at 214.63 66.04 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "6855a0c8-e35b-4d94-ac60-7e0e0f9d8711")
-		(property "Reference" "D202"
-			(at 192.786 78.486 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LESD5D5.0CT1G"
-			(at 190.5 94.996 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
-			(at 214.63 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-			(at 214.63 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-			(at 214.63 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
-			(at 214.63 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 214.63 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "LESD5D5.0CT1G"
-			(at 214.63 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "64b470ee-305c-4b2f-be88-1556e959501d")
-		)
-		(pin "1"
-			(uuid "7b0693b4-965f-4ddf-878f-2577c2b36cef")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D202")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
-		(at 236.22 74.93 0)
+		(at 223.52 66.04 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6680,7 +5891,7 @@
 		(dnp no)
 		(uuid "75d1f7e3-488e-405f-817e-41f53efcc7a3")
 		(property "Reference" "R207"
-			(at 239.776 78.994 0)
+			(at 223.52 68.834 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6688,7 +5899,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 244.348 78.994 0)
+			(at 218.948 68.834 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6696,7 +5907,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 234.442 74.93 90)
+			(at 223.52 64.262 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6705,7 +5916,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 236.22 74.93 0)
+			(at 223.52 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6714,7 +5925,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 236.22 74.93 0)
+			(at 223.52 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6723,7 +5934,7 @@
 			)
 		)
 		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
-			(at 236.22 74.93 0)
+			(at 223.52 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6732,7 +5943,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
-			(at 236.22 74.93 0)
+			(at 223.52 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6741,7 +5952,7 @@
 			)
 		)
 		(property "Manufacturer P/N" "0402WGF1002TCE"
-			(at 236.22 74.93 0)
+			(at 223.52 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7034,7 +6245,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 205.74 26.67 0)
+		(at 209.55 26.67 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7042,7 +6253,7 @@
 		(dnp no)
 		(uuid "83c01e61-51d5-428e-bd54-f4e75155b7a1")
 		(property "Reference" "#PWR029"
-			(at 205.74 30.48 0)
+			(at 209.55 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7051,7 +6262,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 204.978 22.606 0)
+			(at 208.788 22.606 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7059,7 +6270,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 205.74 26.67 0)
+			(at 209.55 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7068,7 +6279,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 205.74 26.67 0)
+			(at 209.55 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7077,7 +6288,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 205.74 26.67 0)
+			(at 209.55 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8130,7 +7341,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 218.44 33.02 180)
+		(at 222.25 33.02 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8138,7 +7349,7 @@
 		(dnp no)
 		(uuid "b30bc958-c820-49bf-bfb5-18087cbb23b4")
 		(property "Reference" "R211"
-			(at 222.25 21.336 0)
+			(at 226.06 21.336 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8147,7 +7358,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 221.742 23.114 0)
+			(at 225.552 23.114 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8156,7 +7367,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 220.218 33.02 90)
+			(at 224.028 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8165,7 +7376,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 218.44 33.02 0)
+			(at 222.25 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8174,7 +7385,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 218.44 33.02 0)
+			(at 222.25 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8183,7 +7394,7 @@
 			)
 		)
 		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
-			(at 218.44 33.02 0)
+			(at 222.25 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8192,7 +7403,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
-			(at 218.44 33.02 0)
+			(at 222.25 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8201,7 +7412,7 @@
 			)
 		)
 		(property "Manufacturer P/N" "0402WGF1002TCE"
-			(at 218.44 33.02 0)
+			(at 222.25 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8293,7 +7504,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 214.63 33.02 180)
+		(at 218.44 33.02 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8301,7 +7512,7 @@
 		(dnp no)
 		(uuid "b9a915c1-752b-47e3-96fe-e447cfd1f3a6")
 		(property "Reference" "R210"
-			(at 215.646 21.336 0)
+			(at 219.456 21.336 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8310,7 +7521,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 215.138 23.114 0)
+			(at 218.948 23.114 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8319,7 +7530,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 216.408 33.02 90)
+			(at 220.218 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8328,7 +7539,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 214.63 33.02 0)
+			(at 218.44 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8337,7 +7548,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 214.63 33.02 0)
+			(at 218.44 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8346,7 +7557,7 @@
 			)
 		)
 		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/26487-0402WGF1002TCE/C25744"
-			(at 214.63 33.02 0)
+			(at 218.44 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8355,7 +7566,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
-			(at 214.63 33.02 0)
+			(at 218.44 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8364,7 +7575,7 @@
 			)
 		)
 		(property "Manufacturer P/N" "0402WGF1002TCE"
-			(at 214.63 33.02 0)
+			(at 218.44 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8543,102 +7754,6 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
 					(reference "#PWR034")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:ESD9B5.0ST5G")
-		(at 210.82 66.04 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "d0cad17b-fef4-40d3-bde3-98bbc0305705")
-		(property "Reference" "D201"
-			(at 186.69 78.486 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LESD5D5.0CT1G"
-			(at 184.15 94.742 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
-			(at 210.82 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-			(at 210.82 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-			(at 210.82 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
-			(at 210.82 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 210.82 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "LESD5D5.0CT1G"
-			(at 210.82 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "b502309d-b5aa-4fda-9262-bfb552658424")
-		)
-		(pin "1"
-			(uuid "1b7a6827-7420-4415-96fa-6e2962dc5615")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D201")
 					(unit 1)
 				)
 			)
@@ -8894,265 +8009,6 @@
 			(project ""
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
 					(reference "J201")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:ESD9B5.0ST5G")
-		(at 222.25 66.04 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "e45883ea-c2e1-4dab-8a62-515c123b909f")
-		(property "Reference" "D204"
-			(at 204.724 78.486 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LESD5D5.0CT1G"
-			(at 202.438 94.742 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
-			(at 222.25 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-			(at 222.25 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-			(at 222.25 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
-			(at 222.25 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 222.25 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "LESD5D5.0CT1G"
-			(at 222.25 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "e910e8fc-8a6e-476a-93f3-c3330b0a5fcd")
-		)
-		(pin "1"
-			(uuid "46ae5e32-a552-4835-958b-92c51c4ed7e1")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D204")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 222.25 73.66 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e73d62b6-a5e4-4f0b-9af6-97c753a0437c")
-		(property "Reference" "#PWR03"
-			(at 222.25 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 222.25 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 222.25 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 222.25 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 222.25 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f60de42b-84d8-4883-b2b6-4bd4ce25c5a8")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "#PWR03")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:ESD9B5.0ST5G")
-		(at 229.87 66.04 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "e9838fc4-1abb-42de-89cd-9f343b26e697")
-		(property "Reference" "D206"
-			(at 216.662 78.486 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LESD5D5.0CT1G"
-			(at 214.376 94.996 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
-			(at 229.87 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
-			(at 229.87 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
-			(at 229.87 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/LRC-LESD5D50CT1G/C383211"
-			(at 229.87 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 229.87 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "LESD5D5.0CT1G"
-			(at 229.87 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "8d2dc3b0-e7ce-4876-a709-d1d2f8002cad")
-		)
-		(pin "1"
-			(uuid "1c906cc2-2409-4672-b2ee-5f5d256c1bf9")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/a9edb54b-78ab-4303-9451-17f7b6324437"
-					(reference "D206")
 					(unit 1)
 				)
 			)

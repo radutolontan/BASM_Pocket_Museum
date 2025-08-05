@@ -4,6 +4,11 @@
 	(generator_version "8.0")
 	(uuid "ff4b3995-7034-4616-b2dd-d263cd9df22a")
 	(paper "A4")
+	(title_block
+		(title "POCKETMUSEUM EDU V0")
+		(date "2025-08-01")
+		(company "Bucharest Applied STEAM Museum")
+	)
 	(lib_symbols
 		(symbol "Device:C"
 			(pin_numbers hide)
