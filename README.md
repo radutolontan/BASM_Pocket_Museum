@@ -3,12 +3,14 @@
 ## Board ID - Development V0
 ![diagram_HW](Resources/schematic_functional_dev_v0.png)
 **Known INOP** - Due to Manufacturing defects & design issues, the following HW components are not operative:
-* The entire Audio Engine
+* The entire Audio Engine including the I2S Interface
 * #4 ; #5 ; #6 RGB LEDs
 * SD Card on all S/N EXCEPT 8, 9
 
 **Programming** - The MCU can be programmed with either
-* a debug harness which connects to the USB D+ and D- lines and directly shows up as an abstract control module interface - ttyACM
+* a debug harness which connects to the USB D+ and D- lines and directly shows up as an abstract control module interface - ttyACMx
+    * connect the black/red plug to the FTDI header - this powers the board
+    * connect the white/green plug to the I2S header - I2S was intended to use the same GPIOs that the USB peripheral on the ESP32 uses
 * an FTDI chip (such as the CP2102N Friend by Adafruit) which connects to the six-pin FTDI header and shows up as a USB-to-serial interface - ttyUSB
 ## Board ID - Education V0
 This board is currently being designed.
