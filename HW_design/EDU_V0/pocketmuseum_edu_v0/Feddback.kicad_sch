@@ -6,7 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "POCKETMUSEUM EDU V0")
-		(date "2025-08-01")
+		(date "2025-08-18")
+		(rev "2")
 		(company "Bucharest Applied STEAM Museum")
 	)
 	(lib_symbols
@@ -279,7 +280,7 @@
 				)
 			)
 		)
-		(symbol "power:+3.3V"
+		(symbol "power:+5V"
 			(power)
 			(pin_numbers hide)
 			(pin_names
@@ -296,7 +297,7 @@
 					(hide yes)
 				)
 			)
-			(property "Value" "+3.3V"
+			(property "Value" "+5V"
 				(at 0 3.556 0)
 				(effects
 					(font
@@ -322,7 +323,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(property "Description" "Power symbol creates a global label with name \"+5V\""
 				(at 0 0 0)
 				(effects
 					(font
@@ -340,7 +341,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "+3.3V_0_1"
+			(symbol "+5V_0_1"
 				(polyline
 					(pts
 						(xy -0.762 1.27) (xy 0 2.54)
@@ -378,7 +379,7 @@
 					)
 				)
 			)
-			(symbol "+3.3V_1_1"
+			(symbol "+5V_1_1"
 				(pin power_in line
 					(at 0 0 90)
 					(length 0)
@@ -1409,71 +1410,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 104.14 35.56 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0020d2aa-2d28-4fb0-9177-35536601e653")
-		(property "Reference" "#PWR073"
-			(at 104.14 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 106.172 30.734 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 104.14 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 104.14 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 104.14 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c28b1d6f-9615-4979-98ff-da46efbced96")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR073")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "SK68xx:SK6805-EC20")
 		(at 76.2 170.18 0)
 		(unit 1)
@@ -1574,16 +1510,16 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 69.85 144.78 0)
+		(lib_id "power:+5V")
+		(at 104.14 90.17 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "09a08a83-b98b-4f7b-b249-f4cfe8f7cf23")
-		(property "Reference" "#PWR088"
-			(at 69.85 148.59 0)
+		(uuid "0d6f6062-1688-4987-8940-c27dd5290a5b")
+		(property "Reference" "#PWR062"
+			(at 104.14 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1591,16 +1527,17 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3.3V"
-			(at 71.882 139.954 0)
+		(property "Value" "+3V3"
+			(at 100.838 85.344 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 69.85 144.78 0)
+			(at 104.14 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1609,7 +1546,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 69.85 144.78 0)
+			(at 104.14 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1617,8 +1554,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 69.85 144.78 0)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 104.14 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1627,12 +1564,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "90242fd2-4c6f-448b-aa20-2c8e71116582")
+			(uuid "dc4b2fbf-f37f-4a34-8069-df6ce254c958")
 		)
 		(instances
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR088")
+					(reference "#PWR062")
 					(unit 1)
 				)
 			)
@@ -1835,71 +1772,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 138.43 35.56 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1309fcf5-6c4b-408c-8b72-69660af36d2a")
-		(property "Reference" "#PWR076"
-			(at 138.43 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 140.462 30.734 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 138.43 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 138.43 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 138.43 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ad3f43be-ebf3-4489-9d17-be2923a04e2e")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR076")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 127 97.79 0)
 		(unit 1)
@@ -2063,6 +1935,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+5V")
+		(at 138.43 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "251940dc-d61f-4c4d-b973-1b7dfde4119c")
+		(property "Reference" "#PWR059"
+			(at 138.43 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 135.128 30.734 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 138.43 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "fb794456-0ca6-49cc-9815-d3132cd9f9f9")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR059")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 92.71 97.79 0)
 		(unit 1)
@@ -2130,71 +2068,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 138.43 144.78 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "2c870bea-406b-422a-a3db-d37da3770b77")
-		(property "Reference" "#PWR094"
-			(at 138.43 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 140.462 139.954 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 138.43 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 138.43 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 138.43 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "959cf541-8fb7-4cb3-95f6-a4c730b40145")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR094")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 58.42 43.18 0)
 		(unit 1)
@@ -2256,6 +2129,72 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
 					(reference "#PWR069")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 104.14 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3746c05a-f7a7-4bf7-8fc1-d9146b0859b6")
+		(property "Reference" "#PWR057"
+			(at 104.14 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 100.838 30.734 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 104.14 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e3df262c-e4ff-408d-ac69-b480e5fca42a")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR057")
 					(unit 1)
 				)
 			)
@@ -2356,71 +2295,6 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
 					(reference "D409")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 69.85 90.17 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "3dd816da-9d12-41f4-84c6-5cdb71ac8e8b")
-		(property "Reference" "#PWR079"
-			(at 69.85 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 71.882 85.344 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 69.85 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 69.85 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 69.85 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ab4fd986-5483-4621-b97e-8d9563e952cb")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR079")
 					(unit 1)
 				)
 			)
@@ -2657,6 +2531,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+5V")
+		(at 104.14 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "63391d4f-b27f-47da-b052-094ff2244d7e")
+		(property "Reference" "#PWR070"
+			(at 104.14 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 100.838 139.954 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 104.14 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "536bab68-8002-4058-89a6-d6003cceb17f")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR070")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 69.85 175.26 0)
 		(unit 1)
@@ -2718,71 +2658,6 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
 					(reference "#PWR089")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 138.43 90.17 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "67554f6b-0a55-4981-b1ee-5b821ea98aa7")
-		(property "Reference" "#PWR085"
-			(at 138.43 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 140.462 85.344 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 138.43 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 138.43 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 138.43 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "69eb36db-d396-4630-9a97-a48ef8d0f016")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR085")
 					(unit 1)
 				)
 			)
@@ -2885,16 +2760,16 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 104.14 144.78 0)
+		(lib_id "power:+5V")
+		(at 69.85 144.78 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "76fcd673-8038-43d9-b6c4-2c8d94623d0d")
-		(property "Reference" "#PWR091"
-			(at 104.14 148.59 0)
+		(uuid "72aecc6f-55bb-444d-af78-6f3a5af1bed4")
+		(property "Reference" "#PWR066"
+			(at 69.85 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2902,16 +2777,17 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3.3V"
-			(at 106.172 139.954 0)
+		(property "Value" "+3V3"
+			(at 66.548 139.954 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 104.14 144.78 0)
+			(at 69.85 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2920,7 +2796,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 104.14 144.78 0)
+			(at 69.85 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2928,8 +2804,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 104.14 144.78 0)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 69.85 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2938,12 +2814,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "3631db4d-298c-4e68-a596-fc46a719fcae")
+			(uuid "9696db7f-e4f3-4e4c-8695-fbe9e3b7bf14")
 		)
 		(instances
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR091")
+					(reference "#PWR066")
 					(unit 1)
 				)
 			)
@@ -3140,6 +3016,72 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
 					(reference "D408")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 138.43 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8846da02-30aa-4375-8dc2-f5d309311770")
+		(property "Reference" "#PWR073"
+			(at 138.43 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 135.128 139.954 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 138.43 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "869a5fd3-41d0-4f02-8687-554f594c05e6")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR073")
 					(unit 1)
 				)
 			)
@@ -3777,16 +3719,16 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 69.85 35.56 0)
+		(lib_id "power:+5V")
+		(at 138.43 90.17 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "bff4539d-cfdd-4323-b192-4eaa9e918d05")
-		(property "Reference" "#PWR070"
-			(at 69.85 39.37 0)
+		(uuid "c2f6922f-56b4-45e8-81c7-b37c0b15ce7f")
+		(property "Reference" "#PWR064"
+			(at 138.43 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3794,16 +3736,17 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3.3V"
-			(at 71.882 30.734 0)
+		(property "Value" "+3V3"
+			(at 135.128 85.344 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 69.85 35.56 0)
+			(at 138.43 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3812,7 +3755,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 69.85 35.56 0)
+			(at 138.43 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3820,8 +3763,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 69.85 35.56 0)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 138.43 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3830,12 +3773,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "4b384aeb-f2ad-4253-b720-7834a455cdb4")
+			(uuid "de49ece9-265b-4710-8b31-b9f67fc43b9f")
 		)
 		(instances
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR070")
+					(reference "#PWR064")
 					(unit 1)
 				)
 			)
@@ -4032,71 +3975,6 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
 					(reference "C409")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 104.14 90.17 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c471083a-3c33-465a-bfe6-a84158e40291")
-		(property "Reference" "#PWR082"
-			(at 104.14 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 106.172 85.344 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 104.14 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 104.14 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 104.14 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2f759c27-8879-4988-8e46-70c7b7fc7d55")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
-					(reference "#PWR082")
 					(unit 1)
 				)
 			)
@@ -4565,6 +4443,138 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
 					(reference "#PWR075")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 69.85 90.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e415169f-8222-4a76-99cc-f8595acabc1b")
+		(property "Reference" "#PWR060"
+			(at 69.85 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 66.548 85.344 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 69.85 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "714f5145-2afa-403c-a32d-6a50591bad52")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR060")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 69.85 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e71fe785-245e-4040-a73d-514e2e06fb75")
+		(property "Reference" "#PWR056"
+			(at 69.85 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 66.548 30.734 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4e0dee06-6cae-4d8d-8295-ae97cfbf681b")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/664aaabd-6e0d-4189-b255-c2e12e3ff15c"
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)

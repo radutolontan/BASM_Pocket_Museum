@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.155,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.17
+          "min_clearance": 0.15
         }
       },
       "diff_pair_dimensions": [
@@ -60,7 +60,7 @@
         {
           "gap": 0.2032,
           "via_gap": 0.254,
-          "width": 0.23
+          "width": 0.261112
         }
       ],
       "drc_exclusions": [],
@@ -121,7 +121,7 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.12,
+        "min_clearance": 0.16,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.25,
         "min_hole_clearance": 0.3,
@@ -132,8 +132,8 @@
         "min_silk_clearance": 0.0,
         "min_text_height": 1.1,
         "min_text_thickness": 0.155,
-        "min_through_hole_diameter": 0.2,
-        "min_track_width": 0.12,
+        "min_through_hole_diameter": 0.3,
+        "min_track_width": 0.2,
         "min_via_annular_width": 0.13,
         "min_via_diameter": 0.4,
         "solder_mask_to_copper_clearance": 0.005,
@@ -184,11 +184,10 @@
       ],
       "track_widths": [
         0.0,
-        0.15,
-        0.2,
-        0.23,
+        0.24,
+        0.261112,
         0.3,
-        0.3493,
+        0.35,
         0.5
       ],
       "tuning_pattern_settings": {
@@ -252,7 +251,11 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      "pin_to_pin|2171700|1308100|8a8dcbde-2241-45cd-ae3e-e4897a95a4d6|41dd6dc6-5313-48ee-9341-841471037a20|/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871|/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871|/4bede6f6-420d-49b9-8d53-bd69095749c2/36cdbd28-8810-4657-96de-41aba4386ff5",
+      "power_pin_not_driven|1498600|482600|2e7c3f82-1ec6-453c-b74b-1ec6e255b23c|00000000-0000-0000-0000-000000000000|/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871|/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871|",
+      "power_pin_not_driven|685800|393700|31f4d2ad-46b9-4feb-8f2b-233b26b501b6|00000000-0000-0000-0000-000000000000|/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871|/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871|"
+    ],
     "meta": {
       "version": 0
     },
@@ -474,7 +477,7 @@
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.15,
+        "clearance": 0.25,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -484,9 +487,9 @@
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
-        "via_diameter": 0.55,
-        "via_drill": 0.25,
+        "track_width": 0.3,
+        "via_diameter": 0.7,
+        "via_drill": 0.3,
         "wire_width": 6
       }
     ],
