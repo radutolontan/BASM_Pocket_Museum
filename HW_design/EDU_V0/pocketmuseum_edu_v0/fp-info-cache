@@ -1,4 +1,4 @@
-24741864717490345
+24745375778382671
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -55201,6 +55201,13 @@ QFN-10_EP_2.1x2.1_Pitch0.4mm
 0
 19
 11
+DFNCustom
+QFN_10_BQ24040
+
+
+0
+11
+11
 Diode_SMD
 D_0201_0603Metric
 Diode SMD 0201 (0603 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: https://www.vishay.com/docs/20052/crcw0201e3.pdf), generated with kicad-footprint-generator
@@ -99709,6 +99716,13 @@ Varistor VF
 2
 WSOF
 WSOF6I
+
+
+0
+6
+6
+WSOF
+XDCR_BH1750FVI-TR
 
 
 0

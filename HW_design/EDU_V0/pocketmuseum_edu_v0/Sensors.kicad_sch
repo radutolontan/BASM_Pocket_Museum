@@ -2000,6 +2000,12 @@
 		(uuid "24528841-6d45-47de-92e0-529e0a446fad")
 	)
 	(junction
+		(at 88.9 132.08)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2486bd70-c54e-471e-9073-20d37f17365b")
+	)
+	(junction
 		(at 219.71 62.23)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2262,6 +2268,16 @@
 			(type default)
 		)
 		(uuid "302f6627-e59d-4e87-907d-ead53551d98d")
+	)
+	(wire
+		(pts
+			(xy 88.9 132.08) (xy 91.44 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "312e2ec2-a5d8-4445-bb50-64f731758955")
 	)
 	(wire
 		(pts
@@ -2625,13 +2641,13 @@
 	)
 	(wire
 		(pts
-			(xy 91.44 121.92) (xy 91.44 132.08)
+			(xy 88.9 121.92) (xy 88.9 132.08)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9c7eb124-3699-4e94-9eb8-bf849ee15cd8")
+		(uuid "983ccf81-4e75-4e18-b01d-e74ef5e48203")
 	)
 	(wire
 		(pts
@@ -2915,13 +2931,13 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 121.92) (xy 86.36 132.08)
+			(xy 88.9 132.08) (xy 86.36 132.08)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e9ca1eac-ea66-4a40-be25-556742b04580")
+		(uuid "ec19bd55-f992-45c7-8819-679a4ee35bff")
 	)
 	(wire
 		(pts
@@ -3855,7 +3871,7 @@
 				)
 			)
 		)
-		(property "Value" "4k7"
+		(property "Value" "5k1"
 			(at 73.406 90.678 90)
 			(effects
 				(font
@@ -4522,7 +4538,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 45.72 122.682 90)
 			(effects
 				(font
@@ -5760,72 +5776,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 86.36 121.92 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "641da87c-9a7c-4180-a12e-50ba2eb0d31f")
-		(property "Reference" "#PWR041"
-			(at 86.36 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+1V8"
-			(at 86.36 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 86.36 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 86.36 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 86.36 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a59e7fd4-b60e-4b23-9083-7cc22133c8f1")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/36cdbd28-8810-4657-96de-41aba4386ff5"
-					(reference "#PWR041")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+5V")
 		(at 208.28 34.29 0)
 		(unit 1)
@@ -6254,7 +6204,7 @@
 				)
 			)
 		)
-		(property "Value" "0u1"
+		(property "Value" "1u"
 			(at 82.55 127 90)
 			(effects
 				(font
@@ -6628,7 +6578,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 91.44 121.92 0)
+		(at 88.9 121.92 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6637,7 +6587,7 @@
 		(fields_autoplaced yes)
 		(uuid "b645bb6f-2af3-4f64-a012-f25eeea285b7")
 		(property "Reference" "#PWR042"
-			(at 91.44 125.73 0)
+			(at 88.9 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6646,7 +6596,7 @@
 			)
 		)
 		(property "Value" "+1V8"
-			(at 91.44 116.84 0)
+			(at 88.9 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6654,7 +6604,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 91.44 121.92 0)
+			(at 88.9 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6663,7 +6613,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 91.44 121.92 0)
+			(at 88.9 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6672,7 +6622,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 91.44 121.92 0)
+			(at 88.9 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6775,7 +6725,7 @@
 				)
 			)
 		)
-		(property "Value" "4k7"
+		(property "Value" "5k1"
 			(at 42.926 90.678 90)
 			(effects
 				(font

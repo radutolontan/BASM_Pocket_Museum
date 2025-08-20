@@ -3106,10 +3106,6 @@
 		(uuid "8dd8c05f-b432-447a-ae3c-2a4b5046264a")
 	)
 	(no_connect
-		(at 27.94 81.28)
-		(uuid "af849510-a492-4786-9885-30831a242d05")
-	)
-	(no_connect
 		(at 50.8 73.66)
 		(uuid "c8e0c079-4458-4753-988f-168afd72fd47")
 	)
@@ -3506,6 +3502,16 @@
 			(type default)
 		)
 		(uuid "3ca6043e-50b0-4dfb-8fcb-b9b0c0cc5f62")
+	)
+	(wire
+		(pts
+			(xy 27.94 92.71) (xy 27.94 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40af86a5-6110-4b4f-8f54-44043cff88b6")
 	)
 	(wire
 		(pts
@@ -4683,7 +4689,7 @@
 	)
 	(text "ISET is 450mA; (R103 = 1k2)\nISET2 IGNORED (tied to GND)\nPRE-TERM is 33% of ISET = 150mA\n\n"
 		(exclude_from_sim no)
-		(at 184.912 98.552 0)
+		(at 182.118 99.06 0)
 		(effects
 			(font
 				(size 1.016 1.016)
@@ -4740,11 +4746,12 @@
 	)
 	(text "R108 & R109 (E96 Series)\n@ VBAT_ALW_ON = 4.25V; BATT_VOLT_FDBCK = 1.1V\nIRseries = 17.6 uA"
 		(exclude_from_sim no)
-		(at 46.99 133.604 0)
+		(at 28.448 133.096 0)
 		(effects
 			(font
 				(size 1.016 1.016)
 			)
+			(justify left)
 		)
 		(uuid "7d045c94-a878-431a-9ab7-88487dee606f")
 	)
@@ -7391,7 +7398,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "DFNCustom:QFN-10_EP_2.1x2.1_Pitch0.4mm"
+		(property "Footprint" "DFNCustom:QFN_10_BQ24040"
 			(at 213.36 55.88 0)
 			(effects
 				(font
@@ -7546,7 +7553,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2k7"
+		(property "Value" "3k3"
 			(at 131.826 144.018 0)
 			(effects
 				(font
@@ -8706,6 +8713,73 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871"
 					(reference "R108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 27.94 92.71 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a4a12398-d878-4e89-aae1-24d598934732")
+		(property "Reference" "#PWR0115"
+			(at 27.94 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 27.94 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 27.94 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 27.94 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 27.94 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ec4d1e0e-766a-48c9-a05a-c4af88340f15")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871"
+					(reference "#PWR0115")
 					(unit 1)
 				)
 			)
@@ -10081,6 +10155,100 @@
 			(project "kicad_soundcard_dev_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871"
 					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 27.94 85.09 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e346ddc2-802a-410e-b8a2-9f5f27fbc268")
+		(property "Reference" "R114"
+			(at 31.496 83.566 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0R"
+			(at 31.496 88.138 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 26.162 85.09 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 27.94 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 27.94 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
+			(at 27.94 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
+			(at 27.94 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" "0603WAJ0000T5E"
+			(at 27.94 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "4f5e79a4-052f-4f26-b700-00f1c330fd63")
+		)
+		(pin "1"
+			(uuid "0f7fc79b-6ba1-41f0-bc99-8a794e63f607")
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/17afeba3-86f9-4a78-9898-2f2df319c871"
+					(reference "R114")
 					(unit 1)
 				)
 			)
