@@ -6,9 +6,10 @@
 	(paper "A4")
 	(title_block
 		(title "POCKETMUSEUM EDU V0")
-		(date "2025-08-18")
-		(rev "2")
+		(date "2025-08-21")
+		(rev "3")
 		(company "Bucharest Applied STEAM Museum")
+		(comment 1 "Flipped Batt_CMD & FB GPIOs")
 	)
 	(lib_symbols
 		(symbol "Connector:Micro_SD_Card_Det1"
@@ -2650,16 +2651,16 @@
 		(uuid "12e8ad38-ae97-4d74-839a-c72590bf488b")
 	)
 	(junction
+		(at 39.37 62.23)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1b13861b-f4d5-4390-9222-78adcb9b1267")
+	)
+	(junction
 		(at 236.22 76.2)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1c079916-83e1-4a11-9277-79ff7b1797c1")
-	)
-	(junction
-		(at 31.75 62.23)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "228940ad-97df-4ede-b60a-1d04377d61ce")
 	)
 	(junction
 		(at 66.04 41.91)
@@ -2746,6 +2747,12 @@
 		(uuid "cdb995d9-0e61-4469-a092-13cf529b645f")
 	)
 	(junction
+		(at 31.75 64.77)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cdbbebdc-84eb-46f1-b896-72b63b9be120")
+	)
+	(junction
 		(at 193.04 39.37)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2768,12 +2775,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "eb569719-224f-4ea3-8e36-7b69341648eb")
-	)
-	(junction
-		(at 39.37 64.77)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f5f2737f-0c55-4bb3-8462-31c77d51c051")
 	)
 	(junction
 		(at 77.47 34.29)
@@ -2799,7 +2800,7 @@
 	)
 	(wire
 		(pts
-			(xy 31.75 62.23) (xy 60.96 62.23)
+			(xy 30.48 62.23) (xy 39.37 62.23)
 		)
 		(stroke
 			(width 0)
@@ -2826,16 +2827,6 @@
 			(type default)
 		)
 		(uuid "046f221b-f5d0-4439-88fc-5855fcac328f")
-	)
-	(wire
-		(pts
-			(xy 30.48 62.23) (xy 31.75 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "04f309b8-fd74-454f-a219-67f2c6ade761")
 	)
 	(wire
 		(pts
@@ -2989,16 +2980,6 @@
 	)
 	(wire
 		(pts
-			(xy 31.75 58.42) (xy 31.75 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1e32dbac-446c-45ed-ac94-baf4531c488e")
-	)
-	(wire
-		(pts
 			(xy 116.84 52.07) (xy 130.81 52.07)
 		)
 		(stroke
@@ -3079,16 +3060,6 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 58.42) (xy 39.37 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "350acc6d-8089-4a09-9a27-f19ed568bb3a")
-	)
-	(wire
-		(pts
 			(xy 226.06 43.18) (xy 226.06 50.8)
 		)
 		(stroke
@@ -3126,6 +3097,16 @@
 			(type default)
 		)
 		(uuid "3f21df56-5d74-4ef1-a63c-1086b7a93fab")
+	)
+	(wire
+		(pts
+			(xy 30.48 64.77) (xy 31.75 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3fcedea4-b2ac-48db-ae17-92aaa9c88742")
 	)
 	(wire
 		(pts
@@ -3206,16 +3187,6 @@
 			(type default)
 		)
 		(uuid "4f0fc07c-76ad-4fae-b14f-d123d55b0a75")
-	)
-	(wire
-		(pts
-			(xy 39.37 64.77) (xy 60.96 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4f8d169e-8049-420e-8c11-2b70399978d1")
 	)
 	(wire
 		(pts
@@ -3439,6 +3410,16 @@
 	)
 	(wire
 		(pts
+			(xy 31.75 64.77) (xy 60.96 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8b48db33-65a2-4efb-88e9-9669303f98a3")
+	)
+	(wire
+		(pts
 			(xy 193.04 53.34) (xy 236.22 53.34)
 		)
 		(stroke
@@ -3646,6 +3627,16 @@
 			(type default)
 		)
 		(uuid "bcce4705-b4b2-4944-8886-999b7c239d1e")
+	)
+	(wire
+		(pts
+			(xy 31.75 58.42) (xy 31.75 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be463701-3bcb-4c9b-9618-6d9e8db5a57d")
 	)
 	(wire
 		(pts
@@ -3899,13 +3890,23 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 64.77) (xy 39.37 64.77)
+			(xy 39.37 58.42) (xy 39.37 62.23)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f10a92d5-33f2-42b0-ac5e-8269fa1d78d1")
+		(uuid "f3e62aab-4d75-4d4b-850c-d8a0dc4303c0")
+	)
+	(wire
+		(pts
+			(xy 39.37 62.23) (xy 60.96 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f8055d92-417b-4796-a592-0c6da1a9539b")
 	)
 	(wire
 		(pts
@@ -4389,7 +4390,7 @@
 	)
 	(global_label "BATT_POWOK_FDBCK"
 		(shape input)
-		(at 60.96 74.93 180)
+		(at 60.96 80.01 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4399,7 +4400,7 @@
 		)
 		(uuid "0fc7534b-8401-4dab-97cd-5c252692e817")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 38.9248 74.93 0)
+			(at 38.9248 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4411,7 +4412,7 @@
 	)
 	(global_label "MEMS_INT"
 		(shape input)
-		(at 60.96 80.01 180)
+		(at 60.96 74.93 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4421,7 +4422,7 @@
 		)
 		(uuid "1635f5e4-60c0-4d3d-a4a1-6f929da0f656")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 48.843 80.01 0)
+			(at 48.843 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4455,7 +4456,7 @@
 	)
 	(global_label "BATT_ATTCH_CMD"
 		(shape input)
-		(at 60.96 77.47 180)
+		(at 60.96 59.69 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4465,7 +4466,7 @@
 		)
 		(uuid "44fbe7de-32fa-4396-a823-d168c5b70484")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 42.1301 77.47 0)
+			(at 42.1301 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4477,7 +4478,7 @@
 	)
 	(global_label "I2C_SCL"
 		(shape input)
-		(at 30.48 62.23 180)
+		(at 30.48 64.77 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4487,7 +4488,7 @@
 		)
 		(uuid "636f70eb-e0df-4792-83b0-1e27e6b679c5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 19.9353 62.23 0)
+			(at 19.9353 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4499,7 +4500,7 @@
 	)
 	(global_label "BATT_CHRG_FDBCK"
 		(shape input)
-		(at 60.96 72.39 180)
+		(at 60.96 77.47 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4509,7 +4510,7 @@
 		)
 		(uuid "71c2b7db-6f8c-4353-b864-c420ad3ac121")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 40.4367 72.39 0)
+			(at 40.4367 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4563,28 +4564,6 @@
 			)
 		)
 	)
-	(global_label "BATT_SW_FDBCK"
-		(shape input)
-		(at 60.96 59.69 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "8f0f15f3-0955-4953-8df7-b69f31bf36af")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 42.9163 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "I2S_CLK"
 		(shape input)
 		(at 132.08 77.47 0)
@@ -4609,7 +4588,7 @@
 	)
 	(global_label "I2C_SDA"
 		(shape input)
-		(at 30.48 64.77 180)
+		(at 30.48 62.23 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4619,7 +4598,29 @@
 		)
 		(uuid "987e9879-99c5-4d3f-af0a-c13502280212")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 19.8748 64.77 0)
+			(at 19.8748 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "BATT_SW_FDBCK"
+		(shape input)
+		(at 60.96 72.39 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9a772ea1-8ad1-407c-b409-345f72fb29e7")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 42.9163 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)

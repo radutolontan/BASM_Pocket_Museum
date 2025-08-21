@@ -185,6 +185,7 @@
       "track_widths": [
         0.0,
         0.17,
+        0.22,
         0.261112,
         0.3,
         0.35,
@@ -505,7 +506,7 @@
       "plot": "../../Gerber_V_2/",
       "pos_files": "../../Assembly_V2/",
       "specctra_dsn": "",
-      "step": "",
+      "step": "pocketmuseum_edu_v0.step",
       "svg": "",
       "vrml": ""
     },

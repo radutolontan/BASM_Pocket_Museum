@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "POCKETMUSEUM EDU V0")
-		(date "2025-08-18")
-		(rev "2")
+		(date "2025-08-21")
+		(rev "3")
 		(company "Bucharest Applied STEAM Museum")
 	)
 	(lib_symbols

@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "POCKETMUSEUM EDU V0")
-		(date "2025-08-18")
-		(rev "2")
+		(date "2025-08-21")
+		(rev "3")
 		(company "Bucharest Applied STEAM Museum")
 		(comment 1 "Added MIC & LIGHT Sensor")
 	)
@@ -2101,16 +2101,6 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 59.69) (xy 195.58 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0552bfea-b78a-4fb1-933a-422181a6aba0")
-	)
-	(wire
-		(pts
 			(xy 194.31 118.11) (xy 195.58 118.11)
 		)
 		(stroke
@@ -2198,16 +2188,6 @@
 			(type default)
 		)
 		(uuid "19dd169b-727e-4a5c-b690-ead758c69441")
-	)
-	(wire
-		(pts
-			(xy 189.23 55.88) (xy 195.58 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1a7b784a-ddb7-4300-9cd5-412c48eaa7b4")
 	)
 	(wire
 		(pts
@@ -2571,7 +2551,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 59.69) (xy 181.61 59.69)
+			(xy 176.53 59.69) (xy 195.58 59.69)
 		)
 		(stroke
 			(width 0)
@@ -2701,7 +2681,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 55.88) (xy 181.61 55.88)
+			(xy 176.53 55.88) (xy 195.58 55.88)
 		)
 		(stroke
 			(width 0)
@@ -4969,100 +4949,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 185.42 59.69 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "32e26792-8127-4051-a92b-0f4d550a4347")
-		(property "Reference" "R307"
-			(at 191.008 58.42 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0R"
-			(at 181.102 58.674 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 185.42 57.912 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 185.42 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 185.42 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
-			(at 185.42 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
-			(at 185.42 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "0603WAJ0000T5E"
-			(at 185.42 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "74fd8252-897a-4b8e-8874-c8276cea764e")
-		)
-		(pin "1"
-			(uuid "3f5ab3a7-dda6-4d97-8745-c2f103a934e3")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/36cdbd28-8810-4657-96de-41aba4386ff5"
-					(reference "R307")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 184.15 121.92 0)
 		(unit 1)
@@ -5609,100 +5495,6 @@
 			(project "pocketmuseum_edu_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/36cdbd28-8810-4657-96de-41aba4386ff5"
 					(reference "R308")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 185.42 55.88 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "5f56ebc5-b2b7-4fec-b54b-b3ece2217f09")
-		(property "Reference" "R306"
-			(at 191.008 53.848 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0R"
-			(at 181.102 53.848 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 185.42 54.102 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 185.42 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 185.42 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB Link" "https://jlcpcb.com/partdetail/16080-0603WAJ0000T5E/C15402"
-			(at 185.42 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec) "
-			(at 185.42 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer P/N" "0603WAJ0000T5E"
-			(at 185.42 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "13730282-9860-4cb0-925d-a1b005e888ea")
-		)
-		(pin "1"
-			(uuid "3d7cb701-ddad-4b23-b0d9-1e0e49f2da45")
-		)
-		(instances
-			(project "pocketmuseum_edu_v0"
-				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2/36cdbd28-8810-4657-96de-41aba4386ff5"
-					(reference "R306")
 					(unit 1)
 				)
 			)
