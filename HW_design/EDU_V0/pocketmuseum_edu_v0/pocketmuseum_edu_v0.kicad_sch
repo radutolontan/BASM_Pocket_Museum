@@ -180,15 +180,15 @@
 	)
 	(symbol
 		(lib_id "Mechanical:MountingHole")
-		(at 207.01 49.53 0)
+		(at 208.28 59.69 0)
 		(unit 1)
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(uuid "852bf57b-2321-4e35-953a-ae8af15c3a16")
-		(property "Reference" "H1"
-			(at 209.55 48.2599 0)
+		(uuid "3a99a555-1fec-44d4-a54d-449353fe00d0")
+		(property "Reference" "H3"
+			(at 210.82 58.4199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -197,7 +197,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 212.852 49.784 0)
+			(at 214.122 59.944 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -205,8 +205,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.5mm"
-			(at 207.01 49.53 0)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 208.28 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -215,7 +215,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 207.01 49.53 0)
+			(at 208.28 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -224,7 +224,7 @@
 			)
 		)
 		(property "Description" "Mounting Hole without connection"
-			(at 207.01 49.53 0)
+			(at 208.28 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -233,7 +233,7 @@
 			)
 		)
 		(property "JLCPCB Link" ""
-			(at 207.01 49.53 0)
+			(at 208.28 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -242,7 +242,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 207.01 49.53 0)
+			(at 208.28 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -251,7 +251,187 @@
 			)
 		)
 		(property "Manufacturer P/N" ""
-			(at 207.01 49.53 0)
+			(at 208.28 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(reference "H3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 208.28 53.34 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "6456f9db-11a2-41fa-beac-8976d0ac2931")
+		(property "Reference" "H2"
+			(at 210.82 52.0699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 214.122 53.594 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 208.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 208.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 208.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" ""
+			(at 208.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 208.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" ""
+			(at 208.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 208.28 46.99 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "852bf57b-2321-4e35-953a-ae8af15c3a16")
+		(property "Reference" "H1"
+			(at 210.82 45.7199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 214.122 47.244 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 208.28 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 208.28 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 208.28 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" ""
+			(at 208.28 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 208.28 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" ""
+			(at 208.28 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -263,6 +443,96 @@
 			(project "kicad_soundcard_dev_v0"
 				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
 					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 208.28 66.04 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "a227d4f3-8eab-43b7-b19a-9d18d076439b")
+		(property "Reference" "H4"
+			(at 210.82 64.7699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 214.122 66.294 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 208.28 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 208.28 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 208.28 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB Link" ""
+			(at 208.28 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 208.28 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer P/N" ""
+			(at 208.28 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "pocketmuseum_edu_v0"
+				(path "/4bede6f6-420d-49b9-8d53-bd69095749c2"
+					(reference "H4")
 					(unit 1)
 				)
 			)
