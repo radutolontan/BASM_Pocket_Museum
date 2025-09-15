@@ -37,46 +37,45 @@ DisplayState DisplayTask::getDisplayState() const {
 
 void DisplayTask::runDisplayTaskWrapper(void* param) {
     DisplayTask* self = static_cast<DisplayTask*>(param);
-    self->runDisplayTask();
+    for (;;) {
+        self->runDisplayTask();
+        // DISPLAYTASK STATE MACHINE TIMING
+        vTaskDelay(pdMS_TO_TICKS(1000 / TASK_RATE_DISPLAY));
+    }
 }
 
 void DisplayTask::runDisplayTask() {
-    while(true){
-        // Check if BMS is still latched
-        if (!g_bmsLatched) {
-            // Power not latched → shut off display
-            turnDisplayOFF();
-            // Set DisplayMode to Boot to avoid other states overwriting the shutdown command
-            setDisplayState(DisplayState::BOOT);
-        }
-        // Check the status of the Mode Display pushbutton
-        bool rawState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN); 
-        if (debounceButton(rawState)) {  // rising edge detected
-            cycleDisplayState();
-        }
-        // Run the state machine
-        switch (current_state) {
-            case DisplayState::BOOT:{
-                run_boot();
-                break;
-            }
-            case DisplayState::INIT:{
-                run_init();
-                break;
-            }
-            case DisplayState::DISPLAY_PRESSURE:{
-                run_display_pressure();
-                break;
-            }
-            case DisplayState::DISPLAY_ACCEL:{
-                run_display_accel();
-                break;
-            }
-        }
-        // Wait until running the next step of the state machine
-        vTaskDelay(pdMS_TO_TICKS(DISPLAY_UPDATE_INTERVAL));
+    // Check if BMS is still latched
+    if (!g_bmsLatched) {
+        // Power not latched → shut off display
+        turnDisplayOFF();
+        // Set DisplayMode to Boot to avoid other states overwriting the shutdown command
+        setDisplayState(DisplayState::BOOT);
     }
-
+    // Check the status of the Mode Display pushbutton
+    bool rawState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN); 
+    if (debounceButton(rawState)) {  // rising edge detected
+        cycleDisplayState();
+    }
+    // Run the state machine
+    switch (current_state) {
+        case DisplayState::BOOT:{
+            run_boot();
+            break;
+        }
+        case DisplayState::INIT:{
+            run_init();
+            break;
+        }
+        case DisplayState::DISPLAY_PRESSURE:{
+            run_display_pressure();
+            break;
+        }
+        case DisplayState::DISPLAY_ACCEL:{
+            run_display_accel();
+            break;
+        }
+    }
 }
 
 void DisplayTask::run_boot(){

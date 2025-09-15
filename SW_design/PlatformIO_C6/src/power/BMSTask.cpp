@@ -18,12 +18,7 @@ void BMSTask::setupBMSTask() {
     pinMode(BMS_ONOFF_PUSHBUTTON_PIN, INPUT);  // NO PULL-UP!!!
     // LDO hold pin
     pinMode(BMS_LDO_ATTACH_CMD_PIN, OUTPUT);
-    digitalWrite(BMS_LDO_ATTACH_CMD_PIN, LOW);
-    // BMS monitoring pins
-    pinMode(BMS_POWOK_FDBCK_PIN, INPUT);    // Power OK input
-    pinMode(BMS_CHG_FDBCK_PIN, INPUT);      // Charging input
-    pinMode(BMS_VBAT_VOLT_PIN, INPUT); // ADC voltage monitor
-    
+    digitalWrite(BMS_LDO_ATTACH_CMD_PIN, LOW);    
     
     lastStateChange = millis();
 }
@@ -33,7 +28,8 @@ void BMSTask::runBMSTaskWrapper(void* param) {
     BMSTask* self = static_cast<BMSTask*>(param);
     for (;;) {
         self->runBMSTask();
-        vTaskDelay(pdMS_TO_TICKS(20)); // run at 50 Hz
+        // BMSTASK STATE MACHINE TIMING
+        vTaskDelay(pdMS_TO_TICKS(1000/TASK_RATE_BMS));
     }
 }
 
@@ -107,7 +103,10 @@ void BMSTask::run_boot() {
 void BMSTask::run_startup_latch() {
     // SET LDO_EN GPIO HI to keep system alive
     digitalWrite(BMS_LDO_ATTACH_CMD_PIN, HIGH);
-    // TO DO: INITIALIZE BMS MONITORING PINS
+    // BMS monitoring pins
+    pinMode(BMS_POWOK_FDBCK_PIN, INPUT);    // Power OK input
+    pinMode(BMS_CHG_FDBCK_PIN, INPUT);      // Charging input
+    pinMode(BMS_VBAT_VOLT_PIN, INPUT); // ADC voltage monitor    
     // Broadcast BMS Latch readiness
     g_bmsLatched = true;
     // Transition to next state

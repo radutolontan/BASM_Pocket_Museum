@@ -41,9 +41,10 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 #define ICP201000_LSB_ADDRESS_BIT 0
 
 // =========== TASK RATES ===============
-// NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * DISPLAY_UPDATE_INTERVAL
+// NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * (1000/TASK_RATE_DISPLAY)
 #define SENSOR_READ_INTERVAL 100 // milliseconds
-#define DISPLAY_UPDATE_INTERVAL 20 // milliseconds
+#define TASK_RATE_DISPLAY 50 // Hz
+#define TASK_RATE_BMS 50 // Hz
 
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
 

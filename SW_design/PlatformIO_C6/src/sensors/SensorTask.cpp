@@ -31,39 +31,38 @@ void SensorTask::setSensorState(SensorState new_state) {
 
 void SensorTask::runSensorTaskWrapper(void* param) {
     SensorTask* self = static_cast<SensorTask*>(param);
-    self->runSensorTask();
+    for (;;) {
+        self->runSensorTask();
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
 }
 
 void SensorTask::runSensorTask() {
-    while (true) {
-        switch (current_state) {
-            case SensorState::BOOT:{
-                run_boot();
-                break;
-            }
-            case SensorState::INIT:{
-                run_init();
-                setSensorState(SensorState::SLEEP);
-                break;
-            }
-            case SensorState::SLEEP:{
-                run_sleep();
-                break;
-            }
-            case SensorState::READ:{
-                run_read();
-                setSensorState(SensorState::PROCESS);
-                break;
-            }
-            case SensorState::PROCESS:{
-                run_process();
-                setSensorState(SensorState::SLEEP);
-                break;
-            }
+    switch (current_state) {
+        case SensorState::BOOT:{
+            run_boot();
+            break;
         }
-
-        vTaskDelay(pdMS_TO_TICKS(10));
-    }
+        case SensorState::INIT:{
+            run_init();
+            setSensorState(SensorState::SLEEP);
+            break;
+        }
+        case SensorState::SLEEP:{
+            run_sleep();
+            break;
+        }
+        case SensorState::READ:{
+            run_read();
+            setSensorState(SensorState::PROCESS);
+            break;
+        }
+        case SensorState::PROCESS:{
+            run_process();
+            setSensorState(SensorState::SLEEP);
+            break;
+        }
+    }    
 }
 
 
