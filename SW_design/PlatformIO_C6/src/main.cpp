@@ -2,6 +2,7 @@
 #include "sensors/SensorTask.h"
 #include "display/DisplayTask.h"
 #include "storage/SDManager.h"
+#include "power/BMSTask.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "evaluators/EvaluatorTask.h"
 #include "shared_resources/globals.h"
@@ -9,10 +10,18 @@
 SensorTask sensorTask;
 DisplayTask displayTask;
 SDManager sDManager;
+BMSTask bmsTask;
 EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager 
 
+// Define & Initialize BMS_Latch flag (declared in globals.h)
+volatile bool g_bmsLatched = false; 
+
 void setup() {
-    Serial0.begin(115200);
+    Serial.begin(115200);
+
+    // DEBUG
+    pinMode(DEBUG_LED_PIN, OUTPUT); 
+    digitalWrite(DEBUG_LED_PIN, HIGH); // TURN ON DEBUG LED
     
     // Initialize Shared Data Buffer & MUTEX protection
     SharedBuffer::init();  
@@ -21,6 +30,7 @@ void setup() {
     sensorTask.setupSensorTask();
     displayTask.setupDisplayTask();
     sDManager.setupSDManager();
+    bmsTask.setupBMSTask();
     evaluatorTask.setupEvaluatorTask(displayTask); // Some evaluators need reference to other tasks and data structurses
 
     // Create FreeRTOS task for running  SENSORTASK state machine
@@ -67,12 +77,25 @@ void setup() {
         0                                       // Core (only 0 for ESP32 C6 MINI)
     );
 
-    // ✅ Trigger INIT state immediately after setup
-    Serial.println("Main: Triggering INIT state from setup()");
-    sensorTask.setSensorState(SensorState::INIT);
-    displayTask.setDisplayState(DisplayState::INIT);
-    // sDManager switches from BOOT to WAIT_FOR_INSERT internally 
-    // EvaluatorTask switches from BOOT to INIT internally after confirming SDManager readiness
+    // Create FreeRTOS task for running BMSTASK state machine
+    xTaskCreatePinnedToCore(
+        BMSTask::runBMSTaskWrapper,             // Function to run
+        "BMSTask",                              // Name
+        4096,                                   // Stack size in words
+        &bmsTask,                               // Pass object as parameter
+        4,                                      // Priority
+        nullptr,                                // Task handle
+        0                                       // Core (only 0 for ESP32 C6 MINI)
+    );
+
+    // // ✅ Trigger INIT state after BMS latches POWER
+    // if (bmsTask.getBMSState() == BMSState::STARTUP_LATCH){
+    //     Serial.println("Main: Triggering INIT state from setup()");
+    //     sensorTask.setSensorState(SensorState::INIT);
+    //     displayTask.setDisplayState(DisplayState::INIT);
+    //     // sDManager switches from BOOT to WAIT_FOR_INSERT internally 
+    //     // EvaluatorTask switches from BOOT to INIT internally after confirming SDManager readiness
+    // }
 }
 
 void loop() {

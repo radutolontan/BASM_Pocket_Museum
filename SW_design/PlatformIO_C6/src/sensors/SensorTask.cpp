@@ -15,7 +15,7 @@
 ICP201XXHAL pressureSensor(Wire);
 
 // Instantiate LSM6DSL HAL Wrapper 
-LSM6DXXHAL imuSensor(Wire);
+// LSM6DXXHAL imuSensor(Wire);
 
 // CLASS Constructor
 SensorTask::SensorTask() {}
@@ -70,9 +70,11 @@ void SensorTask::runSensorTask() {
 // ======== STATE METHODS ==========
 
 void SensorTask::run_boot(){
-    // ✅ DEBUG: Print StateMachine State Change
-    Serial.println("[SensorTask] - Waiting for INIT command...");
-    delay(500);
+    // Check if BMS is Ready
+    if (g_bmsLatched) {
+        // Transition to INIT
+        setSensorState(SensorState::INIT);
+    }
 };
 
 void SensorTask::run_init(){
@@ -89,10 +91,10 @@ void SensorTask::run_init(){
     }
 
     // LSM6DSL SENSOR 
-    if (imuSensor.begin()){
-        // ✅ DEBUG: Conifrm Sensor Read successful
-        Serial.println("[SensorTask] - LSM6DSL initialized successfully");
-    }
+    // if (imuSensor.begin()){
+    //     // ✅ DEBUG: Conifrm Sensor Read successful
+    //     Serial.println("[SensorTask] - LSM6DSL initialized successfully");
+    // }
         
     delay(1000);
     lastReadTime = millis();
@@ -103,18 +105,18 @@ void SensorTask::run_read(){
     // Serial.println("[SensorTask] - Sampling sensor...");
     // =============== ICP20100 SENSOR ==================
     if (pressureSensor.read(current_reading)) {
-        // Serial.println("[SensorTask] - sensorData.temperature = " + String(current_reading.temperature));
-        // Serial.println("[SensorTask] - sensorData.pressured = " + String(current_reading.pressure));
+        Serial.println("[SensorTask] - sensorData.temperature = " + String(current_reading.temperature));
+        Serial.println("[SensorTask] - sensorData.pressured = " + String(current_reading.pressure));
     }
     // ================ LSM6DSL SENSOR ===================
-    if (imuSensor.read(current_reading)) {
+    //if (imuSensor.read(current_reading)) {
         // Serial.println("[SensorTask] - sensorData.accel_x = " + String(current_reading.accel_x));
         // Serial.println("[SensorTask] - sensorData.accel_y = " + String(current_reading.accel_y));
         // Serial.println("[SensorTask] - sensorData.accel_z = " + String(current_reading.accel_z));
         // Serial.println("[SensorTask] - sensorData.gyro_x = " + String(current_reading.gyro_x));
         // Serial.println("[SensorTask] - sensorData.gyro_y = " + String(current_reading.gyro_y));
         // Serial.println("[SensorTask] - sensorData.gyro_z = " + String(current_reading.gyro_z));
-    }
+    //}
     lastReadTime = millis();
 
     // After reading is complete, add it to the shared_data_buffer

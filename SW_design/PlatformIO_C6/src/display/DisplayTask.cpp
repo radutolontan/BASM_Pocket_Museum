@@ -1,6 +1,7 @@
 #include "display/DisplayTask.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
+#include "shared_resources/global_functions.h"
 
 #include <Adafruit_NeoPixel.h>
 #include <random>
@@ -18,6 +19,7 @@ DisplayTask::DisplayTask()
 }
 
 void DisplayTask::setupDisplayTask() {
+    strip.begin();  // Initialize the NeoPixel library
     setDisplayState(DisplayState::BOOT);
     // GPIO for Push-button which toggles display mode
     pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT);
@@ -39,11 +41,18 @@ void DisplayTask::runDisplayTaskWrapper(void* param) {
 }
 
 void DisplayTask::runDisplayTask() {
-    while (true) {
-        // Check for a debounced signal and a rising edge
+    while(true){
+        // Check if BMS is still latched
+        if (!g_bmsLatched) {
+            // Power not latched → shut off display
+            turnDisplayOFF();
+            // Set DisplayMode to Boot to avoid other states overwriting the shutdown command
+            setDisplayState(DisplayState::BOOT);
+        }
+        // Check the status of the Mode Display pushbutton
         bool rawState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN); 
-        if (debounceButton(rawState) && stableButtonState == HIGH) {
-            cycleDisplayState();  // Trigger mode change
+        if (debounceButton(rawState)) {  // rising edge detected
+            cycleDisplayState();
         }
         // Run the state machine
         switch (current_state) {
@@ -64,27 +73,29 @@ void DisplayTask::runDisplayTask() {
                 break;
             }
         }
-
         // Wait until running the next step of the state machine
         vTaskDelay(pdMS_TO_TICKS(DISPLAY_UPDATE_INTERVAL));
     }
+
 }
 
 void DisplayTask::run_boot(){
-    // ✅ DEBUG: Print StateMachine State Change
-    Serial.println("[DisplayTask] - Waiting for INIT command...");
-    // Import color-lib for otehr methods to use
-    import_colorlib();                          // Import color library
-    // Initialize button state
-    stableButtonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
-    lastButtonChange = millis();
+    // Check if BMS is Ready
+    if (g_bmsLatched) {
+        // Transition to INIT
+        setDisplayState(DisplayState::INIT);
+        // Import color-lib for otehr methods to use
+        import_colorlib();                          // Import color library
+        // Initialize button state
+        stableButtonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
+        lastButtonChange = millis();
+    }
 };
 
 void DisplayTask::run_init(){
     // ✅ DEBUG: Print StateMachine State Change    
     // Configure Display
     Serial.println("[DisplayTask] - Configuring Display...");
-    strip.begin();                              // Initialize the NeoPixel library
     strip.setBrightness(NEOPIXEL_BRIGHTNESS);   // Set brightness 
     strip.show();                               // Update strip to apply brightness and clear LEDs
     // Display the GIT SHA Pattern on the display to confirm correct SW version
@@ -112,19 +123,11 @@ void DisplayTask::run_display_accel(){
 };
 
 bool DisplayTask::debounceButton(bool rawState) {
-    // Check if the rawstate reading of the button is different from the button's stable state
-    if (rawState != stableButtonState) {
-        // If enough time has elapsed to check for debounce
-        if (millis() - lastButtonChange >= GPIO_DEBOUNCE_DELAY) {
-            // Capture the button state
-            stableButtonState = rawState;
-            lastButtonChange = millis();
-            return true;
-        }
-    } else {
-        lastButtonChange = millis();
-    }
-    return false;
+    // Save the current stableButtonState (since the function passes it by reference)
+    bool prevState = stableButtonState;
+    bool debouncedState = helperdebounceButton(rawState, stableButtonState, lastButtonChange, GPIO_DEBOUNCE_DELAY);
+    // Return true only if we have a rising edge (LOW -> HIGH)
+    return (prevState == LOW && debouncedState == HIGH);
 }
 
 void DisplayTask::cycleDisplayState() {
@@ -149,6 +152,14 @@ void DisplayTask::cycleDisplayState() {
     Serial.printf("[DisplayTask] - Switched to state: %d\n", static_cast<int>(current_state));
 }
 
+void DisplayTask::turnDisplayOFF() {
+    // Set all pixels to OFF
+    for (int LED = 0; LED < NEOPIXEL_COUNT; LED++) {
+        strip.setPixelColor(LED, 0, 0, 0); // RGB = 0,0,0 → off
+    }
+    strip.show(); 
+    strip.clear();
+}
 // import_colorslib method deffinition
 void DisplayTask::import_colorlib() {
 // Initialize Color library

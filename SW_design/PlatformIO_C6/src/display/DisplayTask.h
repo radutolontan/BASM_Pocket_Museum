@@ -40,7 +40,6 @@ private:
     unsigned long lastStateChange;
     unsigned long lastUpdateTime;
 
-    // Public Variables
     DisplayState current_state;
 
     // Button debounce state
@@ -60,6 +59,7 @@ private:
     // Helper methods
     void displayPressure(float pressure);
     void displayGitShaPattern();
+    void turnDisplayOFF();
     uint32_t getRandomColor();
     void import_colorlib();
 
