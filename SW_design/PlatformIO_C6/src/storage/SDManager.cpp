@@ -149,17 +149,17 @@ void SDManager::run_boot(){
     // Create SD Queue ; if successful, set WAIT_FOR_INSERT mode
     sdQueue = xQueueCreate(10, sizeof(SDRequest));
     if (sdQueue == nullptr) {
-        Serial.println("[SDManager] - Failed to create queue!");
+        //Serial.println("[SDManager] - Failed to create queue!");
         setSDState(SDState::ERROR);
     } else {
-        Serial.println("[SDManager] - BOOT Successful!");
+        //Serial.println("[SDManager] - BOOT Successful!");
         setSDState(SDState::WAIT_FOR_INSERT);
     }
 }
 
 void SDManager::run_wait_for_insert(){
     if (stableCardInserted) {
-        Serial.println("[SDManager] - Card Inserted! Proceeding with Mounting...");
+        //Serial.println("[SDManager] - Card Inserted! Proceeding with Mounting...");
         // Sleep 500 ms before releasing (allow SD card to fully seat)
         vTaskDelay(pdMS_TO_TICKS(500)); 
         // If a card has been inserted, we can go ahead and mount it
@@ -176,14 +176,14 @@ void SDManager::run_mounting(){
     SPI.begin(SPI_SCK_PIN, SPI_MISO_PIN, SPI_MOSI_PIN, SPI_CS_PIN);
     // Check if SD begin was successful
     if (!SD.begin(SPI_CS_PIN, SPI)) {
-        Serial.println("[SDManager] - Card Mount Failed!");
+        //Serial.println("[SDManager] - Card Mount Failed!");
         setSDState(SDState::ERROR);
         return;
     }
     // Check if SD card type is present
     uint8_t cardType = SD.cardType();
     if (cardType == CARD_NONE) {
-        Serial.println("[SDManager] - No SD Card Attached!");
+        //Serial.println("[SDManager] - No SD Card Attached!");
         setSDState(SDState::ERROR);
         return;
     }
@@ -202,7 +202,7 @@ void SDManager::run_mounting(){
 
 void SDManager::run_ready(){
     if (!stableCardInserted) {
-        Serial.println("[SDManager] - Card removed → UNMOUNTING");
+        //Serial.println("[SDManager] - Card removed → UNMOUNTING");
         // If card was removed, transition state to UNMOUNTING
         setSDState(SDState::UNMOUNTING);
     } else { 
@@ -215,14 +215,14 @@ void SDManager::run_ready(){
 }
 
 void SDManager::run_unmounting(){
-    Serial.println("[SDManager] - Unmounting SD card...");
+    //Serial.println("[SDManager] - Unmounting SD card...");
     SD.end();
     // Transition state to Ready for Insert
     setSDState(SDState::WAIT_FOR_INSERT);
 }
 
 void SDManager::run_error(){
-    Serial.println("[SDManager] - ERROR");
+    //Serial.println("[SDManager] - ERROR");
     if (!stableCardInserted) {
         setSDState(SDState::WAIT_FOR_INSERT);
     }

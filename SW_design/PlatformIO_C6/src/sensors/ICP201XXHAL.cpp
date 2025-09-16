@@ -6,8 +6,6 @@
 #include <ICP201xx.h>
 #include <Wire.h>
 
-
-
 ICP201XXHAL::ICP201XXHAL(TwoWire& wire)
     : icp_hw(wire, ICP201000_LSB_ADDRESS_BIT) {}
 

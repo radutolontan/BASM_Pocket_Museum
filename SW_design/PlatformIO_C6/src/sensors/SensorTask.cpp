@@ -1,6 +1,7 @@
 #include "sensors/SensorTask.h"
 #include "sensors/ICP201XXHAL.h"
-#include "sensors/LSM6DXXHAL.h"
+#include "sensors/ICM209XXHAL.h"
+#include "sensors/BH1750HAL.h"
 #include "sensors/SensorHAL.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
@@ -14,8 +15,11 @@
 // Instantiate ICP20100 HAL Wrapper
 ICP201XXHAL pressureSensor(Wire);
 
-// Instantiate LSM6DSL HAL Wrapper 
-// LSM6DXXHAL imuSensor(Wire);
+// Instantiate BH1750FVI HAL Wrapper
+BH1750HAL lightSensor(Wire);
+
+// Instantiate ICM20948 HAL Wrapper 
+ICM209XXHAL imuSensor(Wire);
 
 // CLASS Constructor
 SensorTask::SensorTask() {}
@@ -89,11 +93,17 @@ void SensorTask::run_init(){
         Serial.println("[SensorTask] - ICP20100 initialized successfully");
     }
 
-    // LSM6DSL SENSOR 
-    // if (imuSensor.begin()){
-    //     // ✅ DEBUG: Conifrm Sensor Read successful
-    //     Serial.println("[SensorTask] - LSM6DSL initialized successfully");
-    // }
+    // BH1750FVI SENSOR 
+    if (lightSensor.begin()){
+        // ✅ DEBUG: Conifrm Sensor Read successful
+        Serial.println("[SensorTask] - BH1750FVI initialized successfully");
+    }
+
+    // ICM20948 SENSOR 
+    if (imuSensor.begin()){
+        // ✅ DEBUG: Conifrm Sensor Read successful
+        Serial.println("[SensorTask] - ICM20948 initialized successfully");
+    }
         
     delay(1000);
     lastReadTime = millis();
@@ -104,18 +114,55 @@ void SensorTask::run_read(){
     // Serial.println("[SensorTask] - Sampling sensor...");
     // =============== ICP20100 SENSOR ==================
     if (pressureSensor.read(current_reading)) {
-        Serial.println("[SensorTask] - sensorData.temperature = " + String(current_reading.temperature));
-        Serial.println("[SensorTask] - sensorData.pressured = " + String(current_reading.pressure));
+        // Serial.print("[SensorTask]-temp:");
+        // Serial.println(current_reading.temperature);
+        // Serial.print("[SensorTask]-pressure:");
+        // Serial.println(current_reading.pressure);
     }
-    // ================ LSM6DSL SENSOR ===================
-    //if (imuSensor.read(current_reading)) {
+    // ================= BH1750 SENSOR ==================
+    if (lightSensor.read(current_reading)) {
+        // Serial.print("[SensorTask]-light_intensity:");
+        // Serial.println(current_reading.light_intensity);
+    }
+    // ================ ICM20948 SENSOR ===================
+    if (imuSensor.read(current_reading)) {
         // Serial.println("[SensorTask] - sensorData.accel_x = " + String(current_reading.accel_x));
         // Serial.println("[SensorTask] - sensorData.accel_y = " + String(current_reading.accel_y));
         // Serial.println("[SensorTask] - sensorData.accel_z = " + String(current_reading.accel_z));
         // Serial.println("[SensorTask] - sensorData.gyro_x = " + String(current_reading.gyro_x));
         // Serial.println("[SensorTask] - sensorData.gyro_y = " + String(current_reading.gyro_y));
         // Serial.println("[SensorTask] - sensorData.gyro_z = " + String(current_reading.gyro_z));
-    //}
+        // Serial.println("[SensorTask] - sensorData.mag_x = " + String(current_reading.mag_x));
+        // Serial.println("[SensorTask] - sensorData.mag_y = " + String(current_reading.mag_y));
+        // Serial.println("[SensorTask] - sensorData.mag_z = " + String(current_reading.mag_z));
+        Serial.print("accelx:");
+        Serial.println(current_reading.accel_x);
+        Serial.print(">accelx:");
+        Serial.println(current_reading.accel_x);
+
+        Serial.print("accely:");
+        Serial.println(current_reading.accel_y);
+        Serial.print(">accely:");
+        Serial.println(current_reading.accel_y);
+
+        Serial.print("accelz:");
+        Serial.println(current_reading.accel_z);
+        Serial.print(">accelz:");
+        Serial.println(current_reading.accel_z);
+
+        Serial.print(">gyrox:");
+        Serial.println(current_reading.gyro_x);
+        Serial.print(">gyroy:");
+        Serial.println(current_reading.gyro_y);
+        Serial.print(">gyroz:");
+        Serial.println(current_reading.gyro_z);
+        // Serial.print("magx:");
+        // Serial.println(current_reading.mag_x);
+        // Serial.print("magy:");
+        // Serial.println(current_reading.mag_y);
+        // Serial.print("magz:");
+        // Serial.println(current_reading.mag_x);
+    }
     lastReadTime = millis();
 
     // After reading is complete, add it to the shared_data_buffer

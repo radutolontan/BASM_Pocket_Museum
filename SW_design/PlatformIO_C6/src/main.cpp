@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "sensors/SensorTask.h"
 #include "display/DisplayTask.h"
+#include "audio/AudioTask.h"
 #include "storage/SDManager.h"
 #include "power/BMSTask.h"
 #include "shared_resources/SharedDataBuffer.h"
@@ -11,6 +12,7 @@ SensorTask sensorTask;
 DisplayTask displayTask;
 SDManager sDManager;
 BMSTask bmsTask;
+AudioTask audioTask;
 EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager 
 
 // Define & Initialize BMS_Latch flag (declared in globals.h)
@@ -31,6 +33,7 @@ void setup() {
     displayTask.setupDisplayTask();
     sDManager.setupSDManager();
     bmsTask.setupBMSTask();
+    audioTask.setupAudioTask();
     evaluatorTask.setupEvaluatorTask(displayTask); // Some evaluators need reference to other tasks and data structurses
 
     // Create FreeRTOS task for running  SENSORTASK state machine
@@ -88,14 +91,17 @@ void setup() {
         0                                       // Core (only 0 for ESP32 C6 MINI)
     );
 
-    // // ✅ Trigger INIT state after BMS latches POWER
-    // if (bmsTask.getBMSState() == BMSState::STARTUP_LATCH){
-    //     Serial.println("Main: Triggering INIT state from setup()");
-    //     sensorTask.setSensorState(SensorState::INIT);
-    //     displayTask.setDisplayState(DisplayState::INIT);
-    //     // sDManager switches from BOOT to WAIT_FOR_INSERT internally 
-    //     // EvaluatorTask switches from BOOT to INIT internally after confirming SDManager readiness
-    // }
+    // Create FreeRTOS task for running AUDIOTASK state machine
+    xTaskCreatePinnedToCore(
+        AudioTask::runAudioTaskWrapper,         // Function to run
+        "AudioTask",                            // Name
+        4096,                                   // Stack size in words
+        &audioTask,                             // Pass object as parameter
+        5,                                      // Priority
+        nullptr,                                // Task handle
+        0                                       // Core (only 0 for ESP32 C6 MINI)
+    );
+
 }
 
 void loop() {
