@@ -21,9 +21,17 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 #define DEBUG_LED_PIN 15
 
 // [WS2812B]
-#define NEOPIXEL_PIN 8
-#define NEOPIXEL_COUNT 9
-#define NEOPIXEL_BRIGHTNESS 70  // int[0,255]
+#define NEOPIXEL_PIN              8
+#define NEOPIXEL_BRIGHTNESS       70  // int[0,255]
+#define MODE_DISPLAY_COUNT        2
+#define DIRECTION_DISPLAY_COUNT   3
+#define MAGNITUDE_DISPLAY_COUNT   4
+#define NEOPIXEL_COUNT            (MODE_DISPLAY_COUNT + DIRECTION_DISPLAY_COUNT + MAGNITUDE_DISPLAY_COUNT)
+// Compute segment offsets
+#define MODE_DISPLAY_OFFSET       0
+#define DIRECTION_DISPLAY_OFFSET  (MODE_DISPLAY_OFFSET + MODE_DISPLAY_COUNT)
+#define MAGNITUDE_DISPLAY_OFFSET  (DIRECTION_DISPLAY_OFFSET + DIRECTION_DISPLAY_COUNT)
+
 
 // [I2C_SENSORS]
 #define I2C_SDA_PIN 2

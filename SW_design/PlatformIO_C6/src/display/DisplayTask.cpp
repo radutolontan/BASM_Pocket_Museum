@@ -71,12 +71,36 @@ void DisplayTask::runDisplayTask() {
             run_display_pressure();
             break;
         }
+        case DisplayState::DISPLAY_TEMP:{
+            run_display_temp();
+            break;
+        }
+        case DisplayState::DISPLAY_LUX:{
+            run_display_lux();
+            break;
+        }
+        case DisplayState::DISPLAY_VOLUME:{
+            run_display_volume();
+            break;
+        }
         case DisplayState::DISPLAY_ACCEL:{
             run_display_accel();
             break;
         }
+        case DisplayState::DISPLAY_MAG:{
+            run_display_mag_field();
+            break;
+        }
+        case DisplayState::DISPLAY_ROT_VEL:{
+            run_display_rot_vel();
+            break;
+        }
     }
 }
+
+// ================================================== //
+// ============= STATE HANDLING METHODS ============= //
+// ================================================== //
 
 void DisplayTask::run_boot(){
     // Check if BMS is Ready
@@ -92,9 +116,6 @@ void DisplayTask::run_boot(){
 };
 
 void DisplayTask::run_init(){
-    // ✅ DEBUG: Print StateMachine State Change    
-    // Configure Display
-    Serial.println("[DisplayTask] - Configuring Display...");
     strip.setBrightness(NEOPIXEL_BRIGHTNESS);   // Set brightness 
     strip.show();                               // Update strip to apply brightness and clear LEDs
     // Display the GIT SHA Pattern on the display to confirm correct SW version
@@ -105,21 +126,62 @@ void DisplayTask::run_init(){
 };
 
 void DisplayTask::run_display_pressure(){
-    // ✅ DEBUG: Print StateMachine State Change   
-    // Serial.println("[DisplayTask] - Updating sensor display...");
+    // Update Mode Display
+    updateModeDisplay();
+    // Get Pressure Reading
     auto readings = SharedBuffer::getReadings();
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
-        displayPressure(latest.pressure);
     }
+    // Send All Data to LED Strip
+    strip.show();
+};
+
+void DisplayTask::run_display_temp(){
+    // Update Mode Display
+    updateModeDisplay();
+    // Send All Data to LED Strip
+    strip.show();
+};
+
+void DisplayTask::run_display_lux(){
+    // Update Mode Display
+    updateModeDisplay();
+    // Send All Data to LED Strip
+    strip.show();
+};
+
+void DisplayTask::run_display_volume(){
+    // Update Mode Display
+    updateModeDisplay();
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 void DisplayTask::run_display_accel(){
-    strip.setPixelColor(0, colors_lib[1]); 
-    strip.setPixelColor(1, colors_lib[1]); 
-    strip.setPixelColor(2, colors_lib[1]); 
+    // Update Mode Display
+    updateModeDisplay();
+    // Send All Data to LED Strip
     strip.show();
 };
+
+void DisplayTask::run_display_mag_field(){
+    // Update Mode Display
+    updateModeDisplay();
+    // Send All Data to LED Strip
+    strip.show();
+};
+
+void DisplayTask::run_display_rot_vel(){
+    // Update Mode Display
+    updateModeDisplay();
+    // Send All Data to LED Strip
+    strip.show();
+};
+
+// ================================================== //
+// ============ BUTTON HANDLING METHODS ============= //
+// ================================================== //
 
 bool DisplayTask::debounceButton(bool rawState) {
     // Save the current stableButtonState (since the function passes it by reference)
@@ -133,12 +195,32 @@ void DisplayTask::cycleDisplayState() {
     // Before switching, compute the aggregate sensor data for the last time
     SensorStats stats = SharedBuffer::getAggregatedStats();
     switch (current_state) {
-        // If in PRESSURE DISPLAY -> DISPLAY ACCEL
+        // If in PRESSURE DISPLAY -> TEMPERATURE DISPLAY
         case DisplayState::DISPLAY_PRESSURE:
+            setDisplayState(DisplayState::DISPLAY_TEMP);
+            break;
+        // If in TEMPERATURE DISPLAY -> LIGHT INTENSITY (LUX) DISPLAY
+        case DisplayState::DISPLAY_TEMP:
+            setDisplayState(DisplayState::DISPLAY_LUX);
+            break;
+        // If in LIGHT INTENSITY (LUX) DISPLAY -> VOLUME DISPLAY
+        case DisplayState::DISPLAY_LUX:
+            setDisplayState(DisplayState::DISPLAY_VOLUME);
+            break;
+        // If in VOLUME DISPLAY -> ACCELERATION DISPLAY
+        case DisplayState::DISPLAY_VOLUME:
             setDisplayState(DisplayState::DISPLAY_ACCEL);
             break;
-        // If in ACCEL DISPLAY -> PRESSURE ACCEL
+        // If in ACCEL DISPLAY -> MAGNETIC FIELD DISPLAY
         case DisplayState::DISPLAY_ACCEL:
+            setDisplayState(DisplayState::DISPLAY_MAG);
+            break;
+        // If in MAGNETIC FIELD DISPLAY -> ROTATION VELOCITY DISPLAY
+        case DisplayState::DISPLAY_MAG:
+            setDisplayState(DisplayState::DISPLAY_ROT_VEL);
+            break;
+        // If in ROTATION VELOCITY DISPLAY -> PRESSURE DISPLAY
+        case DisplayState::DISPLAY_ROT_VEL:
             setDisplayState(DisplayState::DISPLAY_PRESSURE);
             break;
         default:
@@ -149,6 +231,56 @@ void DisplayTask::cycleDisplayState() {
     SharedBuffer::resetAggregates();
 
     Serial.printf("[DisplayTask] - Switched to state: %d\n", static_cast<int>(current_state));
+}
+
+// ================================================== //
+// ====== DISPLAY SEGMENT MANAGEMENT METHODS ======== //
+// ================================================== //
+
+void DisplayTask::updateModeDisplay() {
+    uint32_t baseColor = 0;
+    // Pick the color based on the ModeDisplay
+    switch (current_state) {
+        case DisplayState::DISPLAY_PRESSURE:{
+            baseColor = colors_lib[2]; // Yellow
+            break;
+        }
+        case DisplayState::DISPLAY_TEMP:{
+            baseColor = colors_lib[4]; // Red
+            break;
+        }
+        case DisplayState::DISPLAY_LUX:{
+            baseColor = colors_lib[7]; // White
+            break;
+        }
+        case DisplayState::DISPLAY_VOLUME:{
+            baseColor = colors_lib[5]; // Purple
+            break;
+        }
+        case DisplayState::DISPLAY_ACCEL:{
+            baseColor = colors_lib[3]; // Green
+            break;
+        }
+        case DisplayState::DISPLAY_MAG:{
+            baseColor = colors_lib[2]; // Yellow
+            break;
+        }
+        case DisplayState::DISPLAY_ROT_VEL:{
+            baseColor = colors_lib[6]; // Orange
+            break;
+        }
+        default:
+            baseColor = colors_lib[0]; // OFF fallback
+            break;
+        }
+
+
+    // Fill MODE_DISPLAY LEDs
+    for (int i = 0; i < MODE_DISPLAY_COUNT; i++) {
+        strip.setPixelColor(MODE_DISPLAY_OFFSET + i, baseColor);
+    }
+
+    // TO-DO: ADD OVERRIDE FOR MONITORING OTHER STATE MACHINES
 }
 
 void DisplayTask::turnDisplayOFF() {
@@ -234,7 +366,6 @@ uint32_t DisplayTask::getRandomColor() {
     uint8_t b = (random(0, 256) / step) * step;
     return strip.Color(r, g, b);
 }
-
 
 // FREE HELPER FUNCTIONS
 uint32_t  DisplayTask::hashStringToSeed(const char* str) {
