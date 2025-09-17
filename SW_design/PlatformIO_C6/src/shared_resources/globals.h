@@ -1,6 +1,6 @@
 #pragma once
 
-// ============= SW VERSION ==============
+// =========== SW VERSION =============
 #define GIT_SHA "EDUV0_BRINGUPz"
 
 // ===== ESP32 PERIPHERAL BINDING =====
@@ -24,14 +24,13 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 #define NEOPIXEL_PIN              8
 #define NEOPIXEL_BRIGHTNESS       70  // int[0,255]
 #define MODE_DISPLAY_COUNT        2
-#define DIRECTION_DISPLAY_COUNT   3
-#define MAGNITUDE_DISPLAY_COUNT   4
+#define DIRECTION_DISPLAY_COUNT   1
+#define MAGNITUDE_DISPLAY_COUNT   6
 #define NEOPIXEL_COUNT            (MODE_DISPLAY_COUNT + DIRECTION_DISPLAY_COUNT + MAGNITUDE_DISPLAY_COUNT)
 // Compute segment offsets
 #define MODE_DISPLAY_OFFSET       0
 #define DIRECTION_DISPLAY_OFFSET  (MODE_DISPLAY_OFFSET + MODE_DISPLAY_COUNT)
 #define MAGNITUDE_DISPLAY_OFFSET  (DIRECTION_DISPLAY_OFFSET + DIRECTION_DISPLAY_COUNT)
-
 
 // [I2C_SENSORS]
 #define I2C_SDA_PIN 2
@@ -51,12 +50,29 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 
 // =========== TASK RATES ===============
 // NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * (1000/TASK_RATE_DISPLAY)
-#define SENSOR_READ_INTERVAL 100 // milliseconds
-#define TASK_RATE_SENSOR 50 // Hz - NOT CURRENTLY IN USE DUE TO SLEEP MODE
+#define SENSOR_READ_INTERVAL 5 // milliseconds
+#define TASK_RATE_SENSOR 70 // Hz 
 
 #define TASK_RATE_DISPLAY 50 // Hz
 #define TASK_RATE_BMS 50 // Hz
 
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
+
+// ===== MAGNITUDE DISPLAY VU-METER =====
+#define VU_MIN_TEMP    12
+#define VU_MAX_TEMP    30
+#define VU_MIN_PRESS   980
+#define VU_MAX_PRESS   1000
+#define VU_MIN_LUX     700
+#define VU_MAX_LUX     10000
+#define VU_MIN_VOL     -40
+#define VU_MAX_VOL     -10
+#define VU_MIN_ACCEL   8
+#define VU_MAX_ACCEL   20
+#define VU_MIN_MAG     30
+#define VU_MAX_MAG     90
+#define VU_MIN_ROT     10
+#define VU_MAX_ROT     300
+
 
 

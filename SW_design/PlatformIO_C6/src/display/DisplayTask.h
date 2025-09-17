@@ -55,6 +55,9 @@ private:
     bool debounceButton(bool rawState);
     void cycleDisplayState();
 
+    // LED mapping (logical index → physical LED)
+    static const int LED_MAPPING[NEOPIXEL_COUNT];
+
     // State handling methods
     void run_boot();
     void run_init();
@@ -67,11 +70,14 @@ private:
     void run_display_rot_vel();
 
     // Segment handling methods
-    void updateModeDisplay();
+    void updateModeDisplay(); // Manages the MODE DISPLAY
+    void updateMagnitudeDisplay(float value, float minValue, float maxValue); // Manages the MAGNITUDE DISPLAY (currently operates a normalized VU-METER Only)
 
     // Helper methods
-    void displayPressure(float pressure);
+    void setLogicalPixel(int logicalIndex, uint32_t color); // Transposes logical to physical pixels
+    uint32_t getMagnitudeColor(float normalized, int ledIndex); // returns a color on a green-yellow-red scale for an input between 0 and 1 and an LEDIndex
     void displayGitShaPattern();
+    uint32_t applyBreathing(uint32_t baseColor, uint32_t now);
     void turnDisplayOFF();
     uint32_t getRandomColor();
     void import_colorlib();

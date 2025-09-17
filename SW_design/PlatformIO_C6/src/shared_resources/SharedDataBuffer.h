@@ -13,11 +13,11 @@ struct SensorData {
     // Light Intensity (lux)
     float light_intensity;
     // Accelerometer (mg)
-    float accel_x, accel_y, accel_z;
+    float accel_x, accel_y, accel_z, accel_norm;
     // Gyroscope (deg/s)
-    float gyro_x, gyro_y, gyro_z;
+    float gyro_x, gyro_y, gyro_z, gyro_norm;
     // Magnetometer (uT)
-    float mag_x, mag_y, mag_z;
+    float mag_x, mag_y, mag_z, mag_norm;
 };
 
 struct SensorStats {

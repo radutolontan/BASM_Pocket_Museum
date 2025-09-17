@@ -18,6 +18,27 @@ DisplayTask::DisplayTask()
 
 }
 
+// Logical → physical LED mapping
+// ================= NORMAL CONFIG ================= //
+// MODE_DISPLAY = LEDs #0, #1
+// DIRECTION_DISPLAY = LEDs #3 [X], #2 [Y], #4 [Z] 
+// MAGNITUDE_DISPLAY = LEDs #8, #7, #6, #5
+// ================== LITE CONFIG ================== //
+// MODE_DISPLAY = LEDs #0, #1
+// DIRECTION_DISPLAY = INOP
+// MAGNITUDE_DISPLAY = LEDs #8, #7, #6, #5, #4, #3
+    const int DisplayTask::LED_MAPPING[NEOPIXEL_COUNT] = {    
+    0,  // logical 0 → physical LED 0  (MODE)
+    1,  // logical 1 → physical LED 1  (MODE)
+    2,  // logical 2 → physical LED 2  (INOP - DIRECTION)
+    8,  // logical 3 → physical LED 8  (MAGNITUDE)
+    7,  // logical 4 → physical LED 7  (MAGNITUDE)
+    6,  // logical 5 → physical LED 6  (MAGNITUDE)
+    5,  // logical 6 → physical LED 5  (MAGNITUDE)
+    4,  // logical 7 → physical LED 4  (MAGNITUDE)
+    3,  // logical 8 → physical LED 3  (MAGNITUDE)
+};
+
 void DisplayTask::setupDisplayTask() {
     strip.begin();  // Initialize the NeoPixel library
     setDisplayState(DisplayState::BOOT);
@@ -133,6 +154,8 @@ void DisplayTask::run_display_pressure(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
     }
+    // Update Magnitude Display
+    updateMagnitudeDisplay(37, VU_MIN_PRESS, VU_MAX_PRESS);
     // Send All Data to LED Strip
     strip.show();
 };
@@ -140,6 +163,8 @@ void DisplayTask::run_display_pressure(){
 void DisplayTask::run_display_temp(){
     // Update Mode Display
     updateModeDisplay();
+    // Update Magnitude Display
+    updateMagnitudeDisplay(10, VU_MIN_TEMP, VU_MAX_TEMP);
     // Send All Data to LED Strip
     strip.show();
 };
@@ -147,6 +172,8 @@ void DisplayTask::run_display_temp(){
 void DisplayTask::run_display_lux(){
     // Update Mode Display
     updateModeDisplay();
+    // Update Magnitude Display
+    updateMagnitudeDisplay(40, VU_MIN_LUX, VU_MAX_LUX);
     // Send All Data to LED Strip
     strip.show();
 };
@@ -154,6 +181,8 @@ void DisplayTask::run_display_lux(){
 void DisplayTask::run_display_volume(){
     // Update Mode Display
     updateModeDisplay();
+    // Update Magnitude Display
+    updateMagnitudeDisplay(45, VU_MIN_VOL, VU_MAX_VOL);
     // Send All Data to LED Strip
     strip.show();
 };
@@ -161,6 +190,8 @@ void DisplayTask::run_display_volume(){
 void DisplayTask::run_display_accel(){
     // Update Mode Display
     updateModeDisplay();
+    // Update Magnitude Display
+    updateMagnitudeDisplay(85, VU_MIN_ACCEL, VU_MAX_ACCEL);
     // Send All Data to LED Strip
     strip.show();
 };
@@ -168,6 +199,8 @@ void DisplayTask::run_display_accel(){
 void DisplayTask::run_display_mag_field(){
     // Update Mode Display
     updateModeDisplay();
+    // Update Magnitude Display
+    updateMagnitudeDisplay(90, VU_MIN_MAG, VU_MAX_MAG);
     // Send All Data to LED Strip
     strip.show();
 };
@@ -175,6 +208,8 @@ void DisplayTask::run_display_mag_field(){
 void DisplayTask::run_display_rot_vel(){
     // Update Mode Display
     updateModeDisplay();
+    // Update Magnitude Display
+    updateMagnitudeDisplay(100, VU_MIN_ROT, VU_MAX_ROT);
     // Send All Data to LED Strip
     strip.show();
 };
@@ -273,14 +308,64 @@ void DisplayTask::updateModeDisplay() {
             baseColor = colors_lib[0]; // OFF fallback
             break;
         }
-
-
-    // Fill MODE_DISPLAY LEDs
+    // Show base color (for Display Mode) (w. Breathing Effect)
+    uint32_t now = millis();
     for (int i = 0; i < MODE_DISPLAY_COUNT; i++) {
-        strip.setPixelColor(MODE_DISPLAY_OFFSET + i, baseColor);
+        uint32_t color = applyBreathing(baseColor, now);
+        setLogicalPixel(MODE_DISPLAY_OFFSET + i, color);
+    }
+    // TO-DO: ADD OVERRIDE FOR MONITORING OTHER STATE MACHINES
+}
+
+void DisplayTask::updateMagnitudeDisplay(float value, float minValue, float maxValue) {
+    // Clamp and normalize 0..1
+    float normalized = (value - minValue) / (maxValue - minValue);
+    normalized = fmax(0.0f, fmin(1.0f, normalized));
+    // For ALL LEDs in the MAGNITUDE_DISPLAY, get a magnitude color, and send it to the right index
+    for (int i = 0; i < MAGNITUDE_DISPLAY_COUNT; i++) {
+        uint32_t color = getMagnitudeColor(normalized, i);
+        setLogicalPixel(MAGNITUDE_DISPLAY_OFFSET + i, color);
+    }
+}
+
+// ================================================== //
+// ================== HELPER METHODS ================ //
+// ================================================== //
+
+void DisplayTask::setLogicalPixel(int logicalIndex, uint32_t color) {
+    if (logicalIndex >= 0 && logicalIndex < NEOPIXEL_COUNT) {
+        int physicalIndex = LED_MAPPING[logicalIndex];
+        strip.setPixelColor(physicalIndex, color);
+    }
+}
+
+uint32_t DisplayTask::getMagnitudeColor(float normalized, int ledIndex) {
+    // LED threshold
+    float threshold = (float)(ledIndex + 1) / MAGNITUDE_DISPLAY_COUNT;
+
+    if (normalized < threshold) return colors_lib[0]; // OFF
+
+    // Determine gradient position 0..1 across the LEDs
+    float t = (float)ledIndex / (MAGNITUDE_DISPLAY_COUNT - 1); 
+
+    // Interpolate RGB
+    uint8_t r, g, b;
+
+    if (t < 0.5f) {
+        // Green → Yellow
+        float f = t / 0.5f;
+        r = (uint8_t)(f * 255);
+        g = 255;
+        b = 0;
+    } else {
+        // Yellow → Red
+        float f = (t - 0.5f) / 0.5f;
+        r = 255;
+        g = (uint8_t)((1.0f - f) * 255);
+        b = 0;
     }
 
-    // TO-DO: ADD OVERRIDE FOR MONITORING OTHER STATE MACHINES
+    return strip.Color(r, g, b);
 }
 
 void DisplayTask::turnDisplayOFF() {
@@ -291,7 +376,7 @@ void DisplayTask::turnDisplayOFF() {
     strip.show(); 
     strip.clear();
 }
-// import_colorslib method deffinition
+
 void DisplayTask::import_colorlib() {
 // Initialize Color library
     colors_lib.push_back(Adafruit_NeoPixel::Color(0, 0, 0));        // 0 OFF 
@@ -304,42 +389,28 @@ void DisplayTask::import_colorlib() {
     colors_lib.push_back(Adafruit_NeoPixel::Color(255, 255, 255));  // 7 White
 }
 
-void DisplayTask::displayPressure(float pressure_float) {
-    // Round a floating point value to the nearest integer
-    int16_t pressure_rounded = static_cast<int16_t>(std::round(pressure_float * 10));
-    // Apply bitmask and keep only bits 0-8
-    uint16_t pressure_masked = static_cast<int16_t>(pressure_rounded) & 0x01FF;
-    // COnvert to bitset
-    std::bitset<16> pressure_bits(pressure_masked);
-    // Compute and set color for each LED
-    for (int LED = 0; LED < NEOPIXEL_COUNT; ++LED){
-        // Starting bit and bimtask of LED
-        int start_bit = LED * 3;
-        uint16_t led_mask = 0b111 << start_bit;
-        // Apply bitmask to extract LED components
-        uint16_t led_bits = (pressure_masked & led_mask) >> start_bit;
-        // Set the appropriate color to the LED
-        // ======= RED ======== YELLOW ======== BLUE =======
-        // ======= 2^2 ========  2^1   ========  2^0 =======
-        // ======= 2^5 ========  2^4   ========  2^3 =======
-        // ======= 2^8 ========  2^7   ========  2^6 =======
-        // =======  4  ========    2   ========   1  =======
-        // -------------------------------------------------
-        // 1 =====  0  ========    0   ========   1  ======= => BLUE
-        // 2 =====  0  ========    1   ========   0  ======= => YELLOW
-        // 3 =====  0  ========    1   ========   1  ======= => GREEN
-        // 4 =====  1  ========    0   ========   0  ======= => RED
-        // 5 =====  1  ========    0   ========   1  ======= => PURPLE
-        // 6 =====  1  ========    1   ========   0  ======= => ORANGE
-        // 7 =====  1  ========    1   ========   1  ======= => WHITE
-        // -------------------------------------------------
-        // RED + BLUE         RED + BLUE + YELLOW         RED + BLUE
-        // 2^9 + 2^8 + 2^6     + 2^5 + 2^4 + 2^3         + 2^2 + 2^0
-        // Set pixel colors after reversing the display order for logical reading (Left to Righ)
-        strip.setPixelColor(NEOPIXEL_COUNT - LED - 1, colors_lib[led_bits]); 
-    }
-    // Update the display
-    strip.show();
+// ================================================== //
+// ===================== EFFECTS ==================== //
+// ================================================== //
+
+uint32_t DisplayTask::applyBreathing(uint32_t baseColor, uint32_t now) {
+    // Breathing period (ms)
+    const uint32_t period = 4000; // 3 seconds for full in/out cycle
+    // Compute phase 0..2π
+    float phase = (2.0f * M_PI * (now % period)) / period;
+    // Compute scale
+    float minLevel = 0.1f;  // 10% brightness (instead of 65%)
+    float maxLevel = 1.0f;  // full brightness
+    float scale = minLevel + (maxLevel - minLevel) * (sin(phase) * 0.5f + 0.5f);
+    // Extract RGB
+    uint8_t r = (uint8_t)((baseColor >> 16) & 0xFF);
+    uint8_t g = (uint8_t)((baseColor >>  8) & 0xFF);
+    uint8_t b = (uint8_t)((baseColor >>  0) & 0xFF);
+    // Apply brightness scale
+    r = (uint8_t)(r * scale);
+    g = (uint8_t)(g * scale);
+    b = (uint8_t)(b * scale);
+    return strip.Color(r, g, b);
 }
 
 
@@ -347,6 +418,7 @@ void DisplayTask::displayPressure(float pressure_float) {
  Takes strip length - NEOPIXEL_COUNT ; 
  Always produces the same color sequence for the same string and strip length
 */
+
 void DisplayTask::displayGitShaPattern() {
     uint32_t seed = DisplayTask::hashStringToSeed(GIT_SHA);
     randomSeed(seed);

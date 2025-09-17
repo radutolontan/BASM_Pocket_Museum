@@ -17,7 +17,7 @@ bool ICP201XXHAL::begin() {
         last_error_code = error_code;
         return false;
     }
-    // Start taking measurements
+    // Initialize sensor in MODE0 (ODR 25Hz)
     error_code = icp_hw.start();
     if (error_code != 0) {
         last_error_code = error_code;
@@ -34,7 +34,7 @@ bool ICP201XXHAL::read(SensorData& data) {
     float temperature_C = 0.0f;
     int error_code = 0, last_error_code = 0;
     // Grab data
-    error_code = icp_hw.singleMeasure(pressure_kP, temperature_C);
+    error_code = icp_hw.getData(pressure_kP,temperature_C);
     if (error_code == 0){
         // Save pressure and temperature
         data.pressure = pressure_kP;

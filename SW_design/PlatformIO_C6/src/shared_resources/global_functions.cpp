@@ -1,4 +1,6 @@
 #include "global_functions.h"
+#include <vector>
+#include <cmath>
 
 // Generic debounce helper
 bool helperdebounceButton(bool rawState, bool &stableState, unsigned long &lastChange, unsigned long debounceDelay) {
@@ -14,4 +16,10 @@ bool helperdebounceButton(bool rawState, bool &stableState, unsigned long &lastC
     }
     // Return stableState
     return stableState; 
+}
+
+double vector_norm(float x, float y, float z){
+    // Compute the norm of a 3D vector
+    double norm3D = std::sqrt(x*x + y*y + z*z);
+    return norm3D;
 }
