@@ -2,6 +2,7 @@
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
 #include "shared_resources/global_functions.h"
+#include "shared_resources/global_debug.h"
 
 #include <Adafruit_NeoPixel.h>
 #include <random>
@@ -124,9 +125,9 @@ void DisplayTask::runDisplayTask() {
     unsigned long now = millis();
     if (now - lastFreqPrintTime >= 1000) {
         float freq = updateCount / ((now - lastFreqPrintTime) / 1000.0f); // Hz
-        Serial.print("[DisplayTask] Actual update frequency: ");
-        Serial.print(freq, 2);
-        Serial.println(" Hz");
+        RATES_PRINT("[DisplayTask] Actual update frequency: ");
+        RATES_PRINT(freq);
+        RATES_PRINTLN(" Hz");
 
         // Reset counters
         updateCount = 0;

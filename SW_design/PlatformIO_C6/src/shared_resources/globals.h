@@ -35,7 +35,7 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 // [I2C_SENSORS]
 #define I2C_SDA_PIN 2
 #define I2C_SCL_PIN 3
-#define I2C_BITRATE 100000 // bits per second
+#define I2C_BITRATE 400000 // bits per second
 
 // [SPI_SDCARD]
 #define SPI_MISO_PIN  22
@@ -50,11 +50,10 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 
 // =========== TASK RATES ===============
 // NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * (1000/TASK_RATE_DISPLAY)
-#define SENSOR_READ_INTERVAL 5 // milliseconds
-#define TASK_RATE_SENSOR 85 // Hz 
-
-#define TASK_RATE_DISPLAY 50 // Hz
-#define TASK_RATE_BMS 50 // Hz
+#define TASK_RATE_SENSOR    85 // Hz 
+#define TASK_RATE_EVALUATOR 80 // Hz
+#define TASK_RATE_DISPLAY   50 // Hz
+#define TASK_RATE_BMS       50 // Hz
 
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
 
@@ -63,14 +62,14 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 #define VU_MAX_TEMP    30
 #define VU_MIN_PRESS   980
 #define VU_MAX_PRESS   1000
-#define VU_MIN_LUX     40
-#define VU_MAX_LUX     4000
+#define VU_MIN_LUX     1.8 // LOG SCALE
+#define VU_MAX_LUX     3.6 // LOG SCALE
 #define VU_MIN_VOL     -40
 #define VU_MAX_VOL     -10
 #define VU_MIN_ACCEL   990
 #define VU_MAX_ACCEL   3000
-#define VU_MIN_MAG     1370
-#define VU_MAX_MAG     4000
+#define VU_MIN_MAG     3.14 // LOG SCALE
+#define VU_MAX_MAG     3.67 // LOG SCALE
 #define VU_MIN_ROT     20
 #define VU_MAX_ROT     350
 
