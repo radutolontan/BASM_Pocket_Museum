@@ -158,8 +158,12 @@ void DisplayTask::run_init(){
     // Display the GIT SHA Pattern on the display to confirm correct SW version
     displayGitShaPattern();                     // Display GIT SHA to confirm correct SW version
     vTaskDelay(pdMS_TO_TICKS(3000));            // To view the GITSHA
-    // When done, trandisition to DisplayState::DISPLAY_SENSE
+    // When done, trandisition to DisplayState::DISPLAY_SENSOR
     setDisplayState(DisplayState::DISPLAY_PRESSURE);
+
+    //  ====================== DEBUG ===========================
+    // TURN OFF PIXEL #2
+    strip.setPixelColor(2, colors_lib[0]);
 };
 
 void DisplayTask::run_display_pressure(){
@@ -484,8 +488,6 @@ void DisplayTask::displayGitShaPattern() {
         strip.setPixelColor(i, getRandomColor());
     }
     strip.show();
-    // Keep displaying SHA for 5 seconds
-    vTaskDelay(pdMS_TO_TICKS(5000));      
 }
 
 uint32_t DisplayTask::getRandomColor() {

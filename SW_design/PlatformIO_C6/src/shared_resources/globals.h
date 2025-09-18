@@ -5,20 +5,20 @@
 
 // ===== ESP32 PERIPHERAL BINDING =====
 // [BMS]
-#define BMS_LDO_ATTACH_CMD_PIN 1
-#define BMS_VBAT_VOLT_PIN 0
-#define BMS_CHG_FDBCK_PIN 6
-#define BMS_POWOK_FDBCK_PIN 7
-#define BMS_ONOFF_PUSHBUTTON_PIN 4
-#define VBAT_DIVIDER_RTOP 178000
-#define VBAT_DIVIDER_RBOTTOM 61900
-#define BMS_TIMER_STARTUP 2700  // [ms] - HOLD ON/OFF pressed before latching ON
-#define BMS_TIMER_SHUTDOWN 2700 // [ms] - HOLD ON/OFF pressed before latching OFF
+#define BMS_LDO_ATTACH_CMD_PIN      1
+#define BMS_VBAT_VOLT_PIN           0
+#define BMS_CHG_FDBCK_PIN           6
+#define BMS_POWOK_FDBCK_PIN         7
+#define BMS_ONOFF_PUSHBUTTON_PIN    4
+#define VBAT_DIVIDER_RTOP           178000
+#define VBAT_DIVIDER_RBOTTOM        61900
+#define BMS_TIMER_STARTUP           2700  // [ms] - HOLD ON/OFF pressed before latching ON
+#define BMS_TIMER_SHUTDOWN          2700 // [ms] - HOLD ON/OFF pressed before latching OFF
 extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 
 // [GPIOs]
 #define DISPLAY_MODE_PUSHBUTTON_PIN 9
-#define DEBUG_LED_PIN 15
+#define DEBUG_LED_PIN               15
 
 // [WS2812B]
 #define NEOPIXEL_PIN              8
@@ -38,20 +38,20 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 #define I2C_BITRATE 400000 // bits per second
 
 // [SPI_SDCARD]
-#define SPI_MISO_PIN  22
-#define SPI_MOSI_PIN  20
-#define SPI_SCK_PIN   21
-#define SPI_CS_PIN    19
-#define SD_CARD_DETECT_PIN 23
+#define SPI_MISO_PIN        22
+#define SPI_MOSI_PIN        20
+#define SPI_SCK_PIN         21
+#define SPI_CS_PIN          19
+#define SD_CARD_DETECT_PIN  23
 
 // [I2S]
-#define I2S_CLK_PIN 14
-#define I2S_DATA_PIN 18
+#define I2S_CLK_PIN     14
+#define I2S_DATA_PIN    18
 
 // =========== TASK RATES ===============
 // NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * (1000/TASK_RATE_DISPLAY)
-#define TASK_RATE_SENSOR    85 // Hz 
-#define TASK_RATE_EVALUATOR 80 // Hz
+#define TASK_RATE_SENSOR    50 // Hz 
+#define TASK_RATE_EVALUATOR 50 // Hz
 #define TASK_RATE_DISPLAY   50 // Hz
 #define TASK_RATE_BMS       50 // Hz
 

@@ -4,9 +4,10 @@
 #include "audio/AudioTask.h"
 #include "storage/SDManager.h"
 #include "power/BMSTask.h"
-#include "shared_resources/SharedDataBuffer.h"
 #include "evaluators/EvaluatorTask.h"
+#include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
+#include "shared_resources/global_debug.h"
 
 SensorTask sensorTask;
 DisplayTask displayTask;
@@ -18,13 +19,16 @@ EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager
 // Define & Initialize BMS_Latch flag (declared in globals.h)
 volatile bool g_bmsLatched = false; 
 
+// Task handles for monitoring
+TaskHandle_t sensorHandle, displayHandle, audioHandle, bmsHandle, evaluatorHandle;
+
 void setup() {
     Serial.begin(115200);
 
-    // DEBUG
+    // DEBUG LED
     pinMode(DEBUG_LED_PIN, OUTPUT); 
     digitalWrite(DEBUG_LED_PIN, HIGH); // TURN ON DEBUG LED
-    
+
     // Initialize Shared Data Buffer & MUTEX protection
     SharedBuffer::init();  
 
@@ -34,86 +38,44 @@ void setup() {
     sDManager.setupSDManager();
     bmsTask.setupBMSTask();
     audioTask.setupAudioTask();
-    evaluatorTask.setupEvaluatorTask(displayTask); // Some evaluators need reference to other tasks and data structurses
+    evaluatorTask.setupEvaluatorTask(displayTask);
 
-    // Create FreeRTOS task for running  SENSORTASK state machine
-    xTaskCreatePinnedToCore(
-        SensorTask::runSensorTaskWrapper, // Function to run
-        "SensorTask",                     // Name
-        4096,                             // Stack size in words
-        &sensorTask,                      // Pass object as parameter
-        1,                                // Priority
-        nullptr,                          // Task handle
-        0                                 // Core (only 0 for ESP32 C6 MINI)
-    );
-
-    // Create FreeRTOS task for running DISPLAYTASK state machine
-    xTaskCreatePinnedToCore(
-        DisplayTask::runDisplayTaskWrapper, // Function to run
-        "DisplayTask",                      // Name
-        4096,                               // Stack size in words
-        &displayTask,                       // Pass object as parameter
-        1,                                  // Priority
-        nullptr,                            // Task handle
-        0                                   // Core (only 0 for ESP32 C6 MINI)
-    );
-
-    // Create FreeRTOS task for running SDMANAGER state machine
-    xTaskCreatePinnedToCore(
-        SDManager::runSDManagerWrapper,     // Function to run
-        "SDManager",                        // Name
-        4096,                               // Stack size in words
-        &sDManager,                         // Pass object as parameter
-        2,                                  // Priority
-        nullptr,                            // Task handle
-        0                                   // Core (only 0 for ESP32 C6 MINI)
-    );
-
-     // Create FreeRTOS task for running EVALUATORTASK state machine
-    xTaskCreatePinnedToCore(
-        EvaluatorTask::runEvaluatorTaskWrapper, // Function to run
-        "EvaluatorTask",                        // Name
-        4096,                                   // Stack size in words
-        &evaluatorTask,                         // Pass object as parameter
-        3,                                      // Priority
-        nullptr,                                // Task handle
-        0                                       // Core (only 0 for ESP32 C6 MINI)
-    );
-
-    // Create FreeRTOS task for running BMSTASK state machine
-    xTaskCreatePinnedToCore(
-        BMSTask::runBMSTaskWrapper,             // Function to run
-        "BMSTask",                              // Name
-        4096,                                   // Stack size in words
-        &bmsTask,                               // Pass object as parameter
-        4,                                      // Priority
-        nullptr,                                // Task handle
-        0                                       // Core (only 0 for ESP32 C6 MINI)
-    );
-
-    // Create FreeRTOS task for running AUDIOTASK state machine
-    xTaskCreatePinnedToCore(
-        AudioTask::runAudioTaskWrapper,         // Function to run
-        "AudioTask",                            // Name
-        4096,                                   // Stack size in words
-        &audioTask,                             // Pass object as parameter
-        5,                                      // Priority
-        nullptr,                                // Task handle
-        0                                       // Core (only 0 for ESP32 C6 MINI)
-    );
-
+    // Create FreeRTOS tasks
+    xTaskCreatePinnedToCore(SensorTask::runSensorTaskWrapper, "SensorTask", 4096, &sensorTask, 1, &sensorHandle, 0);
+    xTaskCreatePinnedToCore(DisplayTask::runDisplayTaskWrapper, "DisplayTask", 4096, &displayTask, 1, &displayHandle, 0);
+    xTaskCreatePinnedToCore(SDManager::runSDManagerWrapper, "SDManager", 4096, &sDManager, 2, nullptr, 0);
+    xTaskCreatePinnedToCore(EvaluatorTask::runEvaluatorTaskWrapper, "EvaluatorTask", 4096, &evaluatorTask, 3, &evaluatorHandle, 0);
+    xTaskCreatePinnedToCore(BMSTask::runBMSTaskWrapper, "BMSTask", 4096, &bmsTask, 4, &bmsHandle, 0);
+    xTaskCreatePinnedToCore(AudioTask::runAudioTaskWrapper, "AudioTask", 4096, &audioTask, 5, &audioHandle, 0);
 }
 
 void loop() {
-    // // Just monitor state and output
-    // static unsigned long lastPrint = 0;
-    // if (millis() - lastPrint > 2000) {
-    //     // Serial.printf("Main: State = %d, Last reading = %.2f\n",
-    //     //               static_cast<int>(current_state),
-    //     //               last_reading);
-    //     lastPrint = millis();
-    // }
+    static unsigned long lastPrint = 0;
+    const unsigned long interval = 10000; // 10 seconds
 
-    // delay(100);
+    if (millis() - lastPrint >= interval) {
+        lastPrint = millis();
 
+        char statsBuf[2048];
+
+        RATES_PRINTLN("======================================");
+        RATES_PRINTLN("FreeRTOS Task Runtime Stats:");
+        vTaskGetRunTimeStats(statsBuf); // CPU usage
+        RATES_PRINTLN(statsBuf);
+
+        RATES_PRINTLN("FreeRTOS Task List (State, Prio, Stack, Task#):");
+        vTaskList(statsBuf); // Task states
+        RATES_PRINTLN(statsBuf);
+
+        // Print stack high-water mark for each task
+        RATES_PRINTF("[SensorTask]      Stack high-water mark: %u words\n", uxTaskGetStackHighWaterMark(sensorHandle));
+        RATES_PRINTF("[DisplayTask]     Stack high-water mark: %u words\n", uxTaskGetStackHighWaterMark(displayHandle));
+        RATES_PRINTF("[AudioTask]       Stack high-water mark: %u words\n", uxTaskGetStackHighWaterMark(audioHandle));
+        RATES_PRINTF("[BMSTask]         Stack high-water mark: %u words\n", uxTaskGetStackHighWaterMark(bmsHandle));
+        RATES_PRINTF("[EvaluatorTask]   Stack high-water mark: %u words\n", uxTaskGetStackHighWaterMark(evaluatorHandle));
+
+        RATES_PRINTLN("======================================\n");
+    }
+
+    delay(10000 - 500);
 }
