@@ -47,9 +47,15 @@ private:
 
     DisplayState current_state;
 
+    // FOR TRACKING ACTUAL UPDATE TIME
+    unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
+    unsigned int updateCount = 0;          // count of READ executions
+
+
     // Button debounce state
     bool stableButtonState = LOW;
     unsigned long lastButtonChange = 0;
+    
 
     // Button helper methods
     bool debounceButton(bool rawState);

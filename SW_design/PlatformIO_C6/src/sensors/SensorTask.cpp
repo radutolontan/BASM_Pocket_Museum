@@ -142,7 +142,7 @@ void SensorTask::run_read(){
         Serial.print(">magy:");
         Serial.println(current_reading.mag_y);
         Serial.print(">magz:");
-        Serial.println(current_reading.mag_x);
+        Serial.println(current_reading.mag_z);
     }
     lastReadTime = millis();
     // Head to processing the data
@@ -175,6 +175,12 @@ void SensorTask::run_process(){
     current_reading.accel_norm  = vector_norm(current_reading.accel_x, current_reading.accel_y, current_reading.accel_z);
     current_reading.gyro_norm  = vector_norm(current_reading.gyro_x, current_reading.gyro_y, current_reading.gyro_z);
     current_reading.mag_norm  = vector_norm(current_reading.mag_x, current_reading.mag_y, current_reading.mag_z);
+    Serial.print(">accel_norm:");
+    Serial.println(current_reading.accel_norm);
+    Serial.print(">gyro_norm:");
+    Serial.println(current_reading.gyro_norm);
+    Serial.print(">mag_norm:");
+    Serial.println(current_reading.mag_norm);
     // After computation is complete, update SharedDataBuffer
     SharedBuffer::addReading(current_reading);
     // Head to processing the data
