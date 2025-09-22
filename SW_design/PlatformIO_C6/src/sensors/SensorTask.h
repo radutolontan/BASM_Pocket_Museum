@@ -44,6 +44,10 @@ private:
     void run_read();
     void run_process();
     void run_sleep();
+
+    // FOR TRACKING ACTUAL UPDATE TIME
+    unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
+    unsigned int readCount = 0;            // count of READ executions
 };
 
 #endif // SENSOR_TASK_H

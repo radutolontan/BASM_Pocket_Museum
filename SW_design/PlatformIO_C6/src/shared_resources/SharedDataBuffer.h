@@ -6,10 +6,18 @@
 
 struct SensorData {
     // Raw sensor readings
+    // Temperature (°C)
     float temperature;
+    // Air Pressure (Pa)
     float pressure;
-    float accel_x, accel_y, accel_z;
-    float gyro_x, gyro_y, gyro_z;
+    // Light Intensity (lux)
+    float light_intensity;
+    // Accelerometer (mg)
+    float accel_x, accel_y, accel_z, accel_norm;
+    // Gyroscope (deg/s)
+    float gyro_x, gyro_y, gyro_z, gyro_norm;
+    // Magnetometer (uT)
+    float mag_x, mag_y, mag_z, mag_norm;
 };
 
 struct SensorStats {

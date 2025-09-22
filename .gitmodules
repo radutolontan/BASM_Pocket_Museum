@@ -4,3 +4,9 @@
 [submodule "SW_design/PlatformIO_C6/lib/LSM6DSL"]
 	path = SW_design/PlatformIO_C6/lib/LSM6DSL
 	url = git@github.com:stm32duino/LSM6DSL.git
+[submodule "SW_design/PlatformIO_C6/lib/BH1750"]
+	path = SW_design/PlatformIO_C6/lib/BH1750
+	url = git@github.com:claws/BH1750.git
+[submodule "SW_design/PlatformIO_C6/lib/SparkFun_ICM-20948_ArduinoLibrary"]
+	path = SW_design/PlatformIO_C6/lib/SparkFun_ICM-20948_ArduinoLibrary
+	url = git@github.com:sparkfun/SparkFun_ICM-20948_ArduinoLibrary.git

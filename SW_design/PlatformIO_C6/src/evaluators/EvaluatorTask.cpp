@@ -1,5 +1,6 @@
 #include "evaluators/EvaluatorTask.h"
 #include "evaluators/DisplaySessionEvaluator.h"
+#include "evaluators/ExcursionEvaluator.h"
 #include "shared_resources/globals.h"
 
 EvaluatorTask::EvaluatorTask(SDManager& sdManagerRef) 
@@ -11,7 +12,9 @@ void EvaluatorTask::setupEvaluatorTask(DisplayTask& displayTaskRef) {
     setEvaluatorState(EvaluatorState::BOOT);
     // Initialize all evaluators you wish to enable
     // Add an evaluator - DisplaySessionEvaluator
-    evaluators.push_back(new DisplaySessionEvaluator(displayTaskRef, *this));
+    // evaluators.push_back(new DisplaySessionEvaluator(displayTaskRef, *this));
+    evaluators.push_back(new ExcursionEvaluator(displayTaskRef, DisplayState::DISPLAY_ACCEL, VU_MAX_ACCEL, 15000));
+    evaluators.push_back(new ExcursionEvaluator(displayTaskRef, DisplayState::DISPLAY_LUX, VU_MAX_LUX, 15000));
     // Evaluators only use the references they need
 
 }
@@ -28,27 +31,27 @@ void EvaluatorTask::setEvaluatorState(EvaluatorState newState) {
 
 void EvaluatorTask::runEvaluatorTaskWrapper(void* param) {
     EvaluatorTask* self = static_cast<EvaluatorTask*>(param);
-    self->runEvaluatorTask();
+    for (;;) {
+        self->runEvaluatorTask();
+        // DISPLAYTASK STATE MACHINE TIMING
+        vTaskDelay(pdMS_TO_TICKS(1000 / TASK_RATE_EVALUATOR));
+    }
 }
 
 void EvaluatorTask::runEvaluatorTask() {
-    while (true) {
-        switch (currentState) {
-            case EvaluatorState::BOOT:
-                run_boot();
-                break;
-            case EvaluatorState::INIT:
-                run_init();
-                break;
-            case EvaluatorState::RUNNING:
-                run_running();
-                break;
-            case EvaluatorState::ERROR:
-                run_error();
-                break;
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(50));
+    switch (currentState) {
+        case EvaluatorState::BOOT:
+            run_boot();
+            break;
+        case EvaluatorState::INIT:
+            run_init();
+            break;
+        case EvaluatorState::RUNNING:
+            run_running();
+            break;
+        case EvaluatorState::ERROR:
+            run_error();
+            break;
     }
 }
 
@@ -56,10 +59,15 @@ void EvaluatorTask::run_boot() {
     Serial.println("[EvaluatorTask] - BOOT");
     // Confirm SDManager is ready before switching to INIT
     // Wait indefinitely until SDManager is ready
-    while (!sdManager.isReady()) {
-        Serial.println("[EvaluatorTask] - Waiting for SDManager to be READY...");
-        vTaskDelay(pdMS_TO_TICKS(200));
-    }
+
+
+    //===================== DEBUG!!!! SDMANAGER CHECKS DISABLED =====================
+
+    // while (!sdManager.isReady()) {
+    //     Serial.println("[EvaluatorTask] - Waiting for SDManager to be READY...");
+    //     vTaskDelay(pdMS_TO_TICKS(200));
+    // }
+
     // Transition to INIT
     setEvaluatorState(EvaluatorState::INIT);
 }
@@ -67,10 +75,12 @@ void EvaluatorTask::run_boot() {
 void EvaluatorTask::run_init() {
     Serial.println("[EvaluatorTask] - INIT");
 
-    // Setup each evaluator’s log file
-    for (auto* evaluator : evaluators) {
-        evaluator->initializeLogFile();
-    }
+    //===================== DEBUG!!!! SDMANAGER CHECKS DISABLED =====================
+
+    // // Setup each evaluator’s log file
+    // for (auto* evaluator : evaluators) {
+    //     evaluator->initializeLogFile();
+    // }
     
     Serial.println("[EvaluatorTask] - INIT complete → DisplaySessionEvaluator started");
     setEvaluatorState(EvaluatorState::RUNNING);
