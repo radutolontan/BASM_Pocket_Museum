@@ -33,10 +33,9 @@ public:
 
     // Public Variables
     SensorState current_state;
-    SensorData current_reading;
+    SensorData sensorReading;
     
 private:
-    unsigned long lastReadTime;
 
     // Private state handling functions
     void run_boot();
@@ -45,9 +44,11 @@ private:
     void run_process();
     void run_sleep();
 
-    // FOR TRACKING ACTUAL UPDATE TIME
+    // FOR TRACKING ACTUAL RATE
     unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
-    unsigned int readCount = 0;            // count of READ executions
+    unsigned int updateCount = 0;          // count of State Machine executions
+    float state_machine_run_freq;          // tracks run frequency
+
 };
 
 #endif // SENSOR_TASK_H

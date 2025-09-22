@@ -18,6 +18,8 @@ struct SensorData {
     float gyro_x, gyro_y, gyro_z, gyro_norm;
     // Magnetometer (uT)
     float mag_x, mag_y, mag_z, mag_norm;
+    // Volume (dB)
+    float volume_rms;
 };
 
 struct SensorStats {

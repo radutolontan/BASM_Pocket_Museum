@@ -2,6 +2,7 @@
 #include "evaluators/DisplaySessionEvaluator.h"
 #include "evaluators/ExcursionEvaluator.h"
 #include "shared_resources/globals.h"
+#include "shared_resources/global_debug.h"
 
 EvaluatorTask::EvaluatorTask(SDManager& sdManagerRef) 
     : sdManager(sdManagerRef)  // ← Initialize member reference
@@ -31,10 +32,13 @@ void EvaluatorTask::setEvaluatorState(EvaluatorState newState) {
 
 void EvaluatorTask::runEvaluatorTaskWrapper(void* param) {
     EvaluatorTask* self = static_cast<EvaluatorTask*>(param);
+
+    TickType_t lastWakeTime = xTaskGetTickCount();
+    const TickType_t frequency = pdMS_TO_TICKS(1000 / TASK_RATE_EVALUATOR);    
+
     for (;;) {
         self->runEvaluatorTask();
-        // DISPLAYTASK STATE MACHINE TIMING
-        vTaskDelay(pdMS_TO_TICKS(1000 / TASK_RATE_EVALUATOR));
+        vTaskDelayUntil(&lastWakeTime, frequency);
     }
 }
 
@@ -53,6 +57,22 @@ void EvaluatorTask::runEvaluatorTask() {
             run_error();
             break;
     }
+    // Print frequency every 1 second
+    #if DEBUG_TASK_RATES
+        // Increment the read count
+        updateCount++;
+        unsigned long now = millis();
+        if (now - lastFreqPrintTime >= 10000) {
+            state_machine_run_freq = updateCount / ((now - lastFreqPrintTime) / 1000.0f); // Hz
+            RATES_PRINT("[EvaluatorTask] Actual update frequency: ");
+            RATES_PRINT(state_machine_run_freq);
+            RATES_PRINTLN(" Hz");
+
+            // Reset counters
+            updateCount = 0;
+            lastFreqPrintTime = now;
+        }
+    #endif
 }
 
 void EvaluatorTask::run_boot() {

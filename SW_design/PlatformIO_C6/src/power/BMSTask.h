@@ -60,6 +60,11 @@ private:
     void run_low_batt_warning();
     void run_shutdown_pending();
 
+    // FOR TRACKING ACTUAL RATE
+    unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
+    unsigned int updateCount = 0;          // count of State Machine executions
+    float state_machine_run_freq;          // tracks run frequency
+
 };
 
 #endif // BMS_TASK_H

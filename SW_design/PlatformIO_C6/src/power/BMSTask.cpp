@@ -1,5 +1,6 @@
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/global_functions.h"
+#include "shared_resources/global_debug.h"
 #include "shared_resources/globals.h"
 #include "power/BMSTask.h"
 
@@ -26,10 +27,13 @@ void BMSTask::setupBMSTask() {
 // FreeRTOS wrapper
 void BMSTask::runBMSTaskWrapper(void* param) {
     BMSTask* self = static_cast<BMSTask*>(param);
+
+    TickType_t lastWakeTime = xTaskGetTickCount();
+    const TickType_t frequency = pdMS_TO_TICKS(1000 / TASK_RATE_BMS);
+
     for (;;) {
         self->runBMSTask();
-        // BMSTASK STATE MACHINE TIMING
-        vTaskDelay(pdMS_TO_TICKS(1000/TASK_RATE_BMS));
+        vTaskDelayUntil(&lastWakeTime, frequency);
     }
 }
 
@@ -94,6 +98,22 @@ void BMSTask::runBMSTask() {
             break;
         }
     }
+    // Print frequency every 1 second
+    #if DEBUG_TASK_RATES
+        // Increment the read count
+        updateCount++;
+        unsigned long now = millis();
+        if (now - lastFreqPrintTime >= 10000) {
+            state_machine_run_freq = updateCount / ((now - lastFreqPrintTime) / 1000.0f); // Hz
+            RATES_PRINT("[BMSTask] Actual update frequency: ");
+            RATES_PRINT(state_machine_run_freq);
+            RATES_PRINTLN(" Hz");
+
+            // Reset counters
+            updateCount = 0;
+            lastFreqPrintTime = now;
+        }
+    #endif
 }
 
 void BMSTask::run_boot() {

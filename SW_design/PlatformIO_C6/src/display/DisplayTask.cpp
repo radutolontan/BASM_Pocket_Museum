@@ -59,16 +59,19 @@ DisplayState DisplayTask::getDisplayState() const {
 
 void DisplayTask::runDisplayTaskWrapper(void* param) {
     DisplayTask* self = static_cast<DisplayTask*>(param);
+
+    // Initialize the tick count for periodic execution
+    TickType_t lastWakeTime = xTaskGetTickCount();
+    const TickType_t frequency = pdMS_TO_TICKS(1000 / TASK_RATE_DISPLAY);
+
     for (;;) {
         self->runDisplayTask();
-        // DISPLAYTASK STATE MACHINE TIMING
-        vTaskDelay(pdMS_TO_TICKS(1000 / TASK_RATE_DISPLAY));
+        vTaskDelayUntil(&lastWakeTime, frequency);
     }
 }
 
+
 void DisplayTask::runDisplayTask() {
-    // Increment the read count
-    updateCount++;
     // Check if BMS is still latched
     if (!g_bmsLatched) {
         // Power not latched → shut off display
@@ -120,19 +123,22 @@ void DisplayTask::runDisplayTask() {
             break;
         }
     }
-    lastUpdateTime = millis();
     // Print frequency every 1 second
-    unsigned long now = millis();
-    if (now - lastFreqPrintTime >= 1000) {
-        float freq = updateCount / ((now - lastFreqPrintTime) / 1000.0f); // Hz
-        RATES_PRINT("[DisplayTask] Actual update frequency: ");
-        RATES_PRINT(freq);
-        RATES_PRINTLN(" Hz");
+    #if DEBUG_TASK_RATES
+        // Increment the read count
+        updateCount++;
+        unsigned long now = millis();
+        if (now - lastFreqPrintTime >= 10000) {
+            state_machine_run_freq = updateCount / ((now - lastFreqPrintTime) / 1000.0f); // Hz
+            RATES_PRINT("[DisplayTask] Actual update frequency: ");
+            RATES_PRINT(state_machine_run_freq);
+            RATES_PRINTLN(" Hz");
 
-        // Reset counters
-        updateCount = 0;
-        lastFreqPrintTime = now;
-    }
+            // Reset counters
+            updateCount = 0;
+            lastFreqPrintTime = now;
+        }
+    #endif
 }
 
 // ================================================== //

@@ -47,10 +47,10 @@ private:
 
     DisplayState current_state;
 
-    // FOR TRACKING ACTUAL UPDATE TIME
+    // FOR TRACKING ACTUAL RATE
     unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
-    unsigned int updateCount = 0;          // count of READ executions
-
+    unsigned int updateCount = 0;          // count of State Machine executions
+    float state_machine_run_freq;          // tracks run frequency
 
     // Button debounce state
     bool stableButtonState = LOW;

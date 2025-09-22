@@ -34,7 +34,7 @@ public:
     void setAudioState(AudioState newState);
 
 private:
-    AudioState current_state = AudioState::BOOT;
+    AudioState current_state;
     unsigned long lastProcessTime = 0;
 
     static const size_t BUFFER_SIZE = 256; // samples per input per cycle
@@ -53,4 +53,9 @@ private:
 
     // Mutex for state
     mutable std::mutex stateMutex;
+
+    // FOR TRACKING ACTUAL RATE
+    unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
+    unsigned int updateCount = 0;          // count of State Machine executions
+    float state_machine_run_freq;          // tracks run frequency
 };

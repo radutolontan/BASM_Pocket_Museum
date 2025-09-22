@@ -37,8 +37,13 @@ void SensorTask::setSensorState(SensorState new_state) {
 
 void SensorTask::runSensorTaskWrapper(void* param) {
     SensorTask* self = static_cast<SensorTask*>(param);
+
+    TickType_t lastWakeTime = xTaskGetTickCount();
+    const TickType_t frequency = pdMS_TO_TICKS(1000 / TASK_RATE_SENSOR);
+
     for (;;) {
         self->runSensorTask();
+        vTaskDelayUntil(&lastWakeTime, frequency);
     }
 }
 
@@ -64,7 +69,23 @@ void SensorTask::runSensorTask() {
             run_process();
             break;
         }
-    }    
+    }  
+    // Print frequency every 1 second
+    #if DEBUG_TASK_RATES
+        // Increment the read count
+        updateCount++;
+        unsigned long now = millis();
+        if (now - lastFreqPrintTime >= 10000) {
+            state_machine_run_freq = updateCount / ((now - lastFreqPrintTime) / 1000.0f); // Hz
+            RATES_PRINT("[SensorTask] Actual update frequency: ");
+            RATES_PRINT(state_machine_run_freq);
+            RATES_PRINTLN(" Hz");
+
+            // Reset counters
+            updateCount = 0;
+            lastFreqPrintTime = now;
+        }
+    #endif  
 }
 
 // ======== STATE METHODS ==========
@@ -103,102 +124,84 @@ void SensorTask::run_init(){
     }
         
     delay(1000);
-    lastReadTime = millis();
     // Set SLEEP State
-    setSensorState(SensorState::SLEEP);
+    setSensorState(SensorState::READ);
 };
 
 void SensorTask::run_read(){
-    // Increment the read count
-    readCount++;
+    // ==================================================
+    // ===================== READ =======================
+    // ==================================================
 
     // =============== ICP20100 SENSOR ==================
-    if (pressureSensor.read(current_reading)) {
+    if (pressureSensor.read(sensorReading)) {
         SENSOR_PRINT(">pressure:");
-        SENSOR_PRINTLN(current_reading.pressure);
+        SENSOR_PRINTLN(sensorReading.pressure);
         SENSOR_PRINT(">temperature:");
-        SENSOR_PRINTLN(current_reading.temperature);
+        SENSOR_PRINTLN(sensorReading.temperature);
     }
     // ================= BH1750 SENSOR ==================
-    if (lightSensor.read(current_reading)) {
+    if (lightSensor.read(sensorReading)) {
         // Serial.print(">lux:");
-        SENSOR_PRINTLN(current_reading.light_intensity);
+        SENSOR_PRINTLN(sensorReading.light_intensity);
     }
     // ================ ICM20948 SENSOR ===================
-    if (imuSensor.read(current_reading)) {
+    if (imuSensor.read(sensorReading)) {
         SENSOR_PRINT(">accelx:");
-        SENSOR_PRINTLN(current_reading.accel_x);
+        SENSOR_PRINTLN(sensorReading.accel_x);
         SENSOR_PRINT(">accely:");
-        SENSOR_PRINTLN(current_reading.accel_y);
+        SENSOR_PRINTLN(sensorReading.accel_y);
         SENSOR_PRINT(">accelz:");
-        SENSOR_PRINTLN(current_reading.accel_z);
+        SENSOR_PRINTLN(sensorReading.accel_z);
         SENSOR_PRINT(">gyrox:");
-        SENSOR_PRINTLN(current_reading.gyro_x);
+        SENSOR_PRINTLN(sensorReading.gyro_x);
         SENSOR_PRINT(">gyroy:");
-        SENSOR_PRINTLN(current_reading.gyro_y);
+        SENSOR_PRINTLN(sensorReading.gyro_y);
         SENSOR_PRINT(">gyroz:");
-        SENSOR_PRINTLN(current_reading.gyro_z);
+        SENSOR_PRINTLN(sensorReading.gyro_z);
         SENSOR_PRINT(">magx:");
-        SENSOR_PRINTLN(current_reading.mag_x);
+        SENSOR_PRINTLN(sensorReading.mag_x);
         SENSOR_PRINT(">magy:");
-        SENSOR_PRINTLN(current_reading.mag_y);
+        SENSOR_PRINTLN(sensorReading.mag_y);
         SENSOR_PRINT(">magz:");
-        SENSOR_PRINTLN(current_reading.mag_z);
+        SENSOR_PRINTLN(sensorReading.mag_z);
     }
-    lastReadTime = millis();
-    // Head to processing the data
-    setSensorState(SensorState::PROCESS);
 
-    // Print frequency every 1 second
-    unsigned long now = millis();
-    if (now - lastFreqPrintTime >= 1000) {
-        float freq = readCount / ((now - lastFreqPrintTime) / 1000.0f); // Hz
-        RATES_PRINT("[SensorTask] Actual read frequency: ");
-        RATES_PRINT(freq);
-        RATES_PRINTLN(" Hz");
+    // ==================================================
+    // =================== PROCESS ======================
+    // ==================================================
 
-        // Reset counters
-        readCount = 0;
-        lastFreqPrintTime = now;
-    }
-};
-
-void SensorTask::run_sleep(){
-    if (millis() - lastReadTime >= 1000 / TASK_RATE_SENSOR) {
-        setSensorState(SensorState::READ);
-    }
-};
-
-void SensorTask::run_process(){
-    // ✅ DEBUG: Print StateMachine State Change
-    // Serial.println("[SensorTask] - Processing data...");
-    // Find vector norms for Acceleration, Rotational Velocity, Magnetic Field
-    current_reading.accel_norm  = vector_norm(current_reading.accel_x, current_reading.accel_y, current_reading.accel_z);
-    current_reading.gyro_norm  = vector_norm(current_reading.gyro_x, current_reading.gyro_y, current_reading.gyro_z);
-    current_reading.mag_norm  = vector_norm(current_reading.mag_x, current_reading.mag_y, current_reading.mag_z);
+    sensorReading.accel_norm  = vector_norm(sensorReading.accel_x, sensorReading.accel_y, sensorReading.accel_z);
+    sensorReading.gyro_norm  = vector_norm(sensorReading.gyro_x, sensorReading.gyro_y, sensorReading.gyro_z);
+    sensorReading.mag_norm  = vector_norm(sensorReading.mag_x, sensorReading.mag_y, sensorReading.mag_z);
     SENSOR_PRINT(">accel_norm:");
-    SENSOR_PRINTLN(current_reading.accel_norm);
+    SENSOR_PRINTLN(sensorReading.accel_norm);
     SENSOR_PRINT(">gyro_norm:");
-    SENSOR_PRINTLN(current_reading.gyro_norm);
+    SENSOR_PRINTLN(sensorReading.gyro_norm);
     SENSOR_PRINT(">mag_norm:");
-    SENSOR_PRINTLN(current_reading.mag_norm);
+    SENSOR_PRINTLN(sensorReading.mag_norm);
 
     // ======================================================
     // OVERWRITE LIGHT INTENSITY AND MAG FIELD WITH LOG
     // ======================================================
-    float log_light_intensity = log10f(current_reading.light_intensity);
-    float log_mag_norm = log10f(current_reading.mag_norm);
-    current_reading.light_intensity = log_light_intensity;
-    current_reading.mag_norm = log_mag_norm;
+    float log_light_intensity = log10f(sensorReading.light_intensity);
+    float log_mag_norm = log10f(sensorReading.mag_norm);
+    sensorReading.light_intensity = log_light_intensity;
+    sensorReading.mag_norm = log_mag_norm;
     SENSOR_PRINT(">log_light_intensity:");
     SENSOR_PRINTLN(log_light_intensity);
     SENSOR_PRINT(">log_mag:");
     SENSOR_PRINTLN(log_mag_norm);
     // ======================================================
 
-
     // After computation is complete, update SharedDataBuffer
-    SharedBuffer::addReading(current_reading);
-    // Head to processing the data
-    setSensorState(SensorState::SLEEP);
+    SharedBuffer::addReading(sensorReading);
+};
+
+void SensorTask::run_sleep(){
+    // DEPRECATED FOR NOW; Timing controlled VIA rundisplayTaskwrapper
+};
+
+void SensorTask::run_process(){
+    // DEPRECATED FOR NOW; Timing controlled VIA rundisplayTaskwrapper
 };

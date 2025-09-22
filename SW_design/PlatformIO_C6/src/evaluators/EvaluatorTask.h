@@ -34,4 +34,9 @@ private:
 
     // Reference to SDManager
     SDManager& sdManager; // EvaluatorTask owns the SDManager and controls the write que
+
+    // FOR TRACKING ACTUAL RATE
+    unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
+    unsigned int updateCount = 0;          // count of State Machine executions
+    float state_machine_run_freq;          // tracks run frequency
 };

@@ -10,3 +10,6 @@
 [submodule "SW_design/PlatformIO_C6/lib/SparkFun_ICM-20948_ArduinoLibrary"]
 	path = SW_design/PlatformIO_C6/lib/SparkFun_ICM-20948_ArduinoLibrary
 	url = git@github.com:sparkfun/SparkFun_ICM-20948_ArduinoLibrary.git
+[submodule "SW_design/PlatformIO_C6/lib/--force"]
+	path = SW_design/PlatformIO_C6/lib/--force
+	url = git@github.com:DFRobot/DFRobot_LedDisplayModule.git

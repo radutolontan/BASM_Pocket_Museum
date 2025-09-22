@@ -13,7 +13,7 @@ public:
 
 private:
     i2s_port_t i2s_num;
-    static constexpr int SAMPLE_RATE = 16000;
+    static constexpr int SAMPLE_RATE = 4000000;
     static constexpr int SAMPLE_BITS = 16;
     static constexpr int BUFFER_SIZE = 1024;
 };
