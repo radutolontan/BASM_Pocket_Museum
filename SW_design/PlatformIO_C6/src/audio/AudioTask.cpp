@@ -1,6 +1,7 @@
 #include "audio/AudioTask.h"
 #include "shared_resources/globals.h"
 #include "shared_resources/global_debug.h"
+#include "shared_resources/SharedDataBuffer.h"
 
 
 AudioTask::AudioTask()
@@ -89,25 +90,13 @@ void AudioTask::run_stream() {
         // ✅ Publish dB metadata to shared buffer
         SENSOR_PRINT(">dB:");
         SENSOR_PRINTLN(db);
-        // audioReading.volume_rms = db;
         // After computation is complete, update SharedDataBuffer
-        // SharedBuffer::addReading(audioReading);
-        // SharedBuffer::addAudioLevel(db);
-        // 🔊 Print dB level to Serial
-        // Serial.print("micdB:");
-        // Serial.println(db);
-        // Serial.print(">micdB:");
-        // Serial.println(db);
-        
+        SharedBuffer::addAudioReading(db);
     }
     lastProcessTime = millis();
-    setAudioState(AudioState::PROCESS);
 }
 
 void AudioTask::run_process() {
-    // ✅ Placeholder for FFT, filters, etc.
-    // For now, just loop back to stream
-    
-    setAudioState(AudioState::STREAM);
+    // ✅ Placeholder for FFT, filters, etc.    
 }
 

@@ -21,31 +21,65 @@ namespace SharedBuffer {
         aggregates_Display_cycle.reset();
     }
 
-    void addReading(const SensorData& data) {
-        // Assume control of the Buffer and Lock it ; portMAX_DELAY <> NO TIMEOUT
+    void addSensorReading(const SensorData& sensorReadings) {
+        // Assume control of the buffer
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
-            sensorBuffer.push_back(data);
-
-            // If buffer has over-flown, remove the oldest value
-            if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
-                sensorBuffer.pop_front();
-            }
-
-            // Update aggregates
-            aggregates_Display_cycle.addSample(data);
-
-            // ✅ DEBUG: Print only the last entry (just added)
-            // const SensorData& latest = sensorBuffer.back();
-            // Serial.printf("[SharedBuffer] Latest: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f]\n",
-            //             latest.temperature,
-            //             latest.pressure,
-            //             latest.accel_x, latest.accel_y, latest.accel_z,
-            //             latest.gyro_x, latest.gyro_y, latest.gyro_z);
-
-            // Release MUTEX
+            // Update sensor fields
+            pendingFrame.temperature = sensorReadings.temperature;
+            pendingFrame.pressure    = sensorReadings.pressure;
+            pendingFrame.accel_x     = sensorReadings.accel_x;
+            pendingFrame.accel_y     = sensorReadings.accel_y;
+            pendingFrame.accel_z     = sensorReadings.accel_z;
+            pendingFrame.gyro_x      = sensorReadings.gyro_x;
+            pendingFrame.gyro_y      = sensorReadings.gyro_y;
+            pendingFrame.gyro_z      = sensorReadings.gyro_z;
+            // We recieved sensor data!
+            sensorUpdated = true;
+            // Commit only if audio is also updated
+            if (audioUpdated) commitFrame();
+            // Yield mutex
             xSemaphoreGive(bufferMutex);
         }
     }
+
+    void addAudioReading(float volume) {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            pendingFrame.volume_rms = volume;
+            // We recieved audio data!
+            audioUpdated = true;
+            // Commit only if sensor data is also updated
+            if (sensorUpdated) commitFrame();
+            // Yield mutex
+            xSemaphoreGive(bufferMutex);
+        }
+    }
+
+    void commitFrame() {
+    // --- DEBUG: Print pending frame data before committing ---
+    Serial.printf("[SharedBuffer] Committing frame: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f], Volume=%.2f\n",
+                  pendingFrame.temperature,
+                  pendingFrame.pressure,
+                  pendingFrame.accel_x, pendingFrame.accel_y, pendingFrame.accel_z,
+                  pendingFrame.gyro_x, pendingFrame.gyro_y, pendingFrame.gyro_z,
+                  pendingFrame.volume_rms);
+
+    // Add the pending frame to the buffer
+    sensorBuffer.push_back(pendingFrame);
+
+    // If the buffer overflows, remove the first reading (FIFO)
+    if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
+        sensorBuffer.pop_front();
+    }
+
+    // Update aggregates
+    aggregates_Display_cycle.addSample(pendingFrame);
+
+    // Reset flags
+    sensorUpdated = false;
+    audioUpdated  = false;
+}
+
 
     std::deque<SensorData> getReadings() {
         std::deque<SensorData> copy;

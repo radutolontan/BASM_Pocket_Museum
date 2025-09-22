@@ -228,7 +228,7 @@ void DisplayTask::run_display_volume(){
         if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(0, VU_MIN_VOL, VU_MAX_VOL);
+        updateMagnitudeDisplay(latest.volume_rms, VU_MIN_VOL, VU_MAX_VOL);
         // Send All Data to LED Strip
         strip.show();
     }

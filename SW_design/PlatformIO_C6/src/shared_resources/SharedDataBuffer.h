@@ -46,9 +46,15 @@ namespace SharedBuffer {
     // MUTEX semaphore to prevent improper use of buffer
     extern SemaphoreHandle_t bufferMutex;
     constexpr size_t MAX_BUFFER_SIZE = 10;
+    // Manages thependingFrame. DO NOT COMMIT A FRAME BEFORE ALL TASKS PUSH DATA TO IT
+    static bool sensorUpdated = false;
+    static bool audioUpdated = false;
+    static SensorData pendingFrame;
+    void commitFrame();
+    void addSensorReading(const SensorData& sensorReadings);
+    void addAudioReading(float volume);
 
     void init();
-    void addReading(const SensorData& data);
     std::deque<SensorData> getReadings();
 
     // Aggregated stats for different actions

@@ -184,6 +184,7 @@ void SensorTask::run_read(){
     // ======================================================
     // OVERWRITE LIGHT INTENSITY AND MAG FIELD WITH LOG
     // ======================================================
+    
     float log_light_intensity = log10f(sensorReading.light_intensity);
     float log_mag_norm = log10f(sensorReading.mag_norm);
     sensorReading.light_intensity = log_light_intensity;
@@ -195,7 +196,7 @@ void SensorTask::run_read(){
     // ======================================================
 
     // After computation is complete, update SharedDataBuffer
-    SharedBuffer::addReading(sensorReading);
+    SharedBuffer::addSensorReading(sensorReading);
 };
 
 void SensorTask::run_sleep(){
