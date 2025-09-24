@@ -245,6 +245,7 @@ void DisplayTask::run_display_accel(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.accel_norm, VU_MIN_ACCEL, VU_MAX_ACCEL);
+        Serial.println(latest.accel_norm);
         // Send All Data to LED Strip
         strip.show();
     }

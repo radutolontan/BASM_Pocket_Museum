@@ -10,11 +10,13 @@ It only operates while DisplayTask is in DisplayState::TARGET_STATE.*/
 ExcursionEvaluator::ExcursionEvaluator(DisplayTask& displayRef,
                                        DisplayState targetState,
                                        float threshold,
-                                       uint32_t cooldownMs)
+                                       uint32_t cooldownMs,
+                                       Node* nodePtr)
     : displayTask(displayRef),
       activeState(targetState),
       threshold(threshold),
-      cooldown(cooldownMs)
+      cooldown(cooldownMs),
+      node(nodePtr)
 {}
 
 void ExcursionEvaluator::update() {
@@ -76,6 +78,8 @@ void ExcursionEvaluator::update() {
                       static_cast<int>(activeState),
                       value,
                       static_cast<unsigned long>(excursionCount));
+        // Send to Hub via Node
+        if (node) node->setNextValue(excursionCount);
     }
 
     // Reset excursion flag when value falls below threshold

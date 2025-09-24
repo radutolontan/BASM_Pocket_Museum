@@ -8,45 +8,79 @@
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
 #include "shared_resources/global_debug.h"
+#include "shared_resources/global_votecounter.h"
 
-SensorTask sensorTask;
+// =============================================================
+// ==========       VOTE COUNTER IMPLEMENTATION    =============
+// =============================================================
+#include "VoteCounter.h"
+
+// ------------------------
+// Hub or Node instance
+// ------------------------
+#if IS_HUB
+Hub device(4); 
+#else
+Node device(HUB_MAC, NODE_ID, NODE_SEND_INTERVAL);
+#endif
+// ------------------------
+// FreeRTOS task wrapper
+// ------------------------
+void CounterTask(void* pvParameters) {
+    device.begin(); // initialize hub or node
+    while (true) {
+        device.loop();
+        vTaskDelay(pdMS_TO_TICKS(1)); // yield
+    }
+}
+// =============================================================
+// =============================================================
+// =============================================================
+
+#if !IS_HUB
+    SensorTask sensorTask;
+    SDManager sDManager;
+    AudioTask audioTask;
+    EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager 
+#endif
+
 DisplayTask displayTask;
-SDManager sDManager;
 BMSTask bmsTask;
-AudioTask audioTask;
-EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager 
 
 // Define & Initialize BMS_Latch flag (declared in globals.h)
 volatile bool g_bmsLatched = false; 
 
 // Task handles for monitoring
-TaskHandle_t sensorHandle, displayHandle, audioHandle, bmsHandle, evaluatorHandle;
+TaskHandle_t sensorHandle, displayHandle, audioHandle, bmsHandle, evaluatorHandle, counterHandle;
 
 void setup() {
     Serial.begin(115200);
-
-    // DEBUG LED
-    pinMode(DEBUG_LED_PIN, OUTPUT); 
-    digitalWrite(DEBUG_LED_PIN, HIGH); // TURN ON DEBUG LED
 
     // Initialize Shared Data Buffer & MUTEX protection
     SharedBuffer::init();  
 
     // Initialize all State Machines
-    sensorTask.setupSensorTask();
     displayTask.setupDisplayTask();
-    sDManager.setupSDManager();
     bmsTask.setupBMSTask();
-    audioTask.setupAudioTask();
-    evaluatorTask.setupEvaluatorTask(displayTask);
+    #if !IS_HUB
+        evaluatorTask.setupEvaluatorTask(displayTask, &device);
+        audioTask.setupAudioTask();
+        sDManager.setupSDManager();
+        sensorTask.setupSensorTask();
+    #endif
 
     // Create FreeRTOS tasks
-    xTaskCreatePinnedToCore(SensorTask::runSensorTaskWrapper, "SensorTask", 4096, &sensorTask, 1, &sensorHandle, 0);
     xTaskCreatePinnedToCore(DisplayTask::runDisplayTaskWrapper, "DisplayTask", 4096, &displayTask, 1, &displayHandle, 0);
-    xTaskCreatePinnedToCore(SDManager::runSDManagerWrapper, "SDManager", 4096, &sDManager, 2, nullptr, 0);
-    xTaskCreatePinnedToCore(EvaluatorTask::runEvaluatorTaskWrapper, "EvaluatorTask", 4096, &evaluatorTask, 3, &evaluatorHandle, 0);
     xTaskCreatePinnedToCore(BMSTask::runBMSTaskWrapper, "BMSTask", 4096, &bmsTask, 4, &bmsHandle, 0);
-    xTaskCreatePinnedToCore(AudioTask::runAudioTaskWrapper, "AudioTask", 4096, &audioTask, 5, &audioHandle, 0);
+    xTaskCreatePinnedToCore(CounterTask, "HubTask", 4096, nullptr, 5, &counterHandle, 0);
+
+    #if !IS_HUB
+        xTaskCreatePinnedToCore(SensorTask::runSensorTaskWrapper, "SensorTask", 4096, &sensorTask, 1, &sensorHandle, 0);
+        xTaskCreatePinnedToCore(SDManager::runSDManagerWrapper, "SDManager", 4096, &sDManager, 2, nullptr, 0);
+        xTaskCreatePinnedToCore(EvaluatorTask::runEvaluatorTaskWrapper, "EvaluatorTask", 4096, &evaluatorTask, 3, &evaluatorHandle, 0);
+        xTaskCreatePinnedToCore(BMSTask::runBMSTaskWrapper, "BMSTask", 4096, &bmsTask, 4, &bmsHandle, 0);
+        xTaskCreatePinnedToCore(AudioTask::runAudioTaskWrapper, "AudioTask", 4096, &audioTask, 5, &audioHandle, 0);
+    #endif
 }
 
 void loop() {

@@ -3,20 +3,43 @@
 #include "evaluators/ExcursionEvaluator.h"
 #include "shared_resources/globals.h"
 #include "shared_resources/global_debug.h"
+#include "shared_resources/global_votecounter.h"
 
 EvaluatorTask::EvaluatorTask(SDManager& sdManagerRef) 
     : sdManager(sdManagerRef)  // ← Initialize member reference
 {}
 
-void EvaluatorTask::setupEvaluatorTask(DisplayTask& displayTaskRef) {
+void EvaluatorTask::setupEvaluatorTask(DisplayTask& displayTaskRef, Node* nodePtr) {
     // During setup, set the entry point to BOOT
     setEvaluatorState(EvaluatorState::BOOT);
     // Initialize all evaluators you wish to enable
     // Add an evaluator - DisplaySessionEvaluator
-    // evaluators.push_back(new DisplaySessionEvaluator(displayTaskRef, *this));
-    evaluators.push_back(new ExcursionEvaluator(displayTaskRef, DisplayState::DISPLAY_ACCEL, VU_MAX_ACCEL, 15000));
-    evaluators.push_back(new ExcursionEvaluator(displayTaskRef, DisplayState::DISPLAY_LUX, VU_MAX_LUX, 15000));
-    // Evaluators only use the references they need
+        // Decide which ExcursionEvaluator to create based on NODE_ID
+    #if NODE_ID == 0
+        evaluators.push_back(new ExcursionEvaluator(displayTaskRef, 
+                                                    DisplayState::DISPLAY_ACCEL,
+                                                    VU_MAX_ACCEL,
+                                                    5000,
+                                                    nodePtr));
+    #elif NODE_ID == 1
+        evaluators.push_back(new ExcursionEvaluator(displayTaskRef, 
+                                                    DisplayState::DISPLAY_LUX,
+                                                    VU_MAX_LUX,
+                                                    5000,
+                                                    nodePtr));
+    #elif NODE_ID == 2
+        evaluators.push_back(new ExcursionEvaluator(displayTaskRef, 
+                                                    DisplayState::DISPLAY_ROT_VEL,
+                                                    VU_MAX_ROT,
+                                                    5000,
+                                                    nodePtr));
+    #else
+        evaluators.push_back(new ExcursionEvaluator(displayTaskRef,
+                                                    DisplayState::DISPLAY_TEMP,
+                                                    VU_MAX_TEMP,
+                                                    5000,
+                                                    nodePtr));
+    #endif
 
 }
 

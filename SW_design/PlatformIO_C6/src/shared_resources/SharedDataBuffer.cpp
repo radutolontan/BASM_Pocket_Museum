@@ -56,14 +56,6 @@ namespace SharedBuffer {
     }
 
     void commitFrame() {
-    // --- DEBUG: Print pending frame data before committing ---
-    Serial.printf("[SharedBuffer] Committing frame: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f], Volume=%.2f\n",
-                  pendingFrame.temperature,
-                  pendingFrame.pressure,
-                  pendingFrame.accel_x, pendingFrame.accel_y, pendingFrame.accel_z,
-                  pendingFrame.gyro_x, pendingFrame.gyro_y, pendingFrame.gyro_z,
-                  pendingFrame.volume_rms);
-
     // Add the pending frame to the buffer
     sensorBuffer.push_back(pendingFrame);
 
