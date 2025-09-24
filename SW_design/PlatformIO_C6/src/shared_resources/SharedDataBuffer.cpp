@@ -10,9 +10,12 @@ namespace SharedBuffer {
     std::deque<SensorData> sensorBuffer;
     // FreeRTOS MUTEX (used to lock access to the sensorBuffer)
     SemaphoreHandle_t bufferMutex = nullptr;
-
     // Initialize storage for aggregatedstats
     SensorStats aggregates_Display_cycle; // Used for aggregating statistics while in a particular display mode
+    // Declare extern variables
+    bool sensorUpdated = false;
+    bool audioUpdated = false;
+    SensorData pendingFrame;
 
     void init() {
         // Initialize MUTEX
@@ -25,14 +28,22 @@ namespace SharedBuffer {
         // Assume control of the buffer
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
             // Update sensor fields
-            pendingFrame.temperature = sensorReadings.temperature;
-            pendingFrame.pressure    = sensorReadings.pressure;
-            pendingFrame.accel_x     = sensorReadings.accel_x;
-            pendingFrame.accel_y     = sensorReadings.accel_y;
-            pendingFrame.accel_z     = sensorReadings.accel_z;
-            pendingFrame.gyro_x      = sensorReadings.gyro_x;
-            pendingFrame.gyro_y      = sensorReadings.gyro_y;
-            pendingFrame.gyro_z      = sensorReadings.gyro_z;
+            pendingFrame.temperature     = sensorReadings.temperature;
+            pendingFrame.pressure        = sensorReadings.pressure;
+            pendingFrame.light_intensity = sensorReadings.light_intensity;
+            pendingFrame.accel_x         = sensorReadings.accel_x;
+            pendingFrame.accel_y         = sensorReadings.accel_y;
+            pendingFrame.accel_z         = sensorReadings.accel_z;
+            pendingFrame.accel_norm      = sensorReadings.accel_norm;
+            pendingFrame.gyro_x          = sensorReadings.gyro_x;
+            pendingFrame.gyro_y          = sensorReadings.gyro_y;
+            pendingFrame.gyro_z          = sensorReadings.gyro_z;
+            pendingFrame.gyro_norm       = sensorReadings.gyro_norm;
+            pendingFrame.mag_x          = sensorReadings.mag_x;
+            pendingFrame.mag_y          = sensorReadings.mag_y;
+            pendingFrame.mag_z          = sensorReadings.mag_z;
+            pendingFrame.mag_norm       = sensorReadings.mag_norm;
+            
             // We recieved sensor data!
             sensorUpdated = true;
             // Commit only if audio is also updated
@@ -56,21 +67,29 @@ namespace SharedBuffer {
     }
 
     void commitFrame() {
+    // --- DEBUG: Print pending frame data before committing ---
+    Serial.printf("[SharedBuffer] Committing frame: Temp=%.2f, Pressure=%.2f, Accel=[%.2f %.2f %.2f], Gyro=[%.2f %.2f %.2f], Volume=%.2f\n",
+                  pendingFrame.temperature,
+                  pendingFrame.pressure,
+                  pendingFrame.accel_x, pendingFrame.accel_y, pendingFrame.accel_z,
+                  pendingFrame.gyro_x, pendingFrame.gyro_y, pendingFrame.gyro_z,
+                  pendingFrame.volume_rms);
+
     // Add the pending frame to the buffer
     sensorBuffer.push_back(pendingFrame);
 
-    // If the buffer overflows, remove the first reading (FIFO)
-    if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
-        sensorBuffer.pop_front();
+        // If the buffer overflows, remove the first reading (FIFO)
+        if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
+            sensorBuffer.pop_front();
+        }
+
+        // Update aggregates
+        aggregates_Display_cycle.addSample(pendingFrame);
+
+        // Reset flags
+        sensorUpdated = false;
+        audioUpdated  = false;
     }
-
-    // Update aggregates
-    aggregates_Display_cycle.addSample(pendingFrame);
-
-    // Reset flags
-    sensorUpdated = false;
-    audioUpdated  = false;
-}
 
 
     std::deque<SensorData> getReadings() {

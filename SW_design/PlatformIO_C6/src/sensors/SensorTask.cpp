@@ -185,10 +185,19 @@ void SensorTask::run_read(){
     // OVERWRITE LIGHT INTENSITY AND MAG FIELD WITH LOG
     // ======================================================
     
-    float log_light_intensity = log10f(sensorReading.light_intensity);
-    float log_mag_norm = log10f(sensorReading.mag_norm);
+    // Guard against zero or negative values
+    float safe_light = sensorReading.light_intensity;
+    if (safe_light <= 0.0f) safe_light = 1e-6f; 
+
+    float safe_mag = sensorReading.mag_norm;
+    if (safe_mag <= 0.0f) safe_mag = 1e-6f;
+
+    float log_light_intensity = log10f(safe_light);
+    float log_mag_norm = log10f(safe_mag);
+
     sensorReading.light_intensity = log_light_intensity;
     sensorReading.mag_norm = log_mag_norm;
+
     SENSOR_PRINT(">log_light_intensity:");
     SENSOR_PRINTLN(log_light_intensity);
     SENSOR_PRINT(">log_mag:");

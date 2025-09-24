@@ -1,6 +1,6 @@
 // Comment/uncomment to enable/disable debug prints
 // SHOW DEBUG MESSAGES WITH SENSOR VALUES
-#define DEBUG_SENSOR     0
+#define DEBUG_SENSOR     1
 // SHOW DEBUG MESSAGES W. TASK RATES
 #define DEBUG_TASK_RATES 0
 
