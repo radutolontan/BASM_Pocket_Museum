@@ -181,9 +181,9 @@ void DisplayTask::run_display_pressure(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.pressure, VU_MIN_PRESS, VU_MAX_PRESS);
-        // Send All Data to LED Strip
-        strip.show();
     }
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 void DisplayTask::run_display_temp(){
@@ -191,15 +191,13 @@ void DisplayTask::run_display_temp(){
     updateModeDisplay();
     // Get Temperature Reading
     auto readings = SharedBuffer::getReadings();
-    // Send All Data to LED Strip
-    strip.show();
-        if (!readings.empty()) {
+    if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.temperature, VU_MIN_TEMP, VU_MAX_TEMP);
-        // Send All Data to LED Strip
-        strip.show();
     }
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 void DisplayTask::run_display_lux(){
@@ -207,15 +205,13 @@ void DisplayTask::run_display_lux(){
     updateModeDisplay();
     // Get Light Intensity Reading
     auto readings = SharedBuffer::getReadings();
-    // Send All Data to LED Strip
-    strip.show();
-        if (!readings.empty()) {
+    if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.light_intensity, VU_MIN_LUX, VU_MAX_LUX);
-        // Send All Data to LED Strip
-        strip.show();
     }
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 void DisplayTask::run_display_volume(){
@@ -223,15 +219,13 @@ void DisplayTask::run_display_volume(){
     updateModeDisplay();
     // Get Volume Reading
     auto readings = SharedBuffer::getReadings();
-    // Send All Data to LED Strip
-    strip.show();
-        if (!readings.empty()) {
+    if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.volume_rms, VU_MIN_VOL, VU_MAX_VOL);
-        // Send All Data to LED Strip
-        strip.show();
     }
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 void DisplayTask::run_display_accel(){
@@ -239,15 +233,13 @@ void DisplayTask::run_display_accel(){
     updateModeDisplay();
     // Get Acceleration Reading
     auto readings = SharedBuffer::getReadings();
-    // Send All Data to LED Strip
-    strip.show();
-        if (!readings.empty()) {
+    if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.accel_norm, VU_MIN_ACCEL, VU_MAX_ACCEL);
-        // Send All Data to LED Strip
-        strip.show();
     }
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 void DisplayTask::run_display_mag_field(){
@@ -255,15 +247,13 @@ void DisplayTask::run_display_mag_field(){
     updateModeDisplay();
     // Get Magnetic Field Reading
     auto readings = SharedBuffer::getReadings();
-    // Send All Data to LED Strip
-    strip.show();
-        if (!readings.empty()) {
+    if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.mag_norm, VU_MIN_MAG, VU_MAX_MAG);
-        // Send All Data to LED Strip
-        strip.show();
     }
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 void DisplayTask::run_display_rot_vel(){
@@ -271,15 +261,13 @@ void DisplayTask::run_display_rot_vel(){
     updateModeDisplay();
     // Get Angular Velocity Reading
     auto readings = SharedBuffer::getReadings();
-    // Send All Data to LED Strip
-    strip.show();
-        if (!readings.empty()) {
+    if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.gyro_norm, VU_MIN_ROT, VU_MAX_ROT);
-        // Send All Data to LED Strip
-        strip.show();
     }
+    // Send All Data to LED Strip
+    strip.show();
 };
 
 // ================================================== //
@@ -332,8 +320,6 @@ void DisplayTask::cycleDisplayState() {
     }
     // Reset the aggregate data
     SharedBuffer::resetAggregates();
-
-    Serial.printf("[DisplayTask] - Switched to state: %d\n", static_cast<int>(current_state));
 }
 
 // ================================================== //
