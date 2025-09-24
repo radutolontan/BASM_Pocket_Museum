@@ -47,9 +47,9 @@ namespace SharedBuffer {
     extern SemaphoreHandle_t bufferMutex;
     constexpr size_t MAX_BUFFER_SIZE = 10;
     // Manages thependingFrame. DO NOT COMMIT A FRAME BEFORE ALL TASKS PUSH DATA TO IT
-    static bool sensorUpdated = false;
-    static bool audioUpdated = false;
-    static SensorData pendingFrame;
+    extern bool sensorUpdated;
+    extern bool audioUpdated;
+    extern SensorData pendingFrame;
     void commitFrame();
     void addSensorReading(const SensorData& sensorReadings);
     void addAudioReading(float volume);
