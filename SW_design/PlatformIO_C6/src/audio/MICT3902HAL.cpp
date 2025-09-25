@@ -7,8 +7,8 @@
 // Handle for the PDM RX channel
 static i2s_chan_handle_t rx_handle = nullptr;
 
-constexpr size_t DECIMATION = 32;    // Number of PDM bits per PCM sample
-constexpr size_t FIR_LEN    = 10;    // FIR smoothing length
+constexpr size_t DECIMATION = 24;    // Number of PDM bits per PCM sample
+constexpr size_t FIR_LEN    = 8;    // FIR smoothing length
 
 // FIR history buffer
 static int32_t fir_buffer[FIR_LEN] = {0};

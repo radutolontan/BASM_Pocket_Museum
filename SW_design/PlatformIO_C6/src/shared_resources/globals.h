@@ -51,7 +51,7 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 // =========== TASK RATES ===============
 // NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * (1000/TASK_RATE_DISPLAY)
 #define TASK_RATE_SENSOR    50 // Hz 
-#define TASK_RATE_AUDIO     50 // Hz
+#define TASK_RATE_AUDIO     100// Hz
 #define TASK_RATE_EVALUATOR 50 // Hz
 #define TASK_RATE_DISPLAY   50 // Hz
 #define TASK_RATE_BMS       50 // Hz
@@ -65,8 +65,8 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 #define VU_MAX_PRESS   1000
 #define VU_MIN_LUX     1.5 // LOG SCALE
 #define VU_MAX_LUX     3.6 // LOG SCALE
-#define VU_MIN_VOL     -33 // dB
-#define VU_MAX_VOL     -20 // dB
+#define VU_MIN_VOL     -33.4 // dB
+#define VU_MAX_VOL     -10   // dB
 #define VU_MIN_ACCEL   990
 #define VU_MAX_ACCEL   3000
 #define VU_MIN_MAG     3.4 // LOG SCALE
