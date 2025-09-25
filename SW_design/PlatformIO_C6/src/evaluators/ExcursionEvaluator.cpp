@@ -44,8 +44,8 @@ void ExcursionEvaluator::update() {
             break;
         }
         case DisplayState::DISPLAY_VOLUME:{
-            // NOT SUPPORTED YET
-            return;
+            value = latest.volume_rms;
+            break;
         }
         case DisplayState::DISPLAY_ACCEL:{
             value = latest.accel_norm;

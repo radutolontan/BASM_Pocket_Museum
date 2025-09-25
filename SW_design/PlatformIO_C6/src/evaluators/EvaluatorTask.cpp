@@ -35,8 +35,8 @@ void EvaluatorTask::setupEvaluatorTask(DisplayTask& displayTaskRef, Node* nodePt
                                                     nodePtr));
     #else
         evaluators.push_back(new ExcursionEvaluator(displayTaskRef,
-                                                    DisplayState::DISPLAY_TEMP,
-                                                    VU_MAX_TEMP,
+                                                    DisplayState::DISPLAY_VOLUME,
+                                                    VU_MAX_VOL,
                                                     5000,
                                                     nodePtr));
     #endif

@@ -1,5 +1,7 @@
 #include "VoteCounter.h"
 #include "shared_resources/globals.h"
+#include "shared_resources/global_votecounter.h"
+#include "DFRobot_LedDisplayModule.h"
 
 // ================== Node ==================
 Node::Node(const uint8_t hub_mac[6], uint8_t id, unsigned long sendIntervalMs)
@@ -84,27 +86,55 @@ void Node::onDataSentStatic(
 // ================== Hub ==================
 Hub* Hub::activeHub = nullptr;
 
+// Define static channel arrays
+uint8_t Hub::CHANNELS_MUX[] = {MUX_IO_NODE_0, MUX_IO_NODE_1, MUX_IO_NODE_2, MUX_IO_NODE_3};
+const uint8_t Hub::NUM_CHANNELS = sizeof(Hub::CHANNELS_MUX) / sizeof(Hub::CHANNELS_MUX[0]);
+
+// LED objects
+DFRobot_LedDisplayModule* ledDisplays[Hub::NUM_CHANNELS] = {nullptr};
+
 Hub::Hub(uint8_t maxNodes_) : maxNodes(maxNodes_) {
     pinMode(DEBUG_LED_PIN, OUTPUT);
     digitalWrite(DEBUG_LED_PIN, LOW);
     memset(nodeCounters, 0, sizeof(nodeCounters));
     memset(baseOffsets, 0, sizeof(baseOffsets));
     memset(lastSeenValues, 0, sizeof(lastSeenValues));
+
+    for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
+        ledDisplays[i] = nullptr;
+    }
 }
 
 void Hub::begin() {
     activeHub = this;
     prefs.begin("hubstore", false);
+    // Load offsets from NVM
     loadFromNVM();
-
+    // Initialize I2C Bus
+    Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN, 100000);
+    // Initialize WiFi on HUB
     WiFi.mode(WIFI_STA);
     if (esp_now_init() != ESP_OK) {
-        Serial.println("ESP-NOW init failed");
+        Serial.println("[VoteCounter] - ESP-NOW init failed");
         return;
     }
     esp_now_register_recv_cb(onDataRecvStatic);
+    // Initialize DF0645 displays
+    for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
+        tcaSelect(CHANNELS_MUX[i]);
+        ledDisplays[i] = new DFRobot_LedDisplayModule(&Wire, 0x48);
+        while (ledDisplays[i]->begin(ledDisplays[i]->e4Bit) != 0) {
+            Serial.println("[VoteCounter] - LED init failed, retrying...");
+            delay(100);
+        }
+        ledDisplays[i]->setDisplayArea(1, 2, 3, 4);
+        ledDisplays[i]->displayOn();
+        ledDisplays[i]->setBrightness(4);
 
-    Serial.println("Hub ready, listening for nodes...");
+        Serial.printf("[VoteCounter] - LED display on mux channel %d initialized with value %d.\n",
+                      CHANNELS_MUX[i], nodeCounters[i]);
+    }
+    Serial.println("[VoteCounter] - Hub ready, listening for nodes...");
 }
 
 void Hub::loop() {
@@ -112,43 +142,39 @@ void Hub::loop() {
     if (Serial.available()) {
         String cmd = Serial.readStringUntil('\n');
         cmd.trim();
-        // reset -> resets ALL nodes to zero
         if (cmd.equalsIgnoreCase("reset")) {
             resetBaseOffsets();
             Serial.println("Base offsets reset!");
-        // test -> enables test mode
         } else if (cmd.equalsIgnoreCase("test")) {
             testMode = !testMode;
             Serial.printf("Test mode %s\n", testMode ? "ENABLED" : "DISABLED");
-        // setOffset -> manually forces an offset for one of the nodes
         } else if (cmd.startsWith("setOffset")) {
-        // Parse the command: setOffset <nodeID> <value>
-        int firstSpace = cmd.indexOf(' ');
-        int secondSpace = cmd.indexOf(' ', firstSpace + 1);
-        if (firstSpace > 0 && secondSpace > firstSpace) {
-            // Extract requested node_ID and new_Offset
-            int nodeID = cmd.substring(firstSpace + 1, secondSpace).toInt();
-            int newOffset = cmd.substring(secondSpace + 1).toInt();
-            // Check if nodeID is valid
-            if (nodeID >= 0 && nodeID < MAX_NODES) {
-                // Reset everything for this node
-                baseOffsets[nodeID] = newOffset;
-                lastSeenValues[nodeID] = 0;
-                nodeCounters[nodeID] = baseOffsets[nodeID]; // start fresh
-                // Save new baseOffset to NVM
-                saveToNVM();
-                Serial.printf("Node %d offset reset to %d, total=%d\n",
-                            nodeID,
-                            baseOffsets[nodeID],
-                            nodeCounters[nodeID]);
+            int firstSpace = cmd.indexOf(' ');
+            int secondSpace = cmd.indexOf(' ', firstSpace + 1);
+            if (firstSpace > 0 && secondSpace > firstSpace) {
+                int nodeID = cmd.substring(firstSpace + 1, secondSpace).toInt();
+                int newOffset = cmd.substring(secondSpace + 1).toInt();
+                if (nodeID >= 0 && nodeID < MAX_NODES) {
+                    baseOffsets[nodeID] = newOffset;
+                    lastSeenValues[nodeID] = 0;
+                    nodeCounters[nodeID] = baseOffsets[nodeID];
+                    saveToNVM();
+                    Serial.printf("Node %d offset reset to %d, total=%d\n",
+                                  nodeID, baseOffsets[nodeID], nodeCounters[nodeID]);
+                    if (nodeID < NUM_CHANNELS && ledDisplays[nodeID]) {
+                        tcaSelect(CHANNELS_MUX[nodeID]);
+                        ledDisplays[nodeID]->print(nodeCounters[nodeID]);
+                    }
+                } else {
+                    Serial.println("Invalid nodeID");
+                }
             } else {
-                Serial.println("Invalid nodeID");
+                Serial.println("Invalid command format. Usage: setOffset <nodeID> <value>");
             }
-        } else {
-            Serial.println("Invalid command format. Usage: setOffset <nodeID> <value>");
         }
     }
-    }
+    // Update all displays every loop
+    updateDisplays();
 }
 
 void Hub::flashLED() {
@@ -158,33 +184,20 @@ void Hub::flashLED() {
 }
 
 void Hub::handleRecv(const esp_now_recv_info_t *info, const uint8_t *incomingData, int len) {
-    // Check if recieved message has the correct size; if not => trash
     if (len != sizeof(NodePayload)) return;
-    // Copy incoming message
     NodePayload payload;
     memcpy(&payload, incomingData, sizeof(payload));
-    // If the NODE_ID exists:
     if (payload.nodeID < maxNodes) {
         int raw = payload.value;
         int lastSeen = lastSeenValues[payload.nodeID];
-        // If NOT in test_mode
         if (!testMode) {
-            // If a NODE reset has happened
-            if (raw < lastSeen) {
-                // Increment the baseOffset by the last recieved value
-                baseOffsets[payload.nodeID] += lastSeen;
-            }
-            // Compute the total (for display) as the baseOffset + the raw value just recieved
+            if (raw < lastSeen) baseOffsets[payload.nodeID] += lastSeen;
             nodeCounters[payload.nodeID] = baseOffsets[payload.nodeID] + raw;
         } else {
-            // If in test mode; don't worry about chainging the offsets. just display the raw data from the node
             nodeCounters[payload.nodeID] = raw;
         }
-        // Update the lastSeenValue with the last reading
         lastSeenValues[payload.nodeID] = raw;
-        // Save lastSeenValue and baseOffset to NVM
         saveToNVM();
-        // Debug Statements
         Serial.printf("Node %d total=%d (raw=%d, base=%d)\n",
                       payload.nodeID,
                       nodeCounters[payload.nodeID],
@@ -205,6 +218,7 @@ void Hub::loadFromNVM() {
     for (int i = 0; i < MAX_NODES; i++) {
         baseOffsets[i] = prefs.getInt((String("base") + i).c_str(), 0);
         lastSeenValues[i] = prefs.getInt((String("last") + i).c_str(), 0);
+        nodeCounters[i] = baseOffsets[i] + lastSeenValues[i]; // Ensure startup value
     }
 }
 
@@ -218,6 +232,62 @@ void Hub::saveToNVM() {
 void Hub::resetBaseOffsets() {
     for (int i = 0; i < MAX_NODES; i++) {
         baseOffsets[i] = 0;
+        nodeCounters[i] = lastSeenValues[i]; // update display immediately
     }
     saveToNVM();
 }
+
+void Hub::tcaSelect(uint8_t channel) {
+    if (channel > 7) return;
+    Wire.beginTransmission(MUX_ADDR);
+    Wire.write(1 << channel);
+    Wire.endTransmission();
+}
+
+void Hub::updateDisplays() {
+    for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
+        if (ledDisplays[i]) {
+            tcaSelect(CHANNELS_MUX[i]);
+            int value = nodeCounters[i];
+
+            // Build a 4-char buffer: leading '.' + digits
+            char buf0[2] = ".";  // leftmost digit
+            char buf1[2] = ".";
+            char buf2[2] = ".";
+            char buf3[2] = ".";  // rightmost digit
+
+            // Convert integer to string
+            char strVal[12];
+            snprintf(strVal, sizeof(strVal), "%d", value);
+
+            int len = strlen(strVal);
+            // Place digits in the rightmost positions
+            // Example: "42" -> "..42"
+            switch (len) {
+                case 4:
+                    buf0[0] = strVal[0];
+                    buf1[0] = strVal[1];
+                    buf2[0] = strVal[2];
+                    buf3[0] = strVal[3];
+                    break;
+                case 3:
+                    buf1[0] = strVal[0];
+                    buf2[0] = strVal[1];
+                    buf3[0] = strVal[2];
+                    break;
+                case 2:
+                    buf2[0] = strVal[0];
+                    buf3[0] = strVal[1];
+                    break;
+                case 1:
+                default:
+                    buf3[0] = strVal[0];
+                    break;
+            }
+
+            // Display all 4 chars
+            ledDisplays[i]->print(buf0, buf1, buf2, buf3);
+        }
+    }
+}
+

@@ -44,6 +44,7 @@ public:
     Hub(uint8_t maxNodes_);
     void begin();
     void loop();
+    static const uint8_t NUM_CHANNELS;
 
 private:
     uint8_t maxNodes;
@@ -54,6 +55,10 @@ private:
 
     Preferences prefs;
     static Hub* activeHub;
+
+    static uint8_t CHANNELS_MUX[];
+    void tcaSelect(uint8_t CHANNEL);
+    void updateDisplays();
 
     void flashLED();
     void handleRecv(const esp_now_recv_info_t *info, const uint8_t *incomingData, int len);
