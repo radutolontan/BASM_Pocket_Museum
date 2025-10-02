@@ -4,7 +4,6 @@
 #include "evaluators/EvaluatorBase.h"
 #include "storage/SDManager.h"
 #include "display/DisplayTask.h"
-#include "VoteCounter.h" 
 
 enum class EvaluatorState {
     BOOT,
@@ -18,7 +17,7 @@ public:
     EvaluatorTask(SDManager& sdManager); 
     // method to setup the EvaluatorTask - initialize all evaluators being used
     // it passes other tasks and data structures to evaluators
-    void setupEvaluatorTask(DisplayTask& displayTaskRef, Node* nodePtr);
+    void setupEvaluatorTask(DisplayTask& displayTaskRef);
     void runEvaluatorTask(); // method to run evaluatorTask state machine
     static void runEvaluatorTaskWrapper(void* param); // FreeRTOS-compatible entry point
     void setEvaluatorState(EvaluatorState newState); // method to change evaluatorTask state

@@ -4,15 +4,13 @@
 #include "evaluators/EvaluatorTask.h"
 #include "evaluators/EvaluatorBase.h"
 #include "shared_resources/SharedDataBuffer.h"
-#include "VoteCounter.h"
 
 class ExcursionEvaluator : public EvaluatorBase {
 public:
     ExcursionEvaluator(DisplayTask& displayRef,
                        DisplayState targetState,
                        float threshold,
-                       uint32_t cooldownMs,
-                       Node* nodePtr);
+                       uint32_t cooldownMs);
 
     void update() override;
     void initializeLogFile() override {}  // No-op for this evaluator
@@ -30,6 +28,4 @@ private:
     uint32_t excursionCount = 0;
     uint32_t lastTriggerTime = 0;
     bool inExcursion = false;
-
-    Node* node;
 };

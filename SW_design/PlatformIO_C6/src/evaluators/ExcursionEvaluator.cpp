@@ -10,13 +10,11 @@ It only operates while DisplayTask is in DisplayState::TARGET_STATE.*/
 ExcursionEvaluator::ExcursionEvaluator(DisplayTask& displayRef,
                                        DisplayState targetState,
                                        float threshold,
-                                       uint32_t cooldownMs,
-                                       Node* nodePtr)
+                                       uint32_t cooldownMs)
     : displayTask(displayRef),
       activeState(targetState),
       threshold(threshold),
-      cooldown(cooldownMs),
-      node(nodePtr)
+      cooldown(cooldownMs)
 {}
 
 void ExcursionEvaluator::update() {
@@ -67,20 +65,6 @@ void ExcursionEvaluator::update() {
 
     // Enforce cooldown
     if (now - lastTriggerTime < cooldown) return;
-
-    // Detect excursion
-    if (value >= threshold && !inExcursion) {
-        excursionCount++;
-        lastTriggerTime = now;
-        inExcursion = true;
-        // 🔍 Debug print
-        Serial.printf("[ExcursionEvaluator] Excursion detected in state %d | value=%.2f | count=%lu\n",
-                      static_cast<int>(activeState),
-                      value,
-                      static_cast<unsigned long>(excursionCount));
-        // Send to Hub via Node
-        if (node) node->setNextValue(excursionCount);
-    }
 
     // Reset excursion flag when value falls below threshold
     if (value < threshold) {
