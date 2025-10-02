@@ -150,11 +150,12 @@ void BMSTask::run_on_batt() {
     if (millis() - lastPrint >= 10000) { // every 10 seconds
         int powokVal = digitalRead(BMS_POWOK_FDBCK_PIN);
         int chgVal   = digitalRead(BMS_CHG_FDBCK_PIN);
-        int adcVal   = analogRead(BMS_VBAT_VOLT_PIN);
-        // Convert ADC to bottom voltage
-        float vBottom = (adcVal / 4095.0) * 1.1; // 1.1V reference
+        uint32_t adcMilivoltVal = analogReadMilliVolts(BMS_VBAT_VOLT_PIN);
+        Serial.print("[BMSTask] adcMilivoltVal: ");
+        Serial.println(adcMilivoltVal);
         // Scale to top of divider
-        float vBat = vBottom * (VBAT_DIVIDER_RTOP + VBAT_DIVIDER_RBOTTOM) / VBAT_DIVIDER_RBOTTOM;
+        float vBat = (adcMilivoltVal / 1000.0f) *
+             ((VBAT_DIVIDER_RTOP + VBAT_DIVIDER_RBOTTOM) / VBAT_DIVIDER_RBOTTOM);
         Serial.printf("[BMSTask] POWOK=%d  CHG=%d  Vbat=%.2fV\n", !powokVal, !chgVal, vBat);
         lastPrint = millis();
     }
