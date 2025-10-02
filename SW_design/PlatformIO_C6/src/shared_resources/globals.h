@@ -63,10 +63,10 @@ extern volatile bool g_bmsLatched;  // set true once LDO latch is active
 #define VU_MAX_TEMP    30
 #define VU_MIN_PRESS   980
 #define VU_MAX_PRESS   1000
-#define VU_MIN_LUX     1.5 // LOG SCALE
-#define VU_MAX_LUX     3.6 // LOG SCALE
+#define VU_MIN_LUX     2500  //1.5 // LOG SCALE
+#define VU_MAX_LUX     20000 // 3.6 // LOG SCALE
 #define VU_MIN_VOL     -33.4 // dB
-#define VU_MAX_VOL     -10   // dB
+#define VU_MAX_VOL     -7    // dB
 #define VU_MIN_ACCEL   990
 #define VU_MAX_ACCEL   3000
 #define VU_MIN_MAG     3.4 // LOG SCALE

@@ -53,6 +53,8 @@ private:
     int lastSeenValues[MAX_NODES];    // Last raw values received
     bool testMode = false;            // If true → ignore carry-over
 
+    bool lastBmsLatched = false;      // track last known BMS state
+
     Preferences prefs;
     static Hub* activeHub;
 

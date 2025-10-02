@@ -138,6 +138,19 @@ void Hub::begin() {
 }
 
 void Hub::loop() {
+    // --- Handle g_bmsLatched transitions ---
+    if (lastBmsLatched && !g_bmsLatched) {
+        // Transition from true → false, turn off all displays
+        for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
+            if (ledDisplays[i]) {
+                tcaSelect(CHANNELS_MUX[i]);
+                ledDisplays[i]->displayOff();
+            }
+        }
+        Serial.println("[VoteCounter] - g_bmsLatched is false, displays OFF");
+    }
+    lastBmsLatched = g_bmsLatched;
+
     // Handle Command Line Instructions
     if (Serial.available()) {
         String cmd = Serial.readStringUntil('\n');

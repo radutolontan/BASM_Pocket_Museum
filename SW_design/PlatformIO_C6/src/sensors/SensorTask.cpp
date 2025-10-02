@@ -142,7 +142,7 @@ void SensorTask::run_read(){
     }
     // ================= BH1750 SENSOR ==================
     if (lightSensor.read(sensorReading)) {
-        // Serial.print(">lux:");
+        SENSOR_PRINT(">lux:");
         SENSOR_PRINTLN(sensorReading.light_intensity);
     }
     // ================ ICM20948 SENSOR ===================
@@ -187,7 +187,7 @@ void SensorTask::run_read(){
     
     // Guard against zero or negative values
     float safe_light = sensorReading.light_intensity;
-    if (safe_light <= 0.0f) safe_light = 1e-6f; 
+    //if (safe_light <= 0.0f) safe_light = 1e-6f; 
 
     float safe_mag = sensorReading.mag_norm;
     if (safe_mag <= 0.0f) safe_mag = 1e-6f;
@@ -195,7 +195,8 @@ void SensorTask::run_read(){
     float log_light_intensity = log10f(safe_light);
     float log_mag_norm = log10f(safe_mag);
 
-    sensorReading.light_intensity = log_light_intensity;
+    //sensorReading.light_intensity = log_light_intensity;
+    // sensorReading.light_intensity = log_light_intensity;
     sensorReading.mag_norm = log_mag_norm;
 
     SENSOR_PRINT(">log_light_intensity:");
