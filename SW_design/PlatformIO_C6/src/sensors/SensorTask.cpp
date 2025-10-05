@@ -26,8 +26,10 @@ ICM209XXHAL imuSensor(Wire);
 // CLASS Constructor
 SensorTask::SensorTask() {}
 
-void SensorTask::setupSensorTask() {
+void SensorTask::setupSensorTask(BMSTask* bms) {
     setSensorState(SensorState::BOOT);
+    // Set BMSTask pointer
+    this->bmsTask = bms;
 }
 
 void SensorTask::setSensorState(SensorState new_state) {
@@ -92,7 +94,7 @@ void SensorTask::runSensorTask() {
 
 void SensorTask::run_boot(){
     // Check if BMS is Ready
-    if (g_bmsLatched) {
+    if (bmsTask && bmsTask->isLatched()) {
         // Transition to INIT
         setSensorState(SensorState::INIT);
     }

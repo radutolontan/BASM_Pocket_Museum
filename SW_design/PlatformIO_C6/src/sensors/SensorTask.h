@@ -3,7 +3,7 @@
 
 #include "sensors/SensorHAL.h"
 #include "shared_resources/SharedDataBuffer.h"
-
+#include "power/BMSTask.h"
 #include <Arduino.h>
 
 // ===== Sensor Task States =====
@@ -15,12 +15,15 @@ enum class SensorState {
     SLEEP
 };
 
+// Forward declaration
+class BMSTask;
+
 class SensorTask {
 public:
     SensorTask();  // Empty constructor
 
     // Called once during setup
-    void setupSensorTask();
+    void setupSensorTask(BMSTask* bms);
 
     // FreeRTOS-compatible entry point
     static void runSensorTaskWrapper(void* param); 
@@ -43,6 +46,9 @@ private:
     void run_read();
     void run_process();
     void run_sleep();
+
+    // Pointer to BMSTask instance
+    BMSTask* bmsTask = nullptr; 
 
     // FOR TRACKING ACTUAL RATE
     unsigned long lastFreqPrintTime = 0;   // for printing every 1 second

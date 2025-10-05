@@ -2,20 +2,27 @@
 #define BMS_TASK_H
 
 #include "shared_resources/globals.h"
-
+#include <vector>
 #include <Arduino.h>
 
 // BMS states
 enum class BMSState {
     BOOT,                 // Initialize GPIOs
     STARTUP_LATCH,        // Wait for STARTUP_TIMER to EXPIRE
-    RUN_ON_USB_CHARGING,  // RUNNING - USB Connected ; CHARGING
-    RUN_ON_USB_NO_CHARGE, // RUNNING - USB Connected ; NOT CHARGING
-    RUN_ON_BATT,          // RUNNING - USB NOT Connected ; ON BATT
-    RUN_SOURCE_UNCERTAIN, // RUNNING - INTERMEDIATE TRANSITION STATE
-    LOW_BATT_WARNING,     // RUNNING - USB NOT Connected ; LOW BATTERY
+    ACTIVE,               // ACTIVE - check internal power_source states
     SHUTDOWN_PENDING      // SHUTDOWN COMMANDED
 };
+
+// BMS Charge Controller States
+enum class ChargeControllerState {
+    BATTERY_ONLY,   // ON BATTERY, BUT MORE THAN VBAT_TIME_TO_VTHRESHOLD FROM VBAT_THRESHOLD
+    CHARGING,       // CHARGING IN PROGRESS
+    DONE_CHARGING,  // PREVIOUSLY CHARGING, BUT USB STILL PLUGGED IN
+    LOW_BATTERY,    // ON BATTERY (NO USB), WITHIN VBAT_TIME_TO_VTHRESHOLD FROM VBAT_THRESHOLD
+    UNKNOWN
+};
+
+
 
 // DisplayTask class handles the display state machine
 class BMSTask {
@@ -34,14 +41,32 @@ public:
     // Safely request a state change from other modules
     void setBMSState(BMSState newState);
 
-    // Method to safely access BMSTask state
+    // Safely request a source change
+    void updateChargeControllerState(bool powOk, bool chg);        // Complex Method which navigates logic
+    void setChargeControllerState(ChargeControllerState newState); // Simple method for changing the state
+
+    // Accessors
+    bool isLatched() const;           // TRUE if BMS Latched
+    ChargeControllerState getChargeControllerState() const;
     BMSState getBMSState() const;
+
 
 private:
     unsigned long lastStateChange;
     unsigned long lastUpdateTime;
 
+    // States and accessors
     BMSState current_state;
+    ChargeControllerState current_charge_controller_state;    
+
+    // VBat Prediction vars. and methods
+    std::vector<float> vbatHistory;
+    unsigned long lastVbatCheck = 0;
+    bool lowBatteryPredicted = false;
+    unsigned long batteryModeEntryTime = 0;
+    void addVbatSample(float vBat);
+    float computeSlope();
+    bool willReachThreshold(float vThreshold, float minutesAhead, float sampleIntervalMin);
 
     // Button debounce state
     bool stableButtonState = LOW;
@@ -53,10 +78,7 @@ private:
     // State handling methods
     void run_boot();
     void run_startup_latch();
-    void run_on_usb_charging();
-    void run_on_usb_no_charge();
-    void run_on_batt();
-    void run_on_source_uncertain();
+    void run_active();
     void run_low_batt_warning();
     void run_shutdown_pending();
 
@@ -64,6 +86,9 @@ private:
     unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
     unsigned int updateCount = 0;          // count of State Machine executions
     float state_machine_run_freq;          // tracks run frequency
+
+    // DEBUG
+    void printVbatHistory();
 
 };
 

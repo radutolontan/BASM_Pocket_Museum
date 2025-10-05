@@ -40,11 +40,13 @@ DisplayTask::DisplayTask()
     3,  // logical 8 → physical LED 3  (MAGNITUDE)
 };
 
-void DisplayTask::setupDisplayTask() {
+void DisplayTask::setupDisplayTask(BMSTask* bms) {
     strip.begin();  // Initialize the NeoPixel library
     setDisplayState(DisplayState::BOOT);
     // GPIO for Push-button which toggles display mode
     pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT);
+    // Store BMS Task Pointer
+    this->bmsTask = bms;
 }
 
 void DisplayTask::setDisplayState(DisplayState new_state) {
@@ -73,7 +75,7 @@ void DisplayTask::runDisplayTaskWrapper(void* param) {
 
 void DisplayTask::runDisplayTask() {
     // Check if BMS is still latched
-    if (!g_bmsLatched) {
+    if (bmsTask && !bmsTask->isLatched()) {
         // Power not latched → shut off display
         turnDisplayOFF();
         // Set DisplayMode to Boot to avoid other states overwriting the shutdown command
@@ -147,7 +149,7 @@ void DisplayTask::runDisplayTask() {
 
 void DisplayTask::run_boot(){
     // Check if BMS is Ready
-    if (g_bmsLatched) {
+    if (bmsTask && bmsTask->isLatched()) {
         // Transition to INIT
         setDisplayState(DisplayState::INIT);
         // Import color-lib for otehr methods to use
@@ -331,7 +333,7 @@ void DisplayTask::updateModeDisplay() {
     // Pick the color based on the ModeDisplay
     switch (current_state) {
         case DisplayState::DISPLAY_PRESSURE:{
-            baseColor = colors_lib[2]; // Yellow
+            baseColor = colors_lib[1]; // Blue
             break;
         }
         case DisplayState::DISPLAY_TEMP:{
@@ -366,9 +368,28 @@ void DisplayTask::updateModeDisplay() {
     uint32_t now = millis();
     for (int i = 0; i < MODE_DISPLAY_COUNT; i++) {
         uint32_t color = applyBreathing(baseColor, now);
-        setLogicalPixel(MODE_DISPLAY_OFFSET + i, color);
-    }
-    // TO-DO: ADD OVERRIDE FOR MONITORING OTHER STATE MACHINES
+        // I
+        if (i == 1 && bmsTask) {
+            auto state = bmsTask->getChargeControllerState();
+            // Default: keep color as-is
+            int colorIndex = -1; 
+            // Check if any of the special ChargeController states is active
+            switch (state) {
+                case ChargeControllerState::LOW_BATTERY:   colorIndex = 6; break; // ORANGE
+                case ChargeControllerState::CHARGING:      colorIndex = 3; break; // e.g. GREEN
+                case ChargeControllerState::DONE_CHARGING: colorIndex = 1; break; // e.g. BLUE
+                default: break; // UNKNOWN / BATTERY_ONLY → no override
+            }
+            // Only apply override if the colorIndex had been changed
+            if (colorIndex >= 0) {
+                // Blink between chosen color and OFF
+                color = ((now / 300) % 2 == 0) ? colors_lib[colorIndex] : colors_lib[0];
+            }
+        }
+
+    setLogicalPixel(MODE_DISPLAY_OFFSET + i, color);
+}
+
 }
 
 void DisplayTask::updateMagnitudeDisplay(float value, float minValue, float maxValue) {

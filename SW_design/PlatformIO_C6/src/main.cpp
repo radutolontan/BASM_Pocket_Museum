@@ -29,13 +29,12 @@ void setup() {
     SharedBuffer::init();  
 
     // Initialize all State Machines
-    displayTask.setupDisplayTask();
     bmsTask.setupBMSTask();
+    displayTask.setupDisplayTask(&bmsTask);
+    sensorTask.setupSensorTask(&bmsTask);
     evaluatorTask.setupEvaluatorTask(displayTask);
-    audioTask.setupAudioTask();
+    audioTask.setupAudioTask(&bmsTask);
     sDManager.setupSDManager();
-    sensorTask.setupSensorTask();
-    
 
     // Create FreeRTOS tasks
     xTaskCreatePinnedToCore(DisplayTask::runDisplayTaskWrapper, "DisplayTask", 4096, &displayTask, 1, &displayHandle, 0);
