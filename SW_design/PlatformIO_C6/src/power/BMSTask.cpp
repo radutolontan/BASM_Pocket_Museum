@@ -130,14 +130,15 @@ void BMSTask::run_active() {
         if (millis() - lastSample >= VBAT_CHECK_INTERVAL_SEC * 1000) {
             // Add voltage sample to history-vector
             addVbatSample();
-            // Recompute prediction only when a new sample is added
+            // Extraploate & compute Voltage Drop within VBAT_TIME_TO_VTHRESHOLD_MIN 
+            // ,checking if it drops below VBAT_VTHRESHOLD
             float sampleIntervalMin = VBAT_CHECK_INTERVAL_SEC / 60.0f;
             lowBatteryPredicted = willReachThreshold(VBAT_VTHRESHOLD,
                                                     VBAT_TIME_TO_VTHRESHOLD_MIN,
                                                     sampleIntervalMin);
-            // Overwrite prediction if within the settling window for VBat followin transition into BATT_ONLY
+            // OVERWRITE PREDICTION if within the settling window for VBat following transition into BATT_ONLY
             if (millis() - batteryModeEntryTime < VBAT_SETTLING_PERIOD_SEC * 1000.0f) lowBatteryPredicted = false;
-            // Also Overwrite prediction if not enough samples are present
+            // OVERWRITE PREDICTION if not enough samples are present
             if (vbatHistory.size() < 5) lowBatteryPredicted = false;
             lastSample = millis();
         }
