@@ -64,7 +64,7 @@ private:
     unsigned long lastVbatCheck = 0;
     bool lowBatteryPredicted = false;
     unsigned long batteryModeEntryTime = 0;
-    void addVbatSample(float vBat);
+    void addVbatSample();
     float computeSlope();
     bool willReachThreshold(float vThreshold, float minutesAhead, float sampleIntervalMin);
 

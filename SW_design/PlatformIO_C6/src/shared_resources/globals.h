@@ -14,12 +14,17 @@
 #define VBAT_DIVIDER_RBOTTOM        61.9e3f
 #define BMS_TIMER_STARTUP           2400 // [ms] - HOLD ON/OFF pressed before latching ON
 #define BMS_TIMER_SHUTDOWN          2400 // [ms] - HOLD ON/OFF pressed before latching OFF
-#define VBAT_CHECK_INTERVAL_SEC     30.0f// [s] - sample Battery voltage every X seconds
-#define VBAT_HISTORY_LEN            60   // number of samples to keep
+
 // LOW_POWER_MODE is set when voltage is predicted to drop below VBAT_THRESHOLD [V] witin VBAT_TIME_TO_VTHRESHOLD [min]
 #define VBAT_VTHRESHOLD             2.9f 
 #define VBAT_TIME_TO_VTHRESHOLD_MIN 30.0f
-#define VBAT_SETTLING_PERIOD_SEC    30.0f    
+#define VBAT_SETTLING_PERIOD_SEC    90.0f// To avoid LiPo transients, within VBAT_SETTLING_PERIOD_SEC from transitioning to BATT_ONLY, no LOW_BATT predictions are made
+#define VBAT_CHECK_INTERVAL_SEC     30.0f// [s] - sample Battery voltage every X seconds
+#define VBAT_HISTORY_LEN            60   // number of samples to keep
+#define VBAT_AVG_SAMPLES            4    // Number of averaged ADC readings per sample
+#define VBAT_MAX_JUMP               0.05f// Maximum allowed voltage jump (Volts) between consecutive samples
+#define VBAT_MIN_VOLTAGE            2.85f // Acceptable physical range for battery voltage (Volts) - MAX
+#define VBAT_MAX_VOLTAGE            4.30f// Acceptable physical range for battery voltage (Volts) - MIN
 
 // [GPIOs]
 #define DISPLAY_MODE_PUSHBUTTON_PIN 9

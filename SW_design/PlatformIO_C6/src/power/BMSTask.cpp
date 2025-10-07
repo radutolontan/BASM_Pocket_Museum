@@ -128,11 +128,8 @@ void BMSTask::run_active() {
     if (current_charge_controller_state == ChargeControllerState::BATTERY_ONLY) {
         static unsigned long lastSample = 0;
         if (millis() - lastSample >= VBAT_CHECK_INTERVAL_SEC * 1000) {
-            uint32_t adcMv = analogReadMilliVolts(BMS_VBAT_VOLT_PIN);
-            float vBat = (adcMv / 1000.0f) *
-                        ((VBAT_DIVIDER_RTOP + VBAT_DIVIDER_RBOTTOM) / VBAT_DIVIDER_RBOTTOM);
-            // Add voltage sample to vector
-            addVbatSample(vBat);
+            // Add voltage sample to history-vector
+            addVbatSample();
             // Recompute prediction only when a new sample is added
             float sampleIntervalMin = VBAT_CHECK_INTERVAL_SEC / 60.0f;
             lowBatteryPredicted = willReachThreshold(VBAT_VTHRESHOLD,
@@ -254,17 +251,31 @@ bool BMSTask::isLatched() const {
 // ==================== VBAT PREDICTION =========================
 // ==============================================================
 
-void BMSTask::addVbatSample(float vBat) {
-    // Discard Ourliers
-    if (vBat < 2.5f || vBat > 4.3f) {
-        return;  // discard
+void BMSTask::addVbatSample() {
+    // ---- Step 1: Take multiple ADC readings and average them ----
+    float sum = 0.0f;
+    int validSamples = 0;
+    while (validSamples < VBAT_AVG_SAMPLES) {
+        uint32_t adcMv = analogReadMilliVolts(BMS_VBAT_VOLT_PIN);
+        float vBat = (adcMv / 1000.0f) *
+                     ((VBAT_DIVIDER_RTOP + VBAT_DIVIDER_RBOTTOM) / VBAT_DIVIDER_RBOTTOM);
+        // ---- Step 2: Reject physically impossible samples ----
+        if (vBat >= VBAT_MIN_VOLTAGE && vBat <= VBAT_MAX_VOLTAGE) {
+            sum += vBat;
+            validSamples++;
+        } 
+        // Allow ADC to settle a bit between reads
+        vTaskDelay(pdMS_TO_TICKS(2)); 
     }
-    // Maintain fixed-size history
+    // ---- Step 3: Compute average ----
+    float vBatAvg = (validSamples > 0) ? (sum / validSamples) : 0.0f;
+    // ---- Step 4: Add to history buffer ----
     if (vbatHistory.size() >= VBAT_HISTORY_LEN) {
-        vbatHistory.erase(vbatHistory.begin()); 
+        vbatHistory.erase(vbatHistory.begin());
     }
-    vbatHistory.push_back(vBat);
+    vbatHistory.push_back(vBatAvg);
 }
+
 
 float BMSTask::computeSlope() {
     // Cannot compute regression for less than two datapoints
