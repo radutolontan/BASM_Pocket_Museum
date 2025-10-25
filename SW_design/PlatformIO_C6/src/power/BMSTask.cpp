@@ -3,8 +3,11 @@
 #include "shared_resources/global_debug.h"
 #include "shared_resources/globals.h"
 #include "power/BMSTask.h"
-
 #include "BMSTask.h"
+
+// TO DO: Calibrate LOW_POWER_THRESHOLD_VOLTAGE to achieve 30-40 min run time
+// TO DO: ADD ULTRA_LOW_POWER mode to indicate imminent shutdown
+// TO DO: Enable ADC reads during all BMS modes to allow immediate detection of low_power / ultra_low_power modes
 
 // Constructor
 BMSTask::BMSTask() 
@@ -143,11 +146,6 @@ void BMSTask::run_active() {
             lastSample = millis();
         }
     }
-    else if (current_charge_controller_state == ChargeControllerState::CHARGING) {
-    // While charging, just dump current vector contents
-    printVbatHistory();
-}
-
 }
 
 void BMSTask::run_shutdown_pending() {
@@ -174,6 +172,8 @@ void BMSTask::setChargeControllerState(ChargeControllerState newState){
         vbatHistory.clear();
         // Capture time when batteryModeEntry was made
         batteryModeEntryTime = millis();
+        // Reset low battery prediction flag
+        lowBatteryPredicted = false;
     }
 };
 
@@ -277,7 +277,6 @@ void BMSTask::addVbatSample() {
     vbatHistory.push_back(vBatAvg);
 }
 
-
 float BMSTask::computeSlope() {
     // Cannot compute regression for less than two datapoints
     if (vbatHistory.size() < 2) return 0.0f;
@@ -309,6 +308,7 @@ bool BMSTask::willReachThreshold(float vThreshold, float minutesAhead, float sam
 }
 
 // ==================== DEBUGGING =======================
+
 void BMSTask::printVbatHistory() {
     Serial.print("[VBAT History] ");
     for (size_t i = 0; i < vbatHistory.size(); i++) {

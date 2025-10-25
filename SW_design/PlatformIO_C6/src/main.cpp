@@ -16,9 +16,6 @@ EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager
 DisplayTask displayTask;
 BMSTask bmsTask;
 
-// Define & Initialize BMS_Latch flag (declared in globals.h)
-volatile bool g_bmsLatched = false; 
-
 // Task handles for monitoring
 TaskHandle_t sensorHandle, displayHandle, audioHandle, bmsHandle, evaluatorHandle;
 
