@@ -9,8 +9,10 @@ AudioTask::AudioTask()
     mic0Buffer = new int16_t[BUFFER_SIZE];
 }
 
-void AudioTask::setupAudioTask() {
+void AudioTask::setupAudioTask(BMSTask* bms) {
     setAudioState(AudioState::BOOT);
+    // Set BMS Task pointer
+    this->bmsTask = bms;
 }
 
 void AudioTask::setAudioState(AudioState newState) {
@@ -71,7 +73,7 @@ void AudioTask::runAudioTask() {
 // ======== STATE METHODS ==========
 void AudioTask::run_boot() {
     // Only initialize the audio devices once the BMS is confirmed latched
-    if (g_bmsLatched) {
+    if (bmsTask && bmsTask->isLatched()) {
         setAudioState(AudioState::INIT);
     }
 }

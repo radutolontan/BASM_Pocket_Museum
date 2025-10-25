@@ -2,7 +2,7 @@
 #define DISPLAY_TASK_H
 
 #include "shared_resources/globals.h"
-
+#include "power/BMSTask.h"
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -19,13 +19,16 @@ enum class DisplayState {
     DISPLAY_ROT_VEL         // Displays rotational velocity
 };
 
+// Forward declaration
+class BMSTask;
+
 // DisplayTask class handles the display state machine
 class DisplayTask {
 public:
     DisplayTask();
 
-    // Initializes the Display Task (setup)
-    void setupDisplayTask();
+    // Initializes the Display Task (setup)(takes in a pointer to a BMSTask)
+    void setupDisplayTask(BMSTask* bms);
 
     // FreeRTOS-compatible entry point
     static void runDisplayTaskWrapper(void* param); 
@@ -47,6 +50,9 @@ private:
 
     DisplayState current_state;
 
+    // Pointer to BMSTask instance
+    BMSTask* bmsTask = nullptr; 
+
     // FOR TRACKING ACTUAL RATE
     unsigned long lastFreqPrintTime = 0;   // for printing every 1 second
     unsigned int updateCount = 0;          // count of State Machine executions
@@ -56,7 +62,6 @@ private:
     bool stableButtonState = LOW;
     unsigned long lastButtonChange = 0;
     
-
     // Button helper methods
     bool debounceButton(bool rawState);
     void cycleDisplayState();

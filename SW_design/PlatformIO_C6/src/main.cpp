@@ -16,9 +16,6 @@ EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager
 DisplayTask displayTask;
 BMSTask bmsTask;
 
-// Define & Initialize BMS_Latch flag (declared in globals.h)
-volatile bool g_bmsLatched = false; 
-
 // Task handles for monitoring
 TaskHandle_t sensorHandle, displayHandle, audioHandle, bmsHandle, evaluatorHandle;
 
@@ -29,13 +26,12 @@ void setup() {
     SharedBuffer::init();  
 
     // Initialize all State Machines
-    displayTask.setupDisplayTask();
     bmsTask.setupBMSTask();
+    displayTask.setupDisplayTask(&bmsTask);
+    sensorTask.setupSensorTask(&bmsTask);
     evaluatorTask.setupEvaluatorTask(displayTask);
-    audioTask.setupAudioTask();
+    audioTask.setupAudioTask(&bmsTask);
     sDManager.setupSDManager();
-    sensorTask.setupSensorTask();
-    
 
     // Create FreeRTOS tasks
     xTaskCreatePinnedToCore(DisplayTask::runDisplayTaskWrapper, "DisplayTask", 4096, &displayTask, 1, &displayHandle, 0);

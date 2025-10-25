@@ -3,7 +3,7 @@
 #include "audio/MICT3902HAL.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
-
+#include "power/BMSTask.h"
 #include <Arduino.h>
 #include <vector>
 #include <mutex>
@@ -16,13 +16,17 @@ enum class AudioState {
     PROCESS
 };
 
+// Forward declaration
+class BMSTask;
+
+
 // ====== AUDIO TASK CLASS ======
 class AudioTask {
 public:
     AudioTask();
 
     // Initializes the Audio Task (setup)
-    void setupAudioTask();
+    void setupAudioTask(BMSTask* bms);
 
     // FreeRTOS-compatible entry point
     static void runAudioTaskWrapper(void* param);
@@ -35,6 +39,7 @@ public:
 
 private:
     AudioState current_state;
+    BMSTask* bmsTask = nullptr;
     unsigned long lastProcessTime = 0;
 
     static const size_t BUFFER_SIZE = 256; // samples per input per cycle

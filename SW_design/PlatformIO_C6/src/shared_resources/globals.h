@@ -1,7 +1,7 @@
 #pragma once
 
 // =========== SW VERSION =============
-#define GIT_SHA "EDUV0_BRINGUPz"
+#define GIT_SHA "BMS_Feature_DEV"
 
 // ===== ESP32 PERIPHERAL BINDING =====
 // [BMS]
@@ -10,11 +10,21 @@
 #define BMS_CHG_FDBCK_PIN           6
 #define BMS_POWOK_FDBCK_PIN         7
 #define BMS_ONOFF_PUSHBUTTON_PIN    4
-#define VBAT_DIVIDER_RTOP           178000
-#define VBAT_DIVIDER_RBOTTOM        61900
-#define BMS_TIMER_STARTUP           2700  // [ms] - HOLD ON/OFF pressed before latching ON
-#define BMS_TIMER_SHUTDOWN          2700 // [ms] - HOLD ON/OFF pressed before latching OFF
-extern volatile bool g_bmsLatched;  // set true once LDO latch is active
+#define VBAT_DIVIDER_RTOP           178e3f
+#define VBAT_DIVIDER_RBOTTOM        61.9e3f
+#define BMS_TIMER_STARTUP           2200 // [ms] - HOLD ON/OFF pressed before latching ON
+#define BMS_TIMER_SHUTDOWN          2200 // [ms] - HOLD ON/OFF pressed before latching OFF
+// [BMS] ChargeController and Feedback
+#define VBAT_VTHRESHOLD             3.55f// If the system is predicted to reach VBAT_VTHRESHOLD within VBAT_TIME_TO_VTHRESHOLD_MIN, LOW_POWER will be indicated
+#define VBAT_TIME_TO_VTHRESHOLD_MIN 30.0f
+// In reality, if VBAT_VTHRESHOLD = 3.4V & VBAT_TIME_TO_VTHRESHOLD_MIN = 30 min , we hit 2.9V 18-19 min after entering LOW_POWER since we operate in the non-linear SoC regime
+// In reality, if VBAT_VTHRESHOLD = 3.45V& VBAT_TIME_TO_VTHRESHOLD_MIN = 30 min , we hit 2.9V 22-23 min after entering LOW_POWER since we operate in the non-linear SoC regime
+#define VBAT_SETTLING_PERIOD_SEC    90.0f// To avoid LiPo transients, within VBAT_SETTLING_PERIOD_SEC from transitioning to BATT_ONLY, no LOW_BATT predictions are made
+#define VBAT_CHECK_INTERVAL_SEC     30.0f// [s] - sample Battery voltage every X seconds
+#define VBAT_HISTORY_LEN            60   // number of samples in VBat History
+#define VBAT_AVG_SAMPLES            4    // Number of averaged ADC readings per sample
+#define VBAT_MIN_VOLTAGE            2.85f// Acceptable physical range for battery voltage (Volts) - MAX
+#define VBAT_MAX_VOLTAGE            4.30f// Acceptable physical range for battery voltage (Volts) - MIN
 
 // [GPIOs]
 #define DISPLAY_MODE_PUSHBUTTON_PIN 9
