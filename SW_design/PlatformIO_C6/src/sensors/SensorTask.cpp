@@ -109,24 +109,24 @@ void SensorTask::run_init(){
 
     // ICP20100 SENSOR 
     if (pressureSensor.begin()){
-        // ✅ DEBUG: Conifrm Sensor Read successful
+        pressureSensor.setReadFrequency(SENSOR_RATE_BARO);
         Serial.println("[SensorTask] - ICP20100 initialized successfully");
     }
 
     // BH1750FVI SENSOR 
     if (lightSensor.begin()){
-        // ✅ DEBUG: Conifrm Sensor Read successful
+        lightSensor.setReadFrequency(SENSOR_RATE_AMB_LUX);
         Serial.println("[SensorTask] - BH1750FVI initialized successfully");
     }
 
     // ICM20948 SENSOR 
     if (imuSensor.begin()){
-        // ✅ DEBUG: Conifrm Sensor Read successful
+        lightSensor.setReadFrequency(SENSOR_RATE_IMU);
         Serial.println("[SensorTask] - ICM20948 initialized successfully");
     }
         
     delay(1000);
-    // Set SLEEP State
+    // Carry on to READ State
     setSensorState(SensorState::READ);
 };
 
@@ -136,78 +136,40 @@ void SensorTask::run_read(){
     // ==================================================
 
     // =============== ICP20100 SENSOR ==================
-    if (pressureSensor.read(sensorReading)) {
-        SENSOR_PRINT(">pressure:");
-        SENSOR_PRINTLN(sensorReading.pressure);
-        SENSOR_PRINT(">temperature:");
-        SENSOR_PRINTLN(sensorReading.temperature);
+    if (pressureSensor.shouldRead() && pressureSensor.read(sensorReading)) {
+        // Update SharedBuffer with pressure/temperature data
+        SharedBuffer::updatePressureData(sensorReading.temperature, sensorReading.pressure);
     }
     // ================= BH1750 SENSOR ==================
-    if (lightSensor.read(sensorReading)) {
-        // Serial.print(">lux:");
-        SENSOR_PRINTLN(sensorReading.light_intensity);
+    if (lightSensor.shouldRead() && lightSensor.read(sensorReading)) {
+        // Update SharedBuffer with light data
+        SharedBuffer::updateLightData(sensorReading.light_intensity); 
     }
     // ================ ICM20948 SENSOR ===================
-    if (imuSensor.read(sensorReading)) {
-        SENSOR_PRINT(">accelx:");
-        SENSOR_PRINTLN(sensorReading.accel_x);
-        SENSOR_PRINT(">accely:");
-        SENSOR_PRINTLN(sensorReading.accel_y);
-        SENSOR_PRINT(">accelz:");
-        SENSOR_PRINTLN(sensorReading.accel_z);
-        SENSOR_PRINT(">gyrox:");
-        SENSOR_PRINTLN(sensorReading.gyro_x);
-        SENSOR_PRINT(">gyroy:");
-        SENSOR_PRINTLN(sensorReading.gyro_y);
-        SENSOR_PRINT(">gyroz:");
-        SENSOR_PRINTLN(sensorReading.gyro_z);
-        SENSOR_PRINT(">magx:");
-        SENSOR_PRINTLN(sensorReading.mag_x);
-        SENSOR_PRINT(">magy:");
-        SENSOR_PRINTLN(sensorReading.mag_y);
-        SENSOR_PRINT(">magz:");
-        SENSOR_PRINTLN(sensorReading.mag_z);
+    if (imuSensor.shouldRead() && imuSensor.read(sensorReading)) {
+        // Update SharedBuffer with IMU data
+        // Note: Vector norms are computed and saved by SharedBuffer::updateIMUData
+        SharedBuffer::updateIMUData(
+            sensorReading.accel_x, sensorReading.accel_y, sensorReading.accel_z,
+            sensorReading.gyro_x, sensorReading.gyro_y, sensorReading.gyro_z,
+            sensorReading.mag_x, sensorReading.mag_y, sensorReading.mag_z
+        );
     }
 
-    // ==================================================
-    // =================== PROCESS ======================
-    // ==================================================
 
-    sensorReading.accel_norm  = vector_norm(sensorReading.accel_x, sensorReading.accel_y, sensorReading.accel_z);
-    sensorReading.gyro_norm  = vector_norm(sensorReading.gyro_x, sensorReading.gyro_y, sensorReading.gyro_z);
-    sensorReading.mag_norm  = vector_norm(sensorReading.mag_x, sensorReading.mag_y, sensorReading.mag_z);
-    SENSOR_PRINT(">accel_norm:");
-    SENSOR_PRINTLN(sensorReading.accel_norm);
-    SENSOR_PRINT(">gyro_norm:");
-    SENSOR_PRINTLN(sensorReading.gyro_norm);
-    SENSOR_PRINT(">mag_norm:");
-    SENSOR_PRINTLN(sensorReading.mag_norm);
+    // ===============================================================
+    // MAG_NORM IS OVERWRITTEN WITH LOG(MAG_NORM) INSIDE updateIMUData
+    // ===============================================================
 
-    // ======================================================
-    // OVERWRITE LIGHT INTENSITY AND MAG FIELD WITH LOG
-    // ======================================================
-    
-    // Guard against zero or negative values
-    float safe_light = sensorReading.light_intensity;
-    if (safe_light <= 0.0f) safe_light = 1e-6f; 
+    // After read is complete, evaluate if we can commit a frame to SharedBuffer
+    SharedBuffer::commitFrame();
 
-    float safe_mag = sensorReading.mag_norm;
-    if (safe_mag <= 0.0f) safe_mag = 1e-6f;
-
-    // float log_light_intensity = log10f(safe_light);
-    float log_mag_norm = log10f(safe_mag);
-
-    // sensorReading.light_intensity = log_light_intensity;
-    sensorReading.mag_norm = log_mag_norm;
-
-    //SENSOR_PRINT(">log_light_intensity:");
-    //SENSOR_PRINTLN(log_light_intensity);
-    SENSOR_PRINT(">log_mag:");
-    SENSOR_PRINTLN(log_mag_norm);
-    // ======================================================
-
-    // After computation is complete, update SharedDataBuffer
-    SharedBuffer::addSensorReading(sensorReading);
+    #if DEBUG_TASK_RATES
+        // Print actual read rates for each sensor (every 10 seconds)
+        pressureSensor.printActualRate();
+        lightSensor.printActualRate();
+        imuSensor.printActualRate();
+    #endif
 };
 
 void SensorTask::run_sleep(){

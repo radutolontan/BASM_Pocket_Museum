@@ -16,6 +16,7 @@ public:
 
     bool begin() override;
     bool read(SensorData& data) override;
+    const char* getSensorName() const override { return "BH1750FVI"; }
 
 private:
     BH1750 bh1750_hw;

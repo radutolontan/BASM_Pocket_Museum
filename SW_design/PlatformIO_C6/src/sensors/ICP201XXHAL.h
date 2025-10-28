@@ -16,6 +16,7 @@ public:
 
     bool begin() override;
     bool read(SensorData& data) override;
+    const char* getSensorName() const override { return "ICP20100"; }
 
 private:
     ICP201xx icp_hw;

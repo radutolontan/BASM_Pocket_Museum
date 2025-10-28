@@ -1,7 +1,9 @@
 #include "shared_resources/SharedDataBuffer.h"
+#include "shared_resources/global_debug.h"
 
 #include <Arduino.h>
 #include <cfloat>
+#include <cmath>
 
 // SharedDataBuffer is used to store, write, read & manage access to the shared data structures used accross systemTasks
 
@@ -12,78 +14,165 @@ namespace SharedBuffer {
     SemaphoreHandle_t bufferMutex = nullptr;
     // Initialize storage for aggregatedstats
     SensorStats aggregates_Display_cycle; // Used for aggregating statistics while in a particular display mode
-    // Declare extern variables
-    bool sensorUpdated = false;
-    bool audioUpdated = false;
-    SensorData pendingFrame;
+    // Current frame that accumulates sensor readings
+    SensorData currentFrame;
 
     void init() {
         // Initialize MUTEX
         bufferMutex = xSemaphoreCreateMutex();
         // Reset aggregates on initialization
         aggregates_Display_cycle.reset();
+        // Initialize currentFrame with NAN values (indicates no data yet)
+        currentFrame = {};
+        currentFrame.temperature = NAN;
+        currentFrame.pressure = NAN;
+        currentFrame.light_intensity = NAN;
+        currentFrame.accel_x = NAN;
+        currentFrame.accel_y = NAN;
+        currentFrame.accel_z = NAN;
+        currentFrame.accel_norm = NAN;
+        currentFrame.gyro_x = NAN;
+        currentFrame.gyro_y = NAN;
+        currentFrame.gyro_z = NAN;
+        currentFrame.gyro_norm = NAN;
+        currentFrame.mag_x = NAN;
+        currentFrame.mag_y = NAN;
+        currentFrame.mag_z = NAN;
+        currentFrame.mag_norm = NAN;
+        currentFrame.volume_rms = NAN;
     }
 
-    void addSensorReading(const SensorData& sensorReadings) {
+    // ===================================
+    // SPECIFIC_SENSOR_DATA UPDATE METHODS
+    // ===================================
+    // Update current frame with fresh data from the pressure sensor (and temperature)
+    void updatePressureData(float temp, float press) {
         // Assume control of the buffer
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
-            // Update sensor fields
-            pendingFrame.temperature     = sensorReadings.temperature;
-            pendingFrame.pressure        = sensorReadings.pressure;
-            pendingFrame.light_intensity = sensorReadings.light_intensity;
-            pendingFrame.accel_x         = sensorReadings.accel_x;
-            pendingFrame.accel_y         = sensorReadings.accel_y;
-            pendingFrame.accel_z         = sensorReadings.accel_z;
-            pendingFrame.accel_norm      = sensorReadings.accel_norm;
-            pendingFrame.gyro_x          = sensorReadings.gyro_x;
-            pendingFrame.gyro_y          = sensorReadings.gyro_y;
-            pendingFrame.gyro_z          = sensorReadings.gyro_z;
-            pendingFrame.gyro_norm       = sensorReadings.gyro_norm;
-            pendingFrame.mag_x          = sensorReadings.mag_x;
-            pendingFrame.mag_y          = sensorReadings.mag_y;
-            pendingFrame.mag_z          = sensorReadings.mag_z;
-            pendingFrame.mag_norm       = sensorReadings.mag_norm;
+            // Update pressure/temperature fields
+            currentFrame.temperature = temp;
+            currentFrame.pressure = press;
+            currentFrame.timestamp_pressure_sensor = millis();
+            // Surrender control of the buffer
+            xSemaphoreGive(bufferMutex);
+            // Debug Print
+            SENSOR_PRINT(">pressure:");
+            SENSOR_PRINTLN(currentFrame.pressure);
+            SENSOR_PRINT(">temperature:");
+            SENSOR_PRINTLN(currentFrame.temperature);
+        }
+    }
+    // Update current frame with fresh data from ambient light sensor
+    void updateLightData(float lux) {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Update light intensity field
+            currentFrame.light_intensity = lux;
+            currentFrame.timestamp_amb_light_sensor = millis();
+            // Surrender control of the buffer
+            xSemaphoreGive(bufferMutex);
+            // Debug Print
+            SENSOR_PRINT(">lux:");       
+            SENSOR_PRINTLN(currentFrame.light_intensity);
+        }
+    }
+    // Update current frame with fresh data from IMU (accelerometer, gyro, magnetometer) sensor
+    void updateIMUData(float ax, float ay, float az,
+                       float gx, float gy, float gz,
+                       float mx, float my, float mz) {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Update IMU fields
+            currentFrame.accel_x = ax;
+            currentFrame.accel_y = ay;
+            currentFrame.accel_z = az;
+            currentFrame.gyro_x = gx;
+            currentFrame.gyro_y = gy;
+            currentFrame.gyro_z = gz;
+            currentFrame.mag_x = mx;
+            currentFrame.mag_y = my;
+            currentFrame.mag_z = mz;
+            // Compute norms
+            currentFrame.accel_norm = sqrt(ax*ax + ay*ay + az*az);
+            currentFrame.gyro_norm = sqrt(gx*gx + gy*gy + gz*gz);
+            currentFrame.mag_norm = sqrt(mx*mx + my*my + mz*mz);
+            // Overwrite mag_norm with linearized version
+            float safe_mag = currentFrame.mag_norm;
+            if (safe_mag <= 0.0f) safe_mag = 1e-6f;
+            float log_mag_norm = log10f(safe_mag);
+            currentFrame.mag_norm = log_mag_norm;
             
-            // We recieved sensor data!
-            sensorUpdated = true;
-            // Commit only if audio is also updated
-            if (audioUpdated) commitFrame();
-            // Yield mutex
+            currentFrame.timestamp_imu_sensor = millis();
+            // Surrender control of the buffer
             xSemaphoreGive(bufferMutex);
+            // Debug Print
+            SENSOR_PRINT(">accelx:");
+            SENSOR_PRINTLN(currentFrame.accel_x);
+            SENSOR_PRINT(">accely:");
+            SENSOR_PRINTLN(currentFrame.accel_y);
+            SENSOR_PRINT(">accelz:");
+            SENSOR_PRINTLN(currentFrame.accel_z);
+            SENSOR_PRINT(">accel_norm:");
+            SENSOR_PRINTLN(currentFrame.accel_norm);
+
+            SENSOR_PRINT(">gyrox:");
+            SENSOR_PRINTLN(currentFrame.gyro_x);
+            SENSOR_PRINT(">gyroy:");
+            SENSOR_PRINTLN(currentFrame.gyro_y);
+            SENSOR_PRINT(">gyroz:");
+            SENSOR_PRINTLN(currentFrame.gyro_z);
+            SENSOR_PRINT(">gyro_norm:");
+            SENSOR_PRINTLN(currentFrame.gyro_norm);
+
+            SENSOR_PRINT(">magx:");
+            SENSOR_PRINTLN(currentFrame.mag_x);
+            SENSOR_PRINT(">magy:");
+            SENSOR_PRINTLN(currentFrame.mag_y);
+            SENSOR_PRINT(">magz:");
+            SENSOR_PRINTLN(currentFrame.mag_z);
+            SENSOR_PRINT(">mag_norm:");
+            SENSOR_PRINTLN(currentFrame.mag_norm);
         }
     }
-
-    void addAudioReading(float volume) {
+    // Update current frame with fresh data from microphone sensor (only Volume so far)
+    void updateAudioData(float volume) {
         // Assume control of the buffer
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
-            pendingFrame.volume_rms = volume;
-            // We recieved audio data!
-            audioUpdated = true;
-            // Commit only if sensor data is also updated
-            if (sensorUpdated) commitFrame();
-            // Yield mutex
+            // Update audio field
+            currentFrame.volume_rms = volume;
+            currentFrame.timestamp_mic_sensor = millis();
+            // Surrender control of the buffer
+            xSemaphoreGive(bufferMutex);
+            // Debug Print
+            SENSOR_PRINT(">dB:");
+            SENSOR_PRINTLN(currentFrame.volume_rms);
+        }
+    }
+    // Manage the commit of raw data to the sharedBuffer
+    void commitFrame() {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Only commit if we have at least some valid data
+            if (currentFrame.hasPressure() || 
+                currentFrame.hasLight() ||
+                currentFrame.hasIMU() || 
+                currentFrame.hasAudio()) {
+                
+                // Push a COPY of currentFrame to buffer
+                sensorBuffer.push_back(currentFrame);
+                
+                // If the buffer overflows, remove the first reading (FIFO)
+                if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
+                    sensorBuffer.pop_front();
+                }
+
+                // Update aggregates
+                aggregates_Display_cycle.addSample(currentFrame);
+            }
+            
             xSemaphoreGive(bufferMutex);
         }
     }
-
-    void commitFrame() {
-
-        // Add the pending frame to the buffer
-        sensorBuffer.push_back(pendingFrame);
-
-        // If the buffer overflows, remove the first reading (FIFO)
-        if (sensorBuffer.size() > MAX_BUFFER_SIZE) {
-            sensorBuffer.pop_front();
-        }
-
-        // Update aggregates
-        aggregates_Display_cycle.addSample(pendingFrame);
-
-        // Reset flags
-        sensorUpdated = false;
-        audioUpdated  = false;
-    }
-
 
     std::deque<SensorData> getReadings() {
         std::deque<SensorData> copy;
@@ -94,6 +183,12 @@ namespace SharedBuffer {
             xSemaphoreGive(bufferMutex);
         }
         return copy;
+    }
+
+    // NOT CURRENTLY USED !
+    bool isDataFresh(unsigned long timestamp, unsigned long threshold_ms) {
+        if (timestamp == 0) return false; // No data received yet
+        return (millis() - timestamp) < threshold_ms;
     }
 
     // Allow external control of aggregate reset

@@ -15,6 +15,7 @@ public:
 
     bool begin() override;
     bool read(SensorData& data) override;
+    const char* getSensorName() const override { return "LSM6DXX"; }
 
 private:
     LSM6DSLSensor lsm_hw;

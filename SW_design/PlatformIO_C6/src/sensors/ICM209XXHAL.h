@@ -16,6 +16,7 @@ public:
 
     bool begin() override;
     bool read(SensorData& data) override;
+    const char* getSensorName() const override { return "ICM20948"; }
 
 private:
     ICM_20948_I2C icm_hw;
