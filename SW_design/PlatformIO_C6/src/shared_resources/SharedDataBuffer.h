@@ -25,23 +25,23 @@ struct SensorData {
     float mag_x = NAN, mag_y = NAN, mag_z = NAN, mag_norm = NAN;
     // ========== MICROPHONE SENSOR =========
     // Volume (dB)
-    float volume_rms;
+    float volume_rms = NAN;
     // ========= SPECTRAL SENSOR (AS7343) =========
-    // 14-Channel Spectral Data (raw ADC counts)
-    uint16_t spectral_f1_405nm = 0;   // Purple/UV
-    uint16_t spectral_f2_425nm = 0;   // Dark Blue
-    uint16_t spectral_f3_475nm = 0;   // Light Blue
-    uint16_t spectral_f4_515nm = 0;   // Blue
-    uint16_t spectral_fz_450nm = 0;   // Blue (alternate)
-    uint16_t spectral_fy_555nm = 0;   // Green (wide bandwidth)
-    uint16_t spectral_f5_550nm = 0;   // Green (narrow bandwidth)
-    uint16_t spectral_f6_640nm = 0;   // Brown
-    uint16_t spectral_fxl_600nm = 0;  // Orange
-    uint16_t spectral_f7_690nm = 0;   // Red
-    uint16_t spectral_f8_745nm = 0;   // Dark Red
-    uint16_t spectral_nir_855nm = 0;  // Near Infrared
-    uint16_t spectral_vis = 0;        // Visible light sensor
-    uint16_t spectral_fd = 0;         // Flicker Detection
+    // 14-Channel Spectral Data (raw ADC counts stored as float for NAN support)
+    float spectral_f1_405nm = NAN;   // Purple/UV
+    float spectral_f2_425nm = NAN;   // Dark Blue
+    float spectral_f3_475nm = NAN;   // Light Blue
+    float spectral_f4_515nm = NAN;   // Blue
+    float spectral_fz_450nm = NAN;   // Blue (alternate)
+    float spectral_fy_555nm = NAN;   // Green (wide bandwidth)
+    float spectral_f5_550nm = NAN;   // Green (narrow bandwidth)
+    float spectral_f6_640nm = NAN;   // Brown
+    float spectral_fxl_600nm = NAN;  // Orange
+    float spectral_f7_690nm = NAN;   // Red
+    float spectral_f8_745nm = NAN;   // Dark Red
+    float spectral_nir_855nm = NAN;  // Near Infrared
+    float spectral_vis = NAN;        // Visible light sensor
+    float spectral_fd = NAN;         // Flicker Detection
 
     // Timestamps for each data source (0 = no data yet)
     unsigned long timestamp_pressure_sensor = 0;

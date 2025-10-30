@@ -297,26 +297,26 @@ String NetworkTask::formatSensorDataJSON(const SensorData& data) {
     }
 
     // Audio data
-    if (data.hasAudio()) {
+    if (data.hasAudio() && !isnan(data.volume_rms)) {
         json += "\"volume_rms\":" + String(data.volume_rms, 2) + ",";
     }
 
-    // Spectral data
+    // Spectral data (formatted as integers - ADC counts)
     if (data.hasSpectral()) {
-        json += "\"spectral_f1\":" + String(data.spectral_f1_405nm) + ",";
-        json += "\"spectral_f2\":" + String(data.spectral_f2_425nm) + ",";
-        json += "\"spectral_f3\":" + String(data.spectral_f3_475nm) + ",";
-        json += "\"spectral_f4\":" + String(data.spectral_f4_515nm) + ",";
-        json += "\"spectral_fz\":" + String(data.spectral_fz_450nm) + ",";
-        json += "\"spectral_fy\":" + String(data.spectral_fy_555nm) + ",";
-        json += "\"spectral_f5\":" + String(data.spectral_f5_550nm) + ",";
-        json += "\"spectral_f6\":" + String(data.spectral_f6_640nm) + ",";
-        json += "\"spectral_fxl\":" + String(data.spectral_fxl_600nm) + ",";
-        json += "\"spectral_f7\":" + String(data.spectral_f7_690nm) + ",";
-        json += "\"spectral_f8\":" + String(data.spectral_f8_745nm) + ",";
-        json += "\"spectral_nir\":" + String(data.spectral_nir_855nm) + ",";
-        json += "\"spectral_vis\":" + String(data.spectral_vis) + ",";
-        json += "\"spectral_fd\":" + String(data.spectral_fd) + ",";
+        if (!isnan(data.spectral_f1_405nm)) json += "\"spectral_f1\":" + String((int)data.spectral_f1_405nm) + ",";
+        if (!isnan(data.spectral_f2_425nm)) json += "\"spectral_f2\":" + String((int)data.spectral_f2_425nm) + ",";
+        if (!isnan(data.spectral_f3_475nm)) json += "\"spectral_f3\":" + String((int)data.spectral_f3_475nm) + ",";
+        if (!isnan(data.spectral_f4_515nm)) json += "\"spectral_f4\":" + String((int)data.spectral_f4_515nm) + ",";
+        if (!isnan(data.spectral_fz_450nm)) json += "\"spectral_fz\":" + String((int)data.spectral_fz_450nm) + ",";
+        if (!isnan(data.spectral_fy_555nm)) json += "\"spectral_fy\":" + String((int)data.spectral_fy_555nm) + ",";
+        if (!isnan(data.spectral_f5_550nm)) json += "\"spectral_f5\":" + String((int)data.spectral_f5_550nm) + ",";
+        if (!isnan(data.spectral_f6_640nm)) json += "\"spectral_f6\":" + String((int)data.spectral_f6_640nm) + ",";
+        if (!isnan(data.spectral_fxl_600nm)) json += "\"spectral_fxl\":" + String((int)data.spectral_fxl_600nm) + ",";
+        if (!isnan(data.spectral_f7_690nm)) json += "\"spectral_f7\":" + String((int)data.spectral_f7_690nm) + ",";
+        if (!isnan(data.spectral_f8_745nm)) json += "\"spectral_f8\":" + String((int)data.spectral_f8_745nm) + ",";
+        if (!isnan(data.spectral_nir_855nm)) json += "\"spectral_nir\":" + String((int)data.spectral_nir_855nm) + ",";
+        if (!isnan(data.spectral_vis)) json += "\"spectral_vis\":" + String((int)data.spectral_vis) + ",";
+        if (!isnan(data.spectral_fd)) json += "\"spectral_fd\":" + String((int)data.spectral_fd) + ",";
     }
 
     // Remove trailing comma if present
