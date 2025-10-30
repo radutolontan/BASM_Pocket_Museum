@@ -1,7 +1,7 @@
 #pragma once
 
 // =========== SW VERSION =============
-#define GIT_SHA "BMS_Feature_DEV"
+#define GIT_SHA "sexi"
 
 // ===== ESP32 PERIPHERAL BINDING =====
 // [BMS]
@@ -60,11 +60,15 @@
 
 // =========== TASK RATES ===============
 // NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * (1000/TASK_RATE_DISPLAY)
-#define TASK_RATE_SENSOR    50 // Hz 
-#define TASK_RATE_AUDIO     100// Hz
+#define TASK_RATE_AUDIO     50 // Hz
 #define TASK_RATE_EVALUATOR 50 // Hz
 #define TASK_RATE_DISPLAY   50 // Hz
 #define TASK_RATE_BMS       50 // Hz
+#define TASK_RATE_SENSOR    50 // Hz 
+// Individual Rates for sensors
+#define SENSOR_RATE_IMU     50 // Hz
+#define SENSOR_RATE_BARO    50 // Hz
+#define SENSOR_RATE_AMB_LUX 50 // Hz
 
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
 

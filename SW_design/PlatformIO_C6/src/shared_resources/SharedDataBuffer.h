@@ -1,25 +1,43 @@
 #pragma once
 
 #include <deque>
+#include <cmath>
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 
 struct SensorData {
     // Raw sensor readings
+    // Initialized as NAN to confirm data is neing updated
+    // =========== PRESSURE SENSOR ==========
     // Temperature (°C)
-    float temperature;
+    float temperature = NAN;
     // Air Pressure (Pa)
-    float pressure;
+    float pressure = NAN;
     // Light Intensity (lux)
-    float light_intensity;
+    // ======== AMBIENT LIGHT SENSOR ========
+    float light_intensity = NAN;
     // Accelerometer (mg)
-    float accel_x, accel_y, accel_z, accel_norm;
+    // ============= IMU SENSOR =============
+    float accel_x = NAN, accel_y = NAN, accel_z = NAN, accel_norm = NAN;
     // Gyroscope (deg/s)
-    float gyro_x, gyro_y, gyro_z, gyro_norm;
+    float gyro_x = NAN, gyro_y = NAN, gyro_z = NAN, gyro_norm = NAN;
     // Magnetometer (uT)
-    float mag_x, mag_y, mag_z, mag_norm;
+    float mag_x = NAN, mag_y = NAN, mag_z = NAN, mag_norm = NAN;
+    // ========== MICROPHONE SENSOR =========
     // Volume (dB)
     float volume_rms;
+
+    // Timestamps for each data source (0 = no data yet)
+    unsigned long timestamp_pressure_sensor = 0;
+    unsigned long timestamp_amb_light_sensor = 0;
+    unsigned long timestamp_imu_sensor = 0;
+    unsigned long timestamp_mic_sensor = 0;
+
+    // Helper methods to check if data exists
+    bool hasPressure() const { return timestamp_pressure_sensor > 0; }
+    bool hasLight() const { return timestamp_amb_light_sensor > 0; }
+    bool hasIMU() const { return timestamp_imu_sensor > 0; }
+    bool hasAudio() const { return timestamp_mic_sensor > 0; }
 };
 
 struct SensorStats {
@@ -46,16 +64,23 @@ namespace SharedBuffer {
     // MUTEX semaphore to prevent improper use of buffer
     extern SemaphoreHandle_t bufferMutex;
     constexpr size_t MAX_BUFFER_SIZE = 10;
-    // Manages thependingFrame. DO NOT COMMIT A FRAME BEFORE ALL TASKS PUSH DATA TO IT
-    extern bool sensorUpdated;
-    extern bool audioUpdated;
-    extern SensorData pendingFrame;
+    // Declare currentFrame (sticky - values persist until overwritten)
+    extern SensorData currentFrame;
+    // Method to push the currentFrame to the SharedDataBuffer
     void commitFrame();
-    void addSensorReading(const SensorData& sensorReadings);
-    void addAudioReading(float volume);
+    // Methods to update components in a frame associated to each sensor
+    void updatePressureData(float temp, float pressure);
+    void updateLightData(float lux);
+    void updateIMUData(float ax, float ay, float az, 
+                       float gx, float gy, float gz,
+                       float mx, float my, float mz);
+    void updateAudioData(float volume);
 
     void init();
     std::deque<SensorData> getReadings();
+
+    // Helper: check if data is fresh (within threshold_ms)
+    bool isDataFresh(unsigned long timestamp, unsigned long threshold_ms = 200);
 
     // Aggregated stats for different actions
     extern SensorStats aggregates_Display_cycle; // Aggregated stats while in a display mode

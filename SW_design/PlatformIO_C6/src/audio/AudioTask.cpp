@@ -89,11 +89,8 @@ void AudioTask::run_stream() {
         std::lock_guard<std::mutex> lock(mic0Mutex);
         mic0.readBuffer(mic0Buffer, BUFFER_SIZE);
         float db = mic0.computeRMSdB(mic0Buffer, BUFFER_SIZE);
-        // ✅ Publish dB metadata to shared buffer
-        SENSOR_PRINT(">dB:");
-        SENSOR_PRINTLN(db);
         // After computation is complete, update SharedDataBuffer
-        SharedBuffer::addAudioReading(db);
+        SharedBuffer::updateAudioData(db);
     }
     lastProcessTime = millis();
 }
