@@ -26,18 +26,36 @@ struct SensorData {
     // ========== MICROPHONE SENSOR =========
     // Volume (dB)
     float volume_rms;
+    // ========= SPECTRAL SENSOR (AS7343) =========
+    // 14-Channel Spectral Data (raw ADC counts)
+    uint16_t spectral_f1_405nm = 0;   // Purple/UV
+    uint16_t spectral_f2_425nm = 0;   // Dark Blue
+    uint16_t spectral_f3_475nm = 0;   // Light Blue
+    uint16_t spectral_f4_515nm = 0;   // Blue
+    uint16_t spectral_fz_450nm = 0;   // Blue (alternate)
+    uint16_t spectral_fy_555nm = 0;   // Green (wide bandwidth)
+    uint16_t spectral_f5_550nm = 0;   // Green (narrow bandwidth)
+    uint16_t spectral_f6_640nm = 0;   // Brown
+    uint16_t spectral_fxl_600nm = 0;  // Orange
+    uint16_t spectral_f7_690nm = 0;   // Red
+    uint16_t spectral_f8_745nm = 0;   // Dark Red
+    uint16_t spectral_nir_855nm = 0;  // Near Infrared
+    uint16_t spectral_vis = 0;        // Visible light sensor
+    uint16_t spectral_fd = 0;         // Flicker Detection
 
     // Timestamps for each data source (0 = no data yet)
     unsigned long timestamp_pressure_sensor = 0;
     unsigned long timestamp_amb_light_sensor = 0;
     unsigned long timestamp_imu_sensor = 0;
     unsigned long timestamp_mic_sensor = 0;
+    unsigned long timestamp_spectral_sensor = 0;
 
     // Helper methods to check if data exists
     bool hasPressure() const { return timestamp_pressure_sensor > 0; }
     bool hasLight() const { return timestamp_amb_light_sensor > 0; }
     bool hasIMU() const { return timestamp_imu_sensor > 0; }
     bool hasAudio() const { return timestamp_mic_sensor > 0; }
+    bool hasSpectral() const { return timestamp_spectral_sensor > 0; }
 };
 
 struct SensorStats {
@@ -71,10 +89,14 @@ namespace SharedBuffer {
     // Methods to update components in a frame associated to each sensor
     void updatePressureData(float temp, float pressure);
     void updateLightData(float lux);
-    void updateIMUData(float ax, float ay, float az, 
+    void updateIMUData(float ax, float ay, float az,
                        float gx, float gy, float gz,
                        float mx, float my, float mz);
     void updateAudioData(float volume);
+    void updateSpectralData(uint16_t f1, uint16_t f2, uint16_t f3, uint16_t f4,
+                            uint16_t fz, uint16_t fy, uint16_t f5, uint16_t f6,
+                            uint16_t fxl, uint16_t f7, uint16_t f8, uint16_t nir,
+                            uint16_t vis, uint16_t fd);
 
     void init();
     std::deque<SensorData> getReadings();
