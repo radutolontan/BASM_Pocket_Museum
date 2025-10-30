@@ -34,7 +34,7 @@ void setup() {
     evaluatorTask.setupEvaluatorTask(displayTask);
     audioTask.setupAudioTask(&bmsTask);
     sDManager.setupSDManager();
-    networkTask.setup();
+    networkTask.setup(&bmsTask);
 
     // Create FreeRTOS tasks
     xTaskCreatePinnedToCore(DisplayTask::runDisplayTaskWrapper, "DisplayTask", 4096, &displayTask, 4, &displayHandle, 0);

@@ -6,12 +6,13 @@
 #include <WiFiUdp.h>
 #include "../shared_resources/globals.h"
 #include "../shared_resources/SharedDataBuffer.h"
+#include "../power/BMSTask.h"
 
 /**
  * @brief Network Task State Machine States
  */
 enum class NetworkState {
-    BOOT,           // Waiting for system initialization
+    BOOT,           // Waiting for BMS to latch
     INIT,           // Initialize WiFi hardware
     CONNECTING,     // Initial 30-second connection attempt
     CONNECTED,      // Successfully connected, sending data
@@ -23,7 +24,7 @@ enum class NetworkState {
  * @brief Network Task - Manages WiFi connectivity and data transmission
  *
  * This task handles:
- * - WiFi connection management with configurable static IP
+ * - WiFi connection management with static IP configuration
  * - Connection status indication via LED on pin 15
  * - Periodic transmission of sensor data to RPi server
  * - Automatic reconnection logic
@@ -36,8 +37,9 @@ public:
     /**
      * @brief Setup function to initialize the network task
      * Called from main.cpp setup()
+     * @param bms Pointer to BMSTask for latching check
      */
-    void setup();
+    void setup(BMSTask* bms);
 
     /**
      * @brief FreeRTOS task wrapper function
@@ -96,6 +98,9 @@ private:
     NetworkState currentState;
     NetworkState previousState;
 
+    // BMS Task pointer for latching check
+    BMSTask* bmsTask = nullptr;
+
     // WiFi configuration
     const char* ssid;
     const char* password;
@@ -115,7 +120,6 @@ private:
     // Timing variables
     unsigned long stateEntryTime;          // Time when current state was entered
     unsigned long lastConnectionAttempt;   // Time of last connection attempt
-    unsigned long lastDataSend;            // Time of last data transmission
     unsigned long lastLEDToggle;           // For LED flashing
 
     // Connection management

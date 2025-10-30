@@ -43,27 +43,27 @@ This document describes the WiFi networking implementation for the Physics Lab E
 A new FreeRTOS task (`NetworkTask`) was added to handle all WiFi connectivity and data transmission. It follows the same architectural pattern as existing tasks (SensorTask, DisplayTask, etc.).
 
 **State Machine States:**
-- **BOOT**: Initial state, 1-second delay for system stabilization
+- **BOOT**: Wait for BMS to latch before initializing WiFi
 - **INIT**: Initialize WiFi hardware and configure static IP
 - **CONNECTING**: Initial 30-second connection attempt with flashing LED
-- **CONNECTED**: Successfully connected, sending data at configured rate
+- **CONNECTED**: Successfully connected, sending data at task rate
 - **DISCONNECTED**: Connection lost after initial success, retry every 10 seconds
 - **NO_NETWORK**: Terminal state if initial connection fails (LED off, no retries)
 
 ### 2. Connection Behavior
 
 As per your requirements:
-- **On wake-up**: Try to connect for 30 seconds while flashing LED on pin 15
+- **On wake-up**: Wait for BMS latching, then try to connect for 30 seconds while flashing LED on pin 15
 - **If unsuccessful**: Turn LED off, assume no network available, don't retry
 - **If successful**: Keep LED solid on, start sending data
 - **If connection lost**: Retry every 10 seconds indefinitely (LED flashing)
 
 ### 3. Data Transmission
 
-- Sends the **last frame** from SharedBuffer at a configurable rate (default: 10 Hz)
+- Sends the **last frame** from SharedBuffer at TASK_RATE_NETWORK (50 Hz)
 - Uses UDP protocol for low-latency, connectionless transmission
 - Data formatted as JSON for easy parsing on the server side
-- Only includes sensors that have valid data (no NaN values)
+- Only includes sensors that have valid data (checked via timestamp-based has*() methods)
 
 ### 4. LED Status Indication
 
@@ -93,7 +93,6 @@ SW_design/PlatformIO_C6/src/shared_resources/globals.h
 #define NETWORK_NODE_ID             "ESP32_01"           // Change to ESP32_02, ESP32_03, etc.
 
 // 3. Static IP Configuration (MUST BE UNIQUE FOR EACH ESP32!)
-#define NETWORK_USE_STATIC_IP       1                    // 1 = static IP, 0 = DHCP
 #define NETWORK_STATIC_IP           192,168,1,101        // ESP32 #1: .101, ESP32 #2: .102, etc.
 
 // 4. Network Settings (same for all nodes)
@@ -105,8 +104,7 @@ SW_design/PlatformIO_C6/src/shared_resources/globals.h
 #define SERVER_IP_ADDRESS           192,168,1,10         // Your Raspberry Pi IP
 #define SERVER_UDP_PORT             5000                 // UDP port for data
 
-// 6. Data Transmission Rate
-#define NETWORK_DATA_SEND_RATE_HZ   10                   // Send data at 10 Hz
+// Note: Data is sent at TASK_RATE_NETWORK (50 Hz, defined in Task Rates section)
 ```
 
 ### Example: Configuring Multiple Nodes
@@ -308,13 +306,13 @@ Recommended AP settings:
 ### Network Task
 - Priority: 7 (lowest priority, won't interfere with sensors)
 - Stack size: 8192 bytes (larger for WiFi buffers)
-- Run rate: 50 Hz (task wake-up frequency)
-- Data send rate: 10 Hz (configurable via `NETWORK_DATA_SEND_RATE_HZ`)
+- Run rate: 50 Hz (TASK_RATE_NETWORK)
+- Data send rate: 50 Hz (same as task rate - sends every iteration)
 
 ### Bandwidth Usage
 - Approximate packet size: 200-400 bytes (depending on active sensors)
-- At 10 Hz: 2-4 KB/s per node
-- For 10 nodes: 20-40 KB/s total
+- At 50 Hz: 10-20 KB/s per node
+- For 10 nodes: 100-200 KB/s total
 - Well within WiFi capacity
 
 ### Latency

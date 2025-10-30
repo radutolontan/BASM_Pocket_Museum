@@ -80,8 +80,7 @@
 #define NETWORK_PASSWORD            "physics2025"        // WiFi password
 #define NETWORK_NODE_ID             "ESP32_01"           // Unique identifier for this ESP32 node
 
-// [IP Configuration]
-#define NETWORK_USE_STATIC_IP       1                    // 1 = Use static IP, 0 = Use DHCP
+// [IP Configuration - Static IP Only]
 #define NETWORK_STATIC_IP           192,168,1,101        // Static IP for this node (ESP32 #1: .101, ESP32 #2: .102, etc.)
 #define NETWORK_GATEWAY             192,168,1,1          // Gateway IP (typically the router/AP)
 #define NETWORK_SUBNET              255,255,255,0        // Subnet mask
@@ -96,14 +95,12 @@
 // [Connection Behavior]
 #define NETWORK_INITIAL_CONNECTION_TIMEOUT_MS  30000     // 30 seconds initial connection attempt
 #define NETWORK_RECONNECT_INTERVAL_MS          10000     // 10 seconds between reconnection attempts
-#define NETWORK_BOOT_DELAY_MS                  1000      // 1 second boot delay before starting WiFi
-
-// [Data Transmission]
-#define NETWORK_DATA_SEND_RATE_HZ   10                   // Send sensor data at 10 Hz (configurable)
 
 // [LED Behavior]
 #define NETWORK_LED_PIN             15                   // GPIO pin for connection status LED (DEBUG_LED_PIN)
 #define NETWORK_LED_FLASH_INTERVAL_MS 250                // LED flash interval during connection attempts (ms)
+
+// Note: Data is sent at TASK_RATE_NETWORK (defined above in Task Rates section)
 
 // ===== MAGNITUDE DISPLAY VU-METER =====
 #define VU_MIN_TEMP    12

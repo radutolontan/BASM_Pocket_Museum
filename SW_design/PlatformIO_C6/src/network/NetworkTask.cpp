@@ -16,7 +16,6 @@ NetworkTask::NetworkTask()
       serverPort(SERVER_UDP_PORT),
       stateEntryTime(0),
       lastConnectionAttempt(0),
-      lastDataSend(0),
       lastLEDToggle(0),
       initialConnectionAttempted(false),
       networkAvailable(false),
@@ -35,10 +34,13 @@ NetworkTask::~NetworkTask() {
 }
 
 // Setup function
-void NetworkTask::setup() {
+void NetworkTask::setup(BMSTask* bms) {
     // Initialize LED pin
     pinMode(LED_PIN, OUTPUT);
     ledOff();
+
+    // Set BMS Task pointer
+    this->bmsTask = bms;
 
     NETWORK_PRINTF("[NetworkTask] Setup complete\n");
 }
@@ -104,12 +106,11 @@ void NetworkTask::runNetworkTask() {
     }
 }
 
-// State: BOOT - Wait for system initialization
+// State: BOOT - Wait for BMS to latch
 void NetworkTask::run_boot() {
-    // Wait a bit for other systems to initialize
-    unsigned long now = millis();
-    if (now - stateEntryTime >= NETWORK_BOOT_DELAY_MS) {
-        NETWORK_PRINTF("[NetworkTask] Boot complete, transitioning to INIT\n");
+    // Only initialize WiFi once the BMS is confirmed latched
+    if (bmsTask && bmsTask->isLatched()) {
+        NETWORK_PRINTF("[NetworkTask] BMS latched, transitioning to INIT\n");
         currentState = NetworkState::INIT;
     }
 }
@@ -121,10 +122,8 @@ void NetworkTask::run_init() {
     // Set WiFi mode
     WiFi.mode(WIFI_STA);
 
-    // Configure static IP if enabled
-    #if NETWORK_USE_STATIC_IP
+    // Configure static IP
     configureStaticIP();
-    #endif
 
     // Set hostname
     WiFi.setHostname(NETWORK_HOSTNAME);
@@ -171,10 +170,8 @@ void NetworkTask::run_connecting() {
     }
 }
 
-// State: CONNECTED - Send data at configured rate
+// State: CONNECTED - Send data every task iteration
 void NetworkTask::run_connected() {
-    unsigned long now = millis();
-
     // Keep LED solid on
     ledOn();
 
@@ -185,12 +182,9 @@ void NetworkTask::run_connected() {
         return;
     }
 
-    // Send data at configured rate
-    if (now - lastDataSend >= (1000 / NETWORK_DATA_SEND_RATE_HZ)) {
-        sendSensorData();
-        lastDataSend = now;
-        dataSendCount++;
-    }
+    // Send data at task rate (TASK_RATE_NETWORK)
+    sendSensorData();
+    dataSendCount++;
 }
 
 // State: DISCONNECTED - Reconnect every 10 seconds
@@ -303,20 +297,20 @@ String NetworkTask::formatSensorDataJSON(const SensorData& data) {
 
     // Spectral data (formatted as integers - ADC counts)
     if (data.hasSpectral()) {
-        if (!isnan(data.spectral_f1_405nm)) json += "\"spectral_f1\":" + String((int)data.spectral_f1_405nm) + ",";
-        if (!isnan(data.spectral_f2_425nm)) json += "\"spectral_f2\":" + String((int)data.spectral_f2_425nm) + ",";
-        if (!isnan(data.spectral_f3_475nm)) json += "\"spectral_f3\":" + String((int)data.spectral_f3_475nm) + ",";
-        if (!isnan(data.spectral_f4_515nm)) json += "\"spectral_f4\":" + String((int)data.spectral_f4_515nm) + ",";
-        if (!isnan(data.spectral_fz_450nm)) json += "\"spectral_fz\":" + String((int)data.spectral_fz_450nm) + ",";
-        if (!isnan(data.spectral_fy_555nm)) json += "\"spectral_fy\":" + String((int)data.spectral_fy_555nm) + ",";
-        if (!isnan(data.spectral_f5_550nm)) json += "\"spectral_f5\":" + String((int)data.spectral_f5_550nm) + ",";
-        if (!isnan(data.spectral_f6_640nm)) json += "\"spectral_f6\":" + String((int)data.spectral_f6_640nm) + ",";
-        if (!isnan(data.spectral_fxl_600nm)) json += "\"spectral_fxl\":" + String((int)data.spectral_fxl_600nm) + ",";
-        if (!isnan(data.spectral_f7_690nm)) json += "\"spectral_f7\":" + String((int)data.spectral_f7_690nm) + ",";
-        if (!isnan(data.spectral_f8_745nm)) json += "\"spectral_f8\":" + String((int)data.spectral_f8_745nm) + ",";
-        if (!isnan(data.spectral_nir_855nm)) json += "\"spectral_nir\":" + String((int)data.spectral_nir_855nm) + ",";
-        if (!isnan(data.spectral_vis)) json += "\"spectral_vis\":" + String((int)data.spectral_vis) + ",";
-        if (!isnan(data.spectral_fd)) json += "\"spectral_fd\":" + String((int)data.spectral_fd) + ",";
+        json += "\"spectral_f1\":" + String((int)data.spectral_f1_405nm) + ",";
+        json += "\"spectral_f2\":" + String((int)data.spectral_f2_425nm) + ",";
+        json += "\"spectral_f3\":" + String((int)data.spectral_f3_475nm) + ",";
+        json += "\"spectral_f4\":" + String((int)data.spectral_f4_515nm) + ",";
+        json += "\"spectral_fz\":" + String((int)data.spectral_fz_450nm) + ",";
+        json += "\"spectral_fy\":" + String((int)data.spectral_fy_555nm) + ",";
+        json += "\"spectral_f5\":" + String((int)data.spectral_f5_550nm) + ",";
+        json += "\"spectral_f6\":" + String((int)data.spectral_f6_640nm) + ",";
+        json += "\"spectral_fxl\":" + String((int)data.spectral_fxl_600nm) + ",";
+        json += "\"spectral_f7\":" + String((int)data.spectral_f7_690nm) + ",";
+        json += "\"spectral_f8\":" + String((int)data.spectral_f8_745nm) + ",";
+        json += "\"spectral_nir\":" + String((int)data.spectral_nir_855nm) + ",";
+        json += "\"spectral_vis\":" + String((int)data.spectral_vis) + ",";
+        json += "\"spectral_fd\":" + String((int)data.spectral_fd) + ",";
     }
 
     // Remove trailing comma if present
