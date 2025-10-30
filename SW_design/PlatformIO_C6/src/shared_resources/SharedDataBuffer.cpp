@@ -148,15 +148,52 @@ namespace SharedBuffer {
             SENSOR_PRINTLN(currentFrame.volume_rms);
         }
     }
+    // Update current frame with fresh data from spectral sensor (AS7343)
+    void updateSpectralData(uint16_t f1, uint16_t f2, uint16_t f3, uint16_t f4,
+                            uint16_t fz, uint16_t fy, uint16_t f5, uint16_t f6,
+                            uint16_t fxl, uint16_t f7, uint16_t f8, uint16_t nir,
+                            uint16_t vis, uint16_t fd) {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Update spectral fields
+            currentFrame.spectral_f1_405nm = f1;
+            currentFrame.spectral_f2_425nm = f2;
+            currentFrame.spectral_f3_475nm = f3;
+            currentFrame.spectral_f4_515nm = f4;
+            currentFrame.spectral_fz_450nm = fz;
+            currentFrame.spectral_fy_555nm = fy;
+            currentFrame.spectral_f5_550nm = f5;
+            currentFrame.spectral_f6_640nm = f6;
+            currentFrame.spectral_fxl_600nm = fxl;
+            currentFrame.spectral_f7_690nm = f7;
+            currentFrame.spectral_f8_745nm = f8;
+            currentFrame.spectral_nir_855nm = nir;
+            currentFrame.spectral_vis = vis;
+            currentFrame.spectral_fd = fd;
+            currentFrame.timestamp_spectral_sensor = millis();
+            // Surrender control of the buffer
+            xSemaphoreGive(bufferMutex);
+            // Debug Print
+            SENSOR_PRINT(">spectral_f7_red:");
+            SENSOR_PRINTLN(currentFrame.spectral_f7_690nm);
+            SENSOR_PRINT(">spectral_f5_green:");
+            SENSOR_PRINTLN(currentFrame.spectral_f5_550nm);
+            SENSOR_PRINT(">spectral_fz_blue:");
+            SENSOR_PRINTLN(currentFrame.spectral_fz_450nm);
+            SENSOR_PRINT(">spectral_nir:");
+            SENSOR_PRINTLN(currentFrame.spectral_nir_855nm);
+        }
+    }
     // Manage the commit of raw data to the sharedBuffer
     void commitFrame() {
         // Assume control of the buffer
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
             // Only commit if we have at least some valid data
-            if (currentFrame.hasPressure() || 
+            if (currentFrame.hasPressure() ||
                 currentFrame.hasLight() ||
-                currentFrame.hasIMU() || 
-                currentFrame.hasAudio()) {
+                currentFrame.hasIMU() ||
+                currentFrame.hasAudio() ||
+                currentFrame.hasSpectral()) {
                 
                 // Push a COPY of currentFrame to buffer
                 sensorBuffer.push_back(currentFrame);

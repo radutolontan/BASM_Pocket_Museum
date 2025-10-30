@@ -2,6 +2,7 @@
 #include "sensors/ICP201XXHAL.h"
 #include "sensors/ICM209XXHAL.h"
 #include "sensors/BH1750HAL.h"
+#include "sensors/AS7343HAL.h"
 #include "sensors/SensorHAL.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
@@ -20,8 +21,11 @@ ICP201XXHAL pressureSensor(Wire);
 // Instantiate BH1750FVI HAL Wrapper
 BH1750HAL lightSensor(Wire);
 
-// Instantiate ICM20948 HAL Wrapper 
+// Instantiate ICM20948 HAL Wrapper
 ICM209XXHAL imuSensor(Wire);
+
+// Instantiate AS7343 HAL Wrapper (Spectral Sensor)
+AS7343HAL spectralSensor(Wire);
 
 // CLASS Constructor
 SensorTask::SensorTask() {}
@@ -119,12 +123,20 @@ void SensorTask::run_init(){
         Serial.println("[SensorTask] - BH1750FVI initialized successfully");
     }
 
-    // ICM20948 SENSOR 
+    // ICM20948 SENSOR
     if (imuSensor.begin()){
         imuSensor.setReadFrequency(SENSOR_RATE_IMU);
         Serial.println("[SensorTask] - ICM20948 initialized successfully");
     }
-        
+
+    // AS7343 SPECTRAL SENSOR (Optional - may or may not be attached)
+    if (spectralSensor.begin()){
+        spectralSensor.setReadFrequency(SENSOR_RATE_SPECTRAL);
+        Serial.println("[SensorTask] - AS7343 initialized successfully");
+    } else {
+        Serial.println("[SensorTask] - AS7343 not detected (optional sensor)");
+    }
+
     delay(1000);
     // Carry on to READ State
     setSensorState(SensorState::READ);
@@ -163,6 +175,21 @@ void SensorTask::run_read(){
         }
     }
 
+    // ================ AS7343 SPECTRAL SENSOR ===================
+    if (spectralSensor.shouldRead()){
+        if (spectralSensor.read(sensorReading)){
+            // Update SharedBuffer with spectral data
+            SharedBuffer::updateSpectralData(
+                sensorReading.spectral_f1_405nm, sensorReading.spectral_f2_425nm,
+                sensorReading.spectral_f3_475nm, sensorReading.spectral_f4_515nm,
+                sensorReading.spectral_fz_450nm, sensorReading.spectral_fy_555nm,
+                sensorReading.spectral_f5_550nm, sensorReading.spectral_f6_640nm,
+                sensorReading.spectral_fxl_600nm, sensorReading.spectral_f7_690nm,
+                sensorReading.spectral_f8_745nm, sensorReading.spectral_nir_855nm,
+                sensorReading.spectral_vis, sensorReading.spectral_fd
+            );
+        }
+    }
 
     // ===============================================================
     // MAG_NORM IS OVERWRITTEN WITH LOG(MAG_NORM) INSIDE updateIMUData
@@ -176,6 +203,7 @@ void SensorTask::run_read(){
         pressureSensor.printActualRate();
         lightSensor.printActualRate();
         imuSensor.printActualRate();
+        spectralSensor.printActualRate();
     #endif
 };
 

@@ -16,3 +16,6 @@
 [submodule "SW_design/PlatformIO_C6/lib/DFRobot_LedDisplayModule"]
 	path = SW_design/PlatformIO_C6/lib/DFRobot_LedDisplayModule
 	url = git@github.com:DFRobot/DFRobot_LedDisplayModule.git
+[submodule "SW_design/PlatformIO_C6/lib/SparkFun_AS7343_Arduino_Library"]
+	path = SW_design/PlatformIO_C6/lib/SparkFun_AS7343_Arduino_Library
+	url = https://github.com/sparkfun/SparkFun_AS7343_Arduino_Library.git

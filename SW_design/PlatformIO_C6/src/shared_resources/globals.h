@@ -66,9 +66,10 @@
 #define TASK_RATE_BMS       50 // Hz
 #define TASK_RATE_SENSOR    50 // Hz 
 // Individual Rates for sensors
-#define SENSOR_RATE_IMU     50 // Hz
-#define SENSOR_RATE_BARO    50 // Hz
-#define SENSOR_RATE_AMB_LUX 50 // Hz
+#define SENSOR_RATE_IMU      50 // Hz
+#define SENSOR_RATE_BARO     50 // Hz
+#define SENSOR_RATE_AMB_LUX  50 // Hz
+#define SENSOR_RATE_SPECTRAL 25 // Hz (AS7343 spectral sensor - lower rate due to measurement time)
 
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
 
