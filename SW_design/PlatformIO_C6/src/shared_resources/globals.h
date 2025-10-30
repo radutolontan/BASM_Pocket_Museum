@@ -64,7 +64,8 @@
 #define TASK_RATE_EVALUATOR 50 // Hz
 #define TASK_RATE_DISPLAY   50 // Hz
 #define TASK_RATE_BMS       50 // Hz
-#define TASK_RATE_SENSOR    50 // Hz 
+#define TASK_RATE_SENSOR    50 // Hz
+#define TASK_RATE_NETWORK   50 // Hz
 // Individual Rates for sensors
 #define SENSOR_RATE_IMU      50 // Hz
 #define SENSOR_RATE_BARO     50 // Hz
@@ -72,6 +73,37 @@
 #define SENSOR_RATE_SPECTRAL 25 // Hz (AS7343 spectral sensor - lower rate due to measurement time)
 
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
+
+// =========== NETWORK CONFIGURATION ===============
+// [WiFi Settings]
+#define NETWORK_SSID                "PhysicsLab_AP"      // WiFi SSID to connect to
+#define NETWORK_PASSWORD            "physics2025"        // WiFi password
+#define NETWORK_NODE_ID             "ESP32_01"           // Unique identifier for this ESP32 node
+
+// [IP Configuration]
+#define NETWORK_USE_STATIC_IP       1                    // 1 = Use static IP, 0 = Use DHCP
+#define NETWORK_STATIC_IP           192,168,1,101        // Static IP for this node (ESP32 #1: .101, ESP32 #2: .102, etc.)
+#define NETWORK_GATEWAY             192,168,1,1          // Gateway IP (typically the router/AP)
+#define NETWORK_SUBNET              255,255,255,0        // Subnet mask
+#define NETWORK_PRIMARY_DNS         8,8,8,8              // Primary DNS (Google DNS)
+#define NETWORK_SECONDARY_DNS       8,8,4,4              // Secondary DNS (Google DNS)
+#define NETWORK_HOSTNAME            "PhysicsLab-ESP32-01"// Network hostname for this device
+
+// [Server Configuration]
+#define SERVER_IP_ADDRESS           192,168,1,10         // Raspberry Pi server IP address
+#define SERVER_UDP_PORT             5000                 // UDP port for data transmission
+
+// [Connection Behavior]
+#define NETWORK_INITIAL_CONNECTION_TIMEOUT_MS  30000     // 30 seconds initial connection attempt
+#define NETWORK_RECONNECT_INTERVAL_MS          10000     // 10 seconds between reconnection attempts
+#define NETWORK_BOOT_DELAY_MS                  1000      // 1 second boot delay before starting WiFi
+
+// [Data Transmission]
+#define NETWORK_DATA_SEND_RATE_HZ   10                   // Send sensor data at 10 Hz (configurable)
+
+// [LED Behavior]
+#define NETWORK_LED_PIN             15                   // GPIO pin for connection status LED (DEBUG_LED_PIN)
+#define NETWORK_LED_FLASH_INTERVAL_MS 250                // LED flash interval during connection attempts (ms)
 
 // ===== MAGNITUDE DISPLAY VU-METER =====
 #define VU_MIN_TEMP    12
