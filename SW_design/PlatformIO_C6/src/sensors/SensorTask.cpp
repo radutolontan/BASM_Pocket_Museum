@@ -121,7 +121,7 @@ void SensorTask::run_init(){
 
     // ICM20948 SENSOR 
     if (imuSensor.begin()){
-        lightSensor.setReadFrequency(SENSOR_RATE_IMU);
+        imuSensor.setReadFrequency(SENSOR_RATE_IMU);
         Serial.println("[SensorTask] - ICM20948 initialized successfully");
     }
         
@@ -136,24 +136,31 @@ void SensorTask::run_read(){
     // ==================================================
 
     // =============== ICP20100 SENSOR ==================
-    if (pressureSensor.shouldRead() && pressureSensor.read(sensorReading)) {
-        // Update SharedBuffer with pressure/temperature data
-        SharedBuffer::updatePressureData(sensorReading.temperature, sensorReading.pressure);
+    if (pressureSensor.shouldRead()) {
+        if (pressureSensor.read(sensorReading)) {
+            // Update SharedBuffer with pressure/temperature data
+            SharedBuffer::updatePressureData(sensorReading.temperature, sensorReading.pressure);
+        }
     }
+    
     // ================= BH1750 SENSOR ==================
-    if (lightSensor.shouldRead() && lightSensor.read(sensorReading)) {
-        // Update SharedBuffer with light data
-        SharedBuffer::updateLightData(sensorReading.light_intensity); 
+    if (lightSensor.shouldRead()) {
+        if (lightSensor.read(sensorReading)) {
+            // Update SharedBuffer with light data
+            SharedBuffer::updateLightData(sensorReading.light_intensity);
+        }
     }
     // ================ ICM20948 SENSOR ===================
-    if (imuSensor.shouldRead() && imuSensor.read(sensorReading)) {
-        // Update SharedBuffer with IMU data
-        // Note: Vector norms are computed and saved by SharedBuffer::updateIMUData
-        SharedBuffer::updateIMUData(
-            sensorReading.accel_x, sensorReading.accel_y, sensorReading.accel_z,
-            sensorReading.gyro_x, sensorReading.gyro_y, sensorReading.gyro_z,
-            sensorReading.mag_x, sensorReading.mag_y, sensorReading.mag_z
-        );
+    if (imuSensor.shouldRead()){
+        if (imuSensor.read(sensorReading)){
+            // Update SharedBuffer with IMU data
+            // Note: Vector norms are computed and saved by SharedBuffer::updateIMUData
+            SharedBuffer::updateIMUData(
+                sensorReading.accel_x, sensorReading.accel_y, sensorReading.accel_z,
+                sensorReading.gyro_x, sensorReading.gyro_y, sensorReading.gyro_z,
+                sensorReading.mag_x, sensorReading.mag_y, sensorReading.mag_z
+            );
+        }
     }
 
 
