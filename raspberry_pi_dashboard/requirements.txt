@@ -1,0 +1,24 @@
+# Web Framework
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-CORS==4.0.0
+Flask-SocketIO==5.3.5
+
+# WebSocket Support
+python-socketio==5.11.0
+python-engineio==4.8.0
+
+# Database
+SQLAlchemy==2.0.23
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Utilities
+python-dateutil==2.8.2
+
+# WebSocket Server (eventlet for production)
+eventlet==0.33.3
+
+# Optional: For development
+# werkzeug==3.0.1
