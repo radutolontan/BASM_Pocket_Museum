@@ -3,7 +3,10 @@
 // =========== SW VERSION =============
 #define GIT_SHA "sexi"
 
-// ===== ESP32 PERIPHERAL BINDING =====
+// ============================================================
+// ================= CHARGE CONFIGURATION =====================
+// ============================================================
+
 // [BMS]
 #define BMS_LDO_ATTACH_CMD_PIN      1
 #define BMS_VBAT_VOLT_PIN           0
@@ -26,9 +29,12 @@
 #define VBAT_MIN_VOLTAGE            2.85f// Acceptable physical range for battery voltage (Volts) - MAX
 #define VBAT_MAX_VOLTAGE            4.30f// Acceptable physical range for battery voltage (Volts) - MIN
 
+// ============================================================
+// ================ DISPLAY CONFIGURATION =====================
+// ============================================================
+
 // [GPIOs]
 #define DISPLAY_MODE_PUSHBUTTON_PIN 9
-#define DEBUG_LED_PIN               15
 
 // [WS2812B]
 #define NEOPIXEL_PIN              8
@@ -41,6 +47,8 @@
 #define MODE_DISPLAY_OFFSET       0
 #define DIRECTION_DISPLAY_OFFSET  (MODE_DISPLAY_OFFSET + MODE_DISPLAY_COUNT)
 #define MAGNITUDE_DISPLAY_OFFSET  (DIRECTION_DISPLAY_OFFSET + DIRECTION_DISPLAY_COUNT)
+
+
 
 // [I2C_SENSORS]
 #define I2C_SDA_PIN 2
@@ -58,13 +66,17 @@
 #define I2S_CLK_PIN     14
 #define I2S_DATA_PIN    18
 
-// =========== TASK RATES ===============
+// ============================================================
+// ================== TASK & SENSOR RATES =====================
+// ============================================================
+
 // NOTE: to allow debounce detection to work, GPIO_DEBOUNCE_DELAY > 2 * (1000/TASK_RATE_DISPLAY)
 #define TASK_RATE_AUDIO     50 // Hz
 #define TASK_RATE_EVALUATOR 50 // Hz
 #define TASK_RATE_DISPLAY   50 // Hz
 #define TASK_RATE_BMS       50 // Hz
-#define TASK_RATE_SENSOR    50 // Hz 
+#define TASK_RATE_SENSOR    50 // Hz
+#define TASK_RATE_NETWORK   25 // Hz
 // Individual Rates for sensors
 #define SENSOR_RATE_IMU      50 // Hz
 #define SENSOR_RATE_BARO     50 // Hz
@@ -72,6 +84,37 @@
 #define SENSOR_RATE_SPECTRAL 25 // Hz (AS7343 spectral sensor - lower rate due to measurement time)
 
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
+
+// ============================================================
+// ================== NETWORK CONFIGURATION ===================
+// ============================================================
+
+// [WiFi Settings]
+#define NETWORK_SSID                "BASM_Laborator"     // WiFi SSID to connect to
+#define NETWORK_PASSWORD            "hailamuzeu!"        // WiFi password
+#define NETWORK_NODE_ID             "LAB_01"             // Unique identifier for this ESP32 node
+
+// [IP Configuration - Static IP Only]
+#define NETWORK_STATIC_IP           192,168,10,11        // Static IP for this node (ESP32 #1: .11, ESP32 #2: .12, etc.)
+#define NETWORK_GATEWAY             192,168,10,1         // Gateway IP (typically the router/AP)
+#define NETWORK_SUBNET              255,255,255,0        // Subnet mask
+#define NETWORK_PRIMARY_DNS         192,168,10,1         // Primary DNS (Google DNS)
+#define NETWORK_SECONDARY_DNS       192,168,10,2         // Secondary DNS (Google DNS)
+#define NETWORK_HOSTNAME            "ESP32-01"           // Network hostname for this device
+
+// [Server Configuration]
+#define SERVER_IP_ADDRESS           192,168,10,2         // Raspberry Pi server IP address
+#define SERVER_UDP_PORT             5000                 // UDP port for data transmission
+
+// [Connection Behavior]
+#define NETWORK_INITIAL_CONNECTION_TIMEOUT_MS  30000     // 30 seconds initial connection attempt
+#define NETWORK_RECONNECT_INTERVAL_MS          10000     // 10 seconds between reconnection attempts
+
+// [LED Behavior]
+#define NETWORK_LED_PIN             15                   // GPIO pin for connection status LED (DEBUG_LED_PIN)
+#define NETWORK_LED_FLASH_INTERVAL_MS 250                // LED flash interval during connection attempts (ms)
+
+// Note: Data is sent at TASK_RATE_NETWORK (defined above in Task Rates section)
 
 // ===== MAGNITUDE DISPLAY VU-METER =====
 #define VU_MIN_TEMP    12

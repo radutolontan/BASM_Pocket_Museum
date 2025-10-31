@@ -3,6 +3,10 @@
 #define DEBUG_SENSOR     0
 // SHOW DEBUG MESSAGES W. TASK RATES
 #define DEBUG_TASK_RATES 1
+// SHOW DEBUG MESSAGES FOR NETWORK TASK
+#define DEBUG_NETWORK    1
+// SHOW NETWORK PACKET CONTENTS (very verbose)
+#define DEBUG_NETWORK_PACKETS 0
 
 
 #if DEBUG_SENSOR
@@ -21,4 +25,14 @@
   #define RATES_PRINT(x)
   #define RATES_PRINTLN(x)
   #define RATES_PRINTF(...)
+#endif
+
+#if DEBUG_NETWORK
+  #define NETWORK_PRINT(x)      Serial.print(x)
+  #define NETWORK_PRINTLN(x)    Serial.println(x)
+  #define NETWORK_PRINTF(...)   Serial.printf(__VA_ARGS__)
+#else
+  #define NETWORK_PRINT(x)
+  #define NETWORK_PRINTLN(x)
+  #define NETWORK_PRINTF(...)
 #endif
