@@ -13,7 +13,7 @@
 SensorTask sensorTask;
 SDManager sDManager;
 AudioTask audioTask;
-EvaluatorTask evaluatorTask(sDManager);  // ← pass SDManager
+EvaluatorTask evaluatorTask(sDManager); 
 DisplayTask displayTask;
 BMSTask bmsTask;
 NetworkTask networkTask;
