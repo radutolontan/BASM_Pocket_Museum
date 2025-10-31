@@ -17,8 +17,12 @@ python-dotenv==1.0.0
 # Utilities
 python-dateutil==2.8.2
 
-# WebSocket Server (eventlet for production)
-eventlet==0.33.3
+# WebSocket Server (optional - app uses threading mode by default)
+# Threading mode works without any additional dependencies
+# Uncomment one of the following for better performance in production:
+# eventlet==0.33.3
+# gevent==23.9.1
+# gevent-websocket==0.10.1
 
 # Optional: For development
 # werkzeug==3.0.1
