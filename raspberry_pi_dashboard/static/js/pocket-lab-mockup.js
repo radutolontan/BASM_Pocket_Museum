@@ -1,5 +1,5 @@
 /**
- * Pocket Lab Data Mockup - JavaScript
+ * Pocket Lab Data Mockup - JavaScript (IMPROVED)
  * Complete interactive mockup with mock data
  */
 
@@ -12,7 +12,9 @@ const AppState = {
     charts: {},
     updateIntervals: {},
     mockDataGenerators: {},
-    statsWindows: {}
+    statsWindows: {},
+    timeScales: {}, // Store time scale for each time-graph
+    vectorComponents: {} // Store selected component for vector numeric displays
 };
 
 // Mock Devices
@@ -45,7 +47,7 @@ const MEASUREMENTS = {
     },
     acceleration: {
         name: 'Acceleration',
-        icon: 'bi-arrow-up-right',
+        icon: 'bi-arrow-up-right-square',
         unit: 'm/s²',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics', 'Vector'],
         color: '#d782a0',
@@ -81,7 +83,7 @@ const MEASUREMENTS = {
     },
     ambientLight: {
         name: 'Ambient Light',
-        icon: 'bi-brightness-high',
+        icon: 'bi-lightbulb-fill',
         unit: 'lux',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics'],
         color: '#f8c01c',
@@ -90,20 +92,25 @@ const MEASUREMENTS = {
     },
     spectrum: {
         name: 'Light Spectrum',
-        icon: 'bi-palette',
+        icon: 'bi-rainbow',
         unit: '',
         options: ['Electromagnetic Spectrum'],
         color: '#bd2026'
     }
 };
 
+// Time scale options (in seconds)
+const TIME_SCALES = [5, 10, 30, 60, 120, 300];
+
 // ============================================
 // Initialization
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Pocket Lab Mockup initializing...');
     initTheme();
     renderDeviceGrid();
     setupEventListeners();
+    console.log('Pocket Lab Mockup loaded successfully');
 });
 
 function initTheme() {
@@ -297,6 +304,16 @@ function addDisplayCard(measurementKey, optionType) {
     // Track in state
     AppState.activeDisplays.push({ id: displayId, measurementKey, optionType });
 
+    // Initialize default time scale for time-graphs
+    if (optionType === 'Time-graph') {
+        AppState.timeScales[displayId] = 10; // Default 10 seconds
+    }
+
+    // Initialize default component for vector numeric displays
+    if (measurement.isVector && (optionType === 'Numeric Only' || optionType === 'Numeric w. Statistics')) {
+        AppState.vectorComponents[displayId] = 'norm'; // Default to norm
+    }
+
     // Start data updates
     startDataUpdates(displayId, measurementKey, optionType);
 }
@@ -324,9 +341,9 @@ function createDisplayContent(measurementKey, measurement, optionType, displayId
     content.className = 'display-content';
 
     if (optionType === 'Numeric Only') {
-        content.innerHTML = createNumericDisplay(displayId);
+        content.innerHTML = createNumericDisplay(displayId, measurement.isVector);
     } else if (optionType === 'Numeric w. Statistics') {
-        content.innerHTML = createStatisticsDisplay(displayId);
+        content.innerHTML = createStatisticsDisplay(displayId, measurement.isVector);
         initializeStatsWindow(displayId);
     } else if (optionType === 'Time-graph') {
         content.innerHTML = createChartDisplay(displayId);
@@ -342,8 +359,21 @@ function createDisplayContent(measurementKey, measurement, optionType, displayId
     return content;
 }
 
-function createNumericDisplay(displayId) {
+function createNumericDisplay(displayId, isVector) {
+    const componentSelector = isVector ? `
+        <div class="component-selector">
+            <label for="${displayId}-component">Component:</label>
+            <select id="${displayId}-component" onchange="changeVectorComponent('${displayId}')">
+                <option value="norm">Norm (Magnitude)</option>
+                <option value="x">X Component</option>
+                <option value="y">Y Component</option>
+                <option value="z">Z Component</option>
+            </select>
+        </div>
+    ` : '';
+
     return `
+        ${componentSelector}
         <div class="numeric-display">
             <div>
                 <span class="numeric-value" id="${displayId}-value">--</span>
@@ -354,8 +384,21 @@ function createNumericDisplay(displayId) {
     `;
 }
 
-function createStatisticsDisplay(displayId) {
+function createStatisticsDisplay(displayId, isVector) {
+    const componentSelector = isVector ? `
+        <div class="component-selector">
+            <label for="${displayId}-component">Component:</label>
+            <select id="${displayId}-component" onchange="changeVectorComponent('${displayId}', true)">
+                <option value="norm">Norm (Magnitude)</option>
+                <option value="x">X Component</option>
+                <option value="y">Y Component</option>
+                <option value="z">Z Component</option>
+            </select>
+        </div>
+    ` : '';
+
     return `
+        ${componentSelector}
         <div class="stats-grid">
             <div class="stat-item">
                 <div class="stat-label">Current</div>
@@ -410,11 +453,22 @@ function createStatisticsDisplay(displayId) {
 
 function createChartDisplay(displayId) {
     return `
+        <div class="chart-controls">
+            <label for="${displayId}-timescale">Time Window:</label>
+            <select id="${displayId}-timescale" onchange="changeTimeScale('${displayId}')">
+                <option value="5">5 seconds</option>
+                <option value="10" selected>10 seconds</option>
+                <option value="30">30 seconds</option>
+                <option value="60">1 minute</option>
+                <option value="120">2 minutes</option>
+                <option value="300">5 minutes</option>
+            </select>
+        </div>
         <div class="chart-container">
             <canvas id="${displayId}-chart"></canvas>
         </div>
         <div class="chart-info">
-            <span>Last 10 seconds</span>
+            <span id="${displayId}-window-info">Last 10 seconds</span>
             <span id="${displayId}-update-time">Updated: --</span>
         </div>
     `;
@@ -423,8 +477,8 @@ function createChartDisplay(displayId) {
 function createVectorDisplay(displayId) {
     return `
         <div class="vector-display">
-            <div class="chart-container" style="height: 350px;">
-                <canvas id="${displayId}-vector-chart"></canvas>
+            <div class="vector-canvas-container">
+                <canvas id="${displayId}-vector-canvas"></canvas>
             </div>
             <div class="vector-info">
                 <div class="vector-component">
@@ -473,6 +527,9 @@ function removeDisplayCard(measurementKey, optionType) {
 
         // Remove from state
         AppState.activeDisplays = AppState.activeDisplays.filter(d => d.id !== displayId);
+        delete AppState.timeScales[displayId];
+        delete AppState.vectorComponents[displayId];
+        delete AppState.statsWindows[displayId];
 
         // Hide section if no displays
         if (AppState.activeDisplays.length === 0) {
@@ -508,12 +565,21 @@ function clearAllDisplays() {
         clearInterval(AppState.updateIntervals[key]);
     });
 
+    // Clear charts
+    Object.values(AppState.charts).forEach(chartData => {
+        if (chartData.chart && chartData.chart.destroy) {
+            chartData.chart.destroy();
+        }
+    });
+
     // Clear state
     AppState.activeDisplays = [];
     AppState.charts = {};
     AppState.updateIntervals = {};
     AppState.mockDataGenerators = {};
     AppState.statsWindows = {};
+    AppState.timeScales = {};
+    AppState.vectorComponents = {};
 
     // Clear DOM
     document.getElementById('activeDisplays').innerHTML = '';
@@ -527,6 +593,47 @@ function clearAllDisplays() {
 }
 
 // ============================================
+// Component & Time Scale Changes
+// ============================================
+function changeVectorComponent(displayId, resetStats = false) {
+    const selector = document.getElementById(`${displayId}-component`);
+    const newComponent = selector.value;
+    AppState.vectorComponents[displayId] = newComponent;
+
+    // Reset statistics if requested
+    if (resetStats) {
+        resetStatsWindow(displayId);
+    }
+}
+
+function changeTimeScale(displayId) {
+    const selector = document.getElementById(`${displayId}-timescale`);
+    const newScale = parseInt(selector.value);
+    AppState.timeScales[displayId] = newScale;
+
+    // Update info text
+    const infoEl = document.getElementById(`${displayId}-window-info`);
+    if (infoEl) {
+        if (newScale < 60) {
+            infoEl.textContent = `Last ${newScale} seconds`;
+        } else {
+            infoEl.textContent = `Last ${newScale / 60} minute${newScale > 60 ? 's' : ''}`;
+        }
+    }
+
+    // Clear chart data to start fresh with new scale
+    const chartData = AppState.charts[displayId];
+    if (chartData && chartData.chart) {
+        chartData.chart.data.labels = [];
+        chartData.chart.data.datasets.forEach(dataset => {
+            dataset.data = [];
+        });
+        chartData.startTime = Date.now();
+        chartData.chart.update();
+    }
+}
+
+// ============================================
 // Mock Data Generation
 // ============================================
 function generateMockValue(measurementKey) {
@@ -534,9 +641,9 @@ function generateMockValue(measurementKey) {
 
     if (measurement.isVector) {
         // Generate vector components
-        const x = (Math.random() - 0.5) * 2;
-        const y = (Math.random() - 0.5) * 2;
-        const z = (Math.random() - 0.5) * 2;
+        const x = (Math.random() - 0.5) * 4;
+        const y = (Math.random() - 0.5) * 4;
+        const z = (Math.random() - 0.5) * 4;
         const norm = Math.sqrt(x*x + y*y + z*z);
         return { x, y, z, norm };
     } else if (measurementKey === 'spectrum') {
@@ -558,9 +665,9 @@ function generateMockValue(measurementKey) {
 // Data Updates
 // ============================================
 function startDataUpdates(displayId, measurementKey, optionType) {
-    const measurement = MEASUREMENTS[measurementKey];
+    console.log(`Starting data updates for ${displayId}`);
 
-    // Initial data
+    // Generate initial value immediately
     const initialValue = generateMockValue(measurementKey);
     updateDisplay(displayId, measurementKey, optionType, initialValue);
 
@@ -597,12 +704,22 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
 }
 
 function updateNumericDisplay(displayId, value, measurement) {
-    const displayValue = measurement.isVector ? value.norm : value;
+    let displayValue;
 
-    document.getElementById(`${displayId}-value`).textContent = displayValue.toFixed(2);
-    document.getElementById(`${displayId}-unit`).textContent = measurement.unit;
-    document.getElementById(`${displayId}-timestamp`).textContent =
-        `Updated: ${new Date().toLocaleTimeString()}`;
+    if (measurement.isVector) {
+        const component = AppState.vectorComponents[displayId] || 'norm';
+        displayValue = value[component];
+    } else {
+        displayValue = value;
+    }
+
+    const valueEl = document.getElementById(`${displayId}-value`);
+    const unitEl = document.getElementById(`${displayId}-unit`);
+    const timestampEl = document.getElementById(`${displayId}-timestamp`);
+
+    if (valueEl) valueEl.textContent = displayValue.toFixed(2);
+    if (unitEl) unitEl.textContent = measurement.unit;
+    if (timestampEl) timestampEl.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
 }
 
 // ============================================
@@ -616,16 +733,24 @@ function resetStatsWindow(displayId) {
     AppState.statsWindows[displayId] = [];
 
     // Reset display
-    document.getElementById(`${displayId}-current`).textContent = '--';
-    document.getElementById(`${displayId}-avg`).textContent = '--';
-    document.getElementById(`${displayId}-min`).textContent = '--';
-    document.getElementById(`${displayId}-max`).textContent = '--';
-    document.getElementById(`${displayId}-std`).textContent = '--';
-    document.getElementById(`${displayId}-count`).textContent = '0';
+    ['current', 'avg', 'min', 'max', 'std'].forEach(stat => {
+        const el = document.getElementById(`${displayId}-${stat}`);
+        if (el) el.textContent = '--';
+    });
+
+    const countEl = document.getElementById(`${displayId}-count`);
+    if (countEl) countEl.textContent = '0';
 }
 
 function updateStatisticsDisplay(displayId, value, measurement) {
-    const displayValue = measurement.isVector ? value.norm : value;
+    let displayValue;
+
+    if (measurement.isVector) {
+        const component = AppState.vectorComponents[displayId] || 'norm';
+        displayValue = value[component];
+    } else {
+        displayValue = value;
+    }
 
     // Add to window
     if (!AppState.statsWindows[displayId]) {
@@ -643,12 +768,19 @@ function updateStatisticsDisplay(displayId, value, measurement) {
     const std = Math.sqrt(variance);
 
     // Update display
-    document.getElementById(`${displayId}-current`).textContent = current.toFixed(2);
-    document.getElementById(`${displayId}-avg`).textContent = avg.toFixed(2);
-    document.getElementById(`${displayId}-min`).textContent = min.toFixed(2);
-    document.getElementById(`${displayId}-max`).textContent = max.toFixed(2);
-    document.getElementById(`${displayId}-std`).textContent = std.toFixed(2);
-    document.getElementById(`${displayId}-count`).textContent = data.length;
+    const currentEl = document.getElementById(`${displayId}-current`);
+    const avgEl = document.getElementById(`${displayId}-avg`);
+    const minEl = document.getElementById(`${displayId}-min`);
+    const maxEl = document.getElementById(`${displayId}-max`);
+    const stdEl = document.getElementById(`${displayId}-std`);
+    const countEl = document.getElementById(`${displayId}-count`);
+
+    if (currentEl) currentEl.textContent = current.toFixed(2);
+    if (avgEl) avgEl.textContent = avg.toFixed(2);
+    if (minEl) minEl.textContent = min.toFixed(2);
+    if (maxEl) maxEl.textContent = max.toFixed(2);
+    if (stdEl) stdEl.textContent = std.toFixed(2);
+    if (countEl) countEl.textContent = data.length;
 
     // Set units
     ['unit', 'unit-avg', 'unit-min', 'unit-max', 'unit-std'].forEach(suffix => {
@@ -662,8 +794,12 @@ function updateStatisticsDisplay(displayId, value, measurement) {
 // ============================================
 function initializeChart(displayId, measurementKey, measurement) {
     const canvas = document.getElementById(`${displayId}-chart`);
-    if (!canvas) return;
+    if (!canvas) {
+        console.error(`Canvas not found for ${displayId}`);
+        return;
+    }
 
+    console.log(`Initializing chart for ${displayId}`);
     const ctx = canvas.getContext('2d');
 
     // Prepare datasets
@@ -711,7 +847,9 @@ function initializeChart(displayId, measurementKey, measurement) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: false,
+            animation: {
+                duration: 0
+            },
             scales: {
                 x: {
                     display: true,
@@ -742,16 +880,21 @@ function initializeChart(displayId, measurementKey, measurement) {
 
     AppState.charts[displayId] = {
         chart: chart,
-        startTime: Date.now(),
-        maxPoints: 50
+        startTime: Date.now()
     };
+
+    console.log(`Chart initialized for ${displayId}`);
 }
 
 function updateChart(displayId, value, measurement) {
     const chartData = AppState.charts[displayId];
-    if (!chartData) return;
+    if (!chartData) {
+        console.error(`Chart data not found for ${displayId}`);
+        return;
+    }
 
-    const { chart, startTime, maxPoints } = chartData;
+    const { chart, startTime } = chartData;
+    const timeScale = AppState.timeScales[displayId] || 10;
     const currentTime = (Date.now() - startTime) / 1000; // seconds
 
     // Add time label
@@ -766,101 +909,157 @@ function updateChart(displayId, value, measurement) {
         chart.data.datasets[0].data.push(value);
     }
 
-    // Keep only last 10 seconds of data (assuming 1 update per second)
+    // Keep only data within time scale
+    const maxPoints = timeScale * 1; // 1 update per second
     if (chart.data.labels.length > maxPoints) {
         chart.data.labels.shift();
         chart.data.datasets.forEach(dataset => dataset.data.shift());
     }
 
     // Update chart
-    chart.update();
+    chart.update('none'); // Use 'none' mode for better performance
 
     // Update timestamp
-    document.getElementById(`${displayId}-update-time`).textContent =
-        `Updated: ${new Date().toLocaleTimeString()}`;
+    const timeEl = document.getElementById(`${displayId}-update-time`);
+    if (timeEl) {
+        timeEl.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+    }
 }
 
 // ============================================
-// Vector Display
+// Vector Display (3D)
 // ============================================
 function initializeVectorDisplay(displayId, measurementKey) {
-    const canvas = document.getElementById(`${displayId}-vector-chart`);
-    if (!canvas) return;
+    const canvas = document.getElementById(`${displayId}-vector-canvas`);
+    if (!canvas) {
+        console.error(`Vector canvas not found for ${displayId}`);
+        return;
+    }
 
-    const ctx = canvas.getContext('2d');
+    console.log(`Initializing vector display for ${displayId}`);
 
-    // Create a 3D-looking scatter plot
-    const chart = new Chart(ctx, {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'Vector',
-                data: [{x: 0, y: 0}],
-                backgroundColor: '#f8c01c',
-                pointRadius: 8,
-                pointHoverRadius: 10
-            }, {
-                label: 'Origin',
-                data: [{x: 0, y: 0}],
-                backgroundColor: '#bd2026',
-                pointRadius: 5
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    min: -3,
-                    max: 3,
-                    title: {
-                        display: true,
-                        text: 'X-Y Plane'
-                    }
-                },
-                y: {
-                    min: -3,
-                    max: 3,
-                    title: {
-                        display: true,
-                        text: 'Z Axis'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `(${context.parsed.x.toFixed(2)}, ${context.parsed.y.toFixed(2)})`;
-                        }
-                    }
-                }
-            }
-        }
-    });
+    // Store canvas in state
+    AppState.charts[displayId] = {
+        canvas: canvas,
+        ctx: canvas.getContext('2d')
+    };
 
-    AppState.charts[displayId] = { chart };
+    // Draw initial empty 3D axes
+    draw3DVector(displayId, { x: 0, y: 0, z: 0 });
 }
 
-function updateVectorDisplay(displayId, value, measurement) {
+function draw3DVector(displayId, vector) {
     const chartData = AppState.charts[displayId];
     if (!chartData) return;
 
-    const { chart } = chartData;
+    const { canvas, ctx } = chartData;
+    const width = canvas.width = canvas.offsetWidth;
+    const height = canvas.height = canvas.offsetHeight;
 
-    // Update scatter plot (project 3D to 2D: use X-Y plane, Z as vertical)
-    const magnitude = Math.sqrt(value.x * value.x + value.y * value.y);
-    chart.data.datasets[0].data = [{x: magnitude, y: value.z}];
-    chart.update();
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Center point
+    const cx = width / 2;
+    const cy = height / 2;
+
+    // Scale factor
+    const scale = Math.min(width, height) / 8;
+
+    // 3D to 2D projection (isometric)
+    function project3D(x, y, z) {
+        const angle = Math.PI / 6; // 30 degrees
+        const px = cx + (x - z * Math.cos(angle)) * scale;
+        const py = cy + (y - z * Math.sin(angle)) * scale;
+        return { x: px, y: py };
+    }
+
+    // Draw axes
+    ctx.strokeStyle = '#6b7280';
+    ctx.lineWidth = 1;
+
+    // X axis (red)
+    ctx.beginPath();
+    ctx.strokeStyle = '#f8c01c';
+    let p = project3D(0, 0, 0);
+    ctx.moveTo(p.x, p.y);
+    p = project3D(3, 0, 0);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.fillStyle = '#f8c01c';
+    ctx.font = '12px Work Sans';
+    ctx.fillText('X', p.x + 10, p.y);
+
+    // Y axis (blue)
+    ctx.beginPath();
+    ctx.strokeStyle = '#375f83';
+    p = project3D(0, 0, 0);
+    ctx.moveTo(p.x, p.y);
+    p = project3D(0, 3, 0);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.fillStyle = '#375f83';
+    ctx.fillText('Y', p.x, p.y - 10);
+
+    // Z axis (pink)
+    ctx.beginPath();
+    ctx.strokeStyle = '#d782a0';
+    p = project3D(0, 0, 0);
+    ctx.moveTo(p.x, p.y);
+    p = project3D(0, 0, 3);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.fillStyle = '#d782a0';
+    ctx.fillText('Z', p.x - 15, p.y);
+
+    // Draw vector
+    ctx.beginPath();
+    ctx.strokeStyle = '#bd2026';
+    ctx.lineWidth = 3;
+    p = project3D(0, 0, 0);
+    ctx.moveTo(p.x, p.y);
+    const vp = project3D(vector.x, vector.y, vector.z);
+    ctx.lineTo(vp.x, vp.y);
+    ctx.stroke();
+
+    // Draw arrowhead
+    const angle = Math.atan2(vp.y - p.y, vp.x - p.x);
+    ctx.beginPath();
+    ctx.fillStyle = '#bd2026';
+    ctx.moveTo(vp.x, vp.y);
+    ctx.lineTo(vp.x - 10 * Math.cos(angle - Math.PI / 6), vp.y - 10 * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(vp.x - 10 * Math.cos(angle + Math.PI / 6), vp.y - 10 * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fill();
+
+    // Draw vector endpoint
+    ctx.beginPath();
+    ctx.fillStyle = '#bd2026';
+    ctx.arc(vp.x, vp.y, 5, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Draw origin
+    p = project3D(0, 0, 0);
+    ctx.beginPath();
+    ctx.fillStyle = '#6b7280';
+    ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
+function updateVectorDisplay(displayId, value, measurement) {
+    // Draw 3D vector
+    draw3DVector(displayId, value);
 
     // Update component displays
-    document.getElementById(`${displayId}-x`).textContent = value.x.toFixed(2);
-    document.getElementById(`${displayId}-y`).textContent = value.y.toFixed(2);
-    document.getElementById(`${displayId}-z`).textContent = value.z.toFixed(2);
-    document.getElementById(`${displayId}-magnitude`).textContent = value.norm.toFixed(2);
+    const xEl = document.getElementById(`${displayId}-x`);
+    const yEl = document.getElementById(`${displayId}-y`);
+    const zEl = document.getElementById(`${displayId}-z`);
+    const magEl = document.getElementById(`${displayId}-magnitude`);
+
+    if (xEl) xEl.textContent = value.x.toFixed(2);
+    if (yEl) yEl.textContent = value.y.toFixed(2);
+    if (zEl) zEl.textContent = value.z.toFixed(2);
+    if (magEl) magEl.textContent = value.norm.toFixed(2);
 }
 
 // ============================================
@@ -868,8 +1067,12 @@ function updateVectorDisplay(displayId, value, measurement) {
 // ============================================
 function initializeSpectrumChart(displayId) {
     const canvas = document.getElementById(`${displayId}-spectrum`);
-    if (!canvas) return;
+    if (!canvas) {
+        console.error(`Spectrum canvas not found for ${displayId}`);
+        return;
+    }
 
+    console.log(`Initializing spectrum chart for ${displayId}`);
     const ctx = canvas.getContext('2d');
 
     const chart = new Chart(ctx, {
@@ -890,6 +1093,9 @@ function initializeSpectrumChart(displayId) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: 0
+            },
             scales: {
                 x: {
                     title: {
@@ -914,17 +1120,21 @@ function initializeSpectrumChart(displayId) {
     });
 
     AppState.charts[displayId] = { chart };
+    console.log(`Spectrum chart initialized for ${displayId}`);
 }
 
 function updateSpectrumChart(displayId, value) {
     const chartData = AppState.charts[displayId];
-    if (!chartData) return;
+    if (!chartData || !chartData.chart) {
+        console.error(`Spectrum chart not found for ${displayId}`);
+        return;
+    }
 
     const { chart } = chartData;
 
     chart.data.labels = value.wavelengths.map((w, i) => `${value.names[i]}\n${w}nm`);
     chart.data.datasets[0].data = value.values;
-    chart.update();
+    chart.update('none');
 
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);
@@ -933,4 +1143,4 @@ function updateSpectrumChart(displayId, value) {
     }
 }
 
-console.log('Pocket Lab Mockup loaded successfully');
+console.log('Pocket Lab Mockup JavaScript loaded');
