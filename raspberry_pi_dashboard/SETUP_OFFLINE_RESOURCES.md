@@ -21,6 +21,10 @@ mkdir -p fonts
 echo "Downloading Chart.js..."
 curl -o js/chart.min.js https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
 
+# Download Socket.IO
+echo "Downloading Socket.IO..."
+curl -o js/socket.io.min.js https://cdn.socket.io/4.5.4/socket.io.min.js
+
 # Download Bootstrap Icons CSS
 echo "Downloading Bootstrap Icons CSS..."
 curl -o css/bootstrap-icons.min.css https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css
@@ -40,12 +44,17 @@ echo "Done! Now transfer the 'static' folder to your Raspberry Pi."
    - Right-click → Save As → `chart.min.js`
    - Place in: `raspberry_pi_dashboard/static/js/chart.min.js`
 
-2. **Download Bootstrap Icons CSS:**
+2. **Download Socket.IO:**
+   - Visit: https://cdn.socket.io/4.5.4/socket.io.min.js
+   - Right-click → Save As → `socket.io.min.js`
+   - Place in: `raspberry_pi_dashboard/static/js/socket.io.min.js`
+
+3. **Download Bootstrap Icons CSS:**
    - Visit: https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css
    - Right-click → Save As → `bootstrap-icons.min.css`
    - Place in: `raspberry_pi_dashboard/static/css/bootstrap-icons.min.css`
 
-3. **Download Bootstrap Icons Fonts:**
+4. **Download Bootstrap Icons Fonts:**
    - Visit: https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/fonts/bootstrap-icons.woff2
    - Right-click → Save As → `bootstrap-icons.woff2`
    - Place in: `raspberry_pi_dashboard/static/fonts/bootstrap-icons.woff2`
@@ -85,6 +94,7 @@ After transferring the files, verify they exist on the Raspberry Pi:
 
 ```bash
 ls -lh raspberry_pi_dashboard/static/js/chart.min.js
+ls -lh raspberry_pi_dashboard/static/js/socket.io.min.js
 ls -lh raspberry_pi_dashboard/static/css/bootstrap-icons.min.css
 ls -lh raspberry_pi_dashboard/static/fonts/bootstrap-icons.woff*
 ```
@@ -92,6 +102,7 @@ ls -lh raspberry_pi_dashboard/static/fonts/bootstrap-icons.woff*
 Expected output:
 ```
 -rw-r--r-- 1 pi pi 261K Nov 2 14:00 raspberry_pi_dashboard/static/js/chart.min.js
+-rw-r--r-- 1 pi pi  59K Nov 2 14:00 raspberry_pi_dashboard/static/js/socket.io.min.js
 -rw-r--r-- 1 pi pi  72K Nov 2 14:00 raspberry_pi_dashboard/static/css/bootstrap-icons.min.css
 -rw-r--r-- 1 pi pi 124K Nov 2 14:00 raspberry_pi_dashboard/static/fonts/bootstrap-icons.woff2
 -rw-r--r-- 1 pi pi 165K Nov 2 14:00 raspberry_pi_dashboard/static/fonts/bootstrap-icons.woff

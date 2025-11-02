@@ -40,10 +40,16 @@ curl -L -o static/fonts/bootstrap-icons.woff2 \
 echo "✓ WOFF2 font downloaded ($(wc -c < static/fonts/bootstrap-icons.woff2) bytes)"
 
 echo ""
-echo "[4/4] Downloading Bootstrap Icons WOFF font..."
+echo "[4/5] Downloading Bootstrap Icons WOFF font..."
 curl -L -o static/fonts/bootstrap-icons.woff \
     https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/fonts/bootstrap-icons.woff
 echo "✓ WOFF font downloaded ($(wc -c < static/fonts/bootstrap-icons.woff) bytes)"
+
+echo ""
+echo "[5/5] Downloading Socket.IO client..."
+curl -L -o static/js/socket.io.min.js \
+    https://cdn.socket.io/4.5.4/socket.io.min.js
+echo "✓ Socket.IO downloaded ($(wc -c < static/js/socket.io.min.js) bytes)"
 
 # Fix Bootstrap Icons CSS font paths
 echo ""
@@ -66,6 +72,7 @@ echo "===================================="
 echo ""
 echo "Files created:"
 echo "  - static/js/chart.min.js"
+echo "  - static/js/socket.io.min.js"
 echo "  - static/css/bootstrap-icons.min.css"
 echo "  - static/fonts/bootstrap-icons.woff2"
 echo "  - static/fonts/bootstrap-icons.woff"
