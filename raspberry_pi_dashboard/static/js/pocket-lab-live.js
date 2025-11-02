@@ -239,6 +239,113 @@ function connectWebSocket() {
 }
 
 // ============================================
+// WebSocket Data Handlers
+// ============================================
+function handleSensorData(node_id, data) {
+    // Only process if this is the selected device
+    if (!AppState.selectedDevice || AppState.selectedDevice.node_id !== node_id) {
+        return;
+    }
+
+    debugLog(`📊 Processing sensor data from ${node_id}`, 'info');
+
+    // Store latest data
+    AppState.latestData[node_id] = data;
+
+    // Update all active displays with new data
+    AppState.activeDisplays.forEach(display => {
+        const measurementKey = display.measurementKey;
+        const optionType = display.optionType;
+
+        // Extract value based on measurement type
+        let value = extractSensorValue(measurementKey, data);
+
+        if (value !== null && value !== undefined) {
+            updateDisplay(display.id, measurementKey, optionType, value);
+        }
+    });
+}
+
+function extractSensorValue(measurementKey, data) {
+    // Map measurement keys to sensor data fields
+    switch (measurementKey) {
+        case 'temperature':
+            return data.temperature;
+
+        case 'pressure':
+            return data.pressure;
+
+        case 'acceleration':
+            return {
+                x: data.accel_x || 0,
+                y: data.accel_y || 0,
+                z: data.accel_z || 0,
+                norm: data.accel_norm || 0
+            };
+
+        case 'gyro':
+            return {
+                x: data.gyro_x || 0,
+                y: data.gyro_y || 0,
+                z: data.gyro_z || 0,
+                norm: data.gyro_norm || 0
+            };
+
+        case 'magnetometer':
+            return {
+                x: data.mag_x || 0,
+                y: data.mag_y || 0,
+                z: data.mag_z || 0,
+                norm: data.mag_norm || 0
+            };
+
+        case 'volume':
+            return data.volume_rms;
+
+        case 'ambientLight':
+            return data.light_intensity;
+
+        case 'spectrum':
+            // Return spectral data in format expected by chart
+            return {
+                wavelengths: [405, 425, 475, 515, 450, 555, 550, 640, 600, 690, 745, 855],
+                names: ['F1', 'F2', 'F3', 'F4', 'FZ', 'FY', 'F5', 'F6', 'FXL', 'F7', 'F8', 'NIR'],
+                values: [
+                    data.spectral_f1_405nm || 0,
+                    data.spectral_f2_425nm || 0,
+                    data.spectral_f3_475nm || 0,
+                    data.spectral_f4_515nm || 0,
+                    data.spectral_fz_450nm || 0,
+                    data.spectral_fy_555nm || 0,
+                    data.spectral_f5_550nm || 0,
+                    data.spectral_f6_640nm || 0,
+                    data.spectral_fxl_600nm || 0,
+                    data.spectral_f7_690nm || 0,
+                    data.spectral_f8_745nm || 0,
+                    data.spectral_nir_855nm || 0
+                ]
+            };
+
+        default:
+            return null;
+    }
+}
+
+function updateDeviceStatus(node_id, status, last_seen) {
+    // Update device in list if currently displayed
+    const device = AppState.devices.find(d => d.node_id === node_id);
+    if (device) {
+        device.is_active = (status === 'active');
+        device.last_seen = last_seen;
+    }
+
+    // Refresh device grid if on device selection view
+    if (document.getElementById('deviceSelectionView').classList.contains('active')) {
+        renderDeviceGrid();
+    }
+}
+
+// ============================================
 // API Functions
 // ============================================
 function fetchActiveDevices() {
@@ -246,13 +353,15 @@ function fetchActiveDevices() {
 
     fetch('/api/devices')
         .then(response => response.json())
-        .then(devices => {
-            AppState.devices = devices;
-            debugLog(`✅ Found ${devices.length} active device(s)`, 'success');
+        .then(data => {
+            // API returns { "devices": [...] }
+            AppState.devices = data.devices || [];
+            debugLog(`✅ Found ${AppState.devices.length} active device(s)`, 'success');
             renderDeviceGrid();
         })
         .catch(error => {
             debugLog(`❌ Error fetching devices: ${error.message}`, 'error');
+            AppState.devices = [];
             renderDeviceGrid();
         });
 }
@@ -312,8 +421,14 @@ function selectDevice(device) {
     AppState.selectedDevice = device;
 
     // Update banner
-    document.getElementById('selectedDeviceName').textContent = device.name;
-    document.getElementById('selectedDeviceId').textContent = device.id;
+    document.getElementById('selectedDeviceName').textContent = device.hostname || device.node_id;
+    document.getElementById('selectedDeviceId').textContent = device.node_id;
+
+    // Subscribe to WebSocket room for this device
+    if (AppState.socket && AppState.socket.connected) {
+        AppState.socket.emit('join', { room: `device_${device.node_id}` });
+        debugLog(`📡 Subscribed to device ${device.node_id}`, 'success');
+    }
 
     // Clear any active displays
     clearAllDisplays();
