@@ -247,10 +247,20 @@ function handleSensorData(node_id, data) {
         return;
     }
 
-    debugLog(`📊 Processing sensor data from ${node_id}`, 'info');
+    // Check if this is the first data packet
+    const isFirstPacket = !AppState.latestData[node_id];
 
     // Store latest data
     AppState.latestData[node_id] = data;
+
+    // After first packet, refresh measurement grid to hide unavailable sensors
+    if (isFirstPacket) {
+        debugLog(`📊 First data packet received, refreshing measurement grid`, 'info');
+        renderMeasurementGrid();
+        return; // Don't update displays yet, they don't exist
+    }
+
+    debugLog(`📊 Processing sensor data from ${node_id}`, 'info');
 
     // Update all active displays with new data
     AppState.activeDisplays.forEach(display => {
@@ -339,10 +349,9 @@ function updateDeviceStatus(node_id, status, last_seen) {
         device.last_seen = last_seen;
     }
 
-    // Refresh device grid if on device selection view
-    if (document.getElementById('deviceSelectionView').classList.contains('active')) {
-        renderDeviceGrid();
-    }
+    // DON'T refresh device grid constantly - causes flickering
+    // Only refresh when user is actively viewing the device selection
+    // and only if device wasn't in the list before (new device)
 }
 
 // ============================================
@@ -455,12 +464,50 @@ function showDeviceSelection() {
 // ============================================
 // Measurement Selection
 // ============================================
+function hasSensorData(measurementKey, data) {
+    // Check if sensor data is available for this measurement type
+    // Returns true if we've received at least one packet with this sensor's data
+    switch (measurementKey) {
+        case 'temperature':
+        case 'pressure':
+            return data.temperature !== undefined || data.pressure !== undefined;
+        case 'ambientLight':
+            return data.light_intensity !== undefined;
+        case 'acceleration':
+            return data.accel_x !== undefined || data.accel_norm !== undefined;
+        case 'gyro':
+            return data.gyro_x !== undefined || data.gyro_norm !== undefined;
+        case 'magnetometer':
+            return data.mag_x !== undefined || data.mag_norm !== undefined;
+        case 'volume':
+            return data.volume_rms !== undefined;
+        case 'spectrum':
+            return data.spectral_f1_405nm !== undefined;
+        default:
+            return true; // Show by default if unknown
+    }
+}
+
 function renderMeasurementGrid() {
     const grid = document.getElementById('measurementGrid');
     grid.innerHTML = '';
     debugLog('📊 Rendering measurement grid...', 'info');
 
+    // Get latest data for selected device to check available sensors
+    const latestData = AppState.latestData[AppState.selectedDevice?.node_id] || {};
+    const hasReceivedData = Object.keys(latestData).length > 0;
+
     Object.entries(MEASUREMENTS).forEach(([key, measurement]) => {
+        // If we've received data, only show sensors that have data
+        // Otherwise show all (will update after first packet)
+        if (hasReceivedData) {
+            const hasData = hasSensorData(key, latestData);
+            if (!hasData) {
+                debugLog(`⏭️ Skipping ${measurement.name} - no sensor data available`, 'info');
+                return;
+            }
+        }
+
         const card = document.createElement('div');
         card.className = 'measurement-card';
 
@@ -934,29 +981,25 @@ function generateMockValue(measurementKey) {
 }
 
 // ============================================
-// Data Updates
+// Data Updates (Live WebSocket Only)
 // ============================================
 function startDataUpdates(displayId, measurementKey, optionType) {
-    console.log(`Starting data updates for ${displayId}`);
+    debugLog(`📊 Display ${displayId} ready for live data`, 'info');
+    // NO MOCK DATA - displays will be updated by WebSocket events in handleSensorData()
+    // Initialize with waiting message
+    const measurement = MEASUREMENTS[measurementKey];
 
-    // Generate initial value immediately
-    const initialValue = generateMockValue(measurementKey);
-    updateDisplay(displayId, measurementKey, optionType, initialValue);
-
-    // Set up interval for continuous updates
-    const interval = setInterval(() => {
-        const value = generateMockValue(measurementKey);
-        updateDisplay(displayId, measurementKey, optionType, value);
-    }, 1000); // Update every second
-
-    AppState.updateIntervals[displayId] = interval;
+    if (optionType === 'Numeric Only' || optionType === 'Numeric w. Statistics') {
+        const valueEl = document.getElementById(`${displayId}-value`) || document.getElementById(`${displayId}-current`);
+        if (valueEl) valueEl.textContent = '--';
+        const timestampEl = document.getElementById(`${displayId}-timestamp`);
+        if (timestampEl) timestampEl.textContent = 'Waiting for live data...';
+    }
 }
 
 function stopDataUpdates(displayId) {
-    if (AppState.updateIntervals[displayId]) {
-        clearInterval(AppState.updateIntervals[displayId]);
-        delete AppState.updateIntervals[displayId];
-    }
+    // No intervals to stop - data comes from WebSocket
+    debugLog(`📊 Display ${displayId} closed`, 'info');
 }
 
 function updateDisplay(displayId, measurementKey, optionType, value) {
