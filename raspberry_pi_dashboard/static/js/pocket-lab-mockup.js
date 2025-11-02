@@ -80,7 +80,7 @@ const MEASUREMENT_COLORS = {
     gyro: '#f97316',            // ORANGE
     magnetometer: '#f8c01c',    // YELLOW
     volume: '#d782a0',          // PINK/MAGENTA
-    ambientLight: '#ffffff',    // WHITE
+    ambientLight: '#fbbf24',    // BRIGHT AMBER/GOLD (for visibility, represents light)
     spectrum: '#8b5cf6'         // PURPLE (for spectrum)
 };
 
@@ -522,7 +522,7 @@ function createStatisticsDisplay(displayId, isVector) {
             </div>
         </div>
         <div class="stats-controls">
-            <button class="btn btn-outline-pink" onclick="resetStatsWindow('${displayId}')">
+            <button class="btn btn-outline-blue" onclick="resetStatsWindow('${displayId}')">
                 <i class="bi bi-arrow-clockwise"></i>
                 Reset Statistics
             </button>
