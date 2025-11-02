@@ -25,77 +25,120 @@ const MOCK_DEVICES = [
     { id: 'LAB_04', name: 'ESP32-04', ip: '192.168.10.14', active: true, lastSeen: '1s ago' }
 ];
 
+// Custom SVG Icons
+const MEASUREMENT_ICONS = {
+    temperature: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <path d="M14 4c0-1.1-.9-2-2-2s-2 .9-2 2v8.5c-1.2.7-2 2-2 3.5 0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.5-.8-2.8-2-3.5V4z"/>
+        <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+    </svg>`,
+    pressure: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <circle cx="12" cy="12" r="1" fill="currentColor"/>
+        <line x1="12" y1="12" x2="16" y2="8" stroke="currentColor" stroke-width="1.5"/>
+    </svg>`,
+    acceleration: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <path d="M4 12h16M4 12l3-3M4 12l3 3M20 12l-3-3M20 12l-3 3" stroke="currentColor" stroke-width="2" fill="none"/>
+    </svg>`,
+    gyro: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <path d="M12 4 L12 7 M12 17 L12 20 M20 12 L17 12 M7 12 L4 12" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 12 m -6 0 a 6 6 0 1 1 0 0.1" stroke="currentColor" stroke-width="2" fill="none"/>
+        <polygon points="18,12 15,9 15,15" fill="currentColor"/>
+    </svg>`,
+    magnetometer: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <path d="M6 8 Q6 4 12 4 Q18 4 18 8 L18 16 L15 16 L15 8 Q15 6 12 6 Q9 6 9 8 L9 16 L6 16 Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <text x="8" y="14" font-size="6" fill="currentColor">N</text>
+        <text x="15" y="14" font-size="6" fill="currentColor">S</text>
+    </svg>`,
+    volume: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <path d="M8 6 L4 10 L4 14 L8 18 L8 6 Z M8 12 L12 6 L12 18 L8 12 Z" fill="currentColor"/>
+        <path d="M14 9 Q16 10 16 12 Q16 14 14 15" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <path d="M16 7 Q19 9 19 12 Q19 15 16 17" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    </svg>`,
+    ambientLight: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+        <path d="M12 2 L12 4 M12 20 L12 22 M20 12 L22 12 M2 12 L4 12 M17.66 6.34 L19.07 4.93 M4.93 19.07 L6.34 17.66 M17.66 17.66 L19.07 19.07 M4.93 4.93 L6.34 6.34" stroke="currentColor" stroke-width="2"/>
+    </svg>`,
+    spectrum: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <defs>
+            <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#8b00ff"/>
+                <stop offset="25%" style="stop-color:#0000ff"/>
+                <stop offset="50%" style="stop-color:#00ff00"/>
+                <stop offset="75%" style="stop-color:#ffff00"/>
+                <stop offset="100%" style="stop-color:#ff0000"/>
+            </linearGradient>
+        </defs>
+        <path d="M4 12 Q8 6 12 12 Q16 18 20 12" stroke="url(#rainbow)" stroke-width="3" fill="none"/>
+    </svg>`
+};
+
+// Measurement Colors
+const MEASUREMENT_COLORS = {
+    temperature: '#bd2026',      // RED
+    pressure: '#375f83',         // BLUE
+    acceleration: '#10b981',     // GREEN
+    gyro: '#f97316',            // ORANGE
+    magnetometer: '#f8c01c',    // YELLOW
+    volume: '#d782a0',          // PINK/MAGENTA
+    ambientLight: '#ffffff',    // WHITE
+    spectrum: '#8b5cf6'         // PURPLE (for spectrum)
+};
+
 // Measurement Definitions
 const MEASUREMENTS = {
     temperature: {
         name: 'Temperature',
-        icon: 'bi-thermometer-half',
         unit: '°C',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics'],
-        color: '#f8c01c',
         baseValue: 23.5,
         variation: 1.5
     },
     pressure: {
         name: 'Pressure',
-        icon: 'bi-speedometer2',
         unit: 'kPa',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics'],
-        color: '#375f83',
         baseValue: 101.3,
         variation: 0.5
     },
     acceleration: {
         name: 'Acceleration',
-        icon: 'bi-arrow-up-right-square',
         unit: 'm/s²',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics', 'Vector'],
-        color: '#d782a0',
         isVector: true,
         components: ['x', 'y', 'z', 'norm']
     },
     gyro: {
         name: 'Gyroscope',
-        icon: 'bi-arrow-clockwise',
         unit: 'deg/s',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics', 'Vector'],
-        color: '#bd2026',
         isVector: true,
         components: ['x', 'y', 'z', 'norm']
     },
     magnetometer: {
         name: 'Magnetometer',
-        icon: 'bi-magnet',
         unit: 'µT',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics', 'Vector'],
-        color: '#375f83',
         isVector: true,
         components: ['x', 'y', 'z', 'norm']
     },
     volume: {
         name: 'Volume',
-        icon: 'bi-soundwave',
         unit: 'dB',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics'],
-        color: '#d782a0',
         baseValue: -25,
         variation: 10
     },
     ambientLight: {
         name: 'Ambient Light',
-        icon: 'bi-lightbulb-fill',
         unit: 'lux',
         options: ['Time-graph', 'Numeric Only', 'Numeric w. Statistics'],
-        color: '#f8c01c',
         baseValue: 542,
         variation: 100
     },
     spectrum: {
         name: 'Light Spectrum',
-        icon: 'bi-rainbow',
         unit: '',
-        options: ['Electromagnetic Spectrum'],
-        color: '#bd2026'
+        options: ['Electromagnetic Spectrum']
     }
 };
 
@@ -106,11 +149,19 @@ const TIME_SCALES = [5, 10, 30, 60, 120, 300];
 // Initialization
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Pocket Lab Mockup initializing...');
+    debugLog('🚀 Pocket Lab Mockup initializing...', 'info');
+
+    // Check if Chart.js is loaded
+    if (typeof Chart !== 'undefined') {
+        debugLog('✅ Chart.js loaded successfully', 'success');
+    } else {
+        debugLog('❌ ERROR: Chart.js not loaded! Charts will not work.', 'error');
+    }
+
     initTheme();
     renderDeviceGrid();
     setupEventListeners();
-    console.log('Pocket Lab Mockup loaded successfully');
+    debugLog('✅ Pocket Lab Mockup loaded successfully', 'success');
 });
 
 function initTheme() {
@@ -214,14 +265,23 @@ function showDeviceSelection() {
 function renderMeasurementGrid() {
     const grid = document.getElementById('measurementGrid');
     grid.innerHTML = '';
+    debugLog('📊 Rendering measurement grid...', 'info');
 
     Object.entries(MEASUREMENTS).forEach(([key, measurement]) => {
         const card = document.createElement('div');
         card.className = 'measurement-card';
+
+        // Get color and icon for this measurement
+        const color = MEASUREMENT_COLORS[key];
+        const icon = MEASUREMENT_ICONS[key];
+
+        // Apply color to card border
+        card.style.borderColor = color;
+
         card.innerHTML = `
             <div class="measurement-header">
-                <div class="measurement-icon">
-                    <i class="${measurement.icon}"></i>
+                <div class="measurement-icon" style="background-color: ${color}20; color: ${color};">
+                    ${icon}
                 </div>
                 <div class="measurement-info">
                     <h4>${measurement.name}</h4>
@@ -245,6 +305,8 @@ function renderMeasurementGrid() {
     document.querySelectorAll('.measurement-options button').forEach(btn => {
         btn.addEventListener('click', handleOptionClick);
     });
+
+    debugLog(`✅ Rendered ${Object.keys(MEASUREMENTS).length} measurement cards`, 'success');
 }
 
 function handleOptionClick(event) {
@@ -275,8 +337,11 @@ function addDisplayCard(measurementKey, optionType) {
     const measurement = MEASUREMENTS[measurementKey];
     const displayId = `display-${measurementKey}-${optionType.replace(/\s+/g, '-')}`;
 
+    debugLog(`➕ Adding display card: ${displayId}`, 'info');
+
     // Check if already exists
     if (document.getElementById(displayId)) {
+        debugLog(`⚠️ Display card ${displayId} already exists, skipping`, 'warning');
         return;
     }
 
@@ -291,8 +356,12 @@ function addDisplayCard(measurementKey, optionType) {
     card.className = 'display-card';
     card.id = displayId;
 
+    // Apply color to card border
+    const color = MEASUREMENT_COLORS[measurementKey];
+    card.style.borderColor = color;
+
     // Create header
-    const header = createDisplayHeader(measurement, optionType, displayId);
+    const header = createDisplayHeader(measurementKey, measurement, optionType, displayId);
     card.appendChild(header);
 
     // Create content based on option type
@@ -316,23 +385,33 @@ function addDisplayCard(measurementKey, optionType) {
 
     // Start data updates
     startDataUpdates(displayId, measurementKey, optionType);
+
+    debugLog(`✅ Display card ${displayId} created successfully`, 'success');
 }
 
-function createDisplayHeader(measurement, optionType, displayId) {
+function createDisplayHeader(measurementKey, measurement, optionType, displayId) {
     const header = document.createElement('div');
     header.className = 'display-header';
+
+    // Get color and icon for this measurement
+    const color = MEASUREMENT_COLORS[measurementKey];
+    const icon = MEASUREMENT_ICONS[measurementKey];
+
     header.innerHTML = `
         <div class="display-title">
-            <i class="${measurement.icon}"></i>
+            <div style="color: ${color}; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                ${icon}
+            </div>
             <h4>${measurement.name}</h4>
         </div>
         <div class="display-controls">
-            <span class="display-badge">${optionType}</span>
+            <span class="display-badge" style="background-color: ${color};">${optionType}</span>
             <button class="btn-icon close-btn" onclick="closeDisplay('${displayId}')">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
     `;
+
     return header;
 }
 
@@ -347,13 +426,13 @@ function createDisplayContent(measurementKey, measurement, optionType, displayId
         initializeStatsWindow(displayId);
     } else if (optionType === 'Time-graph') {
         content.innerHTML = createChartDisplay(displayId);
-        setTimeout(() => initializeChart(displayId, measurementKey, measurement), 100);
+        setTimeout(() => initializeChart(displayId, measurementKey, measurement), 200);
     } else if (optionType === 'Vector') {
         content.innerHTML = createVectorDisplay(displayId);
-        setTimeout(() => initializeVectorDisplay(displayId, measurementKey), 100);
+        setTimeout(() => initializeVectorDisplay(displayId, measurementKey), 200);
     } else if (optionType === 'Electromagnetic Spectrum') {
         content.innerHTML = createSpectrumDisplay(displayId);
-        setTimeout(() => initializeSpectrumChart(displayId), 100);
+        setTimeout(() => initializeSpectrumChart(displayId), 200);
     }
 
     return content;
@@ -793,13 +872,22 @@ function updateStatisticsDisplay(displayId, value, measurement) {
 // Chart Initialization & Updates
 // ============================================
 function initializeChart(displayId, measurementKey, measurement) {
+    debugLog(`📈 Initializing chart for ${displayId}...`, 'info');
+
     const canvas = document.getElementById(`${displayId}-chart`);
     if (!canvas) {
-        console.error(`Canvas not found for ${displayId}`);
+        debugLog(`❌ ERROR: Canvas element not found: ${displayId}-chart`, 'error');
         return;
     }
 
-    console.log(`Initializing chart for ${displayId}`);
+    debugLog(`✅ Canvas found for ${displayId}`, 'success');
+
+    if (typeof Chart === 'undefined') {
+        debugLog(`❌ ERROR: Chart.js not available when initializing ${displayId}`, 'error');
+        return;
+    }
+
+    debugLog(`Creating Chart.js instance for ${displayId}...`, 'info');
     const ctx = canvas.getContext('2d');
 
     // Prepare datasets
@@ -808,10 +896,10 @@ function initializeChart(displayId, measurementKey, measurement) {
     if (measurement.isVector) {
         // Create dataset for each component
         const colors = {
-            x: '#f8c01c',
-            y: '#375f83',
-            z: '#d782a0',
-            norm: '#bd2026'
+            x: '#f8c01c',      // YELLOW
+            y: '#375f83',      // BLUE
+            z: '#d782a0',      // PINK
+            norm: '#bd2026'    // RED
         };
 
         measurement.components.forEach(comp => {
@@ -826,12 +914,13 @@ function initializeChart(displayId, measurementKey, measurement) {
             });
         });
     } else {
-        // Single dataset
+        // Single dataset - use measurement-specific color
+        const color = MEASUREMENT_COLORS[measurementKey];
         datasets.push({
             label: measurement.name,
             data: [],
-            borderColor: measurement.color,
-            backgroundColor: measurement.color + '20',
+            borderColor: color,
+            backgroundColor: color + '20',
             borderWidth: 2,
             tension: 0.4,
             pointRadius: 0
@@ -883,7 +972,7 @@ function initializeChart(displayId, measurementKey, measurement) {
         startTime: Date.now()
     };
 
-    console.log(`Chart initialized for ${displayId}`);
+    debugLog(`✅ Chart successfully initialized for ${displayId}`, 'success');
 }
 
 function updateChart(displayId, value, measurement) {
@@ -930,13 +1019,15 @@ function updateChart(displayId, value, measurement) {
 // Vector Display (3D)
 // ============================================
 function initializeVectorDisplay(displayId, measurementKey) {
+    debugLog(`🎯 Initializing 3D vector display for ${displayId}...`, 'info');
+
     const canvas = document.getElementById(`${displayId}-vector-canvas`);
     if (!canvas) {
-        console.error(`Vector canvas not found for ${displayId}`);
+        debugLog(`❌ ERROR: Vector canvas not found: ${displayId}-vector-canvas`, 'error');
         return;
     }
 
-    console.log(`Initializing vector display for ${displayId}`);
+    debugLog(`✅ Vector canvas found for ${displayId}`, 'success');
 
     // Store canvas in state
     AppState.charts[displayId] = {
@@ -946,6 +1037,8 @@ function initializeVectorDisplay(displayId, measurementKey) {
 
     // Draw initial empty 3D axes
     draw3DVector(displayId, { x: 0, y: 0, z: 0 });
+
+    debugLog(`✅ 3D vector display successfully initialized for ${displayId}`, 'success');
 }
 
 function draw3DVector(displayId, vector) {
@@ -1066,13 +1159,22 @@ function updateVectorDisplay(displayId, value, measurement) {
 // Spectrum Display
 // ============================================
 function initializeSpectrumChart(displayId) {
+    debugLog(`🌈 Initializing spectrum chart for ${displayId}...`, 'info');
+
     const canvas = document.getElementById(`${displayId}-spectrum`);
     if (!canvas) {
-        console.error(`Spectrum canvas not found for ${displayId}`);
+        debugLog(`❌ ERROR: Spectrum canvas not found: ${displayId}-spectrum`, 'error');
         return;
     }
 
-    console.log(`Initializing spectrum chart for ${displayId}`);
+    debugLog(`✅ Spectrum canvas found for ${displayId}`, 'success');
+
+    if (typeof Chart === 'undefined') {
+        debugLog(`❌ ERROR: Chart.js not available when initializing spectrum ${displayId}`, 'error');
+        return;
+    }
+
+    debugLog(`Creating Chart.js bar chart for spectrum ${displayId}...`, 'info');
     const ctx = canvas.getContext('2d');
 
     const chart = new Chart(ctx, {
@@ -1120,7 +1222,7 @@ function initializeSpectrumChart(displayId) {
     });
 
     AppState.charts[displayId] = { chart };
-    console.log(`Spectrum chart initialized for ${displayId}`);
+    debugLog(`✅ Spectrum chart successfully initialized for ${displayId}`, 'success');
 }
 
 function updateSpectrumChart(displayId, value) {
