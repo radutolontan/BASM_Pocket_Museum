@@ -1006,9 +1006,9 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
     const measurement = MEASUREMENTS[measurementKey];
 
     if (optionType === 'Numeric Only') {
-        updateNumericDisplay(displayId, value, measurement);
+        updateNumericDisplay(displayId, value, measurement, measurementKey);
     } else if (optionType === 'Numeric w. Statistics') {
-        updateStatisticsDisplay(displayId, value, measurement);
+        updateStatisticsDisplay(displayId, value, measurement, measurementKey);
     } else if (optionType === 'Time-graph') {
         updateChart(displayId, value, measurement);
     } else if (optionType === 'Vector') {
@@ -1018,7 +1018,7 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
     }
 }
 
-function updateNumericDisplay(displayId, value, measurement) {
+function updateNumericDisplay(displayId, value, measurement, measurementKey) {
     let displayValue;
 
     if (measurement.isVector) {
@@ -1032,7 +1032,13 @@ function updateNumericDisplay(displayId, value, measurement) {
     const unitEl = document.getElementById(`${displayId}-unit`);
     const timestampEl = document.getElementById(`${displayId}-timestamp`);
 
-    if (valueEl) valueEl.textContent = displayValue.toFixed(2);
+    // Get measurement-specific color
+    const color = MEASUREMENT_COLORS[measurementKey];
+
+    if (valueEl) {
+        valueEl.textContent = displayValue.toFixed(2);
+        valueEl.style.color = color; // Apply measurement color
+    }
     if (unitEl) unitEl.textContent = measurement.unit;
     if (timestampEl) timestampEl.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
 }
@@ -1057,7 +1063,7 @@ function resetStatsWindow(displayId) {
     if (countEl) countEl.textContent = '0';
 }
 
-function updateStatisticsDisplay(displayId, value, measurement) {
+function updateStatisticsDisplay(displayId, value, measurement, measurementKey) {
     let displayValue;
 
     if (measurement.isVector) {
@@ -1082,6 +1088,9 @@ function updateStatisticsDisplay(displayId, value, measurement) {
     const variance = data.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / data.length;
     const std = Math.sqrt(variance);
 
+    // Get measurement-specific color
+    const color = MEASUREMENT_COLORS[measurementKey];
+
     // Update display
     const currentEl = document.getElementById(`${displayId}-current`);
     const avgEl = document.getElementById(`${displayId}-avg`);
@@ -1090,7 +1099,10 @@ function updateStatisticsDisplay(displayId, value, measurement) {
     const stdEl = document.getElementById(`${displayId}-std`);
     const countEl = document.getElementById(`${displayId}-count`);
 
-    if (currentEl) currentEl.textContent = current.toFixed(2);
+    if (currentEl) {
+        currentEl.textContent = current.toFixed(2);
+        currentEl.style.color = color; // Apply measurement color to current value
+    }
     if (avgEl) avgEl.textContent = avg.toFixed(2);
     if (minEl) minEl.textContent = min.toFixed(2);
     if (maxEl) maxEl.textContent = max.toFixed(2);
