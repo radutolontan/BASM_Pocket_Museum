@@ -229,7 +229,13 @@ function connectWebSocket() {
 
     // Listen for sensor data
     AppState.socket.on('sensor_data', (payload) => {
+        debugLog(`📦 Received sensor_data event for ${payload.node_id}`, 'info');
         handleSensorData(payload.node_id, payload.data);
+    });
+
+    // Listen for subscription confirmation
+    AppState.socket.on('subscription_response', (payload) => {
+        debugLog(`✅ Subscription confirmed for ${payload.node_id}`, 'success');
     });
 
     // Listen for device status updates
@@ -242,10 +248,16 @@ function connectWebSocket() {
 // WebSocket Data Handlers
 // ============================================
 function handleSensorData(node_id, data) {
+    debugLog(`🔍 handleSensorData called: node_id=${node_id}, selectedDevice=${AppState.selectedDevice?.node_id}`, 'info');
+
     // Only process if this is the selected device
     if (!AppState.selectedDevice || AppState.selectedDevice.node_id !== node_id) {
+        debugLog(`⏭️ Skipping data for ${node_id} (selected: ${AppState.selectedDevice?.node_id})`, 'warning');
         return;
     }
+
+    // Log received data
+    debugLog(`📊 Sensor data keys: ${Object.keys(data).join(', ')}`, 'info');
 
     // Check if this is the first data packet
     const isFirstPacket = !AppState.latestData[node_id];
@@ -260,7 +272,7 @@ function handleSensorData(node_id, data) {
         return; // Don't update displays yet, they don't exist
     }
 
-    debugLog(`📊 Processing sensor data from ${node_id}`, 'info');
+    debugLog(`📊 Processing sensor data for ${AppState.activeDisplays.length} active displays`, 'info');
 
     // Update all active displays with new data
     AppState.activeDisplays.forEach(display => {
@@ -270,8 +282,12 @@ function handleSensorData(node_id, data) {
         // Extract value based on measurement type
         let value = extractSensorValue(measurementKey, data);
 
+        debugLog(`  → ${measurementKey}: ${JSON.stringify(value)}`, 'info');
+
         if (value !== null && value !== undefined) {
             updateDisplay(display.id, measurementKey, optionType, value);
+        } else {
+            debugLog(`  ⚠️ No value extracted for ${measurementKey}`, 'warning');
         }
     });
 }
@@ -435,8 +451,10 @@ function selectDevice(device) {
 
     // Subscribe to WebSocket room for this device
     if (AppState.socket && AppState.socket.connected) {
-        AppState.socket.emit('join', { room: `device_${device.node_id}` });
-        debugLog(`📡 Subscribed to device ${device.node_id}`, 'success');
+        debugLog(`📡 Subscribing to device ${device.node_id}...`, 'info');
+        AppState.socket.emit('subscribe_device', { node_id: device.node_id });
+    } else {
+        debugLog(`❌ Cannot subscribe - WebSocket not connected`, 'error');
     }
 
     // Clear any active displays
@@ -1003,6 +1021,7 @@ function stopDataUpdates(displayId) {
 }
 
 function updateDisplay(displayId, measurementKey, optionType, value) {
+    debugLog(`🔄 updateDisplay: ${displayId}, ${measurementKey}, ${optionType}`, 'info');
     const measurement = MEASUREMENTS[measurementKey];
 
     if (optionType === 'Numeric Only') {
