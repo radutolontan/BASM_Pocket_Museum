@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pocket Lab Data - Mockup</title>
+    <title>Pocket Lab Data - Mockup (DEBUG MODE)</title>
 
     <!-- Google Fonts - Work Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,14 +14,54 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="/css/pocket-lab-mockup.css">
+
+    <!-- Debug Console -->
+    <style>
+        #debug-console {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            z-index: 10000;
+            border-top: 2px solid #00ff00;
+        }
+        #debug-console .error { color: #ff0000; }
+        #debug-console .warning { color: #ffaa00; }
+        #debug-console .success { color: #00ff00; }
+        #debug-toggle {
+            position: fixed;
+            bottom: 210px;
+            right: 20px;
+            z-index: 10001;
+            background: #1a1a1a;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
 </head>
 <body data-theme="light">
+    <!-- Debug Toggle -->
+    <button id="debug-toggle" onclick="toggleDebug()">Hide Debug</button>
+
+    <!-- Debug Console -->
+    <div id="debug-console"></div>
+
     <div class="container">
         <!-- Header -->
         <header class="mockup-header">
             <div class="header-content">
                 <h1>Pocket Lab Data</h1>
-                <p class="subtitle">Real-time sensor visualization</p>
+                <p class="subtitle">Real-time sensor visualization (DEBUG MODE)</p>
             </div>
             <button id="themeToggle" class="theme-toggle-btn">
                 <i class="bi bi-moon-fill"></i>
@@ -75,8 +115,56 @@
         </section>
     </div>
 
-    <!-- Chart.js -->
+    <!-- Chart.js - LOAD BEFORE OUR SCRIPT -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Debug Script -->
+    <script>
+        // Debug console
+        window.debugLog = function(message, type = 'info') {
+            const console_el = document.getElementById('debug-console');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : (type === 'warning' ? 'warning' : 'success');
+            console_el.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            console_el.scrollTop = console_el.scrollHeight;
+
+            // Also log to browser console
+            if (type === 'error') {
+                console.error(message);
+            } else if (type === 'warning') {
+                console.warn(message);
+            } else {
+                console.log(message);
+            }
+        };
+
+        function toggleDebug() {
+            const console_el = document.getElementById('debug-console');
+            const btn = document.getElementById('debug-toggle');
+            if (console_el.style.display === 'none') {
+                console_el.style.display = 'block';
+                btn.textContent = 'Hide Debug';
+            } else {
+                console_el.style.display = 'none';
+                btn.textContent = 'Show Debug';
+            }
+        }
+
+        // Catch all errors
+        window.addEventListener('error', function(e) {
+            debugLog(`ERROR: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+        });
+
+        // Check if Chart.js loaded
+        window.addEventListener('DOMContentLoaded', function() {
+            if (typeof Chart === 'undefined') {
+                debugLog('ERROR: Chart.js failed to load!', 'error');
+            } else {
+                debugLog('SUCCESS: Chart.js loaded successfully', 'success');
+                debugLog(`Chart.js version: ${Chart.version}`, 'info');
+            }
+        });
+    </script>
 
     <!-- Mockup JavaScript -->
     <script src="/js/pocket-lab-mockup.js"></script>
