@@ -256,7 +256,8 @@ function handleSensorData(node_id, data) {
         return;
     }
 
-    // Log received data
+    // Log RAW JSON data
+    debugLog(`📦 RAW JSON DATA: ${JSON.stringify(data)}`, 'info');
     debugLog(`📊 Sensor data keys: ${Object.keys(data).join(', ')}`, 'info');
 
     // Check if this is the first data packet
@@ -282,7 +283,7 @@ function handleSensorData(node_id, data) {
         // Extract value based on measurement type
         let value = extractSensorValue(measurementKey, data);
 
-        debugLog(`  → ${measurementKey}: ${JSON.stringify(value)}`, 'info');
+        debugLog(`  → EXTRACTED ${measurementKey} (${optionType}): ${JSON.stringify(value)}`, 'info');
 
         if (value !== null && value !== undefined) {
             updateDisplay(display.id, measurementKey, optionType, value);
@@ -1018,6 +1019,20 @@ function startDataUpdates(displayId, measurementKey, optionType) {
 function stopDataUpdates(displayId) {
     // No intervals to stop - data comes from WebSocket
     debugLog(`📊 Display ${displayId} closed`, 'info');
+
+    // Destroy chart if it exists (works for both time-series and spectrum charts)
+    if (AppState.charts[displayId]) {
+        debugLog(`🗑️ Destroying chart for ${displayId}`, 'info');
+        if (AppState.charts[displayId].chart && AppState.charts[displayId].chart.destroy) {
+            AppState.charts[displayId].chart.destroy();
+        }
+        delete AppState.charts[displayId];
+    }
+
+    // Clean up other state
+    delete AppState.timeScales[displayId];
+    delete AppState.vectorComponents[displayId];
+    delete AppState.statsWindows[displayId];
 }
 
 function updateDisplay(displayId, measurementKey, optionType, value) {
@@ -1159,6 +1174,15 @@ function updateStatisticsDisplay(displayId, value, measurement, measurementKey) 
 function initializeChart(displayId, measurementKey, measurement) {
     debugLog(`📈 Initializing chart for ${displayId}...`, 'info');
 
+    // Destroy existing chart if it exists
+    if (AppState.charts[displayId]) {
+        debugLog(`⚠️ Chart already exists for ${displayId}, destroying it first`, 'warning');
+        if (AppState.charts[displayId].chart && AppState.charts[displayId].chart.destroy) {
+            AppState.charts[displayId].chart.destroy();
+        }
+        delete AppState.charts[displayId];
+    }
+
     const canvas = document.getElementById(`${displayId}-chart`);
     if (!canvas) {
         debugLog(`❌ ERROR: Canvas element not found: ${displayId}-chart`, 'error');
@@ -1263,9 +1287,11 @@ function initializeChart(displayId, measurementKey, measurement) {
 function updateChart(displayId, value, measurement) {
     const chartData = AppState.charts[displayId];
     if (!chartData) {
-        console.error(`Chart data not found for ${displayId}`);
+        debugLog(`❌ Chart data not found for ${displayId}`, 'error');
         return;
     }
+
+    debugLog(`📈 Updating chart ${displayId} with value: ${JSON.stringify(value)}`, 'info');
 
     const { chart, startTime } = chartData;
     const timeScale = AppState.timeScales[displayId] || 10;
@@ -1277,9 +1303,12 @@ function updateChart(displayId, value, measurement) {
     // Add data points
     if (measurement.isVector) {
         measurement.components.forEach((comp, idx) => {
-            chart.data.datasets[idx].data.push(value[comp]);
+            const componentValue = value[comp];
+            debugLog(`  → Adding ${comp}=${componentValue} to dataset ${idx}`, 'info');
+            chart.data.datasets[idx].data.push(componentValue);
         });
     } else {
+        debugLog(`  → Adding value=${value} to chart`, 'info');
         chart.data.datasets[0].data.push(value);
     }
 
@@ -1289,6 +1318,8 @@ function updateChart(displayId, value, measurement) {
         chart.data.labels.shift();
         chart.data.datasets.forEach(dataset => dataset.data.shift());
     }
+
+    debugLog(`📈 Chart now has ${chart.data.labels.length} data points`, 'info');
 
     // Update chart
     chart.update('none'); // Use 'none' mode for better performance
@@ -1445,6 +1476,15 @@ function updateVectorDisplay(displayId, value, measurement) {
 // ============================================
 function initializeSpectrumChart(displayId) {
     debugLog(`🌈 Initializing spectrum chart for ${displayId}...`, 'info');
+
+    // Destroy existing chart if it exists
+    if (AppState.charts[displayId]) {
+        debugLog(`⚠️ Spectrum chart already exists for ${displayId}, destroying it first`, 'warning');
+        if (AppState.charts[displayId].chart && AppState.charts[displayId].chart.destroy) {
+            AppState.charts[displayId].chart.destroy();
+        }
+        delete AppState.charts[displayId];
+    }
 
     const canvas = document.getElementById(`${displayId}-spectrum`);
     if (!canvas) {
