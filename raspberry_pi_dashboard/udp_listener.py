@@ -97,6 +97,9 @@ class UDPListener:
             json_str = data.decode('utf-8')
             packet = json.loads(json_str)
 
+            # LOG RAW INCOMING PACKET
+            logger.info(f"📦 RAW UDP PACKET from {addr[0]}: {json_str}")
+
             # Extract node_id (required)
             node_id = packet.get('node_id')
             if not node_id:
@@ -160,7 +163,9 @@ class UDPListener:
             db.session.commit()
 
             # Broadcast to WebSocket clients (only non-null sensor values)
-            self._broadcast_sensor_data(node_id, sensor_data.to_dict(include_nulls=False))
+            data_to_broadcast = sensor_data.to_dict(include_nulls=False)
+            logger.info(f"📡 BROADCASTING to WebSocket for {node_id}: {json.dumps(data_to_broadcast)}")
+            self._broadcast_sensor_data(node_id, data_to_broadcast)
 
             logger.debug(f"Processed packet from {node_id} ({addr[0]})")
 
@@ -179,6 +184,9 @@ class UDPListener:
             data: Sensor data dictionary
         """
         try:
+            room_name = f'device_{node_id}'
+            logger.info(f"📢 Emitting 'sensor_data' event to room '{room_name}'")
+
             # Broadcast to all clients subscribed to this node
             self.socketio.emit(
                 'sensor_data',
@@ -186,7 +194,7 @@ class UDPListener:
                     'node_id': node_id,
                     'data': data
                 },
-                room=f'device_{node_id}',
+                room=room_name,
                 namespace='/'
             )
 
