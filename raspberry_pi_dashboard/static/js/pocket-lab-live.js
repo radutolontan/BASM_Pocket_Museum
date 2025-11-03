@@ -16,7 +16,8 @@ const AppState = {
     vectorComponents: {}, // Store selected component for vector numeric displays
     socket: null, // WebSocket connection
     devices: [], // Active devices from API
-    latestData: {} // Latest sensor data per device
+    latestData: {}, // Latest sensor data per device
+    updateRates: {} // Track update rate (Hz) for each display: { displayId: { count, startTime, lastUpdate, hz } }
 };
 
 // Custom SVG Icons
@@ -164,7 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     connectWebSocket();
     fetchActiveDevices();
+
+    // Refresh device list periodically at typical dashboard rate (5 seconds)
+    // This catches new devices joining the network
+    setInterval(fetchActiveDevices, 5000);
+
     debugLog('✅ Pocket Lab LIVE loaded successfully', 'success');
+    debugLog('📊 Device list refreshes every 5 seconds', 'info');
+    debugLog('⚡ Active display cards update at real-time sensor data rate (no throttling)', 'info');
 });
 
 function initTheme() {
@@ -247,6 +255,8 @@ function connectWebSocket() {
 // ============================================
 // WebSocket Data Handlers
 // ============================================
+// IMPORTANT: No throttling or rate limiting on sensor data updates
+// Display cards update at the FULL rate of incoming WebSocket data (e.g., 25 Hz)
 function handleSensorData(node_id, data) {
     debugLog(`🔍 handleSensorData called: node_id=${node_id}, selectedDevice=${AppState.selectedDevice?.node_id}`, 'info');
 
@@ -665,6 +675,7 @@ function createDisplayHeader(measurementKey, measurement, optionType, displayId)
         </div>
         <div class="display-controls">
             <span class="display-badge" style="background-color: ${color};">${optionType}</span>
+            <span class="display-hz" id="${displayId}-hz" style="font-size: 0.75rem; color: var(--text-tertiary); margin-right: 8px;">-- Hz</span>
             <button class="btn-icon close-btn" onclick="closeDisplay('${displayId}')">
                 <i class="bi bi-x-lg"></i>
             </button>
@@ -1033,10 +1044,40 @@ function stopDataUpdates(displayId) {
     delete AppState.timeScales[displayId];
     delete AppState.vectorComponents[displayId];
     delete AppState.statsWindows[displayId];
+    delete AppState.updateRates[displayId];
 }
 
 function updateDisplay(displayId, measurementKey, optionType, value) {
-    debugLog(`🔄 updateDisplay: ${displayId}, ${measurementKey}, ${optionType}`, 'info');
+    // Track update rate
+    const now = Date.now();
+    if (!AppState.updateRates[displayId]) {
+        AppState.updateRates[displayId] = {
+            count: 0,
+            startTime: now,
+            lastUpdate: now,
+            hz: 0
+        };
+    }
+
+    const rate = AppState.updateRates[displayId];
+    rate.count++;
+    const timeSinceStart = (now - rate.startTime) / 1000; // seconds
+
+    // Calculate Hz (updates per second)
+    if (timeSinceStart >= 1) {
+        rate.hz = (rate.count / timeSinceStart).toFixed(1);
+
+        // Update Hz display if element exists
+        const hzEl = document.getElementById(`${displayId}-hz`);
+        if (hzEl) {
+            hzEl.textContent = `${rate.hz} Hz`;
+        }
+    }
+
+    const timeSinceLastUpdate = (now - rate.lastUpdate);
+    rate.lastUpdate = now;
+
+    debugLog(`🔄 updateDisplay: ${displayId}, ${measurementKey}, ${optionType} (Δt=${timeSinceLastUpdate}ms, rate=${rate.hz}Hz)`, 'info');
     const measurement = MEASUREMENTS[measurementKey];
 
     if (optionType === 'Numeric Only') {
