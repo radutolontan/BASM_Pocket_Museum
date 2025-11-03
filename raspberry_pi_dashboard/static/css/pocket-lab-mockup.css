@@ -402,6 +402,28 @@ body {
     color: white;
 }
 
+/* Theme-aware Reset Button (Blue in light theme, White in dark theme) */
+.btn-outline-theme-reset {
+    background: transparent;
+    color: var(--color-blue);
+    border-color: var(--color-blue);
+}
+
+.btn-outline-theme-reset:hover {
+    background: var(--color-blue);
+    color: white;
+}
+
+[data-theme="dark"] .btn-outline-theme-reset {
+    color: white;
+    border-color: white;
+}
+
+[data-theme="dark"] .btn-outline-theme-reset:hover {
+    background: white;
+    color: #1a1a1a;
+}
+
 /* Primary Buttons */
 .btn-primary-yellow {
     background: var(--color-yellow);
@@ -533,10 +555,10 @@ body {
 
 .close-btn {
     color: var(--color-red);
-    width: 48px;
-    height: 48px;
-    font-size: 1.5rem;
-    font-weight: 700;
+    width: 56px;      /* Increased from 48px */
+    height: 56px;     /* Increased from 48px */
+    font-size: 2rem;  /* Increased from 1.5rem */
+    font-weight: 900; /* Bolder (was 700) */
 }
 
 .close-btn:hover {

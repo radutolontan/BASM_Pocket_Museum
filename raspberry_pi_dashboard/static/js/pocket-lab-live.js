@@ -780,7 +780,7 @@ function createStatisticsDisplay(displayId, isVector) {
             </div>
         </div>
         <div class="stats-controls">
-            <button class="btn btn-outline-blue" onclick="resetStatsWindow('${displayId}')">
+            <button class="btn btn-outline-theme-reset" onclick="resetStatsWindow('${displayId}')">
                 <i class="bi bi-arrow-clockwise"></i>
                 Reset Statistics
             </button>
@@ -1052,7 +1052,16 @@ function updateNumericDisplay(displayId, value, measurement, measurementKey) {
     const timestampEl = document.getElementById(`${displayId}-timestamp`);
 
     // Get measurement-specific color
-    const color = MEASUREMENT_COLORS[measurementKey];
+    let color = MEASUREMENT_COLORS[measurementKey];
+
+    // Special handling for ambient light in light theme
+    // Use black text for better contrast on light backgrounds
+    if (measurementKey === 'ambientLight') {
+        const theme = document.documentElement.getAttribute('data-theme');
+        if (!theme || theme === 'light') {
+            color = '#1a1a1a'; // Black text in light theme
+        }
+    }
 
     if (valueEl) {
         valueEl.textContent = displayValue.toFixed(2);
@@ -1108,7 +1117,16 @@ function updateStatisticsDisplay(displayId, value, measurement, measurementKey) 
     const std = Math.sqrt(variance);
 
     // Get measurement-specific color
-    const color = MEASUREMENT_COLORS[measurementKey];
+    let color = MEASUREMENT_COLORS[measurementKey];
+
+    // Special handling for ambient light in light theme
+    // Use black text for better contrast on light backgrounds
+    if (measurementKey === 'ambientLight') {
+        const theme = document.documentElement.getAttribute('data-theme');
+        if (!theme || theme === 'light') {
+            color = '#1a1a1a'; // Black text in light theme
+        }
+    }
 
     // Update display
     const currentEl = document.getElementById(`${displayId}-current`);
