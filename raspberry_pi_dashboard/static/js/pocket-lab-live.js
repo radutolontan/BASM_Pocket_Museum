@@ -19,8 +19,22 @@ const AppState = {
     latestData: {}, // Latest sensor data per device
     updateRates: {}, // Track update rate (Hz) for each display: { displayId: { count, startTime, lastUpdate, hz } }
     debugLogCounter: 0, // Counter for rate-limited logging
-    lastDebugLog: 0 // Timestamp of last debug log
+    lastDebugLog: 0, // Timestamp of last debug log
+    lastRenderTime: {}, // Track last render time per display for throttling
+    renderThrottle: 75, // Minimum ms between renders (13 Hz) - prevents UI freezing
+    cachedTimestamp: '', // Cached formatted timestamp string
+    timestampCacheTime: 0 // When the timestamp was last updated
 };
+
+// Get cached timestamp (updates max 1x per second to avoid expensive toLocaleTimeString calls)
+function getCachedTimestamp() {
+    const now = Date.now();
+    if (now - AppState.timestampCacheTime > 1000) {
+        AppState.cachedTimestamp = new Date().toLocaleTimeString();
+        AppState.timestampCacheTime = now;
+    }
+    return AppState.cachedTimestamp;
+}
 
 // Custom SVG Icons
 const MEASUREMENT_ICONS = {
@@ -1016,7 +1030,7 @@ function stopDataUpdates(displayId) {
 }
 
 function updateDisplay(displayId, measurementKey, optionType, value) {
-    // Track update rate
+    // Track update rate (data arrival rate - always updated)
     const now = Date.now();
     if (!AppState.updateRates[displayId]) {
         AppState.updateRates[displayId] = {
@@ -1041,6 +1055,19 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
             hzEl.textContent = `${rate.hz} Hz`;
         }
     }
+
+    // THROTTLE RENDERING: Only update UI every 75ms (13 Hz) to prevent freezing
+    // Data still arrives at 25 Hz, but we don't render every frame
+    const lastRender = AppState.lastRenderTime[displayId] || 0;
+    const timeSinceRender = now - lastRender;
+
+    if (timeSinceRender < AppState.renderThrottle) {
+        // Skip this render - too soon since last update
+        return;
+    }
+
+    // Update last render time
+    AppState.lastRenderTime[displayId] = now;
 
     const measurement = MEASUREMENTS[measurementKey];
 
@@ -1088,7 +1115,7 @@ function updateNumericDisplay(displayId, value, measurement, measurementKey) {
         valueEl.style.color = color; // Apply measurement color
     }
     if (unitEl) unitEl.textContent = measurement.unit;
-    if (timestampEl) timestampEl.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+    if (timestampEl) timestampEl.textContent = `Updated: ${getCachedTimestamp()}`;
 }
 
 // ============================================
@@ -1342,13 +1369,13 @@ function updateChart(displayId, value, measurement) {
         chart.options.scales.x.max = timeScale;
     }
 
-    // Update chart (use 'none' mode for best performance at 25 Hz)
+    // Update chart (use 'none' mode for best performance - throttled to 13 Hz by updateDisplay)
     chart.update('none');
 
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);
     if (timeEl) {
-        timeEl.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+        timeEl.textContent = `Updated: ${getCachedTimestamp()}`;
     }
 }
 
@@ -1639,7 +1666,7 @@ function updateSpectrumChart(displayId, value) {
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);
     if (timeEl) {
-        timeEl.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+        timeEl.textContent = `Updated: ${getCachedTimestamp()}`;
     }
 }
 
