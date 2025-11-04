@@ -972,15 +972,13 @@ function changeTimeScale(displayId) {
         }
     }
 
-    // Clear chart data to start fresh with new scale
+    // DON'T clear data - let it accumulate to fill the new window
+    // The updateChart function will handle pruning old data beyond the window
     const chartData = AppState.charts[displayId];
     if (chartData && chartData.chart) {
-        chartData.chart.data.labels = [];
-        chartData.chart.data.datasets.forEach(dataset => {
-            dataset.data = [];
-        });
-        chartData.startTime = Date.now();
-        chartData.chart.update();
+        // Update the chart's X-axis max to show the new time scale
+        chartData.chart.options.scales.x.max = newScale;
+        chartData.chart.update('none');
     }
 }
 
@@ -1262,6 +1260,9 @@ function initializeChart(displayId, measurementKey, measurement) {
             scales: {
                 x: {
                     display: true,
+                    type: 'linear',
+                    min: 0,
+                    max: AppState.timeScales[displayId] || 10,
                     title: {
                         display: true,
                         text: 'Time (s)'
@@ -1305,8 +1306,8 @@ function updateChart(displayId, value, measurement) {
     const timeScale = AppState.timeScales[displayId] || 10;
     const currentTime = (Date.now() - startTime) / 1000; // seconds
 
-    // Add time label
-    chart.data.labels.push(currentTime.toFixed(1));
+    // Add time label (absolute time since start)
+    chart.data.labels.push(currentTime);
 
     // Add data points
     if (measurement.isVector) {
@@ -1317,11 +1318,32 @@ function updateChart(displayId, value, measurement) {
         chart.data.datasets[0].data.push(value);
     }
 
-    // Keep only data within time scale
-    const maxPoints = timeScale * 1; // 1 update per second
-    if (chart.data.labels.length > maxPoints) {
-        chart.data.labels.shift();
-        chart.data.datasets.forEach(dataset => dataset.data.shift());
+    // Windowing behavior:
+    // Phase 1 (currentTime <= timeScale): Accumulation phase
+    //   - X-axis fixed at [0, timeScale]
+    //   - Data grows from time 0 onwards
+    // Phase 2 (currentTime > timeScale): Sliding window phase
+    //   - X-axis slides to show [currentTime - timeScale, currentTime]
+    //   - Remove data points outside the window
+
+    if (currentTime > timeScale) {
+        // Sliding window: show most recent timeScale seconds
+        const windowStart = currentTime - timeScale;
+
+        // Update X-axis to slide with the data
+        chart.options.scales.x.min = windowStart;
+        chart.options.scales.x.max = currentTime;
+
+        // Remove data points older than windowStart
+        while (chart.data.labels.length > 0 && chart.data.labels[0] < windowStart) {
+            chart.data.labels.shift();
+            chart.data.datasets.forEach(dataset => dataset.data.shift());
+        }
+    } else {
+        // Accumulation phase: X-axis stays at [0, timeScale]
+        // Data accumulates, axis stays fixed
+        chart.options.scales.x.min = 0;
+        chart.options.scales.x.max = timeScale;
     }
 
     // Update chart (use 'none' mode for best performance at 25 Hz)
