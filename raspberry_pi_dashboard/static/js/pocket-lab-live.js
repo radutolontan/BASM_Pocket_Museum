@@ -441,10 +441,9 @@ function renderDeviceGrid() {
                 ${device.is_active ? 'Active' : 'Inactive'}
             </div>
             <div class="device-icon">
-                <i class="bi bi-cpu-fill"></i>
+                <img src="/images/pocket-lab-icon.png" alt="Pocket Lab" style="width: 64px; height: 64px; object-fit: contain;" />
             </div>
-            <h3>${device.hostname || device.node_id}</h3>
-            <div class="device-id">${device.node_id}</div>
+            <h3 style="font-size: 1.5rem;">${device.hostname || device.node_id}</h3>
             <div class="device-meta">
                 <span>${device.ip_address || 'Unknown IP'}</span>
                 <span>Last seen: ${lastSeenText}</span>
@@ -677,7 +676,6 @@ function createDisplayHeader(measurementKey, measurement, optionType, displayId)
         </div>
         <div class="display-controls">
             <span class="display-badge" style="background-color: ${color};">${optionType}</span>
-            <span class="display-hz" id="${displayId}-hz" style="font-size: 0.75rem; color: var(--text-tertiary); margin-right: 8px;">-- Hz</span>
             <button class="btn-icon close-btn" onclick="closeDisplay('${displayId}')">
                 <i class="bi bi-x-lg"></i>
             </button>
@@ -819,7 +817,7 @@ function createChartDisplay(displayId) {
             <canvas id="${displayId}-chart"></canvas>
         </div>
         <div class="chart-info">
-            <span id="${displayId}-window-info">Last 10 seconds</span>
+            <span class="display-hz" id="${displayId}-hz">-- Hz</span>
             <span id="${displayId}-update-time">Updated: --</span>
         </div>
     `;

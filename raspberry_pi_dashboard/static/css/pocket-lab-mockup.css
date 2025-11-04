@@ -525,10 +525,11 @@ body {
 .display-badge {
     background: var(--color-blue);
     color: white;
-    padding: 0.25rem 0.75rem;
+    padding: 0.2rem 0.6rem;
     border-radius: var(--radius-xl);
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .display-controls {
@@ -555,10 +556,10 @@ body {
 
 .close-btn {
     color: var(--color-red);
-    width: 56px;      /* Increased from 48px */
-    height: 56px;     /* Increased from 48px */
-    font-size: 2rem;  /* Increased from 1.5rem */
-    font-weight: 900; /* Bolder (was 700) */
+    width: 45px;      /* 20% smaller than 56px */
+    height: 45px;     /* 20% smaller than 56px */
+    font-size: 1.6rem;  /* Proportionally smaller */
+    font-weight: 900;
 }
 
 .close-btn:hover {
