@@ -35,6 +35,11 @@ class UDPListener:
         self.thread = None
         self.last_status_broadcast = {}  # Track last device_status broadcast time per device
 
+        # Packet rate tracking (for simplified logging at 0.2 Hz)
+        self.packet_counts = {}  # {node_id: count}
+        self.last_summary_time = datetime.utcnow()
+        self.summary_interval = 5.0  # Log summary every 5 seconds (0.2 Hz)
+
     def start(self):
         """Start the UDP listener in a separate thread."""
         if self.running:
@@ -85,6 +90,25 @@ class UDPListener:
             if self.socket:
                 self.socket.close()
 
+    def _log_summary_stats(self):
+        """Log packet rate summary for all connected ESP32s (every 5 seconds at 0.2 Hz)."""
+        now = datetime.utcnow()
+        elapsed = (now - self.last_summary_time).total_seconds()
+
+        if elapsed >= self.summary_interval:
+            if self.packet_counts:
+                # Calculate rates and build summary message
+                summary_parts = []
+                for node_id, count in sorted(self.packet_counts.items()):
+                    rate = count / elapsed
+                    summary_parts.append(f"{node_id}: {rate:.1f} Hz ({count} packets)")
+
+                logger.info(f"📊 UDP Packet Rates: {' | '.join(summary_parts)}")
+
+                # Reset counters
+                self.packet_counts = {}
+                self.last_summary_time = now
+
     def _process_packet(self, data, addr):
         """
         Process incoming UDP packet.
@@ -98,14 +122,17 @@ class UDPListener:
             json_str = data.decode('utf-8')
             packet = json.loads(json_str)
 
-            # LOG RAW INCOMING PACKET
-            logger.info(f"📦 RAW UDP PACKET from {addr[0]}: {json_str}")
-
             # Extract node_id (required)
             node_id = packet.get('node_id')
             if not node_id:
                 logger.warning(f"Packet from {addr} missing node_id, ignoring")
                 return
+
+            # Track packet count for this device
+            self.packet_counts[node_id] = self.packet_counts.get(node_id, 0) + 1
+
+            # Log summary stats every 5 seconds (0.2 Hz)
+            self._log_summary_stats()
 
             # Update or create device
             device = Device.query.filter_by(node_id=node_id).first()
@@ -165,10 +192,7 @@ class UDPListener:
 
             # Broadcast to WebSocket clients (only non-null sensor values)
             data_to_broadcast = sensor_data.to_dict(include_nulls=False)
-            logger.info(f"📡 BROADCASTING to WebSocket for {node_id}: {json.dumps(data_to_broadcast)}")
             self._broadcast_sensor_data(node_id, data_to_broadcast)
-
-            logger.debug(f"Processed packet from {node_id} ({addr[0]})")
 
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON from {addr}: {e}")
@@ -186,7 +210,6 @@ class UDPListener:
         """
         try:
             room_name = f'device_{node_id}'
-            logger.info(f"📢 Emitting 'sensor_data' event to room '{room_name}'")
 
             # Broadcast to all clients subscribed to this node
             self.socketio.emit(
