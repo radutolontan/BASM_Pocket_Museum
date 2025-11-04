@@ -40,6 +40,12 @@ class UDPListener:
         self.last_summary_time = datetime.utcnow()
         self.summary_interval = 5.0  # Log summary every 5 seconds (0.2 Hz)
 
+        # Batched database commits (to reduce I/O bottleneck)
+        self.pending_commits = 0
+        self.last_commit_time = datetime.utcnow()
+        self.commit_batch_size = 10  # Commit every 10 packets
+        self.commit_max_delay = 0.1  # Or every 100ms, whichever comes first
+
     def start(self):
         """Start the UDP listener in a separate thread."""
         if self.running:
@@ -108,6 +114,25 @@ class UDPListener:
                 # Reset counters
                 self.packet_counts = {}
                 self.last_summary_time = now
+
+    def _maybe_commit(self):
+        """
+        Commit database changes if batch size or time threshold reached.
+        This batching reduces I/O bottleneck from 50 commits/sec to ~5-10 commits/sec.
+        """
+        now = datetime.utcnow()
+        time_since_commit = (now - self.last_commit_time).total_seconds()
+
+        # Commit if we've accumulated enough packets OR enough time has passed
+        if self.pending_commits >= self.commit_batch_size or time_since_commit >= self.commit_max_delay:
+            try:
+                db.session.commit()
+                self.pending_commits = 0
+                self.last_commit_time = now
+            except Exception as e:
+                logger.error(f"Database commit error: {e}", exc_info=True)
+                db.session.rollback()
+                self.pending_commits = 0
 
     def _process_packet(self, data, addr):
         """
@@ -186,9 +211,10 @@ class UDPListener:
                 spectral_fd=packet.get('spectral_fd')
             )
             db.session.add(sensor_data)
+            self.pending_commits += 1
 
-            # Commit to database
-            db.session.commit()
+            # Batch commit (every 10 packets or 100ms, whichever comes first)
+            self._maybe_commit()
 
             # Broadcast to WebSocket clients (only non-null sensor values)
             data_to_broadcast = sensor_data.to_dict(include_nulls=False)
@@ -199,6 +225,7 @@ class UDPListener:
         except Exception as e:
             logger.error(f"Error processing packet from {addr}: {e}", exc_info=True)
             db.session.rollback()
+            self.pending_commits = 0  # Reset counter after rollback
 
     def _broadcast_sensor_data(self, node_id, data):
         """
