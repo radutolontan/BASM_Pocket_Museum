@@ -530,6 +530,9 @@ body {
     font-size: 0.65rem;
     font-weight: 600;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .display-controls {

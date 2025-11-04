@@ -33,6 +33,7 @@ class UDPListener:
         self.socket = None
         self.running = False
         self.thread = None
+        self.last_status_broadcast = {}  # Track last device_status broadcast time per device
 
     def start(self):
         """Start the UDP listener in a separate thread."""
@@ -198,16 +199,24 @@ class UDPListener:
                 namespace='/'
             )
 
-            # Also broadcast device status update
-            self.socketio.emit(
-                'device_status',
-                {
-                    'node_id': node_id,
-                    'status': 'active',
-                    'last_seen': datetime.utcnow().isoformat()
-                },
-                namespace='/'
-            )
+            # Rate-limit device status updates to 1 Hz (once per second)
+            # This prevents overwhelming clients when multiple ESP32s are active
+            now = datetime.utcnow()
+            last_broadcast = self.last_status_broadcast.get(node_id)
+
+            if last_broadcast is None or (now - last_broadcast).total_seconds() >= 1.0:
+                self.last_status_broadcast[node_id] = now
+
+                # Broadcast device status update (to everyone, not room-specific)
+                self.socketio.emit(
+                    'device_status',
+                    {
+                        'node_id': node_id,
+                        'status': 'active',
+                        'last_seen': now.isoformat()
+                    },
+                    namespace='/'
+                )
 
         except Exception as e:
             logger.error(f"Error broadcasting data: {e}", exc_info=True)
