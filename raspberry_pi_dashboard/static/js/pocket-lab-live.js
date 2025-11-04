@@ -17,7 +17,9 @@ const AppState = {
     socket: null, // WebSocket connection
     devices: [], // Active devices from API
     latestData: {}, // Latest sensor data per device
-    updateRates: {} // Track update rate (Hz) for each display: { displayId: { count, startTime, lastUpdate, hz } }
+    updateRates: {}, // Track update rate (Hz) for each display: { displayId: { count, startTime, lastUpdate, hz } }
+    debugLogCounter: 0, // Counter for rate-limited logging
+    lastDebugLog: 0 // Timestamp of last debug log
 };
 
 // Custom SVG Icons
@@ -235,15 +237,17 @@ function connectWebSocket() {
         debugLog(`⚠️ WebSocket disconnected: ${reason}`, 'warning');
     });
 
-    // Listen for ALL events (comprehensive debugging)
-    AppState.socket.onAny((eventName, ...args) => {
-        debugLog(`🔔 WebSocket event: "${eventName}" (${args.length} args)`, 'info');
-    });
-
-    // Listen for sensor data
+    // Listen for sensor data (rate-limited logging to avoid browser slowdown)
     AppState.socket.on('sensor_data', (payload) => {
-        debugLog(`📦 Received sensor_data event for ${payload.node_id}`, 'info');
-        debugLog(`📦 RAW WEBSOCKET PAYLOAD: ${JSON.stringify(payload)}`, 'info');
+        // Only log every 25th message (once per second at 25 Hz) to avoid overwhelming browser
+        AppState.debugLogCounter++;
+        const shouldLog = AppState.debugLogCounter % 25 === 0;
+
+        if (shouldLog) {
+            debugLog(`📦 Received sensor_data [counter: ${AppState.debugLogCounter}] for ${payload.node_id}`, 'info');
+            debugLog(`📊 Sample data: temp=${payload.data.temperature}°C, pressure=${payload.data.pressure}kPa, accel=${payload.data.accel_norm}`, 'info');
+        }
+
         handleSensorData(payload.node_id, payload.data);
     });
 
@@ -264,17 +268,10 @@ function connectWebSocket() {
 // IMPORTANT: No throttling or rate limiting on sensor data updates
 // Display cards update at the FULL rate of incoming WebSocket data (e.g., 25 Hz)
 function handleSensorData(node_id, data) {
-    debugLog(`🔍 handleSensorData called: node_id=${node_id}, selectedDevice=${AppState.selectedDevice?.node_id}`, 'info');
-
     // Only process if this is the selected device
     if (!AppState.selectedDevice || AppState.selectedDevice.node_id !== node_id) {
-        debugLog(`⏭️ Skipping data for ${node_id} (selected: ${AppState.selectedDevice?.node_id})`, 'warning');
         return;
     }
-
-    // Log RAW JSON data
-    debugLog(`📦 RAW JSON DATA: ${JSON.stringify(data)}`, 'info');
-    debugLog(`📊 Sensor data keys: ${Object.keys(data).join(', ')}`, 'info');
 
     // Check if this is the first data packet
     const isFirstPacket = !AppState.latestData[node_id];
@@ -284,12 +281,15 @@ function handleSensorData(node_id, data) {
 
     // After first packet, refresh measurement grid to hide unavailable sensors
     if (isFirstPacket) {
-        debugLog(`📊 First data packet received, refreshing measurement grid`, 'info');
+        debugLog(`📊 First data packet received from ${node_id}, refreshing measurement grid`, 'info');
         renderMeasurementGrid();
         return; // Don't update displays yet, they don't exist
     }
 
-    debugLog(`📊 Processing sensor data for ${AppState.activeDisplays.length} active displays`, 'info');
+    // Only log when there are active displays (to reduce console spam)
+    if (AppState.activeDisplays.length > 0 && AppState.debugLogCounter % 25 === 0) {
+        debugLog(`📊 Updating ${AppState.activeDisplays.length} active display(s)`, 'info');
+    }
 
     // Update all active displays with new data
     AppState.activeDisplays.forEach(display => {
@@ -299,12 +299,8 @@ function handleSensorData(node_id, data) {
         // Extract value based on measurement type
         let value = extractSensorValue(measurementKey, data);
 
-        debugLog(`  → EXTRACTED ${measurementKey} (${optionType}): ${JSON.stringify(value)}`, 'info');
-
         if (value !== null && value !== undefined) {
             updateDisplay(display.id, measurementKey, optionType, value);
-        } else {
-            debugLog(`  ⚠️ No value extracted for ${measurementKey}`, 'warning');
         }
     });
 }
@@ -1052,10 +1048,6 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
         }
     }
 
-    const timeSinceLastUpdate = (now - rate.lastUpdate);
-    rate.lastUpdate = now;
-
-    debugLog(`🔄 updateDisplay: ${displayId}, ${measurementKey}, ${optionType} (Δt=${timeSinceLastUpdate}ms, rate=${rate.hz}Hz)`, 'info');
     const measurement = MEASUREMENTS[measurementKey];
 
     if (optionType === 'Numeric Only') {
@@ -1306,11 +1298,8 @@ function initializeChart(displayId, measurementKey, measurement) {
 function updateChart(displayId, value, measurement) {
     const chartData = AppState.charts[displayId];
     if (!chartData) {
-        debugLog(`❌ Chart data not found for ${displayId}`, 'error');
         return;
     }
-
-    debugLog(`📈 Updating chart ${displayId} with value: ${JSON.stringify(value)}`, 'info');
 
     const { chart, startTime } = chartData;
     const timeScale = AppState.timeScales[displayId] || 10;
@@ -1322,12 +1311,9 @@ function updateChart(displayId, value, measurement) {
     // Add data points
     if (measurement.isVector) {
         measurement.components.forEach((comp, idx) => {
-            const componentValue = value[comp];
-            debugLog(`  → Adding ${comp}=${componentValue} to dataset ${idx}`, 'info');
-            chart.data.datasets[idx].data.push(componentValue);
+            chart.data.datasets[idx].data.push(value[comp]);
         });
     } else {
-        debugLog(`  → Adding value=${value} to chart`, 'info');
         chart.data.datasets[0].data.push(value);
     }
 
@@ -1338,10 +1324,8 @@ function updateChart(displayId, value, measurement) {
         chart.data.datasets.forEach(dataset => dataset.data.shift());
     }
 
-    debugLog(`📈 Chart now has ${chart.data.labels.length} data points`, 'info');
-
-    // Update chart
-    chart.update('none'); // Use 'none' mode for better performance
+    // Update chart (use 'none' mode for best performance at 25 Hz)
+    chart.update('none');
 
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);
