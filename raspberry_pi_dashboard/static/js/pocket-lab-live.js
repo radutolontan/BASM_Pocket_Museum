@@ -235,9 +235,15 @@ function connectWebSocket() {
         debugLog(`⚠️ WebSocket disconnected: ${reason}`, 'warning');
     });
 
+    // Listen for ALL events (comprehensive debugging)
+    AppState.socket.onAny((eventName, ...args) => {
+        debugLog(`🔔 WebSocket event: "${eventName}" (${args.length} args)`, 'info');
+    });
+
     // Listen for sensor data
     AppState.socket.on('sensor_data', (payload) => {
         debugLog(`📦 Received sensor_data event for ${payload.node_id}`, 'info');
+        debugLog(`📦 RAW WEBSOCKET PAYLOAD: ${JSON.stringify(payload)}`, 'info');
         handleSensorData(payload.node_id, payload.data);
     });
 
@@ -925,10 +931,10 @@ function clearAllDisplays() {
     AppState.activeDisplays = [];
     AppState.charts = {};
     AppState.updateIntervals = {};
-    AppState.mockDataGenerators = {};
     AppState.statsWindows = {};
     AppState.timeScales = {};
     AppState.vectorComponents = {};
+    AppState.updateRates = {};
 
     // Clear DOM
     document.getElementById('activeDisplays').innerHTML = '';
@@ -979,34 +985,6 @@ function changeTimeScale(displayId) {
         });
         chartData.startTime = Date.now();
         chartData.chart.update();
-    }
-}
-
-// ============================================
-// Mock Data Generation
-// ============================================
-function generateMockValue(measurementKey) {
-    const measurement = MEASUREMENTS[measurementKey];
-
-    if (measurement.isVector) {
-        // Generate vector components
-        const x = (Math.random() - 0.5) * 4;
-        const y = (Math.random() - 0.5) * 4;
-        const z = (Math.random() - 0.5) * 4;
-        const norm = Math.sqrt(x*x + y*y + z*z);
-        return { x, y, z, norm };
-    } else if (measurementKey === 'spectrum') {
-        // Generate spectrum data
-        return {
-            wavelengths: [405, 425, 475, 515, 450, 555, 550, 640, 600, 690, 745, 855],
-            names: ['F1', 'F2', 'F3', 'F4', 'FZ', 'FY', 'F5', 'F6', 'FXL', 'F7', 'F8', 'NIR'],
-            values: Array(12).fill(0).map(() => Math.random() * 1000 + 200)
-        };
-    } else {
-        // Generate scalar value
-        const base = measurement.baseValue;
-        const variation = measurement.variation;
-        return base + (Math.random() - 0.5) * variation * 2;
     }
 }
 
