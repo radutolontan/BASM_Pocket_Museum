@@ -345,23 +345,21 @@ function extractSensorValue(measurementKey, data) {
             return data.light_intensity;
 
         case 'spectrum':
-            // Return spectral data in format expected by chart
+            // Return spectral data with wavelength ranges and colors
+            // Each channel has start/end wavelengths and a color
             return {
-                wavelengths: [405, 425, 475, 515, 450, 555, 550, 640, 600, 690, 745, 855],
-                names: ['F1', 'F2', 'F3', 'F4', 'FZ', 'FY', 'F5', 'F6', 'FXL', 'F7', 'F8', 'NIR'],
-                values: [
-                    data.spectral_f1_405nm || 0,
-                    data.spectral_f2_425nm || 0,
-                    data.spectral_f3_475nm || 0,
-                    data.spectral_f4_515nm || 0,
-                    data.spectral_fz_450nm || 0,
-                    data.spectral_fy_555nm || 0,
-                    data.spectral_f5_550nm || 0,
-                    data.spectral_f6_640nm || 0,
-                    data.spectral_fxl_600nm || 0,
-                    data.spectral_f7_690nm || 0,
-                    data.spectral_f8_745nm || 0,
-                    data.spectral_nir_855nm || 0
+                channels: [
+                    { name: 'F1', start: 395, end: 415, color: '#8200c8', value: data.spectral_f1_405nm || 0 },
+                    { name: 'F2', start: 415, end: 435, color: '#5400ff', value: data.spectral_f2_425nm || 0 },
+                    { name: 'FZ', start: 440, end: 460, color: '#0046ff', value: data.spectral_fz_450nm || 0 },
+                    { name: 'F3', start: 465, end: 485, color: '#00c0ff', value: data.spectral_f3_475nm || 0 },
+                    { name: 'F4', start: 505, end: 525, color: '#1fff00', value: data.spectral_f4_515nm || 0 },
+                    { name: 'F5', start: 540, end: 560, color: '#a3ff00', value: data.spectral_f5_550nm || 0 },
+                    { name: 'FXL', start: 590, end: 610, color: '#ffbe00', value: data.spectral_fxl_600nm || 0 },
+                    { name: 'F6', start: 630, end: 650, color: '#ff2100', value: data.spectral_f6_640nm || 0 },
+                    { name: 'F7', start: 680, end: 700, color: '#ff0000', value: data.spectral_f7_690nm || 0 },
+                    { name: 'F8', start: 735, end: 755, color: '#ab0000', value: data.spectral_f8_745nm || 0 },
+                    { name: 'NIR', start: 845, end: 865, color: '#610000', value: data.spectral_nir_855nm || 0 }
                 ]
             };
 
@@ -857,7 +855,7 @@ function createSpectrumDisplay(displayId) {
             <canvas id="${displayId}-spectrum"></canvas>
         </div>
         <div class="chart-info">
-            <span>14 spectral channels</span>
+            <span>11 spectral channels (395-865 nm)</span>
             <span id="${displayId}-update-time">Updated: --</span>
         </div>
     `;
@@ -1525,20 +1523,36 @@ function initializeSpectrumChart(displayId) {
     debugLog(`Creating Chart.js bar chart for spectrum ${displayId}...`, 'info');
     const ctx = canvas.getContext('2d');
 
+    // Spectrum channel configuration with wavelength ranges and colors
+    const spectrumChannels = [
+        { name: 'F1', start: 395, end: 415, color: '#8200c8' },
+        { name: 'F2', start: 415, end: 435, color: '#5400ff' },
+        { name: 'FZ', start: 440, end: 460, color: '#0046ff' },
+        { name: 'F3', start: 465, end: 485, color: '#00c0ff' },
+        { name: 'F4', start: 505, end: 525, color: '#1fff00' },
+        { name: 'F5', start: 540, end: 560, color: '#a3ff00' },
+        { name: 'FXL', start: 590, end: 610, color: '#ffbe00' },
+        { name: 'F6', start: 630, end: 650, color: '#ff2100' },
+        { name: 'F7', start: 680, end: 700, color: '#ff0000' },
+        { name: 'F8', start: 735, end: 755, color: '#ab0000' },
+        { name: 'NIR', start: 845, end: 865, color: '#610000' }
+    ];
+
+    // Create datasets - one per channel for proper x-axis positioning
+    const datasets = spectrumChannels.map(channel => ({
+        label: channel.name,
+        data: [{ x: (channel.start + channel.end) / 2, y: 0 }], // Position at center of wavelength range
+        backgroundColor: channel.color,
+        borderWidth: 0,
+        barThickness: channel.end - channel.start, // Bar width = wavelength range
+        categoryPercentage: 1.0,
+        barPercentage: 1.0
+    }));
+
     const chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [],
-            datasets: [{
-                label: 'Intensity',
-                data: [],
-                backgroundColor: [
-                    '#8b00ff', '#4b0082', '#0000ff', '#0080ff',
-                    '#00ffff', '#00ff00', '#80ff00', '#ffff00',
-                    '#ffa500', '#ff0000', '#8b0000', '#400000'
-                ],
-                borderWidth: 0
-            }]
+            datasets: datasets
         },
         options: {
             responsive: true,
@@ -1548,28 +1562,53 @@ function initializeSpectrumChart(displayId) {
             },
             scales: {
                 x: {
+                    type: 'linear',
+                    min: 380,
+                    max: 880,
                     title: {
                         display: true,
-                        text: 'Wavelength (nm)'
+                        text: 'Wavelength (nm)',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        stepSize: 50
                     }
                 },
                 y: {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Intensity'
+                        text: 'Intensity',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
                     }
                 }
             },
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            const channel = spectrumChannels[context[0].datasetIndex];
+                            return `${channel.name}: ${channel.start}-${channel.end} nm`;
+                        },
+                        label: function(context) {
+                            return `Intensity: ${context.parsed.y.toFixed(2)}`;
+                        }
+                    }
                 }
             }
         }
     });
 
-    AppState.charts[displayId] = { chart };
+    AppState.charts[displayId] = { chart, spectrumChannels };
     debugLog(`✅ Spectrum chart successfully initialized for ${displayId}`, 'success');
 }
 
@@ -1582,8 +1621,19 @@ function updateSpectrumChart(displayId, value) {
 
     const { chart } = chartData;
 
-    chart.data.labels = value.wavelengths.map((w, i) => `${value.names[i]}\n${w}nm`);
-    chart.data.datasets[0].data = value.values;
+    // Update each dataset (channel) with its intensity value
+    if (value && value.channels) {
+        value.channels.forEach((channel, index) => {
+            if (chart.data.datasets[index]) {
+                // Update the y-value while keeping x-position at wavelength center
+                chart.data.datasets[index].data = [{
+                    x: (channel.start + channel.end) / 2,
+                    y: channel.value
+                }];
+            }
+        });
+    }
+
     chart.update('none');
 
     // Update timestamp
