@@ -43,8 +43,8 @@ class UDPListener:
         # Batched database commits (to reduce I/O bottleneck)
         self.pending_commits = 0
         self.last_commit_time = datetime.utcnow()
-        self.commit_batch_size = 10  # Commit every 10 packets
-        self.commit_max_delay = 0.1  # Or every 100ms, whichever comes first
+        self.commit_batch_size = 25  # Commit every 25 packets (scales to 15 ESP32s at 25 Hz)
+        self.commit_max_delay = 0.2  # Or every 200ms, whichever comes first
 
     def start(self):
         """Start the UDP listener in a separate thread."""
@@ -118,7 +118,9 @@ class UDPListener:
     def _maybe_commit(self):
         """
         Commit database changes if batch size or time threshold reached.
-        This batching reduces I/O bottleneck from 50 commits/sec to ~5-10 commits/sec.
+        Batching reduces I/O bottleneck:
+        - 2 ESP32s (50 pkt/sec): 50 commits/sec → 2 commits/sec (96% reduction)
+        - 15 ESP32s (375 pkt/sec): 375 commits/sec → 15 commits/sec (96% reduction)
         """
         now = datetime.utcnow()
         time_since_commit = (now - self.last_commit_time).total_seconds()
@@ -213,7 +215,7 @@ class UDPListener:
             db.session.add(sensor_data)
             self.pending_commits += 1
 
-            # Batch commit (every 10 packets or 100ms, whichever comes first)
+            # Batch commit (every 25 packets or 200ms, whichever comes first)
             self._maybe_commit()
 
             # Broadcast to WebSocket clients (only non-null sensor values)
