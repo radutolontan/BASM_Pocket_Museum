@@ -525,7 +525,7 @@ body {
 .display-badge {
     background: var(--color-blue);
     color: white;
-    padding: 0.2rem 0.6rem;
+    padding: 0.15rem 0.6rem;  /* Reduced vertical padding to 40-50% bigger than text */
     border-radius: var(--radius-xl);
     font-size: 0.65rem;
     font-weight: 600;

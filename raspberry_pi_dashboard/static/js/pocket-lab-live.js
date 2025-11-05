@@ -36,6 +36,14 @@ function getCachedTimestamp() {
     return AppState.cachedTimestamp;
 }
 
+// Format number to specified significant figures
+function toSignificantFigures(num, sigFigs) {
+    if (num === 0) return '0';
+    const magnitude = Math.floor(Math.log10(Math.abs(num)));
+    const decimals = Math.max(0, sigFigs - magnitude - 1);
+    return num.toFixed(decimals);
+}
+
 // Custom SVG Icons
 const MEASUREMENT_ICONS = {
     temperature: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
@@ -91,7 +99,7 @@ const MEASUREMENT_COLORS = {
     gyro: '#f97316',            // ORANGE
     magnetometer: '#f8c01c',    // YELLOW
     volume: '#d782a0',          // PINK/MAGENTA
-    ambientLight: '#fbbf24',    // BRIGHT AMBER/GOLD (for visibility, represents light)
+    ambientLight: '#ffffff',    // WHITE (represents light)
     spectrum: '#8b5cf6'         // PURPLE (for spectrum)
 };
 
@@ -329,11 +337,12 @@ function extractSensorValue(measurementKey, data) {
             return data.pressure;
 
         case 'acceleration':
+            // Scale by 1/100 and return
             return {
-                x: data.accel_x || 0,
-                y: data.accel_y || 0,
-                z: data.accel_z || 0,
-                norm: data.accel_norm || 0
+                x: (data.accel_x || 0) / 100,
+                y: (data.accel_y || 0) / 100,
+                z: (data.accel_z || 0) / 100,
+                norm: (data.accel_norm || 0) / 100
             };
 
         case 'gyro':
@@ -1056,19 +1065,7 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
         }
     }
 
-    // THROTTLE RENDERING: Only update UI every 75ms (13 Hz) to prevent freezing
-    // Data still arrives at 25 Hz, but we don't render every frame
-    const lastRender = AppState.lastRenderTime[displayId] || 0;
-    const timeSinceRender = now - lastRender;
-
-    if (timeSinceRender < AppState.renderThrottle) {
-        // Skip this render - too soon since last update
-        return;
-    }
-
-    // Update last render time
-    AppState.lastRenderTime[displayId] = now;
-
+    // ALWAYS update data - no throttling here to prevent data loss
     const measurement = MEASUREMENTS[measurementKey];
 
     if (optionType === 'Numeric Only') {
@@ -1099,19 +1096,14 @@ function updateNumericDisplay(displayId, value, measurement, measurementKey) {
     const timestampEl = document.getElementById(`${displayId}-timestamp`);
 
     // Get measurement-specific color
-    let color = MEASUREMENT_COLORS[measurementKey];
-
-    // Special handling for ambient light in light theme
-    // Use black text for better contrast on light backgrounds
-    if (measurementKey === 'ambientLight') {
-        const theme = document.documentElement.getAttribute('data-theme');
-        if (!theme || theme === 'light') {
-            color = '#1a1a1a'; // Black text in light theme
-        }
-    }
+    const color = MEASUREMENT_COLORS[measurementKey];
 
     if (valueEl) {
-        valueEl.textContent = displayValue.toFixed(2);
+        // Use 4 significant figures for acceleration, 2 decimal places for others
+        const formattedValue = measurementKey === 'acceleration'
+            ? toSignificantFigures(displayValue, 4)
+            : displayValue.toFixed(2);
+        valueEl.textContent = formattedValue;
         valueEl.style.color = color; // Apply measurement color
     }
     if (unitEl) unitEl.textContent = measurement.unit;
@@ -1164,16 +1156,7 @@ function updateStatisticsDisplay(displayId, value, measurement, measurementKey) 
     const std = Math.sqrt(variance);
 
     // Get measurement-specific color
-    let color = MEASUREMENT_COLORS[measurementKey];
-
-    // Special handling for ambient light in light theme
-    // Use black text for better contrast on light backgrounds
-    if (measurementKey === 'ambientLight') {
-        const theme = document.documentElement.getAttribute('data-theme');
-        if (!theme || theme === 'light') {
-            color = '#1a1a1a'; // Black text in light theme
-        }
-    }
+    const color = MEASUREMENT_COLORS[measurementKey];
 
     // Update display
     const currentEl = document.getElementById(`${displayId}-current`);
@@ -1183,14 +1166,19 @@ function updateStatisticsDisplay(displayId, value, measurement, measurementKey) 
     const stdEl = document.getElementById(`${displayId}-std`);
     const countEl = document.getElementById(`${displayId}-count`);
 
+    // Format function: use 4 sig figs for acceleration, 2 decimal places for others
+    const formatValue = (val) => measurementKey === 'acceleration'
+        ? toSignificantFigures(val, 4)
+        : val.toFixed(2);
+
     if (currentEl) {
-        currentEl.textContent = current.toFixed(2);
+        currentEl.textContent = formatValue(current);
         currentEl.style.color = color; // Apply measurement color to current value
     }
-    if (avgEl) avgEl.textContent = avg.toFixed(2);
-    if (minEl) minEl.textContent = min.toFixed(2);
-    if (maxEl) maxEl.textContent = max.toFixed(2);
-    if (stdEl) stdEl.textContent = std.toFixed(2);
+    if (avgEl) avgEl.textContent = formatValue(avg);
+    if (minEl) minEl.textContent = formatValue(min);
+    if (maxEl) maxEl.textContent = formatValue(max);
+    if (stdEl) stdEl.textContent = formatValue(std);
     if (countEl) countEl.textContent = data.length;
 
     // Set units
@@ -1369,13 +1357,22 @@ function updateChart(displayId, value, measurement) {
         chart.options.scales.x.max = timeScale;
     }
 
-    // Update chart (use 'none' mode for best performance - throttled to 13 Hz by updateDisplay)
-    chart.update('none');
+    // THROTTLE RENDERING: Only call chart.update() every 75ms (13 Hz)
+    // Data points are ALWAYS added above, we just throttle the expensive render
+    const now = Date.now();
+    const lastRender = AppState.lastRenderTime[displayId] || 0;
+    const timeSinceRender = now - lastRender;
 
-    // Update timestamp
-    const timeEl = document.getElementById(`${displayId}-update-time`);
-    if (timeEl) {
-        timeEl.textContent = `Updated: ${getCachedTimestamp()}`;
+    if (timeSinceRender >= AppState.renderThrottle) {
+        // Enough time has passed - render the chart
+        chart.update('none');
+        AppState.lastRenderTime[displayId] = now;
+
+        // Update timestamp
+        const timeEl = document.getElementById(`${displayId}-update-time`);
+        if (timeEl) {
+            timeEl.textContent = `Updated: ${getCachedTimestamp()}`;
+        }
     }
 }
 
