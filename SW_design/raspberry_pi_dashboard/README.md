@@ -48,7 +48,7 @@ A web-based dashboard for the Raspberry Pi that receives sensor data from ESP32 
 ```bash
 cd /home/pi/
 git clone <repository-url> BASM_Pocket_Museum
-cd BASM_Pocket_Museum/raspberry_pi_dashboard
+cd BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard
 ```
 
 ### Step 2: Install Dependencies
