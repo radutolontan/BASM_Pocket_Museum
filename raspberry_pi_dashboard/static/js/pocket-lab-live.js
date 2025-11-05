@@ -478,9 +478,8 @@ function renderDeviceGrid() {
 function selectDevice(device) {
     AppState.selectedDevice = device;
 
-    // Update banner
-    document.getElementById('selectedDeviceName').textContent = device.hostname || device.node_id;
-    document.getElementById('selectedDeviceId').textContent = device.node_id;
+    // Update banner - show device ID only (once, in big letters)
+    document.getElementById('selectedDeviceName').textContent = device.node_id;
 
     // Subscribe to WebSocket room for this device
     if (AppState.socket && AppState.socket.connected) {
@@ -688,6 +687,9 @@ function createDisplayHeader(measurementKey, measurement, optionType, displayId)
     const color = MEASUREMENT_COLORS[measurementKey];
     const icon = MEASUREMENT_ICONS[measurementKey];
 
+    // For ambient light (white background), use black text on badge
+    const badgeTextColor = measurementKey === 'ambientLight' ? 'color: #1a1a1a;' : '';
+
     header.innerHTML = `
         <div class="display-title">
             <div style="color: ${color}; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
@@ -696,7 +698,7 @@ function createDisplayHeader(measurementKey, measurement, optionType, displayId)
             <h4>${measurement.name}</h4>
         </div>
         <div class="display-controls">
-            <span class="display-badge" style="background-color: ${color};">${optionType}</span>
+            <span class="display-badge" style="background-color: ${color}; ${badgeTextColor}">${optionType}</span>
             <button class="btn-icon close-btn" onclick="closeDisplay('${displayId}')">
                 <i class="bi bi-x-lg"></i>
             </button>
