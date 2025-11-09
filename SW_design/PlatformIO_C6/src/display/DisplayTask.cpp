@@ -527,10 +527,11 @@ void DisplayTask::updateDirectionDisplay(float x, float y, float z) {
         // Direction display has 3 LEDs: [0]=X, [1]=Y, [2]=Z
         // Color mapping: RED (very negative) → GREEN (very positive)
         // Use cached normalization value (loaded in loadScalingCoefficients)
+        // NOTE: X and Y are swapped due to IC orientation
 
         if (BINARY_DIRECTION_DISPLAY_COUNT >= 3) {
-            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(x, binary_dir_norm)); // X
-            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 1, getDirectionColor(y, binary_dir_norm)); // Y
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(y, binary_dir_norm)); // X LED displays Y component
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 1, getDirectionColor(x, binary_dir_norm)); // Y LED displays X component
             setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 2, getDirectionColor(z, binary_dir_norm)); // Z
         }
     }
