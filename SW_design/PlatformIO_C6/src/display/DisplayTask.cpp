@@ -583,16 +583,18 @@ uint32_t DisplayTask::getMagnitudeColor(float normalized, int ledIndex) {
 
 uint32_t DisplayTask::getBinaryMagnitudeColor(uint32_t value, int ledIndex) {
     // Each LED displays 3 bits from the value
-    // LED 0 shows bits 0-2, LED 1 shows bits 3-5, etc.
-    // Bit encoding: YELLOW = bit m, RED = bit m+1, BLUE = bit m+2
-    // where m = ledIndex * 3
+    // Leftmost LED (ledIndex=0) shows MSB (bits 11,10,9)
+    // Rightmost LED (ledIndex=3) shows LSB (bits 2,1,0)
+    // Bit encoding per LED: RED = bit m+2 (MSB), YELLOW = bit m+1, BLUE = bit m (LSB)
 
-    int m = ledIndex * 3;
+    // Reverse the LED index so leftmost shows MSB
+    int reversedIndex = (BINARY_MAGNITUDE_DISPLAY_COUNT - 1) - ledIndex;
+    int m = reversedIndex * 3;
 
     // Extract the 3 bits for this LED
-    bool yellowBit = (value >> m) & 1;        // bit m (LSB for this LED)
-    bool redBit = (value >> (m + 1)) & 1;     // bit m+1
-    bool blueBit = (value >> (m + 2)) & 1;    // bit m+2 (MSB for this LED)
+    bool blueBit = (value >> m) & 1;          // bit m (LSB for this LED)
+    bool yellowBit = (value >> (m + 1)) & 1;  // bit m+1 (middle bit)
+    bool redBit = (value >> (m + 2)) & 1;     // bit m+2 (MSB for this LED)
 
     // If no bits are active, return OFF
     if (!yellowBit && !redBit && !blueBit) {
