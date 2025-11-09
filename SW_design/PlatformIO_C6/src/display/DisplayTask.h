@@ -57,6 +57,12 @@ private:
     DisplayState current_state;
     DisplayMode display_mode;
 
+    // Cached scaling coefficients (loaded once per state change)
+    float vu_min_value;
+    float vu_max_value;
+    float binary_mag_order;
+    float binary_dir_norm;
+
     // Pointer to BMSTask instance
     BMSTask* bmsTask = nullptr; 
 
@@ -72,6 +78,7 @@ private:
     // Button helper methods
     bool debounceButton(bool rawState);
     void cycleDisplayState();
+    void loadScalingCoefficients(); // Load VU and binary coefficients for current_state
 
     // LED mapping (logical index → physical LED)
     static const int LED_MAPPING_VU[NEOPIXEL_COUNT];

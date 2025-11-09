@@ -182,13 +182,14 @@ void DisplayTask::run_boot(){
 };
 
 void DisplayTask::run_init(){
-    strip.setBrightness(NEOPIXEL_BRIGHTNESS);   // Set brightness 
+    strip.setBrightness(NEOPIXEL_BRIGHTNESS);   // Set brightness
     strip.show();                               // Update strip to apply brightness and clear LEDs
     // Display the GIT SHA Pattern on the display to confirm correct SW version
     displayGitShaPattern();                     // Display GIT SHA to confirm correct SW version
     vTaskDelay(pdMS_TO_TICKS(3000));            // To view the GITSHA
-    // When done, trandisition to DisplayState::DISPLAY_SENSOR
-    setDisplayState(DisplayState::DISPLAY_PRESSURE);
+
+    // Cycle display state to initialize at first sensor state and load coefficients
+    cycleDisplayState();
 
     //  ====================== DEBUG ===========================
     // TURN OFF PIXEL #2
@@ -355,8 +356,64 @@ void DisplayTask::cycleDisplayState() {
             // Skip state change in BOOT or INIT
             break;
     }
+    // Load scaling coefficients for the new state
+    loadScalingCoefficients();
     // Reset the aggregate data
     SharedBuffer::resetAggregates();
+}
+
+void DisplayTask::loadScalingCoefficients() {
+    // Load VU mode and binary mode coefficients based on current_state
+    switch (current_state) {
+        case DisplayState::DISPLAY_PRESSURE:
+            vu_min_value = VU_MIN_PRESS;
+            vu_max_value = VU_MAX_PRESS;
+            binary_mag_order = BINARY_MAG_ORDER_PRESS;
+            binary_dir_norm = 1.0f; // Not used for scalar
+            break;
+        case DisplayState::DISPLAY_TEMP:
+            vu_min_value = VU_MIN_TEMP;
+            vu_max_value = VU_MAX_TEMP;
+            binary_mag_order = BINARY_MAG_ORDER_TEMP;
+            binary_dir_norm = 1.0f; // Not used for scalar
+            break;
+        case DisplayState::DISPLAY_LUX:
+            vu_min_value = VU_MIN_LUX;
+            vu_max_value = VU_MAX_LUX;
+            binary_mag_order = BINARY_MAG_ORDER_LUX;
+            binary_dir_norm = 1.0f; // Not used for scalar
+            break;
+        case DisplayState::DISPLAY_VOLUME:
+            vu_min_value = VU_MIN_VOL;
+            vu_max_value = VU_MAX_VOL;
+            binary_mag_order = BINARY_MAG_ORDER_VOL;
+            binary_dir_norm = 1.0f; // Not used for scalar
+            break;
+        case DisplayState::DISPLAY_ACCEL:
+            vu_min_value = VU_MIN_ACCEL;
+            vu_max_value = VU_MAX_ACCEL;
+            binary_mag_order = BINARY_MAG_ORDER_ACCEL;
+            binary_dir_norm = BINARY_DIR_NORM_ACCEL;
+            break;
+        case DisplayState::DISPLAY_MAG:
+            vu_min_value = VU_MIN_MAG;
+            vu_max_value = VU_MAX_MAG;
+            binary_mag_order = BINARY_MAG_ORDER_MAG;
+            binary_dir_norm = BINARY_DIR_NORM_MAG;
+            break;
+        case DisplayState::DISPLAY_ROT_VEL:
+            vu_min_value = VU_MIN_ROT;
+            vu_max_value = VU_MAX_ROT;
+            binary_mag_order = BINARY_MAG_ORDER_ROT;
+            binary_dir_norm = BINARY_DIR_NORM_ROT;
+            break;
+        default:
+            vu_min_value = 0.0f;
+            vu_max_value = 1.0f;
+            binary_mag_order = 1.0f;
+            binary_dir_norm = 1.0f;
+            break;
+    }
 }
 
 // ================================================== //
@@ -430,45 +487,8 @@ void DisplayTask::updateModeDisplay() {
 void DisplayTask::updateMagnitudeDisplay(float value) {
     if (display_mode == DisplayMode::VU_DISPLAY) {
         // VU-meter mode: traditional bar graph display
-        // Get min/max values based on current display state
-        float minValue = 0.0f, maxValue = 1.0f;
-        switch (current_state) {
-            case DisplayState::DISPLAY_PRESSURE:
-                minValue = VU_MIN_PRESS;
-                maxValue = VU_MAX_PRESS;
-                break;
-            case DisplayState::DISPLAY_TEMP:
-                minValue = VU_MIN_TEMP;
-                maxValue = VU_MAX_TEMP;
-                break;
-            case DisplayState::DISPLAY_LUX:
-                minValue = VU_MIN_LUX;
-                maxValue = VU_MAX_LUX;
-                break;
-            case DisplayState::DISPLAY_VOLUME:
-                minValue = VU_MIN_VOL;
-                maxValue = VU_MAX_VOL;
-                break;
-            case DisplayState::DISPLAY_ACCEL:
-                minValue = VU_MIN_ACCEL;
-                maxValue = VU_MAX_ACCEL;
-                break;
-            case DisplayState::DISPLAY_MAG:
-                minValue = VU_MIN_MAG;
-                maxValue = VU_MAX_MAG;
-                break;
-            case DisplayState::DISPLAY_ROT_VEL:
-                minValue = VU_MIN_ROT;
-                maxValue = VU_MAX_ROT;
-                break;
-            default:
-                minValue = 0.0f;
-                maxValue = 1.0f;
-                break;
-        }
-
-        // Clamp and normalize 0..1
-        float normalized = (value - minValue) / (maxValue - minValue);
+        // Use cached min/max values (loaded in loadScalingCoefficients)
+        float normalized = (value - vu_min_value) / (vu_max_value - vu_min_value);
         normalized = fmax(0.0f, fmin(1.0f, normalized));
 
         // For ALL LEDs in the MAGNITUDE_DISPLAY, get a magnitude color, and send it to the right index
@@ -478,37 +498,8 @@ void DisplayTask::updateMagnitudeDisplay(float value) {
         }
     } else if (display_mode == DisplayMode::BINARY_DISPLAY) {
         // Binary mode: encode actual integer value as binary across LEDs
-        // Determine order_of_magnitude based on current display state
-        float orderOfMagnitude = 1.0f;
-        switch (current_state) {
-            case DisplayState::DISPLAY_PRESSURE:
-                orderOfMagnitude = BINARY_MAG_ORDER_PRESS;
-                break;
-            case DisplayState::DISPLAY_TEMP:
-                orderOfMagnitude = BINARY_MAG_ORDER_TEMP;
-                break;
-            case DisplayState::DISPLAY_LUX:
-                orderOfMagnitude = BINARY_MAG_ORDER_LUX;
-                break;
-            case DisplayState::DISPLAY_VOLUME:
-                orderOfMagnitude = BINARY_MAG_ORDER_VOL;
-                break;
-            case DisplayState::DISPLAY_ACCEL:
-                orderOfMagnitude = BINARY_MAG_ORDER_ACCEL;
-                break;
-            case DisplayState::DISPLAY_MAG:
-                orderOfMagnitude = BINARY_MAG_ORDER_MAG;
-                break;
-            case DisplayState::DISPLAY_ROT_VEL:
-                orderOfMagnitude = BINARY_MAG_ORDER_ROT;
-                break;
-            default:
-                orderOfMagnitude = 1.0f;
-                break;
-        }
-
-        // Apply order of magnitude scaling and round to integer
-        float scaledValue = value * orderOfMagnitude;
+        // Use cached order_of_magnitude (loaded in loadScalingCoefficients)
+        float scaledValue = value * binary_mag_order;
         int32_t intValue = (int32_t)round(scaledValue);
 
         // Clamp to valid range [0, 4095] for 12-bit encoding
@@ -533,28 +524,12 @@ void DisplayTask::updateDirectionDisplay(float x, float y, float z) {
         // In binary mode, display vector components
         // Direction display has 3 LEDs: [0]=X, [1]=Y, [2]=Z
         // Color mapping: RED (very negative) → GREEN (very positive)
-
-        // Get normalization value based on current display state
-        float normValue = 1.0f;
-        switch (current_state) {
-            case DisplayState::DISPLAY_ACCEL:
-                normValue = BINARY_DIR_NORM_ACCEL;
-                break;
-            case DisplayState::DISPLAY_MAG:
-                normValue = BINARY_DIR_NORM_MAG;
-                break;
-            case DisplayState::DISPLAY_ROT_VEL:
-                normValue = BINARY_DIR_NORM_ROT;
-                break;
-            default:
-                normValue = 1.0f;
-                break;
-        }
+        // Use cached normalization value (loaded in loadScalingCoefficients)
 
         if (BINARY_DIRECTION_DISPLAY_COUNT >= 3) {
-            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(x, normValue)); // X
-            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 1, getDirectionColor(y, normValue)); // Y
-            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 2, getDirectionColor(z, normValue)); // Z
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(x, binary_dir_norm)); // X
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 1, getDirectionColor(y, binary_dir_norm)); // Y
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 2, getDirectionColor(z, binary_dir_norm)); // Z
         }
     }
 }
