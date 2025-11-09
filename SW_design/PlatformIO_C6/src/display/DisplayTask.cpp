@@ -165,7 +165,7 @@ void DisplayTask::run_boot(){
         // Check DISPLAY_MODE_PUSHBUTTON_PIN to select display mode
         // HIGH = BINARY_DISPLAY, LOW = VU_DISPLAY
         bool buttonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
-        if (buttonState == HIGH) {
+        if (buttonState == LOW) {
             display_mode = DisplayMode::BINARY_DISPLAY;
         } else {
             display_mode = DisplayMode::VU_DISPLAY;
@@ -320,6 +320,10 @@ void DisplayTask::cycleDisplayState() {
     // Before switching, compute the aggregate sensor data for the last time
     SensorStats stats = SharedBuffer::getAggregatedStats();
     switch (current_state) {
+        // If in INIT -> PRESSURE DISPLAY
+        case DisplayState::INIT:
+            setDisplayState(DisplayState::DISPLAY_PRESSURE);
+            break;
         // If in PRESSURE DISPLAY -> TEMPERATURE DISPLAY
         case DisplayState::DISPLAY_PRESSURE:
             setDisplayState(DisplayState::DISPLAY_TEMP);

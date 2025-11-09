@@ -58,7 +58,43 @@
 #define BINARY_DIRECTION_DISPLAY_OFFSET (BINARY_MODE_DISPLAY_OFFSET + BINARY_MODE_DISPLAY_COUNT)
 #define BINARY_MAGNITUDE_DISPLAY_OFFSET (BINARY_DIRECTION_DISPLAY_OFFSET + BINARY_DIRECTION_DISPLAY_COUNT)
 
+// ===== MAGNITUDE DISPLAY VU-METER =====
+#define VU_MIN_TEMP    12
+#define VU_MAX_TEMP    30
+#define VU_MIN_PRESS   980
+#define VU_MAX_PRESS   1000
+#define VU_MIN_LUX     2500
+#define VU_MAX_LUX     20000
+#define VU_MIN_VOL     -33.4 // dB
+#define VU_MAX_VOL     -7    // dB
+#define VU_MIN_ACCEL   990
+#define VU_MAX_ACCEL   3000
+#define VU_MIN_MAG     3.2 // LOG SCALE
+#define VU_MAX_MAG     3.67 // LOG SCALE
+#define VU_MIN_ROT     20
+#define VU_MAX_ROT     350
 
+// ===== BINARY DISPLAY DIRECTION NORMALIZATION =====
+// Normalization values for vector component display (RED = very negative, GREEN = very positive)
+#define BINARY_DIR_NORM_ACCEL   1000.0f  // mg
+#define BINARY_DIR_NORM_MAG     50.0f    // uT
+#define BINARY_DIR_NORM_ROT     200.0f   // deg/s
+
+// ===== BINARY DISPLAY MAGNITUDE ORDER OF MAGNITUDE =====
+// Scaling factors to convert measurements to integer values for binary encoding
+// Adjust these to add resolution or fit within available bits (12 bits = 0-4095)
+#define BINARY_MAG_ORDER_TEMP     10.0f   // 12.3°C → 123
+#define BINARY_MAG_ORDER_PRESS    1.0f    // 1080.1 hPa → 1080
+#define BINARY_MAG_ORDER_LUX      0.1f    // 12345 lux → 1234
+#define BINARY_MAG_ORDER_VOL      10.0f   // -33.4 dB → -334
+#define BINARY_MAG_ORDER_ACCEL    1.0f    // 1234.5 mg → 1234
+#define BINARY_MAG_ORDER_MAG      100.0f  // 45.67 uT → 4567
+#define BINARY_MAG_ORDER_ROT      10.0f   // 123.4 deg/s → 1234
+
+
+// ============================================================
+// ================== PERIPHERAL BINDING ======================
+// ============================================================
 
 // [I2C_SENSORS]
 #define I2C_SDA_PIN 2
@@ -126,37 +162,5 @@
 
 // Note: Data is sent at TASK_RATE_NETWORK (defined above in Task Rates section)
 
-// ===== MAGNITUDE DISPLAY VU-METER =====
-#define VU_MIN_TEMP    12
-#define VU_MAX_TEMP    30
-#define VU_MIN_PRESS   980
-#define VU_MAX_PRESS   1000
-#define VU_MIN_LUX     2500
-#define VU_MAX_LUX     20000
-#define VU_MIN_VOL     -33.4 // dB
-#define VU_MAX_VOL     -7    // dB
-#define VU_MIN_ACCEL   990
-#define VU_MAX_ACCEL   3000
-#define VU_MIN_MAG     3.2 // LOG SCALE
-#define VU_MAX_MAG     3.67 // LOG SCALE
-#define VU_MIN_ROT     20
-#define VU_MAX_ROT     350
-
-// ===== BINARY DISPLAY DIRECTION NORMALIZATION =====
-// Normalization values for vector component display (RED = very negative, GREEN = very positive)
-#define BINARY_DIR_NORM_ACCEL   1000.0f  // mg
-#define BINARY_DIR_NORM_MAG     50.0f    // uT
-#define BINARY_DIR_NORM_ROT     200.0f   // deg/s
-
-// ===== BINARY DISPLAY MAGNITUDE ORDER OF MAGNITUDE =====
-// Scaling factors to convert measurements to integer values for binary encoding
-// Adjust these to add resolution or fit within available bits (12 bits = 0-4095)
-#define BINARY_MAG_ORDER_TEMP     10.0f   // 12.3°C → 123
-#define BINARY_MAG_ORDER_PRESS    1.0f    // 1080.1 hPa → 1080
-#define BINARY_MAG_ORDER_LUX      0.1f    // 12345 lux → 1234
-#define BINARY_MAG_ORDER_VOL      10.0f   // -33.4 dB → -334
-#define BINARY_MAG_ORDER_ACCEL    1.0f    // 1234.5 mg → 1234
-#define BINARY_MAG_ORDER_MAG      100.0f  // 45.67 uT → 4567
-#define BINARY_MAG_ORDER_ROT      10.0f   // 123.4 deg/s → 1234
 
 
