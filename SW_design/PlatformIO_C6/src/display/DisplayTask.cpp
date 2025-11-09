@@ -654,6 +654,12 @@ uint32_t DisplayTask::getDirectionColor(float component, float normValue) {
     float normalized = component / normValue;
     normalized = fmax(-1.0f, fmin(1.0f, normalized));
 
+    // If component is very close to zero, return OFF
+    const float zeroThreshold = 0.05f; // 5% of normalized range
+    if (fabs(normalized) < zeroThreshold) {
+        return colors_lib[0]; // OFF
+    }
+
     // Map to [0, 1] for color interpolation
     float t = (normalized + 1.0f) / 2.0f; // -1 → 0, 0 → 0.5, 1 → 1
 
