@@ -650,6 +650,7 @@ uint32_t DisplayTask::getBinaryMagnitudeColor(uint32_t value, int ledIndex) {
 
 uint32_t DisplayTask::getDirectionColor(float component, float normValue) {
     // Map component value to color: RED (very negative) → OFF (zero) → GREEN (very positive)
+    // Intensity increases with distance from zero
     // Normalize component to [-1, 1] range
     float normalized = component / normValue;
     normalized = fmax(-1.0f, fmin(1.0f, normalized));
@@ -657,25 +658,32 @@ uint32_t DisplayTask::getDirectionColor(float component, float normValue) {
     // Map to [0, 1] for color interpolation
     float t = (normalized + 1.0f) / 2.0f; // -1 → 0, 0 → 0.5, 1 → 1
 
-    // If component is very close to midpoint (zero), return OFF
+    // Define dead zone around midpoint (zero)
     const float zeroThreshold = 0.05f; // 5% of full range around midpoint
-    if (fabs(t - 0.5f) < zeroThreshold) {
+    const float deadZoneLow = 0.5f - zeroThreshold;   // 0.45
+    const float deadZoneHigh = 0.5f + zeroThreshold;  // 0.55
+
+    // If component is very close to midpoint (zero), return OFF
+    if (t >= deadZoneLow && t <= deadZoneHigh) {
         return colors_lib[0]; // OFF
     }
 
     uint8_t r, g, b;
+    float intensity;
 
     if (t < 0.5f) {
         // RED side (t=0 to t=0.45)
-        // Map from [0, 0.45] to full brightness RED
-        r = 255;
+        // Intensity increases from 0 (at dead zone edge) to 1 (at t=0)
+        intensity = (deadZoneLow - t) / deadZoneLow; // (0.45 - t) / 0.45
+        r = (uint8_t)(255 * intensity);
         g = 0;
         b = 0;
     } else {
         // GREEN side (t=0.55 to t=1.0)
-        // Map from [0.55, 1.0] to full brightness GREEN
+        // Intensity increases from 0 (at dead zone edge) to 1 (at t=1.0)
+        intensity = (t - deadZoneHigh) / deadZoneLow; // (t - 0.55) / 0.45
         r = 0;
-        g = 255;
+        g = (uint8_t)(255 * intensity);
         b = 0;
     }
 
