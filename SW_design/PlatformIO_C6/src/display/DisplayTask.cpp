@@ -13,8 +13,9 @@
 #define GPIO_DEBOUNCE_DELAY 50 // [ms]
 
 // CLASS Constructor
-DisplayTask::DisplayTask() 
-: strip(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800) // initialize SK6805-EC20 strip
+DisplayTask::DisplayTask()
+: strip(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800), // initialize SK6805-EC20 strip
+  display_mode(DisplayMode::BINARY_DISPLAY) // Default to binary display mode
 {
 
 }
@@ -55,8 +56,8 @@ DisplayTask::DisplayTask()
 void DisplayTask::setupDisplayTask(BMSTask* bms) {
     strip.begin();  // Initialize the NeoPixel library
     setDisplayState(DisplayState::BOOT);
-    // GPIO for Push-button which toggles display mode
-    pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT);
+    // GPIO for Push-button which toggles display mode (with pull-down for default binary mode)
+    pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT_PULLDOWN);
     // Store BMS Task Pointer
     this->bmsTask = bms;
 }
@@ -163,12 +164,14 @@ void DisplayTask::run_boot(){
     // Check if BMS is Ready
     if (bmsTask && bmsTask->isLatched()) {
         // Check DISPLAY_MODE_PUSHBUTTON_PIN to select display mode
-        // HIGH = BINARY_DISPLAY, LOW = VU_DISPLAY
+        // LOW = BINARY_DISPLAY (default), HIGH = VU_DISPLAY
         bool buttonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
         if (buttonState == LOW) {
             display_mode = DisplayMode::BINARY_DISPLAY;
+            Serial.println("[DisplayTask] Display mode: BINARY_DISPLAY");
         } else {
             display_mode = DisplayMode::VU_DISPLAY;
+            Serial.println("[DisplayTask] Display mode: VU_DISPLAY");
         }
 
         // Transition to INIT
