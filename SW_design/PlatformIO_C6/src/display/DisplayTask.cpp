@@ -190,10 +190,6 @@ void DisplayTask::run_init(){
 
     // Cycle display state to initialize at first sensor state and load coefficients
     cycleDisplayState();
-
-    //  ====================== DEBUG ===========================
-    // TURN OFF PIXEL #2
-    strip.setPixelColor(2, colors_lib[0]);
 };
 
 void DisplayTask::run_display_pressure(){
