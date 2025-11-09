@@ -20,15 +20,11 @@ DisplayTask::DisplayTask()
 }
 
 // Logical → physical LED mapping
-// ================= NORMAL CONFIG ================= //
+// ================= VU DISPLAY MODE ================= //
 // MODE_DISPLAY = LEDs #0, #1
-// DIRECTION_DISPLAY = LEDs #3 [X], #2 [Y], #4 [Z] 
-// MAGNITUDE_DISPLAY = LEDs #8, #7, #6, #5
-// ================== LITE CONFIG ================== //
-// MODE_DISPLAY = LEDs #0, #1
-// DIRECTION_DISPLAY = INOP
+// DIRECTION_DISPLAY = LED #2 (INOP)
 // MAGNITUDE_DISPLAY = LEDs #8, #7, #6, #5, #4, #3
-    const int DisplayTask::LED_MAPPING[NEOPIXEL_COUNT] = {    
+    const int DisplayTask::LED_MAPPING_VU[NEOPIXEL_COUNT] = {
     0,  // logical 0 → physical LED 0  (MODE)
     1,  // logical 1 → physical LED 1  (MODE)
     2,  // logical 2 → physical LED 2  (INOP - DIRECTION)
@@ -38,6 +34,22 @@ DisplayTask::DisplayTask()
     5,  // logical 6 → physical LED 5  (MAGNITUDE)
     4,  // logical 7 → physical LED 4  (MAGNITUDE)
     3,  // logical 8 → physical LED 3  (MAGNITUDE)
+};
+
+// ================= BINARY DISPLAY MODE ================= //
+// MODE_DISPLAY = LEDs #0, #1
+// DIRECTION_DISPLAY = LEDs #3 [X], #2 [Y], #4 [Z]
+// MAGNITUDE_DISPLAY = LEDs #8, #7, #6, #5
+    const int DisplayTask::LED_MAPPING_BINARY[BINARY_NEOPIXEL_COUNT] = {
+    0,  // logical 0 → physical LED 0  (MODE)
+    1,  // logical 1 → physical LED 1  (MODE)
+    3,  // logical 2 → physical LED 3  (DIRECTION X)
+    2,  // logical 3 → physical LED 2  (DIRECTION Y)
+    4,  // logical 4 → physical LED 4  (DIRECTION Z)
+    8,  // logical 5 → physical LED 8  (MAGNITUDE)
+    7,  // logical 6 → physical LED 7  (MAGNITUDE)
+    6,  // logical 7 → physical LED 6  (MAGNITUDE)
+    5,  // logical 8 → physical LED 5  (MAGNITUDE)
 };
 
 void DisplayTask::setupDisplayTask(BMSTask* bms) {
@@ -469,9 +481,16 @@ void DisplayTask::updateDirectionDisplay(float x, float y, float z, float normVa
 // ================================================== //
 
 void DisplayTask::setLogicalPixel(int logicalIndex, uint32_t color) {
-    if (logicalIndex >= 0 && logicalIndex < NEOPIXEL_COUNT) {
-        int physicalIndex = LED_MAPPING[logicalIndex];
-        strip.setPixelColor(physicalIndex, color);
+    if (display_mode == DisplayMode::VU_DISPLAY) {
+        if (logicalIndex >= 0 && logicalIndex < NEOPIXEL_COUNT) {
+            int physicalIndex = LED_MAPPING_VU[logicalIndex];
+            strip.setPixelColor(physicalIndex, color);
+        }
+    } else if (display_mode == DisplayMode::BINARY_DISPLAY) {
+        if (logicalIndex >= 0 && logicalIndex < BINARY_NEOPIXEL_COUNT) {
+            int physicalIndex = LED_MAPPING_BINARY[logicalIndex];
+            strip.setPixelColor(physicalIndex, color);
+        }
     }
 }
 
@@ -598,10 +617,12 @@ uint32_t DisplayTask::getDirectionColor(float component, float normValue) {
 
 void DisplayTask::turnDisplayOFF() {
     // Set all pixels to OFF
-    for (int LED = 0; LED < NEOPIXEL_COUNT; LED++) {
+    // Use the larger of the two counts to ensure all LEDs are turned off
+    int maxCount = (NEOPIXEL_COUNT > BINARY_NEOPIXEL_COUNT) ? NEOPIXEL_COUNT : BINARY_NEOPIXEL_COUNT;
+    for (int LED = 0; LED < maxCount; LED++) {
         strip.setPixelColor(LED, 0, 0, 0); // RGB = 0,0,0 → off
     }
-    strip.show(); 
+    strip.show();
     strip.clear();
 }
 

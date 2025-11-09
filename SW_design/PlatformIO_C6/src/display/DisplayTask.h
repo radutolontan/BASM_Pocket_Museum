@@ -74,7 +74,8 @@ private:
     void cycleDisplayState();
 
     // LED mapping (logical index → physical LED)
-    static const int LED_MAPPING[NEOPIXEL_COUNT];
+    static const int LED_MAPPING_VU[NEOPIXEL_COUNT];
+    static const int LED_MAPPING_BINARY[BINARY_NEOPIXEL_COUNT];
 
     // State handling methods
     void run_boot();
