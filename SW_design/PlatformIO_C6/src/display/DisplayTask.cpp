@@ -203,9 +203,9 @@ void DisplayTask::run_display_pressure(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(latest.pressure, VU_MIN_PRESS, VU_MAX_PRESS);
+        updateMagnitudeDisplay(latest.pressure);
         // Update Direction Display (scalar quantity - turn off direction display)
-        updateDirectionDisplay(0, 0, 0, 1.0f);
+        updateDirectionDisplay(0, 0, 0);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -219,9 +219,9 @@ void DisplayTask::run_display_temp(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(latest.temperature, VU_MIN_TEMP, VU_MAX_TEMP);
+        updateMagnitudeDisplay(latest.temperature);
         // Update Direction Display (scalar quantity - turn off direction display)
-        updateDirectionDisplay(0, 0, 0, 1.0f);
+        updateDirectionDisplay(0, 0, 0);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -235,9 +235,9 @@ void DisplayTask::run_display_lux(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(latest.light_intensity, VU_MIN_LUX, VU_MAX_LUX);
+        updateMagnitudeDisplay(latest.light_intensity);
         // Update Direction Display (scalar quantity - turn off direction display)
-        updateDirectionDisplay(0, 0, 0, 1.0f);
+        updateDirectionDisplay(0, 0, 0);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -251,9 +251,9 @@ void DisplayTask::run_display_volume(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(latest.volume_rms, VU_MIN_VOL, VU_MAX_VOL);
+        updateMagnitudeDisplay(latest.volume_rms);
         // Update Direction Display (scalar quantity - turn off direction display)
-        updateDirectionDisplay(0, 0, 0, 1.0f);
+        updateDirectionDisplay(0, 0, 0);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -267,9 +267,9 @@ void DisplayTask::run_display_accel(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(latest.accel_norm, VU_MIN_ACCEL, VU_MAX_ACCEL);
+        updateMagnitudeDisplay(latest.accel_norm);
         // Update Direction Display (vector quantity - show x, y, z components)
-        updateDirectionDisplay(latest.accel_x, latest.accel_y, latest.accel_z, BINARY_DIR_NORM_ACCEL);
+        updateDirectionDisplay(latest.accel_x, latest.accel_y, latest.accel_z);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -283,9 +283,9 @@ void DisplayTask::run_display_mag_field(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(latest.mag_norm, VU_MIN_MAG, VU_MAX_MAG);
+        updateMagnitudeDisplay(latest.mag_norm);
         // Update Direction Display (vector quantity - show x, y, z components)
-        updateDirectionDisplay(latest.mag_x, latest.mag_y, latest.mag_z, BINARY_DIR_NORM_MAG);
+        updateDirectionDisplay(latest.mag_x, latest.mag_y, latest.mag_z);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -299,9 +299,9 @@ void DisplayTask::run_display_rot_vel(){
     if (!readings.empty()) {
         const SensorData& latest = readings.back();
         // Update Magnitude Display
-        updateMagnitudeDisplay(latest.gyro_norm, VU_MIN_ROT, VU_MAX_ROT);
+        updateMagnitudeDisplay(latest.gyro_norm);
         // Update Direction Display (vector quantity - show x, y, z components)
-        updateDirectionDisplay(latest.gyro_x, latest.gyro_y, latest.gyro_z, BINARY_DIR_NORM_ROT);
+        updateDirectionDisplay(latest.gyro_x, latest.gyro_y, latest.gyro_z);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -427,12 +427,50 @@ void DisplayTask::updateModeDisplay() {
 
 }
 
-void DisplayTask::updateMagnitudeDisplay(float value, float minValue, float maxValue) {
+void DisplayTask::updateMagnitudeDisplay(float value) {
     if (display_mode == DisplayMode::VU_DISPLAY) {
         // VU-meter mode: traditional bar graph display
+        // Get min/max values based on current display state
+        float minValue = 0.0f, maxValue = 1.0f;
+        switch (current_state) {
+            case DisplayState::DISPLAY_PRESSURE:
+                minValue = VU_MIN_PRESS;
+                maxValue = VU_MAX_PRESS;
+                break;
+            case DisplayState::DISPLAY_TEMP:
+                minValue = VU_MIN_TEMP;
+                maxValue = VU_MAX_TEMP;
+                break;
+            case DisplayState::DISPLAY_LUX:
+                minValue = VU_MIN_LUX;
+                maxValue = VU_MAX_LUX;
+                break;
+            case DisplayState::DISPLAY_VOLUME:
+                minValue = VU_MIN_VOL;
+                maxValue = VU_MAX_VOL;
+                break;
+            case DisplayState::DISPLAY_ACCEL:
+                minValue = VU_MIN_ACCEL;
+                maxValue = VU_MAX_ACCEL;
+                break;
+            case DisplayState::DISPLAY_MAG:
+                minValue = VU_MIN_MAG;
+                maxValue = VU_MAX_MAG;
+                break;
+            case DisplayState::DISPLAY_ROT_VEL:
+                minValue = VU_MIN_ROT;
+                maxValue = VU_MAX_ROT;
+                break;
+            default:
+                minValue = 0.0f;
+                maxValue = 1.0f;
+                break;
+        }
+
         // Clamp and normalize 0..1
         float normalized = (value - minValue) / (maxValue - minValue);
         normalized = fmax(0.0f, fmin(1.0f, normalized));
+
         // For ALL LEDs in the MAGNITUDE_DISPLAY, get a magnitude color, and send it to the right index
         for (int i = 0; i < MAGNITUDE_DISPLAY_COUNT; i++) {
             uint32_t color = getMagnitudeColor(normalized, i);
@@ -485,7 +523,7 @@ void DisplayTask::updateMagnitudeDisplay(float value, float minValue, float maxV
     }
 }
 
-void DisplayTask::updateDirectionDisplay(float x, float y, float z, float normValue) {
+void DisplayTask::updateDirectionDisplay(float x, float y, float z) {
     if (display_mode == DisplayMode::VU_DISPLAY) {
         // In VU mode, turn off direction display
         for (int i = 0; i < DIRECTION_DISPLAY_COUNT; i++) {
@@ -495,6 +533,23 @@ void DisplayTask::updateDirectionDisplay(float x, float y, float z, float normVa
         // In binary mode, display vector components
         // Direction display has 3 LEDs: [0]=X, [1]=Y, [2]=Z
         // Color mapping: RED (very negative) → GREEN (very positive)
+
+        // Get normalization value based on current display state
+        float normValue = 1.0f;
+        switch (current_state) {
+            case DisplayState::DISPLAY_ACCEL:
+                normValue = BINARY_DIR_NORM_ACCEL;
+                break;
+            case DisplayState::DISPLAY_MAG:
+                normValue = BINARY_DIR_NORM_MAG;
+                break;
+            case DisplayState::DISPLAY_ROT_VEL:
+                normValue = BINARY_DIR_NORM_ROT;
+                break;
+            default:
+                normValue = 1.0f;
+                break;
+        }
 
         if (BINARY_DIRECTION_DISPLAY_COUNT >= 3) {
             setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(x, normValue)); // X

@@ -90,8 +90,8 @@ private:
 
     // Segment handling methods
     void updateModeDisplay(); // Manages the MODE DISPLAY
-    void updateMagnitudeDisplay(float value, float minValue, float maxValue); // Manages the MAGNITUDE DISPLAY (VU-METER or BINARY)
-    void updateDirectionDisplay(float x, float y, float z, float normValue); // Manages the DIRECTION DISPLAY (for vector quantities)
+    void updateMagnitudeDisplay(float value); // Manages the MAGNITUDE DISPLAY (VU-METER or BINARY)
+    void updateDirectionDisplay(float x, float y, float z); // Manages the DIRECTION DISPLAY (for vector quantities)
 
     // Helper methods
     void setLogicalPixel(int logicalIndex, uint32_t color); // Transposes logical to physical pixels
