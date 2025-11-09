@@ -649,32 +649,32 @@ uint32_t DisplayTask::getBinaryMagnitudeColor(uint32_t value, int ledIndex) {
 }
 
 uint32_t DisplayTask::getDirectionColor(float component, float normValue) {
-    // Map component value to color: RED (very negative) → GREEN (very positive)
+    // Map component value to color: RED (very negative) → OFF (zero) → GREEN (very positive)
     // Normalize component to [-1, 1] range
     float normalized = component / normValue;
     normalized = fmax(-1.0f, fmin(1.0f, normalized));
 
-    // If component is very close to zero, return OFF
-    const float zeroThreshold = 0.05f; // 5% of normalized range
-    if (fabs(normalized) < zeroThreshold) {
-        return colors_lib[0]; // OFF
-    }
-
     // Map to [0, 1] for color interpolation
     float t = (normalized + 1.0f) / 2.0f; // -1 → 0, 0 → 0.5, 1 → 1
+
+    // If component is very close to midpoint (zero), return OFF
+    const float zeroThreshold = 0.05f; // 5% of full range around midpoint
+    if (fabs(t - 0.5f) < zeroThreshold) {
+        return colors_lib[0]; // OFF
+    }
 
     uint8_t r, g, b;
 
     if (t < 0.5f) {
-        // RED (t=0) → YELLOW (t=0.5)
-        float f = t / 0.5f; // 0..1
+        // RED side (t=0 to t=0.45)
+        // Map from [0, 0.45] to full brightness RED
         r = 255;
-        g = (uint8_t)(f * 255);
+        g = 0;
         b = 0;
     } else {
-        // YELLOW (t=0.5) → GREEN (t=1.0)
-        float f = (t - 0.5f) / 0.5f; // 0..1
-        r = (uint8_t)((1.0f - f) * 255);
+        // GREEN side (t=0.55 to t=1.0)
+        // Map from [0.55, 1.0] to full brightness GREEN
+        r = 0;
         g = 255;
         b = 0;
     }
