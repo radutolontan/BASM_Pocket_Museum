@@ -36,7 +36,7 @@
 // [GPIOs]
 #define DISPLAY_MODE_PUSHBUTTON_PIN 9
 
-// [WS2812B]
+// [WS2812B] - VU Display Mode Configuration
 #define NEOPIXEL_PIN              8
 #define NEOPIXEL_BRIGHTNESS       70  // int[0,255]
 #define MODE_DISPLAY_COUNT        2
@@ -47,6 +47,16 @@
 #define MODE_DISPLAY_OFFSET       0
 #define DIRECTION_DISPLAY_OFFSET  (MODE_DISPLAY_OFFSET + MODE_DISPLAY_COUNT)
 #define MAGNITUDE_DISPLAY_OFFSET  (DIRECTION_DISPLAY_OFFSET + DIRECTION_DISPLAY_COUNT)
+
+// [WS2812B] - Binary Display Mode Configuration
+#define BINARY_MODE_DISPLAY_COUNT      2
+#define BINARY_DIRECTION_DISPLAY_COUNT 3
+#define BINARY_MAGNITUDE_DISPLAY_COUNT 4
+#define BINARY_NEOPIXEL_COUNT          (BINARY_MODE_DISPLAY_COUNT + BINARY_DIRECTION_DISPLAY_COUNT + BINARY_MAGNITUDE_DISPLAY_COUNT)
+// Compute binary segment offsets
+#define BINARY_MODE_DISPLAY_OFFSET      0
+#define BINARY_DIRECTION_DISPLAY_OFFSET (BINARY_MODE_DISPLAY_OFFSET + BINARY_MODE_DISPLAY_COUNT)
+#define BINARY_MAGNITUDE_DISPLAY_OFFSET (BINARY_DIRECTION_DISPLAY_OFFSET + BINARY_DIRECTION_DISPLAY_COUNT)
 
 
 
@@ -121,8 +131,8 @@
 #define VU_MAX_TEMP    30
 #define VU_MIN_PRESS   980
 #define VU_MAX_PRESS   1000
-#define VU_MIN_LUX     2500 
-#define VU_MAX_LUX     20000 
+#define VU_MIN_LUX     2500
+#define VU_MAX_LUX     20000
 #define VU_MIN_VOL     -33.4 // dB
 #define VU_MAX_VOL     -7    // dB
 #define VU_MIN_ACCEL   990
@@ -131,5 +141,11 @@
 #define VU_MAX_MAG     3.67 // LOG SCALE
 #define VU_MIN_ROT     20
 #define VU_MAX_ROT     350
+
+// ===== BINARY DISPLAY DIRECTION NORMALIZATION =====
+// Normalization values for vector component display (RED = very negative, GREEN = very positive)
+#define BINARY_DIR_NORM_ACCEL   1000.0f  // mg
+#define BINARY_DIR_NORM_MAG     50.0f    // uT
+#define BINARY_DIR_NORM_ROT     200.0f   // deg/s
 
 

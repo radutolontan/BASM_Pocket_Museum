@@ -19,6 +19,12 @@ enum class DisplayState {
     DISPLAY_ROT_VEL         // Displays rotational velocity
 };
 
+// Display mode (VU-style or binary encoding)
+enum class DisplayMode {
+    VU_DISPLAY,             // Traditional VU-meter style display
+    BINARY_DISPLAY          // Binary encoded display
+};
+
 // Forward declaration
 class BMSTask;
 
@@ -44,11 +50,12 @@ public:
 
 private:
     Adafruit_NeoPixel strip;
-    std::vector<uint32_t> colors_lib;  
+    std::vector<uint32_t> colors_lib;
     unsigned long lastStateChange;
     unsigned long lastUpdateTime;
 
     DisplayState current_state;
+    DisplayMode display_mode;
 
     // Pointer to BMSTask instance
     BMSTask* bmsTask = nullptr; 
@@ -82,11 +89,14 @@ private:
 
     // Segment handling methods
     void updateModeDisplay(); // Manages the MODE DISPLAY
-    void updateMagnitudeDisplay(float value, float minValue, float maxValue); // Manages the MAGNITUDE DISPLAY (currently operates a normalized VU-METER Only)
+    void updateMagnitudeDisplay(float value, float minValue, float maxValue); // Manages the MAGNITUDE DISPLAY (VU-METER or BINARY)
+    void updateDirectionDisplay(float x, float y, float z, float normValue); // Manages the DIRECTION DISPLAY (for vector quantities)
 
     // Helper methods
     void setLogicalPixel(int logicalIndex, uint32_t color); // Transposes logical to physical pixels
     uint32_t getMagnitudeColor(float normalized, int ledIndex); // returns a color on a green-yellow-red scale for an input between 0 and 1 and an LEDIndex
+    uint32_t getBinaryMagnitudeColor(uint32_t value, int ledIndex); // returns binary-encoded color for a specific LED
+    uint32_t getDirectionColor(float component, float normValue); // returns RED (negative) to GREEN (positive) color for vector component
     void displayGitShaPattern();
     uint32_t applyBreathing(uint32_t baseColor, uint32_t now);
     void turnDisplayOFF();

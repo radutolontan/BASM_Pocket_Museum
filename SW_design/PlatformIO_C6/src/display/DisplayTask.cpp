@@ -150,12 +150,21 @@ void DisplayTask::runDisplayTask() {
 void DisplayTask::run_boot(){
     // Check if BMS is Ready
     if (bmsTask && bmsTask->isLatched()) {
+        // Check DISPLAY_MODE_PUSHBUTTON_PIN to select display mode
+        // HIGH = BINARY_DISPLAY, LOW = VU_DISPLAY
+        bool buttonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
+        if (buttonState == HIGH) {
+            display_mode = DisplayMode::BINARY_DISPLAY;
+        } else {
+            display_mode = DisplayMode::VU_DISPLAY;
+        }
+
         // Transition to INIT
         setDisplayState(DisplayState::INIT);
-        // Import color-lib for otehr methods to use
+        // Import color-lib for other methods to use
         import_colorlib();                          // Import color library
         // Initialize button state
-        stableButtonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
+        stableButtonState = buttonState;
         lastButtonChange = millis();
     }
 };
@@ -183,6 +192,8 @@ void DisplayTask::run_display_pressure(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.pressure, VU_MIN_PRESS, VU_MAX_PRESS);
+        // Update Direction Display (scalar quantity - turn off direction display)
+        updateDirectionDisplay(0, 0, 0, 1.0f);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -197,6 +208,8 @@ void DisplayTask::run_display_temp(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.temperature, VU_MIN_TEMP, VU_MAX_TEMP);
+        // Update Direction Display (scalar quantity - turn off direction display)
+        updateDirectionDisplay(0, 0, 0, 1.0f);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -211,6 +224,8 @@ void DisplayTask::run_display_lux(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.light_intensity, VU_MIN_LUX, VU_MAX_LUX);
+        // Update Direction Display (scalar quantity - turn off direction display)
+        updateDirectionDisplay(0, 0, 0, 1.0f);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -225,6 +240,8 @@ void DisplayTask::run_display_volume(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.volume_rms, VU_MIN_VOL, VU_MAX_VOL);
+        // Update Direction Display (scalar quantity - turn off direction display)
+        updateDirectionDisplay(0, 0, 0, 1.0f);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -239,6 +256,8 @@ void DisplayTask::run_display_accel(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.accel_norm, VU_MIN_ACCEL, VU_MAX_ACCEL);
+        // Update Direction Display (vector quantity - show x, y, z components)
+        updateDirectionDisplay(latest.accel_x, latest.accel_y, latest.accel_z, BINARY_DIR_NORM_ACCEL);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -253,6 +272,8 @@ void DisplayTask::run_display_mag_field(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.mag_norm, VU_MIN_MAG, VU_MAX_MAG);
+        // Update Direction Display (vector quantity - show x, y, z components)
+        updateDirectionDisplay(latest.mag_x, latest.mag_y, latest.mag_z, BINARY_DIR_NORM_MAG);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -267,6 +288,8 @@ void DisplayTask::run_display_rot_vel(){
         const SensorData& latest = readings.back();
         // Update Magnitude Display
         updateMagnitudeDisplay(latest.gyro_norm, VU_MIN_ROT, VU_MAX_ROT);
+        // Update Direction Display (vector quantity - show x, y, z components)
+        updateDirectionDisplay(latest.gyro_x, latest.gyro_y, latest.gyro_z, BINARY_DIR_NORM_ROT);
     }
     // Send All Data to LED Strip
     strip.show();
@@ -393,13 +416,51 @@ void DisplayTask::updateModeDisplay() {
 }
 
 void DisplayTask::updateMagnitudeDisplay(float value, float minValue, float maxValue) {
-    // Clamp and normalize 0..1
-    float normalized = (value - minValue) / (maxValue - minValue);
-    normalized = fmax(0.0f, fmin(1.0f, normalized));
-    // For ALL LEDs in the MAGNITUDE_DISPLAY, get a magnitude color, and send it to the right index
-    for (int i = 0; i < MAGNITUDE_DISPLAY_COUNT; i++) {
-        uint32_t color = getMagnitudeColor(normalized, i);
-        setLogicalPixel(MAGNITUDE_DISPLAY_OFFSET + i, color);
+    if (display_mode == DisplayMode::VU_DISPLAY) {
+        // VU-meter mode: traditional bar graph display
+        // Clamp and normalize 0..1
+        float normalized = (value - minValue) / (maxValue - minValue);
+        normalized = fmax(0.0f, fmin(1.0f, normalized));
+        // For ALL LEDs in the MAGNITUDE_DISPLAY, get a magnitude color, and send it to the right index
+        for (int i = 0; i < MAGNITUDE_DISPLAY_COUNT; i++) {
+            uint32_t color = getMagnitudeColor(normalized, i);
+            setLogicalPixel(MAGNITUDE_DISPLAY_OFFSET + i, color);
+        }
+    } else if (display_mode == DisplayMode::BINARY_DISPLAY) {
+        // Binary mode: encode value as binary across LEDs
+        // Clamp and normalize to [0, 1], then scale to integer range
+        float normalized = (value - minValue) / (maxValue - minValue);
+        normalized = fmax(0.0f, fmin(1.0f, normalized));
+
+        // Calculate the maximum value we can represent with available LEDs
+        // Each LED has 3 bits, so with 4 LEDs we can represent 0-4095 (12 bits)
+        uint32_t maxBinaryValue = (1 << (BINARY_MAGNITUDE_DISPLAY_COUNT * 3)) - 1;
+        uint32_t binaryValue = (uint32_t)(normalized * maxBinaryValue);
+
+        // Display each LED's portion of the binary value
+        for (int i = 0; i < BINARY_MAGNITUDE_DISPLAY_COUNT; i++) {
+            uint32_t color = getBinaryMagnitudeColor(binaryValue, i);
+            setLogicalPixel(BINARY_MAGNITUDE_DISPLAY_OFFSET + i, color);
+        }
+    }
+}
+
+void DisplayTask::updateDirectionDisplay(float x, float y, float z, float normValue) {
+    if (display_mode == DisplayMode::VU_DISPLAY) {
+        // In VU mode, turn off direction display
+        for (int i = 0; i < DIRECTION_DISPLAY_COUNT; i++) {
+            setLogicalPixel(DIRECTION_DISPLAY_OFFSET + i, colors_lib[0]); // OFF
+        }
+    } else if (display_mode == DisplayMode::BINARY_DISPLAY) {
+        // In binary mode, display vector components
+        // Direction display has 3 LEDs: [0]=X, [1]=Y, [2]=Z
+        // Color mapping: RED (very negative) → GREEN (very positive)
+
+        if (BINARY_DIRECTION_DISPLAY_COUNT >= 3) {
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(x, normValue)); // X
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 1, getDirectionColor(y, normValue)); // Y
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 2, getDirectionColor(z, normValue)); // Z
+        }
     }
 }
 
@@ -421,7 +482,7 @@ uint32_t DisplayTask::getMagnitudeColor(float normalized, int ledIndex) {
     if (normalized < threshold) return colors_lib[0]; // OFF
 
     // Determine gradient position 0..1 across the LEDs
-    float t = (float)ledIndex / (MAGNITUDE_DISPLAY_COUNT - 1); 
+    float t = (float)ledIndex / (MAGNITUDE_DISPLAY_COUNT - 1);
 
     // Interpolate RGB
     uint8_t r, g, b;
@@ -437,6 +498,98 @@ uint32_t DisplayTask::getMagnitudeColor(float normalized, int ledIndex) {
         float f = (t - 0.5f) / 0.5f;
         r = 255;
         g = (uint8_t)((1.0f - f) * 255);
+        b = 0;
+    }
+
+    return strip.Color(r, g, b);
+}
+
+uint32_t DisplayTask::getBinaryMagnitudeColor(uint32_t value, int ledIndex) {
+    // Each LED displays 3 bits from the value
+    // LED 0 shows bits 0-2, LED 1 shows bits 3-5, etc.
+    // Bit encoding: YELLOW = bit m, RED = bit m+1, BLUE = bit m+2
+    // where m = ledIndex * 3
+
+    int m = ledIndex * 3;
+
+    // Extract the 3 bits for this LED
+    bool yellowBit = (value >> m) & 1;        // bit m (LSB for this LED)
+    bool redBit = (value >> (m + 1)) & 1;     // bit m+1
+    bool blueBit = (value >> (m + 2)) & 1;    // bit m+2 (MSB for this LED)
+
+    // If no bits are active, return OFF
+    if (!yellowBit && !redBit && !blueBit) {
+        return colors_lib[0]; // OFF
+    }
+
+    // Combine RGB components based on active bits
+    uint8_t r = redBit ? 255 : 0;
+    uint8_t g = yellowBit ? 255 : 0;  // Yellow requires both R and G
+    uint8_t b = blueBit ? 255 : 0;
+
+    // For YELLOW, we need both R and G
+    if (yellowBit && !redBit && !blueBit) {
+        // Pure YELLOW
+        r = 250;
+        g = 255;
+        b = 0;
+    } else if (yellowBit && redBit && !blueBit) {
+        // ORANGE (YELLOW + RED)
+        r = 255;
+        g = 80;
+        b = 0;
+    } else if (yellowBit && !redBit && blueBit) {
+        // GREEN (YELLOW + BLUE)
+        r = 0;
+        g = 255;
+        b = 255;
+    } else if (!yellowBit && redBit && blueBit) {
+        // PURPLE (RED + BLUE)
+        r = 255;
+        g = 0;
+        b = 255;
+    } else if (yellowBit && redBit && blueBit) {
+        // WHITE (all bits active)
+        r = 255;
+        g = 255;
+        b = 255;
+    } else if (!yellowBit && redBit && !blueBit) {
+        // Pure RED
+        r = 255;
+        g = 0;
+        b = 0;
+    } else if (!yellowBit && !redBit && blueBit) {
+        // Pure BLUE
+        r = 0;
+        g = 0;
+        b = 255;
+    }
+
+    return strip.Color(r, g, b);
+}
+
+uint32_t DisplayTask::getDirectionColor(float component, float normValue) {
+    // Map component value to color: RED (very negative) → GREEN (very positive)
+    // Normalize component to [-1, 1] range
+    float normalized = component / normValue;
+    normalized = fmax(-1.0f, fmin(1.0f, normalized));
+
+    // Map to [0, 1] for color interpolation
+    float t = (normalized + 1.0f) / 2.0f; // -1 → 0, 0 → 0.5, 1 → 1
+
+    uint8_t r, g, b;
+
+    if (t < 0.5f) {
+        // RED (t=0) → YELLOW (t=0.5)
+        float f = t / 0.5f; // 0..1
+        r = 255;
+        g = (uint8_t)(f * 255);
+        b = 0;
+    } else {
+        // YELLOW (t=0.5) → GREEN (t=1.0)
+        float f = (t - 0.5f) / 0.5f; // 0..1
+        r = (uint8_t)((1.0f - f) * 255);
+        g = 255;
         b = 0;
     }
 
