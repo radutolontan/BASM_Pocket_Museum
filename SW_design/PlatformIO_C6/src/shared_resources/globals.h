@@ -148,4 +148,15 @@
 #define BINARY_DIR_NORM_MAG     50.0f    // uT
 #define BINARY_DIR_NORM_ROT     200.0f   // deg/s
 
+// ===== BINARY DISPLAY MAGNITUDE ORDER OF MAGNITUDE =====
+// Scaling factors to convert measurements to integer values for binary encoding
+// Adjust these to add resolution or fit within available bits (12 bits = 0-4095)
+#define BINARY_MAG_ORDER_TEMP     10.0f   // 12.3°C → 123
+#define BINARY_MAG_ORDER_PRESS    1.0f    // 1080.1 hPa → 1080
+#define BINARY_MAG_ORDER_LUX      0.1f    // 12345 lux → 1234
+#define BINARY_MAG_ORDER_VOL      10.0f   // -33.4 dB → -334
+#define BINARY_MAG_ORDER_ACCEL    1.0f    // 1234.5 mg → 1234
+#define BINARY_MAG_ORDER_MAG      100.0f  // 45.67 uT → 4567
+#define BINARY_MAG_ORDER_ROT      10.0f   // 123.4 deg/s → 1234
+
 

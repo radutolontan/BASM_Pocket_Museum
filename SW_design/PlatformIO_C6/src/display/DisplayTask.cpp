@@ -439,15 +439,43 @@ void DisplayTask::updateMagnitudeDisplay(float value, float minValue, float maxV
             setLogicalPixel(MAGNITUDE_DISPLAY_OFFSET + i, color);
         }
     } else if (display_mode == DisplayMode::BINARY_DISPLAY) {
-        // Binary mode: encode value as binary across LEDs
-        // Clamp and normalize to [0, 1], then scale to integer range
-        float normalized = (value - minValue) / (maxValue - minValue);
-        normalized = fmax(0.0f, fmin(1.0f, normalized));
+        // Binary mode: encode actual integer value as binary across LEDs
+        // Determine order_of_magnitude based on current display state
+        float orderOfMagnitude = 1.0f;
+        switch (current_state) {
+            case DisplayState::DISPLAY_PRESSURE:
+                orderOfMagnitude = BINARY_MAG_ORDER_PRESS;
+                break;
+            case DisplayState::DISPLAY_TEMP:
+                orderOfMagnitude = BINARY_MAG_ORDER_TEMP;
+                break;
+            case DisplayState::DISPLAY_LUX:
+                orderOfMagnitude = BINARY_MAG_ORDER_LUX;
+                break;
+            case DisplayState::DISPLAY_VOLUME:
+                orderOfMagnitude = BINARY_MAG_ORDER_VOL;
+                break;
+            case DisplayState::DISPLAY_ACCEL:
+                orderOfMagnitude = BINARY_MAG_ORDER_ACCEL;
+                break;
+            case DisplayState::DISPLAY_MAG:
+                orderOfMagnitude = BINARY_MAG_ORDER_MAG;
+                break;
+            case DisplayState::DISPLAY_ROT_VEL:
+                orderOfMagnitude = BINARY_MAG_ORDER_ROT;
+                break;
+            default:
+                orderOfMagnitude = 1.0f;
+                break;
+        }
 
-        // Calculate the maximum value we can represent with available LEDs
-        // Each LED has 3 bits, so with 4 LEDs we can represent 0-4095 (12 bits)
-        uint32_t maxBinaryValue = (1 << (BINARY_MAGNITUDE_DISPLAY_COUNT * 3)) - 1;
-        uint32_t binaryValue = (uint32_t)(normalized * maxBinaryValue);
+        // Apply order of magnitude scaling and round to integer
+        float scaledValue = value * orderOfMagnitude;
+        int32_t intValue = (int32_t)round(scaledValue);
+
+        // Clamp to valid range [0, 4095] for 12-bit encoding
+        uint32_t maxBinaryValue = (1 << (BINARY_MAGNITUDE_DISPLAY_COUNT * 3)) - 1;  // 4095
+        uint32_t binaryValue = (uint32_t)fmax(0, fmin(intValue, (int32_t)maxBinaryValue));
 
         // Display each LED's portion of the binary value
         for (int i = 0; i < BINARY_MAGNITUDE_DISPLAY_COUNT; i++) {
