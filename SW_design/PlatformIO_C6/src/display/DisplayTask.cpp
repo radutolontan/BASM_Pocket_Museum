@@ -169,10 +169,8 @@ void DisplayTask::run_boot(){
         bool buttonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
         if (buttonState == HIGH) {
             display_mode = DisplayMode::BINARY_DISPLAY;
-            Serial.println("[DisplayTask] Display mode: BINARY_DISPLAY");
         } else {
             display_mode = DisplayMode::VU_DISPLAY;
-            Serial.println("[DisplayTask] Display mode: VU_DISPLAY");
         }
 
         // Transition to INIT
@@ -587,22 +585,21 @@ uint32_t DisplayTask::getMagnitudeColor(float normalized, int ledIndex) {
 
 uint32_t DisplayTask::getBinaryMagnitudeColor(uint32_t value, int ledIndex) {
     // Each LED displays 3 bits from the value
-    // Leftmost LED (ledIndex=0) shows MSB (bits 11,10,9)
-    // Rightmost LED (ledIndex=3) shows LSB (bits 2,1,0)
+    // LED 0 (leftmost, physical 8) shows bits 0,1,2 (LSB)
+    // LED 3 (rightmost, physical 5) shows bits 9,10,11 (MSB)
     // Bit encoding per LED: RED = bit m+2 (MSB), YELLOW = bit m+1, BLUE = bit m (LSB)
+    // More LEDs lit = larger magnitude
 
-    // Reverse the LED index so leftmost shows MSB
-    int reversedIndex = (BINARY_MAGNITUDE_DISPLAY_COUNT - 1) - ledIndex;
-    int m = reversedIndex * 3;
+    int m = ledIndex * 3;
 
     // Extract the 3 bits for this LED
     bool blueBit = (value >> m) & 1;          // bit m (LSB for this LED)
     bool yellowBit = (value >> (m + 1)) & 1;  // bit m+1 (middle bit)
     bool redBit = (value >> (m + 2)) & 1;     // bit m+2 (MSB for this LED)
 
-    // If no bits are active, return OFF
+    // If no bits are active, return YELLOW (not OFF)
     if (!yellowBit && !redBit && !blueBit) {
-        return colors_lib[0]; // OFF
+        return colors_lib[2]; // YELLOW
     }
 
     // Combine RGB components based on active bits
