@@ -87,9 +87,9 @@
 #define BINARY_MAG_ORDER_PRESS    1.0f    // 1080.1 hPa → 1080
 #define BINARY_MAG_ORDER_LUX      0.1f    // 12345 lux → 1234
 #define BINARY_MAG_ORDER_VOL      10.0f   // -33.4 dB → -334
-#define BINARY_MAG_ORDER_ACCEL    1.0f    // 1234.5 mg → 1234
+#define BINARY_MAG_ORDER_ACCEL    0.1f    // 985.1 mg → 99
 #define BINARY_MAG_ORDER_MAG      100.0f  // 45.67 uT → 4567
-#define BINARY_MAG_ORDER_ROT      10.0f   // 123.4 deg/s → 1234
+#define BINARY_MAG_ORDER_ROT      0.166f  // 123.4 deg/s → 21 RPM
 
 
 // ============================================================
