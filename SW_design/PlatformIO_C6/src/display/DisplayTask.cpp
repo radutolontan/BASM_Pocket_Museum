@@ -530,9 +530,9 @@ void DisplayTask::updateDirectionDisplay(float x, float y, float z) {
         // NOTE: X and Y are swapped due to IC orientation
 
         if (BINARY_DIRECTION_DISPLAY_COUNT >= 3) {
-            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(y, binary_dir_norm)); // X LED displays Y component
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 0, getDirectionColor(-y, binary_dir_norm)); // X LED displays Y component
             setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 1, getDirectionColor(x, binary_dir_norm)); // Y LED displays X component
-            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 2, getDirectionColor(z, binary_dir_norm)); // Z
+            setLogicalPixel(BINARY_DIRECTION_DISPLAY_OFFSET + 2, getDirectionColor(-z, binary_dir_norm)); // Z
         }
     }
 }
