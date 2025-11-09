@@ -56,8 +56,8 @@ DisplayTask::DisplayTask()
 void DisplayTask::setupDisplayTask(BMSTask* bms) {
     strip.begin();  // Initialize the NeoPixel library
     setDisplayState(DisplayState::BOOT);
-    // GPIO for Push-button which toggles display mode (with pull-down for default binary mode)
-    pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT_PULLDOWN);
+    // GPIO for Push-button which toggles display mode (external pull-up in circuit)
+    pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT);
     // Store BMS Task Pointer
     this->bmsTask = bms;
 }
@@ -164,9 +164,10 @@ void DisplayTask::run_boot(){
     // Check if BMS is Ready
     if (bmsTask && bmsTask->isLatched()) {
         // Check DISPLAY_MODE_PUSHBUTTON_PIN to select display mode
-        // LOW = BINARY_DISPLAY (default), HIGH = VU_DISPLAY
+        // HIGH = BINARY_DISPLAY (default, not pressed - external pull-up)
+        // LOW = VU_DISPLAY (button pressed during boot)
         bool buttonState = digitalRead(DISPLAY_MODE_PUSHBUTTON_PIN);
-        if (buttonState == LOW) {
+        if (buttonState == HIGH) {
             display_mode = DisplayMode::BINARY_DISPLAY;
             Serial.println("[DisplayTask] Display mode: BINARY_DISPLAY");
         } else {
