@@ -84,11 +84,11 @@
 // Scaling factors to convert measurements to integer values for binary encoding
 // Adjust these to add resolution or fit within available bits (12 bits = 0-4095)
 #define BINARY_MAG_ORDER_TEMP     10.0f   // 12.3°C → 123
-#define BINARY_MAG_ORDER_PRESS    1.0f    // 1080.1 hPa → 1080
+#define BINARY_MAG_ORDER_PRESS    10.0f   // 108.12 hPa → 1081
 #define BINARY_MAG_ORDER_LUX      0.1f    // 12345 lux → 1234
 #define BINARY_MAG_ORDER_VOL      10.0f   // -33.4 dB → -334
 #define BINARY_MAG_ORDER_ACCEL    0.1f    // 985.1 mg → 99
-#define BINARY_MAG_ORDER_MAG      100.0f  // 45.67 uT → 4567
+#define BINARY_MAG_ORDER_MAG      1.0f    // 45.67 uT → 46
 #define BINARY_MAG_ORDER_ROT      0.166f  // 123.4 deg/s → 21 RPM
 
 
