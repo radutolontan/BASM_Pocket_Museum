@@ -508,6 +508,13 @@ void DisplayTask::updateMagnitudeDisplay(float value) {
         uint32_t maxBinaryValue = (1 << (BINARY_MAGNITUDE_DISPLAY_COUNT * 3)) - 1;  // 4095
         uint32_t binaryValue = (uint32_t)fmax(0, fmin(intValue, (int32_t)maxBinaryValue));
 
+        // Mask LSBs for noisy IMU sensors to reduce flickering
+        if (current_state == DisplayState::DISPLAY_ACCEL ||
+            current_state == DisplayState::DISPLAY_MAG ||
+            current_state == DisplayState::DISPLAY_ROT_VEL) {
+            binaryValue = binaryValue & ~3;  // Clear bits 0 and 1 (quantize to multiples of 4)
+        }
+
         // Display each LED's portion of the binary value
         for (int i = 0; i < BINARY_MAGNITUDE_DISPLAY_COUNT; i++) {
             uint32_t color = getBinaryMagnitudeColor(binaryValue, i);
