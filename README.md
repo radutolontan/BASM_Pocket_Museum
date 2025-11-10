@@ -20,14 +20,20 @@
 ![diagram_SW](Resources/task_structure.svg)
 The software stack can be split between the following tasks:
 ## 1. SensorTask
-Responsible with initializing, managing, collecting and processing sensor data. Pushes each new reading to the ***shared_data_buffer***. 
+Responsible with initializing, managing, collecting and processing sensor data. Pushes each new  raw reading to the ***shared_data_buffer***. 
 Uses the ***SensorHAL*** virtual layer, as implemented into ***specific_sensor_HAL*** to standardize high-level I/O across all sesnors.
 ### States
 * **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
 * **INIT** - initializes I2C bus for comms to sensors, configures and confirms communications to sensors
-* **READ** - captures one sample for each sensor value. New, raw values are pushed to the ***shared_data_buffer***.
-* **PROCESS** - post-processing required to obtain associated values *(ex. acceleration is integrated once to obtain velocity)*
-* **SLEEP** - the state machine waits in this state until a new **READ->PROCESS** cycle is started
+* **READ** - if a sensor is ready to read (each sensor has an individual read_rate_Hz), capture a raw reading, and commits it to the last frame of ***shared_data_buffer***.
+* **PROCESS** - **[NOT IMPLEMENTED]** 
+* **SLEEP** - **[NOT IMPLEMENTED]** 
+### Sensors
+For the Pocket Lab EDU V0, the sensors and their respective measurements are listed below:
+* **ICM-20948** - 9DOF IMU measuring translational acceleration, rotational velocity & magnetic field strength
+* **ICP-20100** - Ambient Temperature & Air Pressure
+* **BH1750FVI** - Ambient Light
+* **MMICT390200012** - Microphone (dB & sound)
 ## 2. EvaluatorTask
 Responsible for gauging player effort. The EvaluatorTask owns multiple instances of the abstract base class ***EvaluatorBase***. 
 EvaluatorBase standardizes I/O across all evaluators, such as ***DisplaySessionEvaluator*** (which captures aggregate statistics on sensor data while a specific ***DisplayTask*** mode is showing).
