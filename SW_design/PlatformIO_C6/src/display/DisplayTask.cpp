@@ -510,7 +510,7 @@ void DisplayTask::updateMagnitudeDisplay(float value) {
 
         // Mask LSBs for noisy IMU sensors to reduce flickering
         if (current_state == DisplayState::DISPLAY_ACCEL ||
-            current_state == DisplayState::DISPLAY_MAG ||
+            // current_state == DisplayState::DISPLAY_MAG ||
             current_state == DisplayState::DISPLAY_ROT_VEL) {
             binaryValue = binaryValue & ~3;  // Clear bits 0 and 1 (quantize to multiples of 4)
         }

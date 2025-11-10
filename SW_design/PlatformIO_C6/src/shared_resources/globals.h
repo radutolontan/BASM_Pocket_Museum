@@ -1,7 +1,7 @@
 #pragma once
 
 // =========== SW VERSION =============
-#define GIT_SHA "sexi"
+#define GIT_SHA "mag_check"
 
 // ============================================================
 // ================= CHARGE CONFIGURATION =====================
@@ -77,7 +77,7 @@
 // ===== BINARY DISPLAY DIRECTION NORMALIZATION =====
 // Normalization values for vector component display (RED = very negative, GREEN = very positive)
 #define BINARY_DIR_NORM_ACCEL   1000.0f  // mg
-#define BINARY_DIR_NORM_MAG     50.0f    // uT
+#define BINARY_DIR_NORM_MAG     400.0f   // uT x 0.1f
 #define BINARY_DIR_NORM_ROT     200.0f   // deg/s
 
 // ===== BINARY DISPLAY MAGNITUDE ORDER OF MAGNITUDE =====
@@ -88,7 +88,7 @@
 #define BINARY_MAG_ORDER_LUX      0.1f    // 12345 lux → 1234
 #define BINARY_MAG_ORDER_VOL      10.0f   // -33.4 dB → -334
 #define BINARY_MAG_ORDER_ACCEL    0.1f    // 985.1 mg → 99
-#define BINARY_MAG_ORDER_MAG      1.0f    // 45.67 uT → 46
+#define BINARY_MAG_ORDER_MAG      0.1f    // 456.7 uT → 46
 #define BINARY_MAG_ORDER_ROT      0.166f  // 123.4 deg/s → 21 RPM
 
 
