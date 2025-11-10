@@ -38,17 +38,71 @@ EvaluatorBase standardizes I/O across all evaluators, such as ***DisplaySessionE
 * **ERROR** - NOT IMPLEMENTED
 ## 3. DisplayTask
 Manages the primary user feedback tool - a chain of NeoPixel RGB LEDs organized across three zones: 
-* 3 LEDs for conveying DisplayState - tells the user what quantities are being measured & additional device info
-* 3 LEDs for conveying scalar values and magnitudes of vector quantities
-* 3 LEDs for conveying qualitative cartesian components for vector quantities magnitudes
+* 2 LEDs - **Mode Display** - color code for quantity actively displayed (WH|Light ; MAGENTA|Sound ; YLW|Magnets ; GRN|Accel ; ORNG|Gyro ; RED|AirTemp ; BLUE|AirPress) & additional device info (i.e Battery State)
+* 3 LEDs - **Magnitude Display** - conveys scalar values and magnitudes of vector quantities
+* 3 LEDs - **Direction Display** - conveys qualitative cartesian components for vector quantities (Please note that the Direction Display is only available in the **Binary Mode** - ***see below for more***)
 
-A push-button is used to cycle through DisplayStates. A set of aggregateStats (belonging to ***shared_data_buffer*** is reset every time DisplayState is cycled)
+A push-button (display mode button) is used to cycle through DisplayStates. A set of aggregateStats (belonging to ***shared_data_buffer*** is reset every time DisplayState is cycled)
 ### States
 * **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
 * **INIT** - initializes the RGB LED strip and displays a color code for the GIT SHA (used to confirm proper code in use)
-* **DISPLAY_PRESSURE** - reads the last pressure value from ***shared_data_buffer*** and displays it using a color code
-* **DISPLAY_ACCEL** - NOT IMPLEMENTED
-* **DISPLAY_SENSOR*** - multiple DisplayStates to be added for new sensors and physical quantities measured
+* **DISPLAY_XX** - reads the last value for the XX quantity from  ***shared_data_buffer*** and displays it 
+
+### Modes
+The DisplayTask supports two distinct visualization modes selected at boot time by holding (or not holding) the display mode button:
+VU_DISPLAY Mode (Traditional)
+
+**VU mode** provides a classic "volume unit" meter visualization reminiscent of analog audio equipment. In this mode, scalar measurements are displayed as a horizontal bar graph using 6 magnitude LEDs. The display shows the normalized percentage of the measurement relative to predefined min/max thresholds for each sensor type.
+
+The magnitude LEDs use a gradient color scheme that transitions smoothly from green (low values) through yellow (mid-range) to red (high values), providing an intuitive visual indication of intensity. The more LEDs that are lit, the closer the measurement is to its maximum threshold. Vector quantities in VU mode do not display directional information - only their magnitude is shown.
+BINARY_DISPLAY Mode (Integer Encoding)
+
+**Binary mode** takes a fundamentally different approach by encoding the actual integer value of measurements rather than showing a percentage. This mode provides precise numerical information that can be decoded by reading the LED colors, making it particularly useful for debugging and data verification.
+
+The system uses 4 magnitude LEDs to encode 12-bit values (0-4095) using a novel 3-bit-per-LED color encoding scheme:
+
+How the Binary Encoding Works:
+
+Each RGB LED encodes 3 bits of information using its individual color channels:
+
+    Blue channel = Bit m (LSB for that LED)
+    Yellow channel = Bit m+1 (middle bit)
+    Red channel = Bit m+2 (MSB for that LED)
+
+The LEDs are arranged from left to right, with LED #1 (leftmost) showing bits 0-2, LED #2 showing bits 3-5, LED #3 showing bits 6-8, and LED #4 (rightmost) showing bits 9-11. This arrangement means that more LEDs being lit indicates a larger magnitude.
+
+Color Combinations: The 3 bits per LED create 8 possible states (0-7), each displayed as a distinct color:
+
+    000 → OFF
+    001 → BLUE (bit 0 only)
+    010 → YELLOW (bit 1 only)
+    011 → GREEN (bits 0+1: blue+yellow = green)
+    100 → RED (bit 2 only)
+    101 → PURPLE (bits 0+2: blue+red = purple)
+    110 → ORANGE (bits 1+2: yellow+red = orange)
+    111 → WHITE (all three bits active)
+
+Example: To encode the value 1059:
+
+    1059 in binary = 0100 0010 0011 = 2^0 + 2^1 + 2^5 + 2^10
+    LED #1 (bits 0-2 = 011): Blue + Yellow = GREEN
+    LED #2 (bits 3-5 = 100): Red only = RED
+    LED #3 (bits 6-8 = 000): All off = OFF
+    LED #4 (bits 9-11 = 100): Yellow only = YELLOW
+
+Before encoding, sensor readings are multiplied by sensor-specific scaling factors (defined as BINARY_MAG_ORDER_* constants) to convert floating-point measurements into integer values. For example, temperature is multiplied by 10, so 25.3°C becomes 253, while pressure is multiplied by 10, converting 101.32 kPa to 1013  (then clamped to 4095). Please note that acceleration, gyro measurements are very noisy and flicker a lot; as such, the first two bits are masked, effectively rounding every measurement to a multiple of 4.
+
+Direction Display:
+
+Binary mode also displays vector components (X, Y, Z) using 3 dedicated direction LEDs. Each LED shows its component using a color gradient:
+
+    RED → negative values
+    OFF → near-zero values (±5% dead zone)
+    GREEN → positive values
+
+The intensity of the color fades proportionally with the component's magnitude, providing both sign and strength information. 
+
+
 
 ## 4. SDManager
 Owns operation of the microSD card. It manages access to the resource using a separate state machine.
