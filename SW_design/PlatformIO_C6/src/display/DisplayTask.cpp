@@ -598,9 +598,9 @@ uint32_t DisplayTask::getBinaryMagnitudeColor(uint32_t value, int ledIndex) {
     bool yellowBit = (value >> (m + 1)) & 1;  // bit m+1 (middle bit)
     bool redBit = (value >> (m + 2)) & 1;     // bit m+2 (MSB for this LED)
 
-    // If no bits are active, return YELLOW (not OFF)
+    // If no bits are active, return OFF
     if (!yellowBit && !redBit && !blueBit) {
-        return colors_lib[2]; // YELLOW
+        return colors_lib[0]; // OFF
     }
 
     // Combine RGB components based on active bits
@@ -623,7 +623,7 @@ uint32_t DisplayTask::getBinaryMagnitudeColor(uint32_t value, int ledIndex) {
         // GREEN (YELLOW + BLUE)
         r = 0;
         g = 255;
-        b = 255;
+        b = 0;
     } else if (!yellowBit && redBit && blueBit) {
         // PURPLE (RED + BLUE)
         r = 255;
