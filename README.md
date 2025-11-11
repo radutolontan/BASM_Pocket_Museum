@@ -17,6 +17,12 @@ Since the USB-C power supply is non-negotiated, it is limited to supplying 5V at
 A Voltage Monitor is used to avoid brown-out bevavior on the ESP32 when the voltage on the 3V3 rail drops below 2.9V.
 Finally, a simple circuit is used to enable and latch the LDO through a push-button (SW 1) and a GPIO on the ESP32. 
 
+### Display
+The display consists of a chain of NeoPixel RGB LEDs organized across three zones: 
+* 2 LEDs - **Mode Display** - color code for quantity actively displayed (WH|Light ; MAGENTA|Sound ; YLW|Magnets ; GRN|Accel ; ORNG|Gyro ; RED|AirTemp ; BLUE|AirPress) & additional device info (i.e Battery State - Blinking Orange - Battery LOW; Blinking Green - Charging; Blinking Blue - Done Charging)
+* 3 LEDs - **Magnitude Display** - conveys scalar quantities and magnitudes of vector quantities
+* 3 LEDs - **Direction Display** - conveys qualitative cartesian components for vector quantities (Please note that the Direction Display is only available in the **Binary Display Mode** - ***see below for more***)
+
 ### Sensors
 For the Pocket Lab EDU V0, the sensors and their respective measurements are listed below:
 * **ICM-20948** - 9DOF IMU measuring translational acceleration, rotational velocity & magnetic field strength
@@ -37,31 +43,28 @@ Uses the ***SensorHAL*** virtual layer, as implemented into ***specific_sensor_H
 * **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
 * **INIT** - initializes I2C bus for comms to sensors, configures and confirms communications to sensors
 * **READ** - if a sensor is ready to read (each sensor has an individual read_rate_Hz), capture a raw reading, and commits it to the last frame of ***shared_data_buffer***.
-* **PROCESS** - **[NOT IMPLEMENTED]** 
-* **SLEEP** - **[NOT IMPLEMENTED]** 
-## 2. EvaluatorTask
-Responsible for gauging player effort. The EvaluatorTask owns multiple instances of the abstract base class ***EvaluatorBase***. 
-EvaluatorBase standardizes I/O across all evaluators, such as ***DisplaySessionEvaluator*** (which captures aggregate statistics on sensor data while a specific ***DisplayTask*** mode is showing).
-### States
-* **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
-* **INIT** - initializes and confirms appropriate logging is setup for all evaluators
-* **RUNNING** - checks progress on all evaluators, and allows access to the SDManager cue
-* **ERROR** - NOT IMPLEMENTED
-## 3. DisplayTask
-Manages the primary user feedback tool - a chain of NeoPixel RGB LEDs organized across three zones: 
-* 2 LEDs - **Mode Display** - color code for quantity actively displayed (WH|Light ; MAGENTA|Sound ; YLW|Magnets ; GRN|Accel ; ORNG|Gyro ; RED|AirTemp ; BLUE|AirPress) & additional device info (i.e Battery State)
-* 3 LEDs - **Magnitude Display** - conveys scalar values and magnitudes of vector quantities
-* 3 LEDs - **Direction Display** - conveys qualitative cartesian components for vector quantities (Please note that the Direction Display is only available in the **Binary Mode** - ***see below for more***)
 
-A push-button (display mode button) is used to cycle through DisplayStates. A set of aggregateStats (belonging to ***shared_data_buffer*** is reset every time DisplayState is cycled)
+## 2. BMSTask
+Responsible with managing power delivery to the Pocket Lab. Monitors battery health, informs user about remaining run-time, and handles power-up and shut-down of entire system.
+### States
+* **BOOT** - wait until startup timer expires. Prevents accidental power-up if SW 1 is bumped.
+* **STARTUP_LATCH** - configure Charger IC monitoring pins after confirming power is latched.
+* **ACTIVE** - monitor feedback from the Charger IC & Battery Voltage predictions to infer ChargeControllerState
+    * BATTERY_ONLY - charger unplugged & battery supplying power
+    * LOW_BATTERY - charger unplugged & battery supplying power & less than 30 minutes of battery life remaining
+    * CHARGING - charger connected & battery charging
+    * DONE_CHARGING - charger connected & supplying power to system (battery charging complete)
+* **SHUTWON_PENDING** - when SW 1 is pressed to initiate a shut-down, the LDO is un-latched and other  tasks are informed to facilitate a clean shut-down.
+
+## 3. DisplayTask
+Manages the primary user feedback tool, the chain of NeoPixels. A push-button (SW 2)(display mode button) is de-bounced and used to cycle through DisplayStates. The current DisplayState is color-coded into the **Mode Display**. 
 ### States
 * **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
 * **INIT** - initializes the RGB LED strip and displays a color code for the GIT SHA (used to confirm proper code in use)
-* **DISPLAY_XX** - reads the last value for the XX quantity from  ***shared_data_buffer*** and displays it 
+* **DISPLAY_XX** - pulls the last value for the XX quantity from ***shared_data_buffer***. Updates the **Magnitude Display** and **Mode Display** to reflect the measurement.
 
-### Modes
+### Visualization Modes
 The DisplayTask supports two distinct visualization modes selected at boot time by holding (or not holding) the display mode button:
-VU_DISPLAY Mode (Traditional)
 
 **VU mode** provides a classic "volume unit" meter visualization reminiscent of analog audio equipment. In this mode, scalar measurements are displayed as a horizontal bar graph using 6 magnitude LEDs. The display shows the normalized percentage of the measurement relative to predefined min/max thresholds for each sensor type.
 
@@ -114,8 +117,17 @@ Binary mode also displays vector components (X, Y, Z) using 3 dedicated directio
 The intensity of the color fades proportionally with the component's magnitude, providing both sign and strength information. 
 
 
+## 4. EvaluatorTask
+Responsible for gauging player effort. The EvaluatorTask owns multiple instances of the abstract base class ***EvaluatorBase***. 
+EvaluatorBase standardizes I/O across all evaluators, such as ***DisplaySessionEvaluator*** (which captures aggregate statistics on sensor data while a specific ***DisplayTask*** mode is showing).
+### States
+* **BOOT** - default state on boot-up; transition to INIT triggered from main.cpp
+* **INIT** - initializes and confirms appropriate logging is setup for all evaluators
+* **RUNNING** - checks progress on all evaluators, and allows access to the SDManager cue
+* **ERROR** - NOT IMPLEMENTED
 
-## 4. SDManager
+
+## 5. SDManager
 Owns operation of the microSD card. It manages access to the resource using a separate state machine.
 ### States
 * **BOOT** - default state on boot-up; transition to INIT automatically after initializing SD cue
