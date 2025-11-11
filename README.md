@@ -1,20 +1,18 @@
+# Introduction
+The Pocket Lab is the next generation approach to Science Labs. It is designed by the Bucharest Applied STEAM Museum to bring scientific exploration into anyones' hands. From citizen science projects and fearless (guided or individual)  exploration, the Pocket Lab brings to life the connections between Science, Technology, Engineering, Art & Math in the world around. 
+
+![Graphic](Resources/pocket_lab_graphic.png)
+
 
 # Hardware Design
+The system is built around an ESP32 C6 MINI microcontroller. It's powerful, features great connectivity through WiFi and Bluetooth and integrates very well with accessible codebases through Arduino.
+The microcontroller collects data from a suite of sensors (9 DOF IMU, light, pressure etc.) and uses a chain of WS2812B RGB LEDs to relay measurements to the user. An on-board microSD card can be used for logging or automated-grading of student work.
+Everything is powered by a 3.7V LiPo cell, which is charged using the USB-C connector.
 ## Board ID - Education V0
 ![diagram_HW](Resources/schematic_functional_edu_v0.png)
-## Board ID - Development V0
-**DEPRECATED** -The last SW Version backwards compatible with the DEV V0 board is the ***DEV_V0_Compatibility*** branch.
-![diagram_HW](Resources/schematic_functional_dev_v0.png)
-**Known INOP** - Due to Manufacturing defects & design issues, the following HW components are not operative:
-* The entire Audio Engine including the I2S Interface
-* #4 ; #5 ; #6 RGB LEDs
-* SD Card on all S/N EXCEPT 8, 9
 
-**Programming** - The MCU can be programmed with either
-* a debug harness which connects to the USB D+ and D- lines and directly shows up as an abstract control module interface - ttyACMx
-    * connect the black/red plug to the FTDI header - this powers the board
-    * connect the white/green plug to the I2S header - I2S was intended to use the same GPIOs that the USB peripheral on the ESP32 uses
-* an FTDI chip (such as the CP2102N Friend by Adafruit) which connects to the six-pin FTDI header and shows up as a USB-to-serial interface - ttyUSB
+
+**Programming** - The MCU can be programmed through Joint download boot mode. To enter this mode, first connect the Pocket Lab to a host computer using a USB-C data cable. Then, hold down SW 2 (labeled "MOD"; connected to GPIO 9), hold down SW 1 (labeled "ON/OFF"), and finally release SW 2. The USB-serial connection is named tty/ACMx and it allows PlatformIO to flash code to the ESP32 C6.
 
 # Software Architecture
 ![diagram_SW](Resources/task_structure.svg)
