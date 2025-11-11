@@ -11,8 +11,21 @@ Everything is powered by a 3.7V LiPo cell, which is charged using the USB-C conn
 ## Board ID - Education V0
 ![diagram_HW](Resources/schematic_functional_edu_v0.png)
 
+### Power
+The power stage is designed for a 500 mAh 3.7V LiPo cell. The charger IC is configured to supply 450 mA in the constant-current regime and stops charging when the current drops below 150 mA in the constant-voltage regime. 
+Since the USB-C power supply is non-negotiated, it is limited to supplying 5V at 500 mA, which is sufficient for the configuration described above. 
+A Voltage Monitor is used to avoid brown-out bevavior on the ESP32 when the voltage on the 3V3 rail drops below 2.9V.
+Finally, a simple circuit is used to enable and latch the LDO through a push-button (SW 1) and a GPIO on the ESP32. 
 
-**Programming** - The MCU can be programmed through Joint download boot mode. To enter this mode, first connect the Pocket Lab to a host computer using a USB-C data cable. Then, hold down SW 2 (labeled "MOD"; connected to GPIO 9), hold down SW 1 (labeled "ON/OFF"), and finally release SW 2. The USB-serial connection is named tty/ACMx and it allows PlatformIO to flash code to the ESP32 C6.
+### Sensors
+For the Pocket Lab EDU V0, the sensors and their respective measurements are listed below:
+* **ICM-20948** - 9DOF IMU measuring translational acceleration, rotational velocity & magnetic field strength
+* **ICP-20100** - Ambient Temperature & Air Pressure
+* **BH1750FVI** - Ambient Light
+* **MMICT390200012** - Microphone (dB & sound)
+
+### Programming
+ The MCU can be programmed through Joint download boot mode. To enter this mode, first connect the Pocket Lab to a host computer using a USB-C data cable. Then, hold down SW 2 (labeled "MOD"; connected to GPIO 9), hold down SW 1 (labeled "ON/OFF"), and finally release SW 2. The USB-serial connection is named tty/ACMx and it allows PlatformIO to flash code to the ESP32 C6.
 
 # Software Architecture
 ![diagram_SW](Resources/task_structure.svg)
@@ -26,12 +39,6 @@ Uses the ***SensorHAL*** virtual layer, as implemented into ***specific_sensor_H
 * **READ** - if a sensor is ready to read (each sensor has an individual read_rate_Hz), capture a raw reading, and commits it to the last frame of ***shared_data_buffer***.
 * **PROCESS** - **[NOT IMPLEMENTED]** 
 * **SLEEP** - **[NOT IMPLEMENTED]** 
-### Sensors
-For the Pocket Lab EDU V0, the sensors and their respective measurements are listed below:
-* **ICM-20948** - 9DOF IMU measuring translational acceleration, rotational velocity & magnetic field strength
-* **ICP-20100** - Ambient Temperature & Air Pressure
-* **BH1750FVI** - Ambient Light
-* **MMICT390200012** - Microphone (dB & sound)
 ## 2. EvaluatorTask
 Responsible for gauging player effort. The EvaluatorTask owns multiple instances of the abstract base class ***EvaluatorBase***. 
 EvaluatorBase standardizes I/O across all evaluators, such as ***DisplaySessionEvaluator*** (which captures aggregate statistics on sensor data while a specific ***DisplayTask*** mode is showing).
