@@ -130,11 +130,7 @@ graph TB
 ### 1. SensorTask
 Responsible for initializing, managing, collecting, and processing sensor data. Pushes each new raw reading to the `shared_data_buffer`. Uses the **SensorHAL** virtual layer, as implemented in `specific_sensor_HAL`, to standardize high-level I/O across all sensors.
 
-**Multi-Rate Sampling**: Different sensors are sampled at different rates based on their response characteristics and application requirements. Each sensor has an individual `read_rate_Hz` parameter that determines its sampling frequency:
-- **IMU sensors (ICM-20948)** - Sampled at higher rates (e.g., 50-100 Hz) to capture fast motion dynamics
-- **Environmental sensors (ICP-20100, BH1750FVI)** - Sampled at lower rates (e.g., 1-10 Hz) as temperature, pressure, and light change slowly
-- **Audio sensor (MMICT390200012)** - Sampled at application-specific rates depending on the audio processing requirements
-
+Furthermore, note that different sensors are sampled at different rates based on their response characteristics and application requirements.
 The task maintains individual timers for each sensor and only reads when that sensor's interval has elapsed, optimizing power consumption and computational load.
 
 #### States
@@ -159,19 +155,11 @@ Responsible for managing power delivery to the Pocket Lab. Monitors battery heal
 The current BMSTask implementation has several critical issues that will be addressed in future revisions:
 - **Limited voltage monitoring**: VBat is only checked when in `BATTERY_ONLY` state, missing voltage drops during charging or when connected to USB
 - **No automatic low-voltage disconnect**: The system does not automatically disconnect power when VBat drops dangerously low, risking deep discharge that could trigger the battery's undervoltage lockout protection
-- **Inaccurate battery life estimation**: The remaining runtime calculation does not account for varying load conditions or temperature effects on battery capacity
-- **Race condition on shutdown**: The shutdown sequence does not guarantee all tasks complete their cleanup before power is cut
-- **No brown-out protection coordination**: BMSTask doesn't coordinate with the voltage monitor circuit to provide early warning of impending brown-out events
 
 ### 3. AudioTask
 Manages audio input and output operations for the Pocket Lab. The AudioTask is responsible for interfacing with the microphone sensor (MMICT390200012) and any future audio peripherals through a Hardware Abstraction Layer (HAL).
-
-**Audio HAL Architecture**: The AudioTask implements an **AudioHAL** abstraction layer to decouple high-level audio processing from hardware-specific implementations. This design allows:
-- **Future extensibility**: Easy integration of different microphone types, speakers, or audio codecs without modifying the core task logic
-- **Standardized interface**: Consistent API for audio operations (initialization, sampling, volume control) across different hardware
-- **Modular design**: Hardware-specific implementations in `specific_audio_HAL` can be swapped or updated independently
-
-The AudioTask writes processed audio data (e.g., sound pressure level in dB, frequency analysis) to the `shared_data_buffer` for visualization by the DisplayTask or logging by application-level tasks.
+This decouples high-level audio processing from hardware-specific implementations, allowing to scale audio I/O in the future.
+Like the SensorTask, the AudioTask writes processed audio data (e.g., sound pressure level in dB, frequency analysis) to the `shared_data_buffer`.
 
 #### States
 * **BOOT** - Default state on boot-up; transition to INIT triggered from main.cpp
@@ -187,16 +175,15 @@ Manages the primary user feedback tool, the chain of NeoPixels. A push-button (S
 * **INIT** - Initializes the RGB LED strip and displays a color code for the GIT SHA (used to confirm proper code version is running)
 * **DISPLAY_XX** - Pulls the latest value for the XX quantity from `shared_data_buffer`. Updates the **Magnitude Display** and **Mode Display** to reflect the measurement.
 
-#### Visualization Modes
 The DisplayTask supports two distinct visualization modes selected at boot time by holding (or not holding) the display mode button:
 
-**VU Mode (Volume Unit Display)**
+#### Visualization Modes - VU
 
 VU mode provides a classic "volume unit" meter visualization reminiscent of analog audio equipment. In this mode, scalar measurements are displayed as a horizontal bar graph using 6 magnitude LEDs. The display shows the normalized percentage of the measurement relative to predefined min/max thresholds for each sensor type.
 
 The magnitude LEDs use a gradient color scheme that transitions smoothly from green (low values) through yellow (mid-range) to red (high values), providing an intuitive visual indication of intensity. The more LEDs that are lit, the closer the measurement is to its maximum threshold. Vector quantities in VU mode display only their magnitude - no directional information is shown.
 
-**Binary Mode (Integer Encoding)**
+#### Visualization Modes - Binary (Integer Encoding)
 
 Binary mode takes a fundamentally different approach by encoding the actual integer value of measurements rather than showing a percentage. This mode provides precise numerical information that can be decoded by reading the LED colors, making it particularly useful for debugging and data verification.
 
