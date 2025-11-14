@@ -4,6 +4,7 @@
 #include "sensors/BH1750HAL.h"
 #include "sensors/AS7343HAL.h"
 #include "sensors/AS7331HAL.h"
+#include "sensors/AMG88XXHAL.h"
 #include "sensors/SensorHAL.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
@@ -30,6 +31,9 @@ AS7343HAL spectralSensor(Wire);
 
 // Instantiate AS7331 HAL Wrapper (Spectral UV Sensor)
 AS7331HAL spectralUVSensor(Wire);
+
+// Instantiate AMG88XX HAL Wrapper (Thermal Sensor)
+AMG88XXHAL thermalSensor(Wire);
 
 // CLASS Constructor
 SensorTask::SensorTask() {}
@@ -115,25 +119,25 @@ void SensorTask::run_init(){
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
     Wire.setClock(I2C_BITRATE);
 
-    // ICP20100 SENSOR 
+    // ICP20100 SENSOR ; I2C Address - 0x63
     if (pressureSensor.begin()){
         pressureSensor.setReadFrequency(SENSOR_RATE_BARO);
         Serial.println("[SensorTask] - ICP20100 initialized successfully");
     }
 
-    // BH1750FVI SENSOR 
+    // BH1750FVI SENSOR ; I2C Address - 0x23
     if (lightSensor.begin()){
         lightSensor.setReadFrequency(SENSOR_RATE_AMB_LUX);
         Serial.println("[SensorTask] - BH1750FVI initialized successfully");
     }
 
-    // ICM20948 SENSOR
+    // ICM20948 SENSOR ; I2C Address - 0x68
     if (imuSensor.begin()){
         imuSensor.setReadFrequency(SENSOR_RATE_IMU);
         Serial.println("[SensorTask] - ICM20948 initialized successfully");
     }
 
-    // AS7343 SPECTRAL SENSOR (Optional - may or may not be attached)
+    // AS7343 SPECTRAL SENSOR ; I2C Address - 0x39 (Optional - may or may not be attached)
     if (spectralSensor.begin()){
         spectralSensor.setReadFrequency(SENSOR_RATE_SPECTRAL);
         Serial.println("[SensorTask] - AS7343 initialized successfully");
@@ -141,12 +145,20 @@ void SensorTask::run_init(){
         Serial.println("[SensorTask] - AS7343 not detected (optional sensor)");
     }
 
-    // AS7331 SPECTRAL UV SENSOR (Optional - may or may not be attached)
+    // AS7331 SPECTRAL UV SENSOR ; I2C Address - 0x74 (Optional - may or may not be attached)
     if (spectralUVSensor.begin()){
         spectralUVSensor.setReadFrequency(SENSOR_RATE_SPECTRAL_UV);
         Serial.println("[SensorTask] - AS7331 initialized successfully");
     } else {
         Serial.println("[SensorTask] - AS7331 not detected (optional sensor)");
+    }
+
+    // AMG88XX THERMAL SENSOR ; I2C Address - 0x69 (Optional - may or may not be attached)
+    if (thermalSensor.begin()){
+        thermalSensor.setReadFrequency(SENSOR_RATE_GRIDEYE);
+        Serial.println("[SensorTask] - AMG88XX initialized successfully");
+    } else {
+        Serial.println("[SensorTask] - AMG88XX not detected (optional sensor)");
     }
 
     delay(1000);
@@ -215,6 +227,14 @@ void SensorTask::run_read(){
         }
     }
 
+    // ================ AMG88XX THERMAL SENSOR ===================
+    if (thermalSensor.shouldRead()){
+        if (thermalSensor.read(sensorReading)){
+            // Update SharedBuffer with thermal data
+            SharedBuffer::updateThermalData(sensorReading.thermal_pixels);
+        }
+    }
+
     // After read is complete, evaluate if we can commit a frame to SharedBuffer
     SharedBuffer::commitFrame();
 
@@ -225,6 +245,7 @@ void SensorTask::run_read(){
         imuSensor.printActualRate();
         spectralSensor.printActualRate();
         spectralUVSensor.printActualRate();
+        thermalSensor.printActualRate();
     #endif
 };
 

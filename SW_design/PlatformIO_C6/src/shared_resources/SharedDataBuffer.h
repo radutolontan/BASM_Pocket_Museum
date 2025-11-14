@@ -47,6 +47,9 @@ struct SensorData {
     float spectral_UVA = NAN;        // UVA (320-400nm)
     float spectral_UVB = NAN;        // UVB (280-320nm)
     float spectral_UVC = NAN;        // UVC (200-280nm)
+    // ========= THERMAL SENSOR (AMG88XX) =========
+    // 8x8 Thermal Array Data (temperatures in Celsius)
+    float thermal_pixels[8][8] = {{NAN}};  // 64-pixel thermal array
 
     // Timestamps for each data source (0 = no data yet)
     unsigned long timestamp_pressure_sensor = 0;
@@ -55,6 +58,7 @@ struct SensorData {
     unsigned long timestamp_mic_sensor = 0;
     unsigned long timestamp_spectral_sensor = 0;
     unsigned long timestamp_spectral_uv_sensor = 0;
+    unsigned long timestamp_thermal_sensor = 0;
 
     // Helper methods to check if data exists
     bool hasPressure() const { return timestamp_pressure_sensor > 0; }
@@ -63,6 +67,7 @@ struct SensorData {
     bool hasAudio() const { return timestamp_mic_sensor > 0; }
     bool hasSpectral() const { return timestamp_spectral_sensor > 0; }
     bool hasSpectralUV() const { return timestamp_spectral_uv_sensor > 0; }
+    bool hasThermal() const { return timestamp_thermal_sensor > 0; }
 };
 
 struct SensorStats {
@@ -105,6 +110,7 @@ namespace SharedBuffer {
                             uint16_t fxl, uint16_t f7, uint16_t f8, uint16_t nir,
                             uint16_t vis, uint16_t fd);
     void updateSpectralUVData(uint16_t uva, uint16_t uvb, uint16_t uvc);
+    void updateThermalData(const float thermal_array[8][8]);
 
     void init();
     std::deque<SensorData> getReadings();
