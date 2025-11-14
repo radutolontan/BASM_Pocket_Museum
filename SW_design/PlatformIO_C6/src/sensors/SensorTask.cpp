@@ -215,10 +215,6 @@ void SensorTask::run_read(){
         }
     }
 
-    // ===============================================================
-    // MAG_NORM IS OVERWRITTEN WITH LOG(MAG_NORM) INSIDE updateIMUData
-    // ===============================================================
-
     // After read is complete, evaluate if we can commit a frame to SharedBuffer
     SharedBuffer::commitFrame();
 
