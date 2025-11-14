@@ -40,8 +40,9 @@ public:
      * This method performs the following:
      * 1. Attempts to detect sensor on I2C bus
      * 2. Powers on the device
-     * 3. Configures for CMD (one-shot) measurement mode
-     * 4. Enables UV measurement
+     * 3. Configures for CONT (continuous) measurement mode
+     * 4. Sets break time based on SENSOR_RATE_SPECTRAL_UV
+     * 5. Starts continuous measurement
      *
      * If sensor is not present, returns false without error.
      */
