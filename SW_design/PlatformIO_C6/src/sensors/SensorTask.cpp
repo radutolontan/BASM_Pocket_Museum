@@ -206,7 +206,12 @@ void SensorTask::run_read(){
     // ================ AS7331 SPECTRAL UV SENSOR ===================
     if (spectralUVSensor.shouldRead()){
         if (spectralUVSensor.read(sensorReading)){
-            // UV data is updated directly in AS7331HAL::read() via SharedBuffer::updateSpectralUVData
+            // Update SharedBuffer with UV spectral data
+            SharedBuffer::updateSpectralUVData(
+                sensorReading.spectral_UVA,
+                sensorReading.spectral_UVB,
+                sensorReading.spectral_UVC
+            );
         }
     }
 

@@ -4,7 +4,6 @@
  */
 
 #include "AS7331HAL.h"
-#include "shared_resources/SharedDataBuffer.h"
 #include <Arduino.h>
 
 AS7331HAL::AS7331HAL(TwoWire& wire)
@@ -48,12 +47,13 @@ bool AS7331HAL::read(SensorData& data) {
         return false;
     }
 
-    // Update SensorData structure via SharedBuffer method
-    SharedBuffer::updateSpectralUVData(
-        as7331_hw.getUVA(),
-        as7331_hw.getUVB(),
-        as7331_hw.getUVC()
-    );
+    // Populate SensorData structure with UV channels
+    data.spectral_UVA = as7331_hw.getUVA();
+    data.spectral_UVB = as7331_hw.getUVB();
+    data.spectral_UVC = as7331_hw.getUVC();
+
+    // Update timestamp
+    data.timestamp_spectral_uv_sensor = millis();
 
     return true;
 }
