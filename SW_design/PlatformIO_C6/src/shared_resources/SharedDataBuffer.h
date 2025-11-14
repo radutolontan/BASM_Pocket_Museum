@@ -42,6 +42,11 @@ struct SensorData {
     float spectral_nir_855nm = NAN;  // Near Infrared
     float spectral_vis = NAN;        // Visible light sensor
     float spectral_fd = NAN;         // Flicker Detection
+    // ========= SPECTRAL UV SENSOR (AS7331) =========
+    // 3-Channel UV Spectral Data (raw ADC counts stored as float for NAN support)
+    float spectral_UVA = NAN;        // UVA (320-400nm)
+    float spectral_UVB = NAN;        // UVB (280-320nm)
+    float spectral_UVC = NAN;        // UVC (200-280nm)
 
     // Timestamps for each data source (0 = no data yet)
     unsigned long timestamp_pressure_sensor = 0;
@@ -49,6 +54,7 @@ struct SensorData {
     unsigned long timestamp_imu_sensor = 0;
     unsigned long timestamp_mic_sensor = 0;
     unsigned long timestamp_spectral_sensor = 0;
+    unsigned long timestamp_spectral_uv_sensor = 0;
 
     // Helper methods to check if data exists
     bool hasPressure() const { return timestamp_pressure_sensor > 0; }
@@ -56,6 +62,7 @@ struct SensorData {
     bool hasIMU() const { return timestamp_imu_sensor > 0; }
     bool hasAudio() const { return timestamp_mic_sensor > 0; }
     bool hasSpectral() const { return timestamp_spectral_sensor > 0; }
+    bool hasSpectralUV() const { return timestamp_spectral_uv_sensor > 0; }
 };
 
 struct SensorStats {
@@ -97,6 +104,7 @@ namespace SharedBuffer {
                             uint16_t fz, uint16_t fy, uint16_t f5, uint16_t f6,
                             uint16_t fxl, uint16_t f7, uint16_t f8, uint16_t nir,
                             uint16_t vis, uint16_t fd);
+    void updateSpectralUVData(uint16_t uva, uint16_t uvb, uint16_t uvc);
 
     void init();
     std::deque<SensorData> getReadings();

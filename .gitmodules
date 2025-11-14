@@ -22,3 +22,6 @@
 [submodule "SW_design/PlatformIO_C6/lib/SparkFun_Toolkit"]
 	path = SW_design/PlatformIO_C6/lib/SparkFun_Toolkit
 	url = https://github.com/sparkfun/SparkFun_Toolkit.git
+[submodule "SW_design/PlatformIO_C6/lib/SparkFun_AS7331_Arduino_Library"]
+	path = SW_design/PlatformIO_C6/lib/SparkFun_AS7331_Arduino_Library
+	url = https://github.com/sparkfun/SparkFun_AS7331_Arduino_Library.git
