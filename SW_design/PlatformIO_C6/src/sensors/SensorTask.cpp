@@ -3,6 +3,7 @@
 #include "sensors/ICM209XXHAL.h"
 #include "sensors/BH1750HAL.h"
 #include "sensors/AS7343HAL.h"
+#include "sensors/AS7331HAL.h"
 #include "sensors/SensorHAL.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
@@ -26,6 +27,9 @@ ICM209XXHAL imuSensor(Wire);
 
 // Instantiate AS7343 HAL Wrapper (Spectral Sensor)
 AS7343HAL spectralSensor(Wire);
+
+// Instantiate AS7331 HAL Wrapper (Spectral UV Sensor)
+AS7331HAL spectralUVSensor(Wire);
 
 // CLASS Constructor
 SensorTask::SensorTask() {}
@@ -137,6 +141,14 @@ void SensorTask::run_init(){
         Serial.println("[SensorTask] - AS7343 not detected (optional sensor)");
     }
 
+    // AS7331 SPECTRAL UV SENSOR (Optional - may or may not be attached)
+    if (spectralUVSensor.begin()){
+        spectralUVSensor.setReadFrequency(SENSOR_RATE_SPECTRAL_UV);
+        Serial.println("[SensorTask] - AS7331 initialized successfully");
+    } else {
+        Serial.println("[SensorTask] - AS7331 not detected (optional sensor)");
+    }
+
     delay(1000);
     // Carry on to READ State
     setSensorState(SensorState::READ);
@@ -191,9 +203,17 @@ void SensorTask::run_read(){
         }
     }
 
-    // ===============================================================
-    // MAG_NORM IS OVERWRITTEN WITH LOG(MAG_NORM) INSIDE updateIMUData
-    // ===============================================================
+    // ================ AS7331 SPECTRAL UV SENSOR ===================
+    if (spectralUVSensor.shouldRead()){
+        if (spectralUVSensor.read(sensorReading)){
+            // Update SharedBuffer with UV spectral data
+            SharedBuffer::updateSpectralUVData(
+                sensorReading.spectral_UVA,
+                sensorReading.spectral_UVB,
+                sensorReading.spectral_UVC
+            );
+        }
+    }
 
     // After read is complete, evaluate if we can commit a frame to SharedBuffer
     SharedBuffer::commitFrame();
@@ -204,6 +224,7 @@ void SensorTask::run_read(){
         lightSensor.printActualRate();
         imuSensor.printActualRate();
         spectralSensor.printActualRate();
+        spectralUVSensor.printActualRate();
     #endif
 };
 
