@@ -131,7 +131,7 @@ void SensorTask::run_init(){
         Serial.println("[SensorTask] - BH1750FVI initialized successfully");
     }
 
-    // ICM20948 SENSOR ; I2C Address - 0x68 (AD0=0) or 0x69 (AD0=1)
+    // ICM20948 SENSOR ; I2C Address - 0x68
     if (imuSensor.begin()){
         imuSensor.setReadFrequency(SENSOR_RATE_IMU);
         Serial.println("[SensorTask] - ICM20948 initialized successfully");
@@ -232,16 +232,6 @@ void SensorTask::run_read(){
         if (thermalSensor.read(sensorReading)){
             // Update SharedBuffer with thermal data
             SharedBuffer::updateThermalData(sensorReading.thermal_pixels);
-            // Print the temperature value of each pixel in floating point degrees Celsius
-            // separated by commas
-            for(unsigned char i = 0; i < 8; i++){
-                for(unsigned char j = 0; j < 8; j++){
-                    Serial.print(sensorReading.thermal_pixels[i][j]);
-                    Serial.print(",");
-                }
-            }
-            // End each frame with a linefeed
-            Serial.println();
         }
     }
 
