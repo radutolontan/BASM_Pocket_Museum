@@ -25,3 +25,6 @@
 [submodule "SW_design/PlatformIO_C6/lib/SparkFun_AS7331_Arduino_Library"]
 	path = SW_design/PlatformIO_C6/lib/SparkFun_AS7331_Arduino_Library
 	url = https://github.com/sparkfun/SparkFun_AS7331_Arduino_Library.git
+[submodule "SW_design/PlatformIO_C6/lib/SparkFun_GridEYE_Arduino_Library"]
+	path = SW_design/PlatformIO_C6/lib/SparkFun_GridEYE_Arduino_Library
+	url = https://github.com/sparkfun/SparkFun_GridEYE_Arduino_Library.git

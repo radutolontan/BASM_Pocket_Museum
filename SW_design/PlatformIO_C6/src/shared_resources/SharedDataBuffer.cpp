@@ -199,6 +199,28 @@ namespace SharedBuffer {
             SENSOR_PRINTLN(currentFrame.spectral_UVC);
         }
     }
+    // Update current frame with fresh data from thermal sensor (GridEYE AMG88XX)
+    void updateThermalData(const float thermal_array[8][8]) {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Copy all 64 thermal pixel values into currentFrame
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    currentFrame.thermal_pixels[row][col] = thermal_array[row][col];
+                }
+            }
+            currentFrame.timestamp_thermal_sensor = millis();
+            // Surrender control of the buffer
+            xSemaphoreGive(bufferMutex);
+            // Debug Print (show a few representative pixels)
+            SENSOR_PRINT(">thermal_pixel[0][0]:");
+            SENSOR_PRINTLN(currentFrame.thermal_pixels[0][0]);
+            SENSOR_PRINT(">thermal_pixel[3][3]:");
+            SENSOR_PRINTLN(currentFrame.thermal_pixels[3][3]);
+            SENSOR_PRINT(">thermal_pixel[7][7]:");
+            SENSOR_PRINTLN(currentFrame.thermal_pixels[7][7]);
+        }
+    }
     // Manage the commit of raw data to the sharedBuffer
     void commitFrame() {
         // Assume control of the buffer
@@ -209,7 +231,8 @@ namespace SharedBuffer {
                 currentFrame.hasIMU() ||
                 currentFrame.hasAudio() ||
                 currentFrame.hasSpectral() ||
-                currentFrame.hasSpectralUV()) {
+                currentFrame.hasSpectralUV() ||
+                currentFrame.hasThermal()) {
                 
                 // Push a COPY of currentFrame to buffer
                 sensorBuffer.push_back(currentFrame);

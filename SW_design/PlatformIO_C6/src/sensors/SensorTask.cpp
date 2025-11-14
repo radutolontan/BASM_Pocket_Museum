@@ -4,6 +4,7 @@
 #include "sensors/BH1750HAL.h"
 #include "sensors/AS7343HAL.h"
 #include "sensors/AS7331HAL.h"
+#include "sensors/GridEYEHAL.h"
 #include "sensors/SensorHAL.h"
 #include "shared_resources/SharedDataBuffer.h"
 #include "shared_resources/globals.h"
@@ -30,6 +31,9 @@ AS7343HAL spectralSensor(Wire);
 
 // Instantiate AS7331 HAL Wrapper (Spectral UV Sensor)
 AS7331HAL spectralUVSensor(Wire);
+
+// Instantiate GridEYE HAL Wrapper (Thermal Sensor)
+GridEYEHAL thermalSensor(Wire);
 
 // CLASS Constructor
 SensorTask::SensorTask() {}
@@ -149,6 +153,14 @@ void SensorTask::run_init(){
         Serial.println("[SensorTask] - AS7331 not detected (optional sensor)");
     }
 
+    // GridEYE AMG88XX THERMAL SENSOR (Optional - may or may not be attached)
+    if (thermalSensor.begin()){
+        thermalSensor.setReadFrequency(SENSOR_RATE_GRIDEYE);
+        Serial.println("[SensorTask] - GridEYE initialized successfully");
+    } else {
+        Serial.println("[SensorTask] - GridEYE not detected (optional sensor)");
+    }
+
     delay(1000);
     // Carry on to READ State
     setSensorState(SensorState::READ);
@@ -215,6 +227,14 @@ void SensorTask::run_read(){
         }
     }
 
+    // ================ GridEYE AMG88XX THERMAL SENSOR ===================
+    if (thermalSensor.shouldRead()){
+        if (thermalSensor.read(sensorReading)){
+            // Update SharedBuffer with thermal data
+            SharedBuffer::updateThermalData(sensorReading.thermal_pixels);
+        }
+    }
+
     // After read is complete, evaluate if we can commit a frame to SharedBuffer
     SharedBuffer::commitFrame();
 
@@ -225,6 +245,7 @@ void SensorTask::run_read(){
         imuSensor.printActualRate();
         spectralSensor.printActualRate();
         spectralUVSensor.printActualRate();
+        thermalSensor.printActualRate();
     #endif
 };
 
