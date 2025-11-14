@@ -96,11 +96,6 @@ namespace SharedBuffer {
             currentFrame.accel_norm = sqrt(ax*ax + ay*ay + az*az);
             currentFrame.gyro_norm = sqrt(gx*gx + gy*gy + gz*gz);
             currentFrame.mag_norm = sqrt(mx*mx + my*my + mz*mz);
-            // Overwrite mag_norm with linearized version
-            // float safe_mag = currentFrame.mag_norm;
-            // if (safe_mag <= 0.0f) safe_mag = 1e-6f;
-            // float log_mag_norm = log10f(safe_mag);
-            // currentFrame.mag_norm = log_mag_norm;
             
             currentFrame.timestamp_imu_sensor = millis();
             // Surrender control of the buffer
