@@ -1,23 +1,23 @@
 /**
- * @file GridEYEHAL.h
- * @brief Hardware Abstraction Layer for GridEYE AMG88XX Thermal Sensor
+ * @file AMG88XXHAL.h
+ * @brief Hardware Abstraction Layer for AMG88XX (GridEYE) Thermal Sensor
  *
- * This file provides a HAL for the Panasonic GridEYE AMG88XX infrared array sensor,
+ * This file provides a HAL for the Panasonic AMG88XX infrared array sensor,
  * which provides an 8x8 array (64 pixels) of temperature measurements.
  */
 
-#ifndef GRIDEYEHAL_H
-#define GRIDEYEHAL_H
+#ifndef AMG88XXHAL_H
+#define AMG88XXHAL_H
 
 #include "SensorHAL.h"
 #include <SparkFun_GridEYE_Arduino_Library.h>
 #include <Wire.h>
 
 /**
- * @class GridEYEHAL
- * @brief Hardware Abstraction Layer for GridEYE AMG88XX thermal sensor
+ * @class AMG88XXHAL
+ * @brief Hardware Abstraction Layer for AMG88XX thermal sensor
  *
- * Provides standardized interface for reading thermal data from the GridEYE sensor.
+ * Provides standardized interface for reading thermal data from the AMG88XX sensor.
  * The sensor provides an 8x8 array of temperature measurements, acting as a low-resolution
  * thermal camera. Each pixel can independently detect temperature remotely.
  *
@@ -28,16 +28,16 @@
  * - Field of view: 60°
  * - I2C interface (default address: 0x69)
  */
-class GridEYEHAL : public SensorHAL {
+class AMG88XXHAL : public SensorHAL {
 public:
     /**
      * @brief Constructor
      * @param wire I2C bus instance
      */
-    explicit GridEYEHAL(TwoWire& wire);
+    explicit AMG88XXHAL(TwoWire& wire);
 
     /**
-     * @brief Initialize the GridEYE sensor
+     * @brief Initialize the AMG88XX sensor
      * @return true if initialization successful, false otherwise
      *
      * This method performs the following:
@@ -62,7 +62,7 @@ public:
      * @brief Get sensor name
      * @return Sensor name string
      */
-    const char* getSensorName() const override { return "GridEYE"; }
+    const char* getSensorName() const override { return "AMG88XX"; }
 
 private:
     GridEYE grideye_hw;     ///< SparkFun GridEYE driver instance
@@ -70,4 +70,4 @@ private:
     bool isInitialized;     ///< Track initialization status
 };
 
-#endif // GRIDEYEHAL_H
+#endif // AMG88XXHAL_H

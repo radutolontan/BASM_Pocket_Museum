@@ -1,20 +1,20 @@
 /**
- * @file GridEYEHAL.cpp
- * @brief Implementation of GridEYE Hardware Abstraction Layer
+ * @file AMG88XXHAL.cpp
+ * @brief Implementation of AMG88XX Hardware Abstraction Layer
  */
 
-#include "GridEYEHAL.h"
+#include "AMG88XXHAL.h"
 #include <Arduino.h>
 
-GridEYEHAL::GridEYEHAL(TwoWire& wire)
+AMG88XXHAL::AMG88XXHAL(TwoWire& wire)
     : wire(wire), isInitialized(false) {
 }
 
-bool GridEYEHAL::begin() {
-    // Initialize the GridEYE sensor with default I2C address
+bool AMG88XXHAL::begin() {
+    // Initialize the AMG88XX sensor with default I2C address
     grideye_hw.begin(DEFAULT_ADDRESS, wire);
 
-    // The GridEYE begin() method doesn't return a status, so we need to verify
+    // The AMG88XX begin() method doesn't return a status, so we need to verify
     // communication by attempting to read a pixel temperature.
     // A read error returns -99.0, which indicates the sensor is not present.
     float testRead = grideye_hw.getPixelTemperature(0);
@@ -32,13 +32,13 @@ bool GridEYEHAL::begin() {
     return true;
 }
 
-bool GridEYEHAL::read(SensorData& data) {
+bool AMG88XXHAL::read(SensorData& data) {
     if (!isInitialized) {
         return false;
     }
 
     // Read all 64 pixels into a temporary array
-    // GridEYE pixels are numbered 0-63:
+    // AMG88XX pixels are numbered 0-63:
     // Row 0: pixels 0-7
     // Row 1: pixels 8-15
     // ... and so on

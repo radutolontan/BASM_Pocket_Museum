@@ -47,7 +47,7 @@ struct SensorData {
     float spectral_UVA = NAN;        // UVA (320-400nm)
     float spectral_UVB = NAN;        // UVB (280-320nm)
     float spectral_UVC = NAN;        // UVC (200-280nm)
-    // ========= THERMAL SENSOR (GridEYE AMG88XX) =========
+    // ========= THERMAL SENSOR (AMG88XX) =========
     // 8x8 Thermal Array Data (temperatures in Celsius)
     float thermal_pixels[8][8] = {{NAN}};  // 64-pixel thermal array
 

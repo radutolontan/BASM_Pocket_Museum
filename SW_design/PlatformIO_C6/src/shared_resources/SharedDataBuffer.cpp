@@ -199,7 +199,7 @@ namespace SharedBuffer {
             SENSOR_PRINTLN(currentFrame.spectral_UVC);
         }
     }
-    // Update current frame with fresh data from thermal sensor (GridEYE AMG88XX)
+    // Update current frame with fresh data from thermal sensor (AMG88XX)
     void updateThermalData(const float thermal_array[8][8]) {
         // Assume control of the buffer
         if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
