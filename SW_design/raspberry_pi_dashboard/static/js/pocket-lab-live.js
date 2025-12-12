@@ -1871,8 +1871,29 @@ function updateThermalDisplay(displayId, thermalData) {
 
     const { ctx, canvas } = chartData;
 
-    if (!thermalData || !Array.isArray(thermalData) || thermalData.length !== 8) {
+    if (!thermalData || !Array.isArray(thermalData)) {
         console.error(`Invalid thermal data for ${displayId}:`, thermalData);
+        return;
+    }
+
+    // Convert flat array to 2D array if needed
+    let thermalData2D;
+    if (thermalData.length === 64) {
+        // Flat array of 64 values - convert to 8x8
+        console.log(`Converting flat array to 2D for ${displayId}`);
+        thermalData2D = [];
+        for (let row = 0; row < 8; row++) {
+            thermalData2D[row] = [];
+            for (let col = 0; col < 8; col++) {
+                thermalData2D[row][col] = thermalData[row * 8 + col];
+            }
+        }
+    } else if (thermalData.length === 8 && Array.isArray(thermalData[0])) {
+        // Already a 2D array
+        console.log(`Using 2D array for ${displayId}`);
+        thermalData2D = thermalData;
+    } else {
+        console.error(`Invalid thermal data dimensions for ${displayId}:`, thermalData.length, thermalData);
         return;
     }
 
@@ -1884,12 +1905,8 @@ function updateThermalDisplay(displayId, thermalData) {
 
     // Render each pixel in the 8x8 array
     for (let row = 0; row < 8; row++) {
-        if (!Array.isArray(thermalData[row]) || thermalData[row].length !== 8) {
-            continue;
-        }
-
         for (let col = 0; col < 8; col++) {
-            const temp = thermalData[row][col];
+            const temp = thermalData2D[row][col];
 
             // Skip invalid temperatures (NaN, null, undefined)
             if (temp === null || temp === undefined || isNaN(temp)) {
