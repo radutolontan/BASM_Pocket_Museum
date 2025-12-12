@@ -7,44 +7,44 @@
 #include <Arduino.h>
 
 AS7343HAL::AS7343HAL(TwoWire& wire)
-    : wire(wire), isInitialized(false) {
+    : wire(wire), _isInitialized(false) {
 }
 
 bool AS7343HAL::begin() {
     // Attempt to initialize sensor with default I2C address
     if (!as7343_hw.begin(kAS7343Addr, wire)) {
         // Sensor not detected - this is OK, sensor may not be attached
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
     // Power on the device
     if (!as7343_hw.powerOn()) {
         Serial.println("[AS7343HAL] - Failed to power on device");
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
     // Configure for 18-channel readout (3 cycles of 6 channels each)
     if (!as7343_hw.setAutoSmux(AUTOSMUX_18_CHANNELS)) {
         Serial.println("[AS7343HAL] - Failed to set AutoSmux to 18 channels");
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
     // Enable spectral measurement
     if (!as7343_hw.enableSpectralMeasurement()) {
         Serial.println("[AS7343HAL] - Failed to enable spectral measurement");
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
-    isInitialized = true;
+    _isInitialized = true;
     return true;
 }
 
 bool AS7343HAL::read(SensorData& data) {
-    if (!isInitialized) {
+    if (!_isInitialized) {
         return false;
     }
 

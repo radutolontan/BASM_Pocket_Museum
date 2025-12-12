@@ -36,6 +36,8 @@ public:
     }
     // Get the sensor name (must be implemented by derived classes)
     virtual const char* getSensorName() const = 0;
+    // Check if sensor is initialized (can be overridden by derived classes)
+    virtual bool isInitialized() const { return true; }
     // Print actual measured read rate (call periodically)
     void printActualRate() {
         unsigned long now = millis();

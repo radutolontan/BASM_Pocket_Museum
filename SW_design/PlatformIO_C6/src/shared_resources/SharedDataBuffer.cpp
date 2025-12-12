@@ -96,11 +96,6 @@ namespace SharedBuffer {
             currentFrame.accel_norm = sqrt(ax*ax + ay*ay + az*az);
             currentFrame.gyro_norm = sqrt(gx*gx + gy*gy + gz*gz);
             currentFrame.mag_norm = sqrt(mx*mx + my*my + mz*mz);
-            // Overwrite mag_norm with linearized version
-            float safe_mag = currentFrame.mag_norm;
-            if (safe_mag <= 0.0f) safe_mag = 1e-6f;
-            float log_mag_norm = log10f(safe_mag);
-            currentFrame.mag_norm = log_mag_norm;
             
             currentFrame.timestamp_imu_sensor = millis();
             // Surrender control of the buffer
@@ -184,6 +179,48 @@ namespace SharedBuffer {
             SENSOR_PRINTLN(currentFrame.spectral_nir_855nm);
         }
     }
+    // Update current frame with fresh data from spectral UV sensor (AS7331)
+    void updateSpectralUVData(uint16_t uva, uint16_t uvb, uint16_t uvc) {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Update UV spectral fields
+            currentFrame.spectral_UVA = uva;
+            currentFrame.spectral_UVB = uvb;
+            currentFrame.spectral_UVC = uvc;
+            currentFrame.timestamp_spectral_uv_sensor = millis();
+            // Surrender control of the buffer
+            xSemaphoreGive(bufferMutex);
+            // Debug Print
+            SENSOR_PRINT(">spectral_UVA:");
+            SENSOR_PRINTLN(currentFrame.spectral_UVA);
+            SENSOR_PRINT(">spectral_UVB:");
+            SENSOR_PRINTLN(currentFrame.spectral_UVB);
+            SENSOR_PRINT(">spectral_UVC:");
+            SENSOR_PRINTLN(currentFrame.spectral_UVC);
+        }
+    }
+    // Update current frame with fresh data from thermal sensor (AMG88XX)
+    void updateThermalData(const float thermal_array[8][8]) {
+        // Assume control of the buffer
+        if (xSemaphoreTake(bufferMutex, portMAX_DELAY)) {
+            // Copy all 64 thermal pixel values into currentFrame
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    currentFrame.thermal_pixels[row][col] = thermal_array[row][col];
+                }
+            }
+            currentFrame.timestamp_thermal_sensor = millis();
+            // Surrender control of the buffer
+            xSemaphoreGive(bufferMutex);
+            // Debug Print (show a few representative pixels)
+            SENSOR_PRINT(">thermal_pixel[0][0]:");
+            SENSOR_PRINTLN(currentFrame.thermal_pixels[0][0]);
+            SENSOR_PRINT(">thermal_pixel[3][3]:");
+            SENSOR_PRINTLN(currentFrame.thermal_pixels[3][3]);
+            SENSOR_PRINT(">thermal_pixel[7][7]:");
+            SENSOR_PRINTLN(currentFrame.thermal_pixels[7][7]);
+        }
+    }
     // Manage the commit of raw data to the sharedBuffer
     void commitFrame() {
         // Assume control of the buffer
@@ -193,7 +230,9 @@ namespace SharedBuffer {
                 currentFrame.hasLight() ||
                 currentFrame.hasIMU() ||
                 currentFrame.hasAudio() ||
-                currentFrame.hasSpectral()) {
+                currentFrame.hasSpectral() ||
+                currentFrame.hasSpectralUV() ||
+                currentFrame.hasThermal()) {
                 
                 // Push a COPY of currentFrame to buffer
                 sensorBuffer.push_back(currentFrame);
