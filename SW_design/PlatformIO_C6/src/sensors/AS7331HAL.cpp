@@ -8,14 +8,14 @@
 #include <Arduino.h>
 
 AS7331HAL::AS7331HAL(TwoWire& wire)
-    : wire(wire), isInitialized(false) {
+    : wire(wire), _isInitialized(false) {
 }
 
 bool AS7331HAL::begin() {
     // Attempt to initialize sensor with default I2C address
     if (!as7331_hw.begin(kDefaultAS7331Addr, wire)) {
         // Sensor not detected - this is OK, sensor may not be attached
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
@@ -49,30 +49,30 @@ bool AS7331HAL::begin() {
     // Set the break time
     if (ksfTkErrOk != as7331_hw.setBreakTime(breakTimeParam)) {
         Serial.println("[AS7331HAL] - Failed to set break time");
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
     // Set measurement mode to CONT (continuous mode)
     if (!as7331_hw.prepareMeasurement(MEAS_MODE_CONT)) {
         Serial.println("[AS7331HAL] - Failed to set measurement mode");
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
     // Start continuous measurement
     if (ksfTkErrOk != as7331_hw.setStartState(true)) {
         Serial.println("[AS7331HAL] - Failed to start measurement");
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
-    isInitialized = true;
+    _isInitialized = true;
     return true;
 }
 
 bool AS7331HAL::read(SensorData& data) {
-    if (!isInitialized) {
+    if (!_isInitialized) {
         return false;
     }
 

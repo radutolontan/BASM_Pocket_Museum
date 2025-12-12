@@ -7,7 +7,7 @@
 #include <Arduino.h>
 
 AMG88XXHAL::AMG88XXHAL(TwoWire& wire)
-    : wire(wire), isInitialized(false) {
+    : wire(wire), _isInitialized(false) {
 }
 
 bool AMG88XXHAL::begin() {
@@ -21,19 +21,19 @@ bool AMG88XXHAL::begin() {
 
     if (testRead == -99.0) {
         // Sensor not detected - this is OK, sensor may not be attached
-        isInitialized = false;
+        _isInitialized = false;
         return false;
     }
 
     // Set framerate to 10 FPS for faster updates
     grideye_hw.setFramerate10FPS();
 
-    isInitialized = true;
+    _isInitialized = true;
     return true;
 }
 
 bool AMG88XXHAL::read(SensorData& data) {
-    if (!isInitialized) {
+    if (!_isInitialized) {
         return false;
     }
 
