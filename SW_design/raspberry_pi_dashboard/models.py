@@ -124,6 +124,14 @@ class SensorData(db.Model):
     spectral_vis = db.Column(db.Float)
     spectral_fd = db.Column(db.Float)
 
+    # UV Spectral sensor (AS7331 - 3 channels)
+    spectral_UVA = db.Column(db.Float)
+    spectral_UVB = db.Column(db.Float)
+    spectral_UVC = db.Column(db.Float)
+
+    # Thermal imaging camera (AMG88XX - 8x8 pixel array)
+    thermal_pixels = db.Column(db.Text)  # JSON array of 64 temperature values
+
     # Composite index for common queries
     __table_args__ = (
         db.Index('idx_node_timestamp', 'node_id', 'timestamp'),
@@ -149,13 +157,24 @@ class SensorData(db.Model):
             'spectral_f4_515nm', 'spectral_fz_450nm', 'spectral_fy_555nm',
             'spectral_f5_550nm', 'spectral_f6_640nm', 'spectral_fxl_600nm',
             'spectral_f7_690nm', 'spectral_f8_745nm', 'spectral_nir_855nm',
-            'spectral_vis', 'spectral_fd'
+            'spectral_vis', 'spectral_fd',
+            'spectral_UVA', 'spectral_UVB', 'spectral_UVC'
         ]
 
         for field in sensor_fields:
             value = getattr(self, field)
             if include_nulls or value is not None:
                 data[field] = value
+
+        # Handle thermal_pixels separately (JSON parsing)
+        if self.thermal_pixels:
+            import json
+            try:
+                data['thermal_pixels'] = json.loads(self.thermal_pixels)
+            except (json.JSONDecodeError, TypeError):
+                data['thermal_pixels'] = None
+        elif include_nulls:
+            data['thermal_pixels'] = None
 
         return data
 

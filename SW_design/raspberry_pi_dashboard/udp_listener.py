@@ -176,6 +176,14 @@ class UDPListener:
                 device.last_seen = datetime.utcnow()
                 device.ip_address = addr[0]
 
+            # Parse thermal pixels array if present
+            thermal_pixels_json = None
+            if 'thermal_pixels' in packet:
+                thermal_array = packet['thermal_pixels']
+                if thermal_array:
+                    # Convert 2D array to JSON string for storage
+                    thermal_pixels_json = json.dumps(thermal_array)
+
             # Create sensor data record
             sensor_data = SensorData(
                 node_id=node_id,
@@ -210,7 +218,11 @@ class UDPListener:
                 spectral_f8_745nm=packet.get('spectral_f8'),
                 spectral_nir_855nm=packet.get('spectral_nir'),
                 spectral_vis=packet.get('spectral_vis'),
-                spectral_fd=packet.get('spectral_fd')
+                spectral_fd=packet.get('spectral_fd'),
+                spectral_UVA=packet.get('spectral_UVA'),
+                spectral_UVB=packet.get('spectral_UVB'),
+                spectral_UVC=packet.get('spectral_UVC'),
+                thermal_pixels=thermal_pixels_json
             )
             db.session.add(sensor_data)
             self.pending_commits += 1

@@ -779,6 +779,63 @@ body {
     margin-top: var(--spacing-md);
 }
 
+/* Thermal Camera Display */
+.thermal-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.thermal-container canvas {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    max-width: 100%;
+    height: auto;
+}
+
+.thermal-legend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+}
+
+.thermal-legend .legend-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
+
+.thermal-legend .legend-gradient {
+    width: 200px;
+    height: 20px;
+    background: linear-gradient(to right,
+        #3b82f6 0%,     /* Blue */
+        #22d3ee 20%,    /* Cyan */
+        #22c55e 40%,    /* Green */
+        #eab308 60%,    /* Yellow */
+        #f97316 80%,    /* Orange */
+        #ef4444 100%    /* Red */
+    );
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.thermal-legend .legend-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
 /* ============================================
    Footer
    ============================================ */

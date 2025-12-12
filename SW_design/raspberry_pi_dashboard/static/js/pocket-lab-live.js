@@ -88,6 +88,28 @@ const MEASUREMENT_ICONS = {
             </linearGradient>
         </defs>
         <path d="M4 12 Q8 6 12 12 Q16 18 20 12" stroke="url(#rainbow)" stroke-width="3" fill="none"/>
+    </svg>`,
+    uvSpectrum: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <defs>
+            <linearGradient id="uvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#4c1d95"/>
+                <stop offset="50%" style="stop-color:#7c3aed"/>
+                <stop offset="100%" style="stop-color:#a855f7"/>
+            </linearGradient>
+        </defs>
+        <circle cx="12" cy="12" r="5" fill="url(#uvGradient)"/>
+        <path d="M12 2 L12 6 M12 18 L12 22 M20 12 L16 12 M2 12 L6 12 M17.66 6.34 L15.24 8.76 M8.76 15.24 L6.34 17.66 M17.66 17.66 L15.24 15.24 M8.76 8.76 L6.34 6.34" stroke="currentColor" stroke-width="2"/>
+    </svg>`,
+    thermal: `<svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <defs>
+            <linearGradient id="thermalGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#ef4444"/>
+                <stop offset="50%" style="stop-color:#f59e0b"/>
+                <stop offset="100%" style="stop-color:#3b82f6"/>
+            </linearGradient>
+        </defs>
+        <rect x="4" y="4" width="16" height="16" rx="2" fill="url(#thermalGradient)" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M7 7 h2 M7 10 h2 M7 13 h2 M7 16 h2 M11 7 h2 M11 10 h2 M11 13 h2 M11 16 h2 M15 7 h2 M15 10 h2 M15 13 h2 M15 16 h2" stroke="white" stroke-width="0.5" opacity="0.5"/>
     </svg>`
 };
 
@@ -100,7 +122,9 @@ const MEASUREMENT_COLORS = {
     magnetometer: '#f8c01c',    // YELLOW
     volume: '#d782a0',          // PINK/MAGENTA
     ambientLight: '#ffffff',    // WHITE (represents light)
-    spectrum: '#8b5cf6'         // PURPLE (for spectrum)
+    spectrum: '#8b5cf6',        // PURPLE (for spectrum)
+    uvSpectrum: '#a855f7',      // PURPLE (for UV spectrum)
+    thermal: '#ef4444'          // RED (for thermal)
 };
 
 // Measurement Definitions
@@ -158,6 +182,16 @@ const MEASUREMENTS = {
         name: 'Light Spectrum',
         unit: '',
         options: ['Electromagnetic Spectrum']
+    },
+    uvSpectrum: {
+        name: 'UV Spectrum',
+        unit: '',
+        options: ['Electromagnetic Spectrum']
+    },
+    thermal: {
+        name: 'Thermal Camera',
+        unit: '°C',
+        options: ['Thermal Matrix']
     }
 };
 
@@ -386,6 +420,47 @@ function extractSensorValue(measurementKey, data) {
                 ]
             };
 
+        case 'uvSpectrum':
+            // Return UV spectral data with wavelength ranges and colors
+            // If visible spectrum is also available, combine them
+            const hasVisibleSpectrum = data.spectral_f1_405nm !== undefined;
+            const uvChannels = [
+                { name: 'UVC', start: 200, end: 280, color: '#4c1d95', value: data.spectral_UVC || 0 },
+                { name: 'UVB', start: 280, end: 320, color: '#7c3aed', value: data.spectral_UVB || 0 },
+                { name: 'UVA', start: 320, end: 400, color: '#a855f7', value: data.spectral_UVA || 0 }
+            ];
+
+            if (hasVisibleSpectrum) {
+                // Combine UV and visible spectrum
+                const visibleChannels = [
+                    { name: 'F1', start: 395, end: 415, color: '#8200c8', value: data.spectral_f1_405nm || 0 },
+                    { name: 'F2', start: 415, end: 435, color: '#5400ff', value: data.spectral_f2_425nm || 0 },
+                    { name: 'FZ', start: 440, end: 460, color: '#0046ff', value: data.spectral_fz_450nm || 0 },
+                    { name: 'F3', start: 465, end: 485, color: '#00c0ff', value: data.spectral_f3_475nm || 0 },
+                    { name: 'F4', start: 505, end: 525, color: '#1fff00', value: data.spectral_f4_515nm || 0 },
+                    { name: 'F5', start: 540, end: 560, color: '#a3ff00', value: data.spectral_f5_550nm || 0 },
+                    { name: 'FXL', start: 590, end: 610, color: '#ffbe00', value: data.spectral_fxl_600nm || 0 },
+                    { name: 'F6', start: 630, end: 650, color: '#ff2100', value: data.spectral_f6_640nm || 0 },
+                    { name: 'F7', start: 680, end: 700, color: '#ff0000', value: data.spectral_f7_690nm || 0 },
+                    { name: 'F8', start: 735, end: 755, color: '#ab0000', value: data.spectral_f8_745nm || 0 },
+                    { name: 'NIR', start: 845, end: 865, color: '#610000', value: data.spectral_nir_855nm || 0 }
+                ];
+                return {
+                    channels: [...uvChannels, ...visibleChannels],
+                    hasVisible: true
+                };
+            } else {
+                // UV only
+                return {
+                    channels: uvChannels,
+                    hasVisible: false
+                };
+            }
+
+        case 'thermal':
+            // Return thermal camera data (8x8 pixel array)
+            return data.thermal_pixels || null;
+
         default:
             return null;
     }
@@ -533,6 +608,10 @@ function hasSensorData(measurementKey, data) {
             return data.volume_rms !== undefined;
         case 'spectrum':
             return data.spectral_f1_405nm !== undefined;
+        case 'uvSpectrum':
+            return data.spectral_UVA !== undefined || data.spectral_UVB !== undefined || data.spectral_UVC !== undefined;
+        case 'thermal':
+            return data.thermal_pixels !== undefined && data.thermal_pixels !== null;
         default:
             return true; // Show by default if unknown
     }
@@ -725,7 +804,10 @@ function createDisplayContent(measurementKey, measurement, optionType, displayId
         setTimeout(() => initializeVectorDisplay(displayId, measurementKey), 200);
     } else if (optionType === 'Electromagnetic Spectrum') {
         content.innerHTML = createSpectrumDisplay(displayId);
-        setTimeout(() => initializeSpectrumChart(displayId), 200);
+        setTimeout(() => initializeSpectrumChart(displayId, measurementKey), 200);
+    } else if (optionType === 'Thermal Matrix') {
+        content.innerHTML = createThermalDisplay(displayId);
+        setTimeout(() => initializeThermalDisplay(displayId), 200);
     }
 
     return content;
@@ -881,6 +963,27 @@ function createSpectrumDisplay(displayId) {
         </div>
         <div class="chart-info">
             <span>11 spectral channels (395-865 nm)</span>
+            <span id="${displayId}-update-time">Updated: --</span>
+        </div>
+    `;
+}
+
+function createThermalDisplay(displayId) {
+    return `
+        <div class="thermal-container">
+            <canvas id="${displayId}-thermal"></canvas>
+        </div>
+        <div class="thermal-legend">
+            <div class="legend-title">Temperature Scale</div>
+            <div class="legend-gradient"></div>
+            <div class="legend-labels">
+                <span>0°C</span>
+                <span>40°C</span>
+                <span>80°C</span>
+            </div>
+        </div>
+        <div class="chart-info">
+            <span>8×8 thermal array</span>
             <span id="${displayId}-update-time">Updated: --</span>
         </div>
     `;
@@ -1080,6 +1183,8 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
         updateVectorDisplay(displayId, value, measurement);
     } else if (optionType === 'Electromagnetic Spectrum') {
         updateSpectrumChart(displayId, value);
+    } else if (optionType === 'Thermal Matrix') {
+        updateThermalDisplay(displayId, value);
     }
 }
 
@@ -1521,8 +1626,8 @@ function updateVectorDisplay(displayId, value, measurement) {
 // ============================================
 // Spectrum Display
 // ============================================
-function initializeSpectrumChart(displayId) {
-    debugLog(`🌈 Initializing spectrum chart for ${displayId}...`, 'info');
+function initializeSpectrumChart(displayId, measurementKey) {
+    debugLog(`🌈 Initializing spectrum chart for ${displayId} (${measurementKey})...`, 'info');
 
     // Destroy existing chart if it exists
     if (AppState.charts[displayId]) {
@@ -1550,19 +1655,36 @@ function initializeSpectrumChart(displayId) {
     const ctx = canvas.getContext('2d');
 
     // Spectrum channel configuration with wavelength ranges and colors
-    const spectrumChannels = [
-        { name: 'F1', start: 395, end: 415, color: '#8200c8' },
-        { name: 'F2', start: 415, end: 435, color: '#5400ff' },
-        { name: 'FZ', start: 440, end: 460, color: '#0046ff' },
-        { name: 'F3', start: 465, end: 485, color: '#00c0ff' },
-        { name: 'F4', start: 505, end: 525, color: '#1fff00' },
-        { name: 'F5', start: 540, end: 560, color: '#a3ff00' },
-        { name: 'FXL', start: 590, end: 610, color: '#ffbe00' },
-        { name: 'F6', start: 630, end: 650, color: '#ff2100' },
-        { name: 'F7', start: 680, end: 700, color: '#ff0000' },
-        { name: 'F8', start: 735, end: 755, color: '#ab0000' },
-        { name: 'NIR', start: 845, end: 865, color: '#610000' }
-    ];
+    let spectrumChannels;
+    let xMin, xMax;
+
+    if (measurementKey === 'uvSpectrum') {
+        // UV spectrum (may be combined with visible later based on data)
+        spectrumChannels = [
+            { name: 'UVC', start: 200, end: 280, color: '#4c1d95' },
+            { name: 'UVB', start: 280, end: 320, color: '#7c3aed' },
+            { name: 'UVA', start: 320, end: 400, color: '#a855f7' }
+        ];
+        xMin = 180;
+        xMax = 420;
+    } else {
+        // Visible spectrum
+        spectrumChannels = [
+            { name: 'F1', start: 395, end: 415, color: '#8200c8' },
+            { name: 'F2', start: 415, end: 435, color: '#5400ff' },
+            { name: 'FZ', start: 440, end: 460, color: '#0046ff' },
+            { name: 'F3', start: 465, end: 485, color: '#00c0ff' },
+            { name: 'F4', start: 505, end: 525, color: '#1fff00' },
+            { name: 'F5', start: 540, end: 560, color: '#a3ff00' },
+            { name: 'FXL', start: 590, end: 610, color: '#ffbe00' },
+            { name: 'F6', start: 630, end: 650, color: '#ff2100' },
+            { name: 'F7', start: 680, end: 700, color: '#ff0000' },
+            { name: 'F8', start: 735, end: 755, color: '#ab0000' },
+            { name: 'NIR', start: 845, end: 865, color: '#610000' }
+        ];
+        xMin = 380;
+        xMax = 880;
+    }
 
     // Create datasets - one per channel for proper x-axis positioning
     const datasets = spectrumChannels.map(channel => ({
@@ -1589,8 +1711,8 @@ function initializeSpectrumChart(displayId) {
             scales: {
                 x: {
                     type: 'linear',
-                    min: 380,
-                    max: 880,
+                    min: xMin,
+                    max: xMax,
                     title: {
                         display: true,
                         text: 'Wavelength (nm)',
@@ -1634,7 +1756,7 @@ function initializeSpectrumChart(displayId) {
         }
     });
 
-    AppState.charts[displayId] = { chart, spectrumChannels };
+    AppState.charts[displayId] = { chart, spectrumChannels, measurementKey, xMin, xMax };
     debugLog(`✅ Spectrum chart successfully initialized for ${displayId}`, 'success');
 }
 
@@ -1645,28 +1767,210 @@ function updateSpectrumChart(displayId, value) {
         return;
     }
 
-    const { chart } = chartData;
+    const { chart, measurementKey, xMin, xMax } = chartData;
 
-    // Update each dataset (channel) with its intensity value
-    if (value && value.channels) {
-        value.channels.forEach((channel, index) => {
-            if (chart.data.datasets[index]) {
-                // Update the y-value while keeping x-position at wavelength center
-                chart.data.datasets[index].data = [{
-                    x: (channel.start + channel.end) / 2,
-                    y: channel.value
-                }];
+    // For UV spectrum, check if we need to switch between UV-only and combined mode
+    if (measurementKey === 'uvSpectrum' && value && value.hasVisible !== undefined) {
+        const currentChannelCount = chart.data.datasets.length;
+        const newChannelCount = value.channels.length;
+
+        // If channel count changed (UV-only <-> combined mode), rebuild chart
+        if (currentChannelCount !== newChannelCount) {
+            // Clear existing datasets
+            chart.data.datasets = [];
+
+            // Add new datasets for all channels
+            value.channels.forEach(channel => {
+                chart.data.datasets.push({
+                    label: channel.name,
+                    data: [{ x: (channel.start + channel.end) / 2, y: channel.value }],
+                    backgroundColor: channel.color,
+                    borderWidth: 0,
+                    barThickness: channel.end - channel.start,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                });
+            });
+
+            // Update x-axis range for combined mode
+            if (value.hasVisible) {
+                chart.options.scales.x.min = 180;
+                chart.options.scales.x.max = 880;
+            } else {
+                chart.options.scales.x.min = 180;
+                chart.options.scales.x.max = 420;
             }
-        });
-    }
 
-    chart.update('none');
+            chart.update('none');
+        } else {
+            // Same mode, just update values
+            value.channels.forEach((channel, index) => {
+                if (chart.data.datasets[index]) {
+                    chart.data.datasets[index].data = [{
+                        x: (channel.start + channel.end) / 2,
+                        y: channel.value
+                    }];
+                }
+            });
+            chart.update('none');
+        }
+    } else {
+        // Standard spectrum update (visible only)
+        if (value && value.channels) {
+            value.channels.forEach((channel, index) => {
+                if (chart.data.datasets[index]) {
+                    // Update the y-value while keeping x-position at wavelength center
+                    chart.data.datasets[index].data = [{
+                        x: (channel.start + channel.end) / 2,
+                        y: channel.value
+                    }];
+                }
+            });
+        }
+        chart.update('none');
+    }
 
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);
     if (timeEl) {
         timeEl.textContent = `Updated: ${getCachedTimestamp()}`;
     }
+}
+
+// ============================================
+// Thermal Camera Display
+// ============================================
+function initializeThermalDisplay(displayId) {
+    debugLog(`🌡️ Initializing thermal display for ${displayId}...`, 'info');
+
+    const canvas = document.getElementById(`${displayId}-thermal`);
+    if (!canvas) {
+        debugLog(`❌ ERROR: Thermal canvas not found: ${displayId}-thermal`, 'error');
+        return;
+    }
+
+    // Set canvas size for 8x8 grid
+    canvas.width = 400;
+    canvas.height = 400;
+
+    // Store canvas context in AppState
+    AppState.charts[displayId] = {
+        canvas: canvas,
+        ctx: canvas.getContext('2d')
+    };
+
+    debugLog(`✅ Thermal display initialized for ${displayId}`, 'success');
+}
+
+function updateThermalDisplay(displayId, thermalData) {
+    const chartData = AppState.charts[displayId];
+    if (!chartData || !chartData.ctx) {
+        console.error(`Thermal display not found for ${displayId}`);
+        return;
+    }
+
+    const { ctx, canvas } = chartData;
+
+    if (!thermalData || !Array.isArray(thermalData) || thermalData.length !== 8) {
+        console.error(`Invalid thermal data for ${displayId}:`, thermalData);
+        return;
+    }
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Cell size (50x50 pixels for 8x8 grid in 400x400 canvas)
+    const cellSize = canvas.width / 8;
+
+    // Render each pixel in the 8x8 array
+    for (let row = 0; row < 8; row++) {
+        if (!Array.isArray(thermalData[row]) || thermalData[row].length !== 8) {
+            continue;
+        }
+
+        for (let col = 0; col < 8; col++) {
+            const temp = thermalData[row][col];
+
+            // Skip invalid temperatures (NaN, null, undefined)
+            if (temp === null || temp === undefined || isNaN(temp)) {
+                continue;
+            }
+
+            // Get color for temperature (0-80°C range)
+            const color = getThermalColor(temp);
+
+            // Draw cell
+            ctx.fillStyle = color;
+            ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+
+            // Draw cell border
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(col * cellSize, row * cellSize, cellSize, cellSize);
+
+            // Draw temperature value
+            ctx.fillStyle = temp > 40 ? 'white' : 'black';
+            ctx.font = '12px Work Sans, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(
+                temp.toFixed(1),
+                col * cellSize + cellSize / 2,
+                row * cellSize + cellSize / 2
+            );
+        }
+    }
+
+    // Update timestamp
+    const timeEl = document.getElementById(`${displayId}-update-time`);
+    if (timeEl) {
+        timeEl.textContent = `Updated: ${getCachedTimestamp()}`;
+    }
+}
+
+function getThermalColor(temp) {
+    // Temperature range: 0-80°C
+    // Color gradient: Blue (cold) -> Cyan -> Green -> Yellow -> Orange -> Red (hot)
+    const minTemp = 0;
+    const maxTemp = 80;
+
+    // Clamp temperature to range
+    const clampedTemp = Math.max(minTemp, Math.min(maxTemp, temp));
+
+    // Normalize to 0-1
+    const normalized = (clampedTemp - minTemp) / (maxTemp - minTemp);
+
+    // Define color stops (RGB values)
+    const colorStops = [
+        { pos: 0.0, r: 59, g: 130, b: 246 },   // Blue (#3b82f6)
+        { pos: 0.2, r: 34, g: 211, b: 238 },   // Cyan (#22d3ee)
+        { pos: 0.4, r: 34, g: 197, b: 94 },    // Green (#22c55e)
+        { pos: 0.6, r: 234, g: 179, b: 8 },    // Yellow (#eab308)
+        { pos: 0.8, r: 249, g: 115, b: 22 },   // Orange (#f97316)
+        { pos: 1.0, r: 239, g: 68, b: 68 }     // Red (#ef4444)
+    ];
+
+    // Find the two color stops to interpolate between
+    let lowerStop = colorStops[0];
+    let upperStop = colorStops[colorStops.length - 1];
+
+    for (let i = 0; i < colorStops.length - 1; i++) {
+        if (normalized >= colorStops[i].pos && normalized <= colorStops[i + 1].pos) {
+            lowerStop = colorStops[i];
+            upperStop = colorStops[i + 1];
+            break;
+        }
+    }
+
+    // Interpolate between the two stops
+    const range = upperStop.pos - lowerStop.pos;
+    const rangeNormalized = range === 0 ? 0 : (normalized - lowerStop.pos) / range;
+
+    const r = Math.round(lowerStop.r + (upperStop.r - lowerStop.r) * rangeNormalized);
+    const g = Math.round(lowerStop.g + (upperStop.g - lowerStop.g) * rangeNormalized);
+    const b = Math.round(lowerStop.b + (upperStop.b - lowerStop.b) * rangeNormalized);
+
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 console.log('Pocket Lab Mockup JavaScript loaded');
