@@ -240,12 +240,13 @@ void SensorTask::run_read(){
 
     #if DEBUG_TASK_RATES
         // Print actual read rates for each sensor (every 10 seconds)
-        pressureSensor.printActualRate();
-        lightSensor.printActualRate();
-        imuSensor.printActualRate();
-        spectralSensor.printActualRate();
-        spectralUVSensor.printActualRate();
-        thermalSensor.printActualRate();
+        // Only print for sensors that have been initialized
+        if (pressureSensor.isInitialized()) pressureSensor.printActualRate();
+        if (lightSensor.isInitialized()) lightSensor.printActualRate();
+        if (imuSensor.isInitialized()) imuSensor.printActualRate();
+        if (spectralSensor.isInitialized()) spectralSensor.printActualRate();
+        if (spectralUVSensor.isInitialized()) spectralUVSensor.printActualRate();
+        if (thermalSensor.isInitialized()) thermalSensor.printActualRate();
     #endif
 };
 

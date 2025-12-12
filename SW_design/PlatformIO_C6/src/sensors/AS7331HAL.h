@@ -63,6 +63,12 @@ public:
      */
     const char* getSensorName() const override { return "AS7331"; }
 
+    /**
+     * @brief Check if sensor is initialized
+     * @return true if sensor was successfully initialized, false otherwise
+     */
+    bool isInitialized() const override { return isInitialized; }
+
 private:
     SfeAS7331ArdI2C as7331_hw;  ///< SparkFun AS7331 driver instance
     TwoWire& wire;               ///< I2C bus reference
