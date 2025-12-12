@@ -6,17 +6,42 @@ Run this script to update the database schema for new sensor support.
 
 import sqlite3
 import sys
+import os
 from pathlib import Path
 
-# Database path
-DB_PATH = Path(__file__).parent / 'instance' / 'dashboard.db'
+# Get the directory where this script is located
+SCRIPT_DIR = Path(__file__).parent
+
+# Try to find the database in common locations
+def find_database():
+    """Find the dashboard database file."""
+    possible_paths = [
+        SCRIPT_DIR / 'dashboard.db',
+        SCRIPT_DIR / 'instance' / 'dashboard.db',
+        Path.cwd() / 'dashboard.db',
+        Path.cwd() / 'instance' / 'dashboard.db'
+    ]
+
+    for path in possible_paths:
+        if path.exists():
+            return path
+
+    return None
 
 def migrate():
     """Add UV spectral and thermal camera columns to sensor_data table."""
-    if not DB_PATH.exists():
-        print(f"❌ Database not found at {DB_PATH}")
-        print("   Run init_db.py first to create the database.")
+    DB_PATH = find_database()
+
+    if DB_PATH is None:
+        print("❌ Database not found. Searched in:")
+        print(f"   - {SCRIPT_DIR / 'dashboard.db'}")
+        print(f"   - {SCRIPT_DIR / 'instance' / 'dashboard.db'}")
+        print(f"   - {Path.cwd() / 'dashboard.db'}")
+        print(f"   - {Path.cwd() / 'instance' / 'dashboard.db'}")
+        print("\n   Run init_db.py first to create the database.")
         sys.exit(1)
+
+    print(f"✅ Found database at: {DB_PATH}")
 
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
