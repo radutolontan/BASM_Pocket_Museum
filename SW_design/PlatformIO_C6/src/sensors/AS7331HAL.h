@@ -67,12 +67,12 @@ public:
      * @brief Check if sensor is initialized
      * @return true if sensor was successfully initialized, false otherwise
      */
-    bool isInitialized() const override { return isInitialized; }
+    bool isInitialized() const override { return _isInitialized; }
 
 private:
     SfeAS7331ArdI2C as7331_hw;  ///< SparkFun AS7331 driver instance
     TwoWire& wire;               ///< I2C bus reference
-    bool isInitialized;          ///< Track initialization status
+    bool _isInitialized;          ///< Track initialization status
 };
 
 #endif // AS7331HAL_H
