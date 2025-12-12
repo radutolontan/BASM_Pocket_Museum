@@ -313,6 +313,27 @@ String NetworkTask::formatSensorDataJSON(const SensorData& data) {
         json += "\"spectral_fd\":" + String((int)data.spectral_fd) + ",";
     }
 
+    // Spectral UV data (formatted as integers - ADC counts)
+    if (data.hasSpectralUV()) {
+        json += "\"spectral_uva\":" + String((int)data.spectral_UVA) + ",";
+        json += "\"spectral_uvb\":" + String((int)data.spectral_UVB) + ",";
+        json += "\"spectral_uvc\":" + String((int)data.spectral_UVC) + ",";
+    }
+
+    // Thermal array data (8x8 grid, 64 pixels)
+    if (data.hasThermal()) {
+        json += "\"thermal_pixels\":[";
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                json += String(data.thermal_pixels[row][col], 1);
+                if (row < 7 || col < 7) {  // Not the last pixel
+                    json += ",";
+                }
+            }
+        }
+        json += "],";
+    }
+
     // Remove trailing comma if present
     if (json.endsWith(",")) {
         json.remove(json.length() - 1);
