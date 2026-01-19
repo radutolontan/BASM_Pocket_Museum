@@ -1903,10 +1903,13 @@ function updateThermalDisplay(displayId, thermalData) {
     // Cell size (50x50 pixels for 8x8 grid in 400x400 canvas)
     const cellSize = canvas.width / 8;
 
-    // Render each pixel in the 8x8 array
+    // Render each pixel in the 8x8 array (rotated 90 degrees clockwise)
     for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {
-            const temp = thermalData2D[row][col];
+            // Rotate 90 degrees clockwise: (row, col) reads from (7-col, row)
+            const sourceRow = 7 - col;
+            const sourceCol = row;
+            const temp = thermalData2D[sourceRow][sourceCol];
 
             // Skip invalid temperatures (NaN, null, undefined)
             if (temp === null || temp === undefined || isNaN(temp)) {
