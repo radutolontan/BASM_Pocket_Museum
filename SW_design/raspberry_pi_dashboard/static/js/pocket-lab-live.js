@@ -1699,12 +1699,12 @@ function initializeSpectrumChart(displayId, measurementKey) {
     }
 
     // Create datasets - one per channel for proper x-axis positioning
+    // Use floating bars so each bar spans from start to end wavelength
     const datasets = spectrumChannels.map(channel => ({
         label: channel.name,
-        data: [{ x: (channel.start + channel.end) / 2, y: 0 }], // Position at center of wavelength range
+        data: [{ x: [channel.start, channel.end], y: 0 }], // Bar spans from start to end wavelength
         backgroundColor: channel.color,
         borderWidth: 0,
-        barThickness: channel.end - channel.start, // Bar width = wavelength range
         categoryPercentage: 1.0,
         barPercentage: 1.0
     }));
@@ -1789,9 +1789,9 @@ function updateSpectrumChart(displayId, value) {
             // Find the dataset with matching channel name
             const datasetIndex = chart.data.datasets.findIndex(ds => ds.label === channel.name);
             if (datasetIndex !== -1) {
-                // Update the y-value while keeping x-position at wavelength center
+                // Update the y-value while keeping x-range as floating bar
                 chart.data.datasets[datasetIndex].data = [{
-                    x: (channel.start + channel.end) / 2,
+                    x: [channel.start, channel.end],
                     y: channel.value
                 }];
             }
