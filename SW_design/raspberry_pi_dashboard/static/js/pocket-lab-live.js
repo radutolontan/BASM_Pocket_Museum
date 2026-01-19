@@ -1659,14 +1659,26 @@ function initializeSpectrumChart(displayId, measurementKey) {
     let xMin, xMax;
 
     if (measurementKey === 'uvSpectrum') {
-        // UV spectrum (may be combined with visible later based on data)
+        // UV spectrum - always show full range (180-880nm) to accommodate both UV and visible
+        // Initialize ALL channels (UV + visible) so x-axis limits never change
         spectrumChannels = [
             { name: 'UVC', start: 200, end: 280, color: '#4c1d95' },
             { name: 'UVB', start: 280, end: 320, color: '#7c3aed' },
-            { name: 'UVA', start: 320, end: 400, color: '#a855f7' }
+            { name: 'UVA', start: 320, end: 400, color: '#a855f7' },
+            { name: 'F1', start: 395, end: 415, color: '#8200c8' },
+            { name: 'F2', start: 415, end: 435, color: '#5400ff' },
+            { name: 'FZ', start: 440, end: 460, color: '#0046ff' },
+            { name: 'F3', start: 465, end: 485, color: '#00c0ff' },
+            { name: 'F4', start: 505, end: 525, color: '#1fff00' },
+            { name: 'F5', start: 540, end: 560, color: '#a3ff00' },
+            { name: 'FXL', start: 590, end: 610, color: '#ffbe00' },
+            { name: 'F6', start: 630, end: 650, color: '#ff2100' },
+            { name: 'F7', start: 680, end: 700, color: '#ff0000' },
+            { name: 'F8', start: 735, end: 755, color: '#ab0000' },
+            { name: 'NIR', start: 845, end: 865, color: '#610000' }
         ];
         xMin = 180;
-        xMax = 420;
+        xMax = 880;
     } else {
         // Visible spectrum
         spectrumChannels = [
@@ -1727,6 +1739,7 @@ function initializeSpectrumChart(displayId, measurementKey) {
                 },
                 y: {
                     beginAtZero: true,
+                    suggestedMax: 100,  // Ensure reasonable scale even when all values are 0
                     title: {
                         display: true,
                         text: 'Intensity',
@@ -1767,68 +1780,25 @@ function updateSpectrumChart(displayId, value) {
         return;
     }
 
-    const { chart, measurementKey, xMin, xMax } = chartData;
+    const { chart, measurementKey } = chartData;
 
-    // For UV spectrum, check if we need to switch between UV-only and combined mode
-    if (measurementKey === 'uvSpectrum' && value && value.hasVisible !== undefined) {
-        const currentChannelCount = chart.data.datasets.length;
-        const newChannelCount = value.channels.length;
-
-        // If channel count changed (UV-only <-> combined mode), rebuild chart
-        if (currentChannelCount !== newChannelCount) {
-            // Clear existing datasets
-            chart.data.datasets = [];
-
-            // Add new datasets for all channels
-            value.channels.forEach(channel => {
-                chart.data.datasets.push({
-                    label: channel.name,
-                    data: [{ x: (channel.start + channel.end) / 2, y: channel.value }],
-                    backgroundColor: channel.color,
-                    borderWidth: 0,
-                    barThickness: channel.end - channel.start,
-                    categoryPercentage: 1.0,
-                    barPercentage: 1.0
-                });
-            });
-
-            // Update x-axis range for combined mode
-            if (value.hasVisible) {
-                chart.options.scales.x.min = 180;
-                chart.options.scales.x.max = 880;
-            } else {
-                chart.options.scales.x.min = 180;
-                chart.options.scales.x.max = 420;
+    // Update chart values
+    if (value && value.channels) {
+        // For each channel in the data, find the matching dataset and update it
+        value.channels.forEach((channel) => {
+            // Find the dataset with matching channel name
+            const datasetIndex = chart.data.datasets.findIndex(ds => ds.label === channel.name);
+            if (datasetIndex !== -1) {
+                // Update the y-value while keeping x-position at wavelength center
+                chart.data.datasets[datasetIndex].data = [{
+                    x: (channel.start + channel.end) / 2,
+                    y: channel.value
+                }];
             }
-
-            chart.update('none');
-        } else {
-            // Same mode, just update values
-            value.channels.forEach((channel, index) => {
-                if (chart.data.datasets[index]) {
-                    chart.data.datasets[index].data = [{
-                        x: (channel.start + channel.end) / 2,
-                        y: channel.value
-                    }];
-                }
-            });
-            chart.update('none');
-        }
-    } else {
-        // Standard spectrum update (visible only)
-        if (value && value.channels) {
-            value.channels.forEach((channel, index) => {
-                if (chart.data.datasets[index]) {
-                    // Update the y-value while keeping x-position at wavelength center
-                    chart.data.datasets[index].data = [{
-                        x: (channel.start + channel.end) / 2,
-                        y: channel.value
-                    }];
-                }
-            });
-        }
-        chart.update('none');
+        });
     }
+
+    chart.update('none');
 
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);
