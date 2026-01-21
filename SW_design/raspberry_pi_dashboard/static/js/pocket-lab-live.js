@@ -400,11 +400,6 @@ function extractSensorValue(measurementKey, data) {
             // Return ALL available spectral data (UV + visible)
             const channels = [];
 
-            // DEBUG: Throttled logging to reduce console spam
-            if (!window.extractDebugCounter) window.extractDebugCounter = 0;
-            window.extractDebugCounter++;
-            const shouldLogExtract = window.extractDebugCounter % 100 === 1; // Log every 100th extraction
-
             // Add UV channels if available
             if (data.spectral_UVC !== undefined || data.spectral_UVB !== undefined || data.spectral_UVA !== undefined) {
                 channels.push(
@@ -412,9 +407,6 @@ function extractSensorValue(measurementKey, data) {
                     { name: 'UVB', start: 280, end: 320, color: '#7c3aed', value: data.spectral_UVB || 0 },
                     { name: 'UVA', start: 320, end: 400, color: '#a855f7', value: data.spectral_UVA || 0 }
                 );
-                if (shouldLogExtract) {
-                    console.log(`🔬 extractSensorValue - UV: ${data.spectral_UVA}, ${data.spectral_UVB}, ${data.spectral_UVC}`);
-                }
             }
 
             // Add visible channels if available
@@ -432,9 +424,6 @@ function extractSensorValue(measurementKey, data) {
                     { name: 'F8', start: 735, end: 755, color: '#ab0000', value: data.spectral_f8_745nm || 0 },
                     { name: 'NIR', start: 845, end: 865, color: '#610000', value: data.spectral_nir_855nm || 0 }
                 );
-                if (shouldLogExtract) {
-                    console.log(`  ✅ Extracted ${channels.length} total channels (NIR=${data.spectral_nir_855nm})`);
-                }
             }
 
             return { channels };
@@ -1809,11 +1798,9 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
     setTimeout(() => {
         updateBarWidths(chart, xMin, xMax);
         chart.update('none');
-        debugLog(`✅ Spectrum chart bar widths calculated for ${displayId}`, 'success');
     }, 150);
 
     debugLog(`✅ Spectrum chart initialized for ${displayId}: ${spectrumChannels.length} channels, X-axis ${xMin}-${xMax}nm`, 'success');
-    console.log(`📊 [${displayId}] Initialized ${mode} with ${spectrumChannels.length} channels:`, spectrumChannels.map(c => c.name).join(', '));
 }
 
 // Helper function to calculate bar widths - with single dataset and barThickness:'flex', Chart.js handles this automatically
@@ -1832,43 +1819,12 @@ function updateSpectrumChart(displayId, value) {
 
     const { chart, channelMap, measurementKey } = chartData;
 
-    // DEBUG: Log incoming channel data (ALWAYS log for Full Spectrum to diagnose issues)
-    const isFullSpectrum = displayId.includes('Full-Spectrum');
-    if (!window.spectrumDebugCounter) window.spectrumDebugCounter = {};
-    if (!window.spectrumDebugCounter[displayId]) window.spectrumDebugCounter[displayId] = 0;
-    window.spectrumDebugCounter[displayId]++;
-
-    const shouldLog = isFullSpectrum || (window.spectrumDebugCounter[displayId] % 50 === 1);
-
-    if (shouldLog) {
-        console.log(`📊 [${displayId}] Updating spectrum chart with ${value.channels ? value.channels.length : 0} channels`);
-        if (value && value.channels) {
-            // Show ALL channel values to compare scales
-            const allValues = value.channels.map(c => c.value);
-            const maxValue = Math.max(...allValues);
-            const minValue = Math.min(...allValues);
-
-            const uvChannels = value.channels.filter(c => ['UVA', 'UVB', 'UVC'].includes(c.name));
-            const nirChannel = value.channels.find(c => c.name === 'NIR');
-
-            console.log(`  📈 Value range: min=${minValue.toFixed(1)}, max=${maxValue.toFixed(1)}`);
-            if (isFullSpectrum) {
-                // For Full Spectrum, show all values for diagnosis
-                console.log(`  📋 All values:`, value.channels.map(c => `${c.name}=${c.value.toFixed(1)}`).join(', '));
-            }
-
-            if (uvChannels.length > 0) {
-                console.log(`  🔬 UV channels:`, uvChannels.map(c => `${c.name}=${c.value}`).join(', '));
-            }
-            if (nirChannel) {
-                console.log(`  🔴 NIR channel: ${nirChannel.value} at x=${(nirChannel.start + nirChannel.end) / 2}nm`);
-            }
-        }
-    }
-
     // Update chart values - all channels are in a single dataset, use channelMap to find indices
     if (value && value.channels && chart.data.datasets[0]) {
         const dataset = chart.data.datasets[0];
+
+        // Find the maximum value to determine Y-axis scale
+        let maxValue = 0;
 
         value.channels.forEach((channel) => {
             const channelInfo = channelMap[channel.name];
@@ -1876,18 +1832,16 @@ function updateSpectrumChart(displayId, value) {
                 const idx = channelInfo.index;
                 // Update the y-value for this data point
                 dataset.data[idx].y = channel.value;
-
-                // DEBUG: Log UV and NIR channel updates
-                if (shouldLog && (['UVA', 'UVB', 'UVC', 'NIR'].includes(channel.name))) {
-                    console.log(`  ✅ Updated data[${idx}] (${channel.name}) with value ${channel.value} at x=${dataset.data[idx].x}`);
-                }
-            } else {
-                // DEBUG: Log if channel not found
-                if (shouldLog && (['UVA', 'UVB', 'UVC', 'NIR'].includes(channel.name))) {
-                    console.log(`  ❌ No channel mapping found for ${channel.name}`);
+                // Track max value
+                if (channel.value > maxValue) {
+                    maxValue = channel.value;
                 }
             }
         });
+
+        // Set Y-axis scale: 0-100 by default, 0-1000 if any value exceeds 100
+        const suggestedMax = maxValue > 100 ? 1000 : 100;
+        chart.options.scales.y.suggestedMax = suggestedMax;
     }
 
     // Recalculate bar widths in case chart has been resized
@@ -1895,36 +1849,6 @@ function updateSpectrumChart(displayId, value) {
     updateBarWidths(chart, xMin, xMax);
 
     chart.update('none');
-
-    // DEBUG: Log Y-axis scale after update (always for Full Spectrum)
-    if (shouldLog && chart.scales.y && chart.data.datasets[0]) {
-        const yMax = chart.scales.y.max;
-        const yMin = chart.scales.y.min;
-        console.log(`  📏 Y-axis scale: ${yMin} to ${yMax}`);
-
-        // For Full Spectrum, also log which data points have non-zero values
-        if (isFullSpectrum) {
-            const dataset = chart.data.datasets[0];
-            const nonZeroPoints = dataset.data
-                .map((point, idx) => {
-                    // Find channel name by index
-                    const channelName = Object.keys(channelMap).find(name => channelMap[name].index === idx);
-                    return { name: channelName, point };
-                })
-                .filter(item => item.point.y > 0)
-                .map(item => `${item.name}=${item.point.y.toFixed(1)}@x${item.point.x}`);
-
-            console.log(`  ✨ Non-zero bars (${nonZeroPoints.length}/${dataset.data.length}):`, nonZeroPoints.join(', '));
-
-            // Log actual bar positions for UV and NIR
-            dataset.data.forEach((point, idx) => {
-                const channelName = Object.keys(channelMap).find(name => channelMap[name].index === idx);
-                if (['UVA', 'UVB', 'UVC', 'NIR'].includes(channelName) && point.y > 0) {
-                    console.log(`  📍 ${channelName}: x=${point.x}, y=${point.y}`);
-                }
-            });
-        }
-    }
 
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);

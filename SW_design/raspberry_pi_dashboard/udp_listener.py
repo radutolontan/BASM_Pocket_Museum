@@ -158,10 +158,6 @@ class UDPListener:
             # Track packet count for this device
             self.packet_counts[node_id] = self.packet_counts.get(node_id, 0) + 1
 
-            # Debug: Log packet keys periodically (every 100 packets) to see what fields are being sent
-            if self.packet_counts[node_id] % 100 == 1:
-                logger.info(f"📋 Packet keys from {node_id}: {', '.join(sorted(packet.keys()))}")
-
             # Log summary stats every 5 seconds (0.2 Hz)
             self._log_summary_stats()
 
@@ -187,13 +183,6 @@ class UDPListener:
                 if thermal_array:
                     # Convert 2D array to JSON string for storage
                     thermal_pixels_json = json.dumps(thermal_array)
-
-            # Debug: Check UV spectral data (ESP32 sends lowercase field names)
-            uva = packet.get('spectral_uva')
-            uvb = packet.get('spectral_uvb')
-            uvc = packet.get('spectral_uvc')
-            if uva is not None or uvb is not None or uvc is not None:
-                logger.info(f"🔬 UV Spectral Data from {node_id}: UVA={uva}, UVB={uvb}, UVC={uvc}")
 
             # Create sensor data record
             sensor_data = SensorData(
