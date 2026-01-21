@@ -400,9 +400,10 @@ function extractSensorValue(measurementKey, data) {
             // Return ALL available spectral data (UV + visible)
             const channels = [];
 
-            // DEBUG: Log UV data from incoming WebSocket message
-            console.log(`🔬 extractSensorValue - UV data from WebSocket:`,
-                `UVA=${data.spectral_UVA}, UVB=${data.spectral_UVB}, UVC=${data.spectral_UVC}`);
+            // DEBUG: Throttled logging to reduce console spam
+            if (!window.extractDebugCounter) window.extractDebugCounter = 0;
+            window.extractDebugCounter++;
+            const shouldLogExtract = window.extractDebugCounter % 100 === 1; // Log every 100th extraction
 
             // Add UV channels if available
             if (data.spectral_UVC !== undefined || data.spectral_UVB !== undefined || data.spectral_UVA !== undefined) {
@@ -411,9 +412,9 @@ function extractSensorValue(measurementKey, data) {
                     { name: 'UVB', start: 280, end: 320, color: '#7c3aed', value: data.spectral_UVB || 0 },
                     { name: 'UVA', start: 320, end: 400, color: '#a855f7', value: data.spectral_UVA || 0 }
                 );
-                console.log(`  ✅ Added UV channels to extraction:`, channels.slice(0, 3).map(c => `${c.name}=${c.value}`).join(', '));
-            } else {
-                console.log(`  ⚠️ No UV data available in this packet`);
+                if (shouldLogExtract) {
+                    console.log(`🔬 extractSensorValue - UV: ${data.spectral_UVA}, ${data.spectral_UVB}, ${data.spectral_UVC}`);
+                }
             }
 
             // Add visible channels if available
@@ -431,6 +432,9 @@ function extractSensorValue(measurementKey, data) {
                     { name: 'F8', start: 735, end: 755, color: '#ab0000', value: data.spectral_f8_745nm || 0 },
                     { name: 'NIR', start: 845, end: 865, color: '#610000', value: data.spectral_nir_855nm || 0 }
                 );
+                if (shouldLogExtract) {
+                    console.log(`  ✅ Extracted ${channels.length} total channels (NIR=${data.spectral_nir_855nm})`);
+                }
             }
 
             return { channels };
@@ -1820,12 +1824,24 @@ function updateSpectrumChart(displayId, value) {
 
     const { chart, measurementKey } = chartData;
 
-    // DEBUG: Log incoming channel data
-    console.log(`📊 [${displayId}] Updating spectrum chart with ${value.channels ? value.channels.length : 0} channels`);
-    if (value && value.channels) {
-        const uvChannels = value.channels.filter(c => ['UVA', 'UVB', 'UVC'].includes(c.name));
-        if (uvChannels.length > 0) {
-            console.log(`  🔬 UV channels:`, uvChannels.map(c => `${c.name}=${c.value}`).join(', '));
+    // DEBUG: Log incoming channel data (throttled to reduce console spam)
+    if (!window.spectrumDebugCounter) window.spectrumDebugCounter = {};
+    if (!window.spectrumDebugCounter[displayId]) window.spectrumDebugCounter[displayId] = 0;
+    window.spectrumDebugCounter[displayId]++;
+
+    const shouldLog = window.spectrumDebugCounter[displayId] % 50 === 1; // Log every 50th update
+
+    if (shouldLog) {
+        console.log(`📊 [${displayId}] Updating spectrum chart with ${value.channels ? value.channels.length : 0} channels`);
+        if (value && value.channels) {
+            const uvChannels = value.channels.filter(c => ['UVA', 'UVB', 'UVC'].includes(c.name));
+            const nirChannel = value.channels.find(c => c.name === 'NIR');
+            if (uvChannels.length > 0) {
+                console.log(`  🔬 UV channels:`, uvChannels.map(c => `${c.name}=${c.value}`).join(', '));
+            }
+            if (nirChannel) {
+                console.log(`  🔴 NIR channel: ${nirChannel.value} at x=${(nirChannel.start + nirChannel.end) / 2}nm`);
+            }
         }
     }
 
@@ -1842,13 +1858,13 @@ function updateSpectrumChart(displayId, value) {
                     y: channel.value
                 }];
 
-                // DEBUG: Log UV channel updates
-                if (['UVA', 'UVB', 'UVC'].includes(channel.name)) {
-                    console.log(`  ✅ Updated dataset ${datasetIndex} (${channel.name}) with value ${channel.value}`);
+                // DEBUG: Log UV and NIR channel updates
+                if (shouldLog && (['UVA', 'UVB', 'UVC', 'NIR'].includes(channel.name))) {
+                    console.log(`  ✅ Updated dataset ${datasetIndex} (${channel.name}) with value ${channel.value} at x=${(channel.start + channel.end) / 2}`);
                 }
             } else {
                 // DEBUG: Log if channel not found
-                if (['UVA', 'UVB', 'UVC'].includes(channel.name)) {
+                if (shouldLog && (['UVA', 'UVB', 'UVC', 'NIR'].includes(channel.name))) {
                     console.log(`  ❌ No dataset found for ${channel.name}`);
                 }
             }
