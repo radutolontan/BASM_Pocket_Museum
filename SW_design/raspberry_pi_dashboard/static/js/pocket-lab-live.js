@@ -1824,12 +1824,13 @@ function updateSpectrumChart(displayId, value) {
 
     const { chart, measurementKey } = chartData;
 
-    // DEBUG: Log incoming channel data (throttled to reduce console spam)
+    // DEBUG: Log incoming channel data (ALWAYS log for Full Spectrum to diagnose issues)
+    const isFullSpectrum = displayId.includes('Full-Spectrum');
     if (!window.spectrumDebugCounter) window.spectrumDebugCounter = {};
     if (!window.spectrumDebugCounter[displayId]) window.spectrumDebugCounter[displayId] = 0;
     window.spectrumDebugCounter[displayId]++;
 
-    const shouldLog = window.spectrumDebugCounter[displayId] % 50 === 1; // Log every 50th update
+    const shouldLog = isFullSpectrum || (window.spectrumDebugCounter[displayId] % 50 === 1);
 
     if (shouldLog) {
         console.log(`📊 [${displayId}] Updating spectrum chart with ${value.channels ? value.channels.length : 0} channels`);
@@ -1843,7 +1844,10 @@ function updateSpectrumChart(displayId, value) {
             const nirChannel = value.channels.find(c => c.name === 'NIR');
 
             console.log(`  📈 Value range: min=${minValue.toFixed(1)}, max=${maxValue.toFixed(1)}`);
-            console.log(`  📋 All values:`, value.channels.map(c => `${c.name}=${c.value.toFixed(1)}`).join(', '));
+            if (isFullSpectrum) {
+                // For Full Spectrum, show all values for diagnosis
+                console.log(`  📋 All values:`, value.channels.map(c => `${c.name}=${c.value.toFixed(1)}`).join(', '));
+            }
 
             if (uvChannels.length > 0) {
                 console.log(`  🔬 UV channels:`, uvChannels.map(c => `${c.name}=${c.value}`).join(', '));
@@ -1886,11 +1890,19 @@ function updateSpectrumChart(displayId, value) {
 
     chart.update('none');
 
-    // DEBUG: Log Y-axis scale after update
+    // DEBUG: Log Y-axis scale after update (always for Full Spectrum)
     if (shouldLog && chart.scales.y) {
         const yMax = chart.scales.y.max;
         const yMin = chart.scales.y.min;
         console.log(`  📏 Y-axis scale: ${yMin} to ${yMax}`);
+
+        // For Full Spectrum, also log which datasets have non-zero values
+        if (isFullSpectrum) {
+            const nonZeroDatasets = chart.data.datasets
+                .filter(ds => ds.data && ds.data[0] && ds.data[0].y > 0)
+                .map(ds => `${ds.label}=${ds.data[0].y.toFixed(1)}`);
+            console.log(`  ✨ Non-zero datasets (${nonZeroDatasets.length}/${chart.data.datasets.length}):`, nonZeroDatasets.join(', '));
+        }
     }
 
     // Update timestamp
