@@ -1719,11 +1719,13 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
             animation: {
                 duration: 0
             },
+            indexAxis: 'x', // Explicitly set x-axis as index
             scales: {
                 x: {
                     type: 'linear',
                     min: xMin,
                     max: xMax,
+                    offset: false, // Don't add padding around bars
                     title: {
                         display: true,
                         text: 'Wavelength (nm)',
@@ -1738,7 +1740,6 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
                 },
                 y: {
                     beginAtZero: true,
-                    suggestedMax: 100,  // Ensure reasonable scale even when all values are 0
                     title: {
                         display: true,
                         text: 'Intensity',
@@ -1903,8 +1904,15 @@ function updateSpectrumChart(displayId, value) {
         if (isFullSpectrum) {
             const nonZeroDatasets = chart.data.datasets
                 .filter(ds => ds.data && ds.data[0] && ds.data[0].y > 0)
-                .map(ds => `${ds.label}=${ds.data[0].y.toFixed(1)}`);
+                .map(ds => `${ds.label}=${ds.data[0].y.toFixed(1)}@x${ds.data[0].x}`);
             console.log(`  ✨ Non-zero datasets (${nonZeroDatasets.length}/${chart.data.datasets.length}):`, nonZeroDatasets.join(', '));
+
+            // Log actual bar positions for UV and NIR
+            chart.data.datasets.forEach((ds, idx) => {
+                if (['UVA', 'UVB', 'UVC', 'NIR'].includes(ds.label) && ds.data[0].y > 0) {
+                    console.log(`  📍 ${ds.label}: x=${ds.data[0].x}, y=${ds.data[0].y}, barThickness=${ds.barThickness}px`);
+                }
+            });
         }
     }
 
