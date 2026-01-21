@@ -1691,17 +1691,36 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
         xMax = 900;
     }
 
-    // Create datasets - one per channel for proper x-axis positioning
-    const datasets = spectrumChannels.map(channel => ({
+    // Create a SINGLE dataset with all channels as data points
+    // This works better with linear x-axis than multiple datasets
+    const allData = spectrumChannels.map(channel => ({
+        x: (channel.start + channel.end) / 2,
+        y: 0,
         label: channel.name,
-        data: [{ x: (channel.start + channel.end) / 2, y: 0 }], // Position at center
         backgroundColor: channel.color,
-        borderWidth: 0,
-        borderSkipped: false, // Don't skip any borders - render full bar
-        // Store wavelength info for dynamic width calculation
         wavelengthStart: channel.start,
         wavelengthEnd: channel.end
     }));
+
+    const datasets = [{
+        label: 'Spectrum',
+        data: allData,
+        backgroundColor: allData.map(d => d.backgroundColor),
+        borderWidth: 0,
+        barThickness: 'flex',
+        maxBarThickness: 100
+    }];
+
+    // Store channel info for updates
+    const channelMap = {};
+    spectrumChannels.forEach((channel, idx) => {
+        channelMap[channel.name] = {
+            index: idx,
+            start: channel.start,
+            end: channel.end,
+            color: channel.color
+        };
+    });
 
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -1783,8 +1802,8 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
         }
     });
 
-    // Store chart data
-    AppState.charts[displayId] = { chart, spectrumChannels, measurementKey, xMin, xMax };
+    // Store chart data including channel map for updates
+    AppState.charts[displayId] = { chart, spectrumChannels, channelMap, measurementKey, xMin, xMax };
 
     // Calculate initial bar widths after a short delay to ensure chart has rendered
     setTimeout(() => {
@@ -1794,37 +1813,14 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
     }, 150);
 
     debugLog(`✅ Spectrum chart initialized for ${displayId}: ${spectrumChannels.length} channels, X-axis ${xMin}-${xMax}nm`, 'success');
-    console.log(`📊 [${displayId}] Initialized ${mode} with datasets:`, chart.data.datasets.map(ds => ds.label).join(', '));
-
-    // DEBUG: Highlight UV datasets
-    const uvDatasets = chart.data.datasets.filter(ds => ['UVA', 'UVB', 'UVC'].includes(ds.label));
-    if (uvDatasets.length > 0) {
-        console.log(`  🔬 UV datasets available: ${uvDatasets.map(ds => ds.label).join(', ')}`);
-    }
+    console.log(`📊 [${displayId}] Initialized ${mode} with ${spectrumChannels.length} channels:`, spectrumChannels.map(c => c.name).join(', '));
 }
 
-// Helper function to calculate bar widths in pixels based on wavelength ranges
+// Helper function to calculate bar widths - with single dataset and barThickness:'flex', Chart.js handles this automatically
 function updateBarWidths(chart, xMin, xMax) {
-    const xScale = chart.scales.x;
-    if (!xScale || !xScale.width) {
-        console.warn('X-scale not ready, skipping bar width calculation');
-        return;
-    }
-
-    const pixelRange = xScale.width;
-    const dataRange = xMax - xMin;
-    const pixelsPerNm = pixelRange / dataRange;
-
-    console.log(`Bar width calculation: ${pixelRange}px / ${dataRange}nm = ${pixelsPerNm}px/nm`);
-
-    chart.data.datasets.forEach((dataset, index) => {
-        if (dataset.wavelengthStart && dataset.wavelengthEnd) {
-            const wavelengthRange = dataset.wavelengthEnd - dataset.wavelengthStart;
-            const barWidth = wavelengthRange * pixelsPerNm;
-            dataset.barThickness = Math.max(barWidth, 3); // Minimum 3 pixels
-            console.log(`  ${dataset.label}: ${wavelengthRange}nm = ${barWidth.toFixed(1)}px (set to ${dataset.barThickness}px)`);
-        }
-    });
+    // Bar widths are now handled automatically by Chart.js with barThickness: 'flex'
+    // This function is kept for compatibility but doesn't need to do anything
+    return;
 }
 
 function updateSpectrumChart(displayId, value) {
@@ -1834,7 +1830,7 @@ function updateSpectrumChart(displayId, value) {
         return;
     }
 
-    const { chart, measurementKey } = chartData;
+    const { chart, channelMap, measurementKey } = chartData;
 
     // DEBUG: Log incoming channel data (ALWAYS log for Full Spectrum to diagnose issues)
     const isFullSpectrum = displayId.includes('Full-Spectrum');
@@ -1870,27 +1866,25 @@ function updateSpectrumChart(displayId, value) {
         }
     }
 
-    // Update chart values
-    if (value && value.channels) {
-        // For each channel in the data, find the matching dataset and update it
+    // Update chart values - all channels are in a single dataset, use channelMap to find indices
+    if (value && value.channels && chart.data.datasets[0]) {
+        const dataset = chart.data.datasets[0];
+
         value.channels.forEach((channel) => {
-            // Find the dataset with matching channel name
-            const datasetIndex = chart.data.datasets.findIndex(ds => ds.label === channel.name);
-            if (datasetIndex !== -1) {
-                // Update the y-value while keeping x-position at wavelength center
-                chart.data.datasets[datasetIndex].data = [{
-                    x: (channel.start + channel.end) / 2,
-                    y: channel.value
-                }];
+            const channelInfo = channelMap[channel.name];
+            if (channelInfo) {
+                const idx = channelInfo.index;
+                // Update the y-value for this data point
+                dataset.data[idx].y = channel.value;
 
                 // DEBUG: Log UV and NIR channel updates
                 if (shouldLog && (['UVA', 'UVB', 'UVC', 'NIR'].includes(channel.name))) {
-                    console.log(`  ✅ Updated dataset ${datasetIndex} (${channel.name}) with value ${channel.value} at x=${(channel.start + channel.end) / 2}`);
+                    console.log(`  ✅ Updated data[${idx}] (${channel.name}) with value ${channel.value} at x=${dataset.data[idx].x}`);
                 }
             } else {
                 // DEBUG: Log if channel not found
                 if (shouldLog && (['UVA', 'UVB', 'UVC', 'NIR'].includes(channel.name))) {
-                    console.log(`  ❌ No dataset found for ${channel.name}`);
+                    console.log(`  ❌ No channel mapping found for ${channel.name}`);
                 }
             }
         });
@@ -1903,22 +1897,30 @@ function updateSpectrumChart(displayId, value) {
     chart.update('none');
 
     // DEBUG: Log Y-axis scale after update (always for Full Spectrum)
-    if (shouldLog && chart.scales.y) {
+    if (shouldLog && chart.scales.y && chart.data.datasets[0]) {
         const yMax = chart.scales.y.max;
         const yMin = chart.scales.y.min;
         console.log(`  📏 Y-axis scale: ${yMin} to ${yMax}`);
 
-        // For Full Spectrum, also log which datasets have non-zero values
+        // For Full Spectrum, also log which data points have non-zero values
         if (isFullSpectrum) {
-            const nonZeroDatasets = chart.data.datasets
-                .filter(ds => ds.data && ds.data[0] && ds.data[0].y > 0)
-                .map(ds => `${ds.label}=${ds.data[0].y.toFixed(1)}@x${ds.data[0].x}`);
-            console.log(`  ✨ Non-zero datasets (${nonZeroDatasets.length}/${chart.data.datasets.length}):`, nonZeroDatasets.join(', '));
+            const dataset = chart.data.datasets[0];
+            const nonZeroPoints = dataset.data
+                .map((point, idx) => {
+                    // Find channel name by index
+                    const channelName = Object.keys(channelMap).find(name => channelMap[name].index === idx);
+                    return { name: channelName, point };
+                })
+                .filter(item => item.point.y > 0)
+                .map(item => `${item.name}=${item.point.y.toFixed(1)}@x${item.point.x}`);
+
+            console.log(`  ✨ Non-zero bars (${nonZeroPoints.length}/${dataset.data.length}):`, nonZeroPoints.join(', '));
 
             // Log actual bar positions for UV and NIR
-            chart.data.datasets.forEach((ds, idx) => {
-                if (['UVA', 'UVB', 'UVC', 'NIR'].includes(ds.label) && ds.data[0].y > 0) {
-                    console.log(`  📍 ${ds.label}: x=${ds.data[0].x}, y=${ds.data[0].y}, barThickness=${ds.barThickness}px`);
+            dataset.data.forEach((point, idx) => {
+                const channelName = Object.keys(channelMap).find(name => channelMap[name].index === idx);
+                if (['UVA', 'UVB', 'UVC', 'NIR'].includes(channelName) && point.y > 0) {
+                    console.log(`  📍 ${channelName}: x=${point.x}, y=${point.y}`);
                 }
             });
         }
