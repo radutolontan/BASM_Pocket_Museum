@@ -1834,8 +1834,17 @@ function updateSpectrumChart(displayId, value) {
     if (shouldLog) {
         console.log(`📊 [${displayId}] Updating spectrum chart with ${value.channels ? value.channels.length : 0} channels`);
         if (value && value.channels) {
+            // Show ALL channel values to compare scales
+            const allValues = value.channels.map(c => c.value);
+            const maxValue = Math.max(...allValues);
+            const minValue = Math.min(...allValues);
+
             const uvChannels = value.channels.filter(c => ['UVA', 'UVB', 'UVC'].includes(c.name));
             const nirChannel = value.channels.find(c => c.name === 'NIR');
+
+            console.log(`  📈 Value range: min=${minValue.toFixed(1)}, max=${maxValue.toFixed(1)}`);
+            console.log(`  📋 All values:`, value.channels.map(c => `${c.name}=${c.value.toFixed(1)}`).join(', '));
+
             if (uvChannels.length > 0) {
                 console.log(`  🔬 UV channels:`, uvChannels.map(c => `${c.name}=${c.value}`).join(', '));
             }
@@ -1876,6 +1885,13 @@ function updateSpectrumChart(displayId, value) {
     updateBarWidths(chart, xMin, xMax);
 
     chart.update('none');
+
+    // DEBUG: Log Y-axis scale after update
+    if (shouldLog && chart.scales.y) {
+        const yMax = chart.scales.y.max;
+        const yMin = chart.scales.y.min;
+        console.log(`  📏 Y-axis scale: ${yMin} to ${yMax}`);
+    }
 
     // Update timestamp
     const timeEl = document.getElementById(`${displayId}-update-time`);
