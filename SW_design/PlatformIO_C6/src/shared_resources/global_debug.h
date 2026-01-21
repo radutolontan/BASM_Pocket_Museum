@@ -1,8 +1,8 @@
 // Comment/uncomment to enable/disable debug prints
 // SHOW DEBUG MESSAGES WITH SENSOR VALUES
-#define DEBUG_SENSOR     0
+#define DEBUG_SENSOR     1
 // SHOW DEBUG MESSAGES W. TASK RATES
-#define DEBUG_TASK_RATES 1
+#define DEBUG_TASK_RATES 0
 // SHOW DEBUG MESSAGES FOR NETWORK TASK
 #define DEBUG_NETWORK    0
 // SHOW NETWORK PACKET CONTENTS (very verbose)
