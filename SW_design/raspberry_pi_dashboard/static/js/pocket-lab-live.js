@@ -1692,18 +1692,13 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
     }
 
     // Create datasets - one per channel for proper x-axis positioning
-    // For Full Spectrum, use larger minBarLength to ensure UV bars are visible
-    const minBarLen = (mode === 'Full Spectrum') ? 15 : 2;
-
     const datasets = spectrumChannels.map(channel => ({
         label: channel.name,
         data: [{ x: (channel.start + channel.end) / 2, y: 0 }], // Position at center
         backgroundColor: channel.color,
         borderWidth: 0,
-        categoryPercentage: 1.0,
-        barPercentage: 1.0,
+        borderSkipped: false, // Don't skip any borders - render full bar
         // Store wavelength info for dynamic width calculation
-        minBarLength: minBarLen, // Minimum bar height in pixels
         wavelengthStart: channel.start,
         wavelengthEnd: channel.end
     }));
@@ -1719,13 +1714,15 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
             animation: {
                 duration: 0
             },
-            indexAxis: 'x', // Explicitly set x-axis as index
+            parsing: {
+                xAxisKey: 'x',
+                yAxisKey: 'y'
+            },
             scales: {
                 x: {
                     type: 'linear',
                     min: xMin,
                     max: xMax,
-                    offset: false, // Don't add padding around bars
                     title: {
                         display: true,
                         text: 'Wavelength (nm)',
@@ -1736,6 +1733,9 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
                     },
                     ticks: {
                         stepSize: 50
+                    },
+                    grid: {
+                        display: true
                     }
                 },
                 y: {
@@ -1747,7 +1747,15 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
                             size: 14,
                             weight: 'bold'
                         }
+                    },
+                    grid: {
+                        display: true
                     }
+                }
+            },
+            elements: {
+                bar: {
+                    borderWidth: 0
                 }
             },
             plugins: {
