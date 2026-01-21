@@ -1778,27 +1778,40 @@ function initializeSpectrumChart(displayId, measurementKey) {
         }
     });
 
-    // Calculate initial bar widths
-    updateBarWidths(chart, xMin, xMax);
-
+    // Store chart data
     AppState.charts[displayId] = { chart, spectrumChannels, measurementKey, xMin, xMax };
-    debugLog(`✅ Spectrum chart successfully initialized for ${displayId}`, 'success');
+
+    // Calculate initial bar widths after a short delay to ensure chart has rendered
+    setTimeout(() => {
+        updateBarWidths(chart, xMin, xMax);
+        chart.update('none');
+        debugLog(`✅ Spectrum chart bar widths calculated for ${displayId}`, 'success');
+    }, 150);
+
+    debugLog(`✅ Spectrum chart initialized for ${displayId}: ${spectrumChannels.length} channels, X-axis ${xMin}-${xMax}nm`, 'success');
+    console.log(`Spectrum channels for ${measurementKey}:`, spectrumChannels.map(c => `${c.name}(${c.start}-${c.end}nm)`));
 }
 
 // Helper function to calculate bar widths in pixels based on wavelength ranges
 function updateBarWidths(chart, xMin, xMax) {
     const xScale = chart.scales.x;
-    if (!xScale) return;
+    if (!xScale || !xScale.width) {
+        console.warn('X-scale not ready, skipping bar width calculation');
+        return;
+    }
 
     const pixelRange = xScale.width;
     const dataRange = xMax - xMin;
     const pixelsPerNm = pixelRange / dataRange;
 
-    chart.data.datasets.forEach((dataset) => {
+    console.log(`Bar width calculation: ${pixelRange}px / ${dataRange}nm = ${pixelsPerNm}px/nm`);
+
+    chart.data.datasets.forEach((dataset, index) => {
         if (dataset.wavelengthStart && dataset.wavelengthEnd) {
             const wavelengthRange = dataset.wavelengthEnd - dataset.wavelengthStart;
             const barWidth = wavelengthRange * pixelsPerNm;
-            dataset.barThickness = Math.max(barWidth, 2); // Minimum 2 pixels
+            dataset.barThickness = Math.max(barWidth, 3); // Minimum 3 pixels
+            console.log(`  ${dataset.label}: ${wavelengthRange}nm = ${barWidth.toFixed(1)}px (set to ${dataset.barThickness}px)`);
         }
     });
 }
