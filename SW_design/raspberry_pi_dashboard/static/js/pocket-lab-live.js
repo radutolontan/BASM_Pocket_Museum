@@ -1674,21 +1674,21 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
 
     if (mode === 'UV Spectrum') {
         spectrumChannels = uvChannels;
-        xMin = 180;
+        xMin = 160;  // Padding for leftmost UV bars
         xMax = 420;
     } else if (mode === 'Visible Spectrum') {
         spectrumChannels = visibleChannels;
-        xMin = 380;
-        xMax = 880;
+        xMin = 360;  // Padding for leftmost visible bars
+        xMax = 900;  // Padding for rightmost NIR bar (865nm + padding)
     } else if (mode === 'Full Spectrum') {
         spectrumChannels = [...uvChannels, ...visibleChannels];
-        xMin = 180;
-        xMax = 880;
+        xMin = 160;  // Padding for leftmost UV bars
+        xMax = 900;  // Padding for rightmost NIR bar (865nm + padding)
     } else {
         // Default to visible spectrum
         spectrumChannels = visibleChannels;
-        xMin = 380;
-        xMax = 880;
+        xMin = 360;
+        xMax = 900;
     }
 
     // Create datasets - one per channel for proper x-axis positioning
