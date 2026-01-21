@@ -1699,14 +1699,17 @@ function initializeSpectrumChart(displayId, measurementKey) {
     }
 
     // Create datasets - one per channel for proper x-axis positioning
-    // Use floating bars so each bar spans from start to end wavelength
     const datasets = spectrumChannels.map(channel => ({
         label: channel.name,
-        data: [{ x: [channel.start, channel.end], y: 0 }], // Bar spans from start to end wavelength
+        data: [{ x: (channel.start + channel.end) / 2, y: 0 }], // Position at center
         backgroundColor: channel.color,
         borderWidth: 0,
         categoryPercentage: 1.0,
-        barPercentage: 1.0
+        barPercentage: 1.0,
+        // Store wavelength info for dynamic width calculation
+        minBarLength: 2,
+        wavelengthStart: channel.start,
+        wavelengthEnd: channel.end
     }));
 
     const chart = new Chart(ctx, {
@@ -1757,20 +1760,47 @@ function initializeSpectrumChart(displayId, measurementKey) {
                 tooltip: {
                     callbacks: {
                         title: function(context) {
-                            const channel = spectrumChannels[context[0].datasetIndex];
-                            return `${channel.name}: ${channel.start}-${channel.end} nm`;
+                            const dataset = context[0].dataset;
+                            const start = dataset.wavelengthStart;
+                            const end = dataset.wavelengthEnd;
+                            return `${dataset.label}: ${start}-${end} nm`;
                         },
                         label: function(context) {
                             return `Intensity: ${context.parsed.y.toFixed(2)}`;
                         }
                     }
                 }
+            },
+            // Calculate bar widths dynamically based on wavelength ranges
+            onResize: function(chart) {
+                updateBarWidths(chart, xMin, xMax);
             }
         }
     });
 
+    // Calculate initial bar widths
+    updateBarWidths(chart, xMin, xMax);
+
     AppState.charts[displayId] = { chart, spectrumChannels, measurementKey, xMin, xMax };
     debugLog(`✅ Spectrum chart successfully initialized for ${displayId}`, 'success');
+}
+
+// Helper function to calculate bar widths in pixels based on wavelength ranges
+function updateBarWidths(chart, xMin, xMax) {
+    const xScale = chart.scales.x;
+    if (!xScale) return;
+
+    const pixelRange = xScale.width;
+    const dataRange = xMax - xMin;
+    const pixelsPerNm = pixelRange / dataRange;
+
+    chart.data.datasets.forEach((dataset) => {
+        if (dataset.wavelengthStart && dataset.wavelengthEnd) {
+            const wavelengthRange = dataset.wavelengthEnd - dataset.wavelengthStart;
+            const barWidth = wavelengthRange * pixelsPerNm;
+            dataset.barThickness = Math.max(barWidth, 2); // Minimum 2 pixels
+        }
+    });
 }
 
 function updateSpectrumChart(displayId, value) {
@@ -1789,14 +1819,18 @@ function updateSpectrumChart(displayId, value) {
             // Find the dataset with matching channel name
             const datasetIndex = chart.data.datasets.findIndex(ds => ds.label === channel.name);
             if (datasetIndex !== -1) {
-                // Update the y-value while keeping x-range as floating bar
+                // Update the y-value while keeping x-position at wavelength center
                 chart.data.datasets[datasetIndex].data = [{
-                    x: [channel.start, channel.end],
+                    x: (channel.start + channel.end) / 2,
                     y: channel.value
                 }];
             }
         });
     }
+
+    // Recalculate bar widths in case chart has been resized
+    const { xMin, xMax } = chartData;
+    updateBarWidths(chart, xMin, xMax);
 
     chart.update('none');
 
