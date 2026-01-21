@@ -188,10 +188,10 @@ class UDPListener:
                     # Convert 2D array to JSON string for storage
                     thermal_pixels_json = json.dumps(thermal_array)
 
-            # Debug: Check UV spectral data
-            uva = packet.get('spectral_UVA')
-            uvb = packet.get('spectral_UVB')
-            uvc = packet.get('spectral_UVC')
+            # Debug: Check UV spectral data (ESP32 sends lowercase field names)
+            uva = packet.get('spectral_uva')
+            uvb = packet.get('spectral_uvb')
+            uvc = packet.get('spectral_uvc')
             if uva is not None or uvb is not None or uvc is not None:
                 logger.info(f"🔬 UV Spectral Data from {node_id}: UVA={uva}, UVB={uvb}, UVC={uvc}")
 
@@ -230,9 +230,9 @@ class UDPListener:
                 spectral_nir_855nm=packet.get('spectral_nir'),
                 spectral_vis=packet.get('spectral_vis'),
                 spectral_fd=packet.get('spectral_fd'),
-                spectral_UVA=packet.get('spectral_UVA'),
-                spectral_UVB=packet.get('spectral_UVB'),
-                spectral_UVC=packet.get('spectral_UVC'),
+                spectral_UVA=packet.get('spectral_uva'),
+                spectral_UVB=packet.get('spectral_uvb'),
+                spectral_UVC=packet.get('spectral_uvc'),
                 thermal_pixels=thermal_pixels_json
             )
             db.session.add(sensor_data)
