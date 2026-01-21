@@ -179,14 +179,9 @@ const MEASUREMENTS = {
         variation: 100
     },
     spectrum: {
-        name: 'Light Spectrum',
+        name: 'Electromagnetic Spectrum',
         unit: '',
-        options: ['Electromagnetic Spectrum']
-    },
-    uvSpectrum: {
-        name: 'UV Spectrum',
-        unit: '',
-        options: ['Electromagnetic Spectrum']
+        options: ['UV Spectrum', 'Visible Spectrum', 'Full Spectrum']
     },
     thermal: {
         name: 'Thermal Camera',
@@ -402,60 +397,36 @@ function extractSensorValue(measurementKey, data) {
             return data.light_intensity;
 
         case 'spectrum':
-            // Return spectral data with wavelength ranges and colors
-            // Each channel has start/end wavelengths and a color
-            return {
-                channels: [
-                    { name: 'F1', start: 395, end: 415, color: '#8200c8', value: data.spectral_f1_405nm || 0 },
-                    { name: 'F2', start: 415, end: 435, color: '#5400ff', value: data.spectral_f2_425nm || 0 },
-                    { name: 'FZ', start: 440, end: 460, color: '#0046ff', value: data.spectral_fz_450nm || 0 },
-                    { name: 'F3', start: 465, end: 485, color: '#00c0ff', value: data.spectral_f3_475nm || 0 },
-                    { name: 'F4', start: 505, end: 525, color: '#1fff00', value: data.spectral_f4_515nm || 0 },
-                    { name: 'F5', start: 540, end: 560, color: '#a3ff00', value: data.spectral_f5_550nm || 0 },
-                    { name: 'FXL', start: 590, end: 610, color: '#ffbe00', value: data.spectral_fxl_600nm || 0 },
-                    { name: 'F6', start: 630, end: 650, color: '#ff2100', value: data.spectral_f6_640nm || 0 },
-                    { name: 'F7', start: 680, end: 700, color: '#ff0000', value: data.spectral_f7_690nm || 0 },
-                    { name: 'F8', start: 735, end: 755, color: '#ab0000', value: data.spectral_f8_745nm || 0 },
-                    { name: 'NIR', start: 845, end: 865, color: '#610000', value: data.spectral_nir_855nm || 0 }
-                ]
-            };
+            // Return ALL available spectral data (UV + visible)
+            const channels = [];
 
-        case 'uvSpectrum':
-            // Return UV spectral data with wavelength ranges and colors
-            // If visible spectrum is also available, combine them
-            const hasVisibleSpectrum = data.spectral_f1_405nm !== undefined;
-            const uvChannels = [
-                { name: 'UVC', start: 200, end: 280, color: '#4c1d95', value: data.spectral_UVC || 0 },
-                { name: 'UVB', start: 280, end: 320, color: '#7c3aed', value: data.spectral_UVB || 0 },
-                { name: 'UVA', start: 320, end: 400, color: '#a855f7', value: data.spectral_UVA || 0 }
-            ];
-
-            if (hasVisibleSpectrum) {
-                // Combine UV and visible spectrum
-                const visibleChannels = [
-                    { name: 'F1', start: 395, end: 415, color: '#8200c8', value: data.spectral_f1_405nm || 0 },
-                    { name: 'F2', start: 415, end: 435, color: '#5400ff', value: data.spectral_f2_425nm || 0 },
-                    { name: 'FZ', start: 440, end: 460, color: '#0046ff', value: data.spectral_fz_450nm || 0 },
-                    { name: 'F3', start: 465, end: 485, color: '#00c0ff', value: data.spectral_f3_475nm || 0 },
-                    { name: 'F4', start: 505, end: 525, color: '#1fff00', value: data.spectral_f4_515nm || 0 },
-                    { name: 'F5', start: 540, end: 560, color: '#a3ff00', value: data.spectral_f5_550nm || 0 },
-                    { name: 'FXL', start: 590, end: 610, color: '#ffbe00', value: data.spectral_fxl_600nm || 0 },
-                    { name: 'F6', start: 630, end: 650, color: '#ff2100', value: data.spectral_f6_640nm || 0 },
-                    { name: 'F7', start: 680, end: 700, color: '#ff0000', value: data.spectral_f7_690nm || 0 },
-                    { name: 'F8', start: 735, end: 755, color: '#ab0000', value: data.spectral_f8_745nm || 0 },
-                    { name: 'NIR', start: 845, end: 865, color: '#610000', value: data.spectral_nir_855nm || 0 }
-                ];
-                return {
-                    channels: [...uvChannels, ...visibleChannels],
-                    hasVisible: true
-                };
-            } else {
-                // UV only
-                return {
-                    channels: uvChannels,
-                    hasVisible: false
-                };
+            // Add UV channels if available
+            if (data.spectral_UVC !== undefined || data.spectral_UVB !== undefined || data.spectral_UVA !== undefined) {
+                channels.push(
+                    { name: 'UVC', start: 200, end: 280, color: '#4c1d95', value: data.spectral_UVC || 0 },
+                    { name: 'UVB', start: 280, end: 320, color: '#7c3aed', value: data.spectral_UVB || 0 },
+                    { name: 'UVA', start: 320, end: 400, color: '#a855f7', value: data.spectral_UVA || 0 }
+                );
             }
+
+            // Add visible channels if available
+            if (data.spectral_f1_405nm !== undefined) {
+                channels.push(
+                    { name: 'F1', start: 395, end: 415, color: '#8200c8', value: data.spectral_f1_405nm || 0 },
+                    { name: 'F2', start: 415, end: 435, color: '#5400ff', value: data.spectral_f2_425nm || 0 },
+                    { name: 'FZ', start: 440, end: 460, color: '#0046ff', value: data.spectral_fz_450nm || 0 },
+                    { name: 'F3', start: 465, end: 485, color: '#00c0ff', value: data.spectral_f3_475nm || 0 },
+                    { name: 'F4', start: 505, end: 525, color: '#1fff00', value: data.spectral_f4_515nm || 0 },
+                    { name: 'F5', start: 540, end: 560, color: '#a3ff00', value: data.spectral_f5_550nm || 0 },
+                    { name: 'FXL', start: 590, end: 610, color: '#ffbe00', value: data.spectral_fxl_600nm || 0 },
+                    { name: 'F6', start: 630, end: 650, color: '#ff2100', value: data.spectral_f6_640nm || 0 },
+                    { name: 'F7', start: 680, end: 700, color: '#ff0000', value: data.spectral_f7_690nm || 0 },
+                    { name: 'F8', start: 735, end: 755, color: '#ab0000', value: data.spectral_f8_745nm || 0 },
+                    { name: 'NIR', start: 845, end: 865, color: '#610000', value: data.spectral_nir_855nm || 0 }
+                );
+            }
+
+            return { channels };
 
         case 'thermal':
             // Return thermal camera data (8x8 pixel array)
@@ -607,9 +578,11 @@ function hasSensorData(measurementKey, data) {
         case 'volume':
             return data.volume_rms !== undefined;
         case 'spectrum':
-            return data.spectral_f1_405nm !== undefined;
-        case 'uvSpectrum':
-            return data.spectral_UVA !== undefined || data.spectral_UVB !== undefined || data.spectral_UVC !== undefined;
+            // Show spectrum card if ANY spectral data is available (UV or visible)
+            return data.spectral_f1_405nm !== undefined ||
+                   data.spectral_UVA !== undefined ||
+                   data.spectral_UVB !== undefined ||
+                   data.spectral_UVC !== undefined;
         case 'thermal':
             return data.thermal_pixels !== undefined && data.thermal_pixels !== null;
         default:
@@ -802,9 +775,9 @@ function createDisplayContent(measurementKey, measurement, optionType, displayId
     } else if (optionType === 'Vector') {
         content.innerHTML = createVectorDisplay(displayId);
         setTimeout(() => initializeVectorDisplay(displayId, measurementKey), 200);
-    } else if (optionType === 'Electromagnetic Spectrum') {
-        content.innerHTML = createSpectrumDisplay(displayId);
-        setTimeout(() => initializeSpectrumChart(displayId, measurementKey), 200);
+    } else if (optionType === 'UV Spectrum' || optionType === 'Visible Spectrum' || optionType === 'Full Spectrum') {
+        content.innerHTML = createSpectrumDisplay(displayId, optionType);
+        setTimeout(() => initializeSpectrumChart(displayId, measurementKey, optionType), 200);
     } else if (optionType === 'Thermal Matrix') {
         content.innerHTML = createThermalDisplay(displayId);
         setTimeout(() => initializeThermalDisplay(displayId), 200);
@@ -956,13 +929,22 @@ function createVectorDisplay(displayId) {
     `;
 }
 
-function createSpectrumDisplay(displayId) {
+function createSpectrumDisplay(displayId, mode) {
+    let modeInfo = '';
+    if (mode === 'UV Spectrum') {
+        modeInfo = '3 UV channels (200-400 nm)';
+    } else if (mode === 'Visible Spectrum') {
+        modeInfo = '11 visible channels (395-865 nm)';
+    } else if (mode === 'Full Spectrum') {
+        modeInfo = '14 channels: UV + Visible (200-865 nm)';
+    }
+
     return `
         <div class="spectrum-container">
             <canvas id="${displayId}-spectrum"></canvas>
         </div>
         <div class="chart-info">
-            <span>11 spectral channels (395-865 nm)</span>
+            <span>${modeInfo}</span>
             <span id="${displayId}-update-time">Updated: --</span>
         </div>
     `;
@@ -1181,7 +1163,7 @@ function updateDisplay(displayId, measurementKey, optionType, value) {
         updateChart(displayId, value, measurement);
     } else if (optionType === 'Vector') {
         updateVectorDisplay(displayId, value, measurement);
-    } else if (optionType === 'Electromagnetic Spectrum') {
+    } else if (optionType === 'UV Spectrum' || optionType === 'Visible Spectrum' || optionType === 'Full Spectrum') {
         updateSpectrumChart(displayId, value);
     } else if (optionType === 'Thermal Matrix') {
         updateThermalDisplay(displayId, value);
@@ -1626,8 +1608,8 @@ function updateVectorDisplay(displayId, value, measurement) {
 // ============================================
 // Spectrum Display
 // ============================================
-function initializeSpectrumChart(displayId, measurementKey) {
-    debugLog(`🌈 Initializing spectrum chart for ${displayId} (${measurementKey})...`, 'info');
+function initializeSpectrumChart(displayId, measurementKey, mode) {
+    debugLog(`🌈 Initializing spectrum chart for ${displayId} (${mode})...`, 'info');
 
     // Destroy existing chart if it exists
     if (AppState.charts[displayId]) {
@@ -1654,46 +1636,46 @@ function initializeSpectrumChart(displayId, measurementKey) {
     debugLog(`Creating Chart.js bar chart for spectrum ${displayId}...`, 'info');
     const ctx = canvas.getContext('2d');
 
-    // Spectrum channel configuration with wavelength ranges and colors
+    // Define ALL possible channels
+    const uvChannels = [
+        { name: 'UVC', start: 200, end: 280, color: '#4c1d95' },
+        { name: 'UVB', start: 280, end: 320, color: '#7c3aed' },
+        { name: 'UVA', start: 320, end: 400, color: '#a855f7' }
+    ];
+
+    const visibleChannels = [
+        { name: 'F1', start: 395, end: 415, color: '#8200c8' },
+        { name: 'F2', start: 415, end: 435, color: '#5400ff' },
+        { name: 'FZ', start: 440, end: 460, color: '#0046ff' },
+        { name: 'F3', start: 465, end: 485, color: '#00c0ff' },
+        { name: 'F4', start: 505, end: 525, color: '#1fff00' },
+        { name: 'F5', start: 540, end: 560, color: '#a3ff00' },
+        { name: 'FXL', start: 590, end: 610, color: '#ffbe00' },
+        { name: 'F6', start: 630, end: 650, color: '#ff2100' },
+        { name: 'F7', start: 680, end: 700, color: '#ff0000' },
+        { name: 'F8', start: 735, end: 755, color: '#ab0000' },
+        { name: 'NIR', start: 845, end: 865, color: '#610000' }
+    ];
+
+    // Configure channels and X-axis based on mode
     let spectrumChannels;
     let xMin, xMax;
 
-    if (measurementKey === 'uvSpectrum') {
-        // UV spectrum - always show full range (180-880nm) to accommodate both UV and visible
-        // Initialize ALL channels (UV + visible) so x-axis limits never change
-        spectrumChannels = [
-            { name: 'UVC', start: 200, end: 280, color: '#4c1d95' },
-            { name: 'UVB', start: 280, end: 320, color: '#7c3aed' },
-            { name: 'UVA', start: 320, end: 400, color: '#a855f7' },
-            { name: 'F1', start: 395, end: 415, color: '#8200c8' },
-            { name: 'F2', start: 415, end: 435, color: '#5400ff' },
-            { name: 'FZ', start: 440, end: 460, color: '#0046ff' },
-            { name: 'F3', start: 465, end: 485, color: '#00c0ff' },
-            { name: 'F4', start: 505, end: 525, color: '#1fff00' },
-            { name: 'F5', start: 540, end: 560, color: '#a3ff00' },
-            { name: 'FXL', start: 590, end: 610, color: '#ffbe00' },
-            { name: 'F6', start: 630, end: 650, color: '#ff2100' },
-            { name: 'F7', start: 680, end: 700, color: '#ff0000' },
-            { name: 'F8', start: 735, end: 755, color: '#ab0000' },
-            { name: 'NIR', start: 845, end: 865, color: '#610000' }
-        ];
+    if (mode === 'UV Spectrum') {
+        spectrumChannels = uvChannels;
+        xMin = 180;
+        xMax = 420;
+    } else if (mode === 'Visible Spectrum') {
+        spectrumChannels = visibleChannels;
+        xMin = 380;
+        xMax = 880;
+    } else if (mode === 'Full Spectrum') {
+        spectrumChannels = [...uvChannels, ...visibleChannels];
         xMin = 180;
         xMax = 880;
     } else {
-        // Visible spectrum
-        spectrumChannels = [
-            { name: 'F1', start: 395, end: 415, color: '#8200c8' },
-            { name: 'F2', start: 415, end: 435, color: '#5400ff' },
-            { name: 'FZ', start: 440, end: 460, color: '#0046ff' },
-            { name: 'F3', start: 465, end: 485, color: '#00c0ff' },
-            { name: 'F4', start: 505, end: 525, color: '#1fff00' },
-            { name: 'F5', start: 540, end: 560, color: '#a3ff00' },
-            { name: 'FXL', start: 590, end: 610, color: '#ffbe00' },
-            { name: 'F6', start: 630, end: 650, color: '#ff2100' },
-            { name: 'F7', start: 680, end: 700, color: '#ff0000' },
-            { name: 'F8', start: 735, end: 755, color: '#ab0000' },
-            { name: 'NIR', start: 845, end: 865, color: '#610000' }
-        ];
+        // Default to visible spectrum
+        spectrumChannels = visibleChannels;
         xMin = 380;
         xMax = 880;
     }
