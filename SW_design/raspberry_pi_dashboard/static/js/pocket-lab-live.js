@@ -1692,6 +1692,9 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
     }
 
     // Create datasets - one per channel for proper x-axis positioning
+    // For Full Spectrum, use larger minBarLength to ensure UV bars are visible
+    const minBarLen = (mode === 'Full Spectrum') ? 15 : 2;
+
     const datasets = spectrumChannels.map(channel => ({
         label: channel.name,
         data: [{ x: (channel.start + channel.end) / 2, y: 0 }], // Position at center
@@ -1700,7 +1703,7 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
         categoryPercentage: 1.0,
         barPercentage: 1.0,
         // Store wavelength info for dynamic width calculation
-        minBarLength: 2,
+        minBarLength: minBarLen, // Minimum bar height in pixels
         wavelengthStart: channel.start,
         wavelengthEnd: channel.end
     }));
