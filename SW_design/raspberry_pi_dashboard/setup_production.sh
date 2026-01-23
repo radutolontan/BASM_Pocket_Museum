@@ -89,10 +89,10 @@ echo -e "${GREEN}Step 7: Configuring systemd service...${NC}"
 # Copy systemd service file
 sudo cp "$DASHBOARD_DIR/pocketlab.service" /etc/systemd/system/pocketlab.service
 
-# Update the path in service file to use current user and directory
-sudo sed -i "s|/home/pi|$HOME|g" /etc/systemd/system/pocketlab.service
+# Update the service file to use current user and actual directory path
 sudo sed -i "s|User=pi|User=$USER|g" /etc/systemd/system/pocketlab.service
 sudo sed -i "s|Group=pi|Group=$USER|g" /etc/systemd/system/pocketlab.service
+sudo sed -i "s|/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard|$DASHBOARD_DIR|g" /etc/systemd/system/pocketlab.service
 
 # Reload systemd
 sudo systemctl daemon-reload
