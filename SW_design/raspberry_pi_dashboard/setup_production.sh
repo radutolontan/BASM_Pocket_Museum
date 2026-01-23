@@ -102,9 +102,28 @@ sudo systemctl enable pocketlab.service
 sudo systemctl start pocketlab.service
 
 echo ""
-echo -e "${GREEN}Step 8: Checking service status...${NC}"
+echo -e "${GREEN}Step 8: Configuring UDP listener service...${NC}"
+# Copy UDP listener systemd service file
+sudo cp "$DASHBOARD_DIR/pocketlab-listener.service" /etc/systemd/system/pocketlab-listener.service
+
+# Update the service file to use current user and actual directory path
+sudo sed -i "s|User=pi|User=$USER|g" /etc/systemd/system/pocketlab-listener.service
+sudo sed -i "s|Group=pi|Group=$USER|g" /etc/systemd/system/pocketlab-listener.service
+sudo sed -i "s|/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard|$DASHBOARD_DIR|g" /etc/systemd/system/pocketlab-listener.service
+
+# Reload systemd
+sudo systemctl daemon-reload
+
+# Enable and start the UDP listener service
+sudo systemctl enable pocketlab-listener.service
+sudo systemctl start pocketlab-listener.service
+
+echo ""
+echo -e "${GREEN}Step 9: Checking service status...${NC}"
 sleep 2
 sudo systemctl status pocketlab.service --no-pager
+echo ""
+sudo systemctl status pocketlab-listener.service --no-pager
 
 echo ""
 echo "========================================="
@@ -117,10 +136,12 @@ echo -e "${GREEN}  http://pocketlab${NC}"
 echo -e "${GREEN}  http://$(hostname -I | awk '{print $1}')${NC}"
 echo ""
 echo "Useful commands:"
-echo "  sudo systemctl status pocketlab    # Check service status"
-echo "  sudo systemctl restart pocketlab   # Restart service"
-echo "  sudo systemctl stop pocketlab      # Stop service"
-echo "  sudo journalctl -u pocketlab -f    # View logs"
+echo "  sudo systemctl status pocketlab           # Check web server status"
+echo "  sudo systemctl status pocketlab-listener  # Check UDP listener status"
+echo "  sudo systemctl restart pocketlab          # Restart web server"
+echo "  sudo systemctl restart pocketlab-listener # Restart UDP listener"
+echo "  sudo journalctl -u pocketlab -f           # View web server logs"
+echo "  sudo journalctl -u pocketlab-listener -f  # View UDP listener logs"
 echo ""
 echo -e "${YELLOW}Note: If you changed the hostname, please reboot for mDNS to work properly:${NC}"
 echo "  sudo reboot"
