@@ -140,15 +140,15 @@
 // [WiFi Settings]
 #define NETWORK_SSID                "BASM_Laborator"     // WiFi SSID to connect to
 #define NETWORK_PASSWORD            "hailamuzeu!"        // WiFi password
-#define NETWORK_NODE_ID             "balaurul"          // Unique identifier for this ESP32 node
+#define NETWORK_NODE_ID             "harap_alb"          // Unique identifier for this ESP32 node
 
 // [IP Configuration - Static IP Only]
-#define NETWORK_STATIC_IP           192,168,10,11        // Static IP for this node (ESP32 #1: .11, ESP32 #2: .12, etc.)
+#define NETWORK_STATIC_IP           192,168,10,16        // Static IP for this node (ESP32 #1: .11, ESP32 #2: .12, etc.)
 #define NETWORK_GATEWAY             192,168,10,1         // Gateway IP (typically the router/AP)
 #define NETWORK_SUBNET              255,255,255,0        // Subnet mask
 #define NETWORK_PRIMARY_DNS         192,168,10,1         // Primary DNS (Google DNS)
 #define NETWORK_SECONDARY_DNS       192,168,10,2         // Secondary DNS (Google DNS)
-#define NETWORK_HOSTNAME            "ESP32-01"           // Network hostname for this device
+#define NETWORK_HOSTNAME            "ESP32-06"           // Network hostname for this device
 
 // [Server Configuration]
 #define SERVER_IP_ADDRESS           192,168,10,2         // Raspberry Pi server IP address
