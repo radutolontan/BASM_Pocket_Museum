@@ -36,7 +36,7 @@ source venv/bin/activate
 echo ""
 echo -e "${GREEN}Step 3: Installing Python dependencies...${NC}"
 pip install --upgrade pip
-pip install gunicorn eventlet flask flask-cors flask-socketio python-socketio sqlalchemy
+pip install gunicorn eventlet flask flask-cors flask-socketio python-socketio sqlalchemy python-dotenv
 
 echo ""
 echo -e "${GREEN}Step 4: Creating log directories...${NC}"
