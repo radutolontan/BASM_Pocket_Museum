@@ -1663,36 +1663,53 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
 
     if (mode === 'UV Spectrum') {
         spectrumChannels = uvChannels;
-        xMin = 180;
+        xMin = 160;  // Padding for leftmost UV bars
         xMax = 420;
     } else if (mode === 'Visible Spectrum') {
         spectrumChannels = visibleChannels;
-        xMin = 380;
-        xMax = 880;
+        xMin = 360;  // Padding for leftmost visible bars
+        xMax = 900;  // Padding for rightmost NIR bar (865nm + padding)
     } else if (mode === 'Full Spectrum') {
         spectrumChannels = [...uvChannels, ...visibleChannels];
-        xMin = 180;
-        xMax = 880;
+        xMin = 160;  // Padding for leftmost UV bars
+        xMax = 900;  // Padding for rightmost NIR bar (865nm + padding)
     } else {
         // Default to visible spectrum
         spectrumChannels = visibleChannels;
-        xMin = 380;
-        xMax = 880;
+        xMin = 360;
+        xMax = 900;
     }
 
-    // Create datasets - one per channel for proper x-axis positioning
-    const datasets = spectrumChannels.map(channel => ({
+    // Create a SINGLE dataset with all channels as data points
+    // This works better with linear x-axis than multiple datasets
+    const allData = spectrumChannels.map(channel => ({
+        x: (channel.start + channel.end) / 2,
+        y: 0,
         label: channel.name,
-        data: [{ x: (channel.start + channel.end) / 2, y: 0 }], // Position at center
         backgroundColor: channel.color,
-        borderWidth: 0,
-        categoryPercentage: 1.0,
-        barPercentage: 1.0,
-        // Store wavelength info for dynamic width calculation
-        minBarLength: 2,
         wavelengthStart: channel.start,
         wavelengthEnd: channel.end
     }));
+
+    const datasets = [{
+        label: 'Spectrum',
+        data: allData,
+        backgroundColor: allData.map(d => d.backgroundColor),
+        borderWidth: 0,
+        barThickness: 'flex',
+        maxBarThickness: 100
+    }];
+
+    // Store channel info for updates
+    const channelMap = {};
+    spectrumChannels.forEach((channel, idx) => {
+        channelMap[channel.name] = {
+            index: idx,
+            start: channel.start,
+            end: channel.end,
+            color: channel.color
+        };
+    });
 
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -1704,6 +1721,10 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
             maintainAspectRatio: false,
             animation: {
                 duration: 0
+            },
+            parsing: {
+                xAxisKey: 'x',
+                yAxisKey: 'y'
             },
             scales: {
                 x: {
@@ -1720,11 +1741,13 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
                     },
                     ticks: {
                         stepSize: 50
+                    },
+                    grid: {
+                        display: true
                     }
                 },
                 y: {
                     beginAtZero: true,
-                    suggestedMax: 100,  // Ensure reasonable scale even when all values are 0
                     title: {
                         display: true,
                         text: 'Intensity',
@@ -1732,7 +1755,15 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
                             size: 14,
                             weight: 'bold'
                         }
+                    },
+                    grid: {
+                        display: true
                     }
+                }
+            },
+            elements: {
+                bar: {
+                    borderWidth: 0
                 }
             },
             plugins: {
@@ -1760,42 +1791,23 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
         }
     });
 
-    // Store chart data
-    AppState.charts[displayId] = { chart, spectrumChannels, measurementKey, xMin, xMax };
+    // Store chart data including channel map for updates
+    AppState.charts[displayId] = { chart, spectrumChannels, channelMap, measurementKey, xMin, xMax };
 
     // Calculate initial bar widths after a short delay to ensure chart has rendered
     setTimeout(() => {
         updateBarWidths(chart, xMin, xMax);
         chart.update('none');
-        debugLog(`✅ Spectrum chart bar widths calculated for ${displayId}`, 'success');
     }, 150);
 
     debugLog(`✅ Spectrum chart initialized for ${displayId}: ${spectrumChannels.length} channels, X-axis ${xMin}-${xMax}nm`, 'success');
-    console.log(`Spectrum channels for ${measurementKey}:`, spectrumChannels.map(c => `${c.name}(${c.start}-${c.end}nm)`));
 }
 
-// Helper function to calculate bar widths in pixels based on wavelength ranges
+// Helper function to calculate bar widths - with single dataset and barThickness:'flex', Chart.js handles this automatically
 function updateBarWidths(chart, xMin, xMax) {
-    const xScale = chart.scales.x;
-    if (!xScale || !xScale.width) {
-        console.warn('X-scale not ready, skipping bar width calculation');
-        return;
-    }
-
-    const pixelRange = xScale.width;
-    const dataRange = xMax - xMin;
-    const pixelsPerNm = pixelRange / dataRange;
-
-    console.log(`Bar width calculation: ${pixelRange}px / ${dataRange}nm = ${pixelsPerNm}px/nm`);
-
-    chart.data.datasets.forEach((dataset, index) => {
-        if (dataset.wavelengthStart && dataset.wavelengthEnd) {
-            const wavelengthRange = dataset.wavelengthEnd - dataset.wavelengthStart;
-            const barWidth = wavelengthRange * pixelsPerNm;
-            dataset.barThickness = Math.max(barWidth, 3); // Minimum 3 pixels
-            console.log(`  ${dataset.label}: ${wavelengthRange}nm = ${barWidth.toFixed(1)}px (set to ${dataset.barThickness}px)`);
-        }
-    });
+    // Bar widths are now handled automatically by Chart.js with barThickness: 'flex'
+    // This function is kept for compatibility but doesn't need to do anything
+    return;
 }
 
 function updateSpectrumChart(displayId, value) {
@@ -1805,22 +1817,31 @@ function updateSpectrumChart(displayId, value) {
         return;
     }
 
-    const { chart, measurementKey } = chartData;
+    const { chart, channelMap, measurementKey } = chartData;
 
-    // Update chart values
-    if (value && value.channels) {
-        // For each channel in the data, find the matching dataset and update it
+    // Update chart values - all channels are in a single dataset, use channelMap to find indices
+    if (value && value.channels && chart.data.datasets[0]) {
+        const dataset = chart.data.datasets[0];
+
+        // Find the maximum value to determine Y-axis scale
+        let maxValue = 0;
+
         value.channels.forEach((channel) => {
-            // Find the dataset with matching channel name
-            const datasetIndex = chart.data.datasets.findIndex(ds => ds.label === channel.name);
-            if (datasetIndex !== -1) {
-                // Update the y-value while keeping x-position at wavelength center
-                chart.data.datasets[datasetIndex].data = [{
-                    x: (channel.start + channel.end) / 2,
-                    y: channel.value
-                }];
+            const channelInfo = channelMap[channel.name];
+            if (channelInfo) {
+                const idx = channelInfo.index;
+                // Update the y-value for this data point
+                dataset.data[idx].y = channel.value;
+                // Track max value
+                if (channel.value > maxValue) {
+                    maxValue = channel.value;
+                }
             }
         });
+
+        // Set Y-axis scale: 0-100 by default, 0-1000 if any value exceeds 100
+        const suggestedMax = maxValue > 100 ? 1000 : 100;
+        chart.options.scales.y.suggestedMax = suggestedMax;
     }
 
     // Recalculate bar widths in case chart has been resized
