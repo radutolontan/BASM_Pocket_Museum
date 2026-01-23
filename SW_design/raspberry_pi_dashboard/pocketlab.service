@@ -1,0 +1,31 @@
+[Unit]
+Description=Pocket Lab Dashboard - WSGI Server
+After=network.target
+
+[Service]
+Type=notify
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard
+Environment="PATH=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin"
+ExecStart=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin/gunicorn \
+    --config gunicorn_config.py \
+    --worker-class eventlet \
+    --workers 3 \
+    --bind 127.0.0.1:8080 \
+    "app:app"
+
+# Restart policy
+Restart=always
+RestartSec=5
+
+# Resource limits (optional - adjust based on Raspberry Pi model)
+LimitNOFILE=4096
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pocketlab
+
+[Install]
+WantedBy=multi-user.target

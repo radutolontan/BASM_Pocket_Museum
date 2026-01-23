@@ -8,7 +8,7 @@ import logging
 import hashlib
 import json
 from datetime import datetime, timedelta
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, redirect, url_for
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from sqlalchemy import desc
@@ -491,8 +491,8 @@ def handle_unsubscribe_device(data):
 
 @app.route('/')
 def index():
-    """Serve the main application page."""
-    return send_from_directory(app.static_folder, 'index.html')
+    """Redirect to the live dashboard (student-friendly URL)."""
+    return redirect('/pocket-lab-live.html')
 
 
 @app.route('/<path:path>')
