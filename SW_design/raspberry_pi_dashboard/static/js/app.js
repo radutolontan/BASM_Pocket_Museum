@@ -70,6 +70,10 @@ function initWebSocket() {
 
     AppState.socket.on('connect', () => {
         console.log('WebSocket connected');
+        // Notify other modules that WebSocket reconnected
+        if (window.onWebSocketReconnect) {
+            window.onWebSocketReconnect();
+        }
     });
 
     AppState.socket.on('disconnect', () => {

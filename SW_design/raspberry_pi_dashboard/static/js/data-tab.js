@@ -8,7 +8,8 @@ const DataTab = {
     devices: [],
     selectedDevice: null,
     charts: {},
-    sensorData: {}
+    sensorData: {},
+    statusInterval: null
 };
 
 /**
@@ -30,6 +31,15 @@ function initDataTab() {
 
     // Refresh device list every 5 seconds
     setInterval(loadActiveDevices, 5000);
+
+    // Listen for subscription confirmations (when socket is ready)
+    setTimeout(() => {
+        if (AppState.socket) {
+            AppState.socket.on('subscription_response', (payload) => {
+                console.log(`✅ Subscription confirmed for ${payload.node_id} (status: ${payload.status})`);
+            });
+        }
+    }, 1000);
 }
 
 /**
@@ -88,6 +98,34 @@ function renderDeviceList() {
 }
 
 /**
+ * Subscribe to the currently selected device
+ * Handles reconnection and retry logic
+ */
+function subscribeToSelectedDevice() {
+    if (!DataTab.selectedDevice) return;
+
+    if (!AppState.socket || !AppState.socket.connected) {
+        console.warn('WebSocket not connected, will retry subscription when connected...');
+        return;
+    }
+
+    console.log(`📡 Subscribing to device ${DataTab.selectedDevice.node_id}...`);
+    AppState.socket.emit('subscribe_device', { node_id: DataTab.selectedDevice.node_id });
+}
+
+/**
+ * Handle WebSocket reconnection
+ * Re-subscribe to the selected device if any
+ */
+window.onWebSocketReconnect = function() {
+    console.log('♻️ WebSocket reconnected - re-subscribing to selected device...');
+    if (DataTab.selectedDevice) {
+        // Wait a brief moment for the server to be ready
+        setTimeout(subscribeToSelectedDevice, 100);
+    }
+};
+
+/**
  * Select a device for live data viewing
  */
 window.selectDataDevice = function(nodeId) {
@@ -95,19 +133,13 @@ window.selectDataDevice = function(nodeId) {
     if (!device) return;
 
     // Unsubscribe from previous device if any
-    if (DataTab.selectedDevice && AppState.socket) {
+    if (DataTab.selectedDevice && AppState.socket && AppState.socket.connected) {
         AppState.socket.emit('unsubscribe_device', { node_id: DataTab.selectedDevice.node_id });
     }
 
     // Select new device
     DataTab.selectedDevice = device;
-    console.log(`Selected device: ${nodeId}`);
-
-    // Subscribe to WebSocket room for this device
-    if (AppState.socket && AppState.socket.connected) {
-        console.log(`Subscribing to device ${nodeId}...`);
-        AppState.socket.emit('subscribe_device', { node_id: nodeId });
-    }
+    console.log(`✅ Selected device: ${nodeId}`);
 
     // Re-render device list to show selection
     renderDeviceList();
@@ -117,6 +149,9 @@ window.selectDataDevice = function(nodeId) {
 
     // Initialize sensor display
     initSensorDisplay();
+
+    // Subscribe to WebSocket room for this device
+    subscribeToSelectedDevice();
 };
 
 /**
@@ -126,8 +161,15 @@ function initSensorDisplay() {
     const sensorDisplay = document.getElementById('sensor-display');
     if (!sensorDisplay) return;
 
+    const connectionStatus = AppState.socket && AppState.socket.connected
+        ? '<span class="badge bg-success">Connected</span>'
+        : '<span class="badge bg-warning">Connecting...</span>';
+
     sensorDisplay.innerHTML = `
-        <h3 class="mb-3">Live Data: ${DataTab.selectedDevice.node_id}</h3>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Live Data: ${DataTab.selectedDevice.node_id}</h3>
+            <div id="connectionStatus">${connectionStatus}</div>
+        </div>
         <div class="row">
             <div class="col-md-6 mb-4">
                 <div class="card">
@@ -162,13 +204,31 @@ function initSensorDisplay() {
                 </div>
             </div>
         </div>
-        <div class="alert alert-info">
+        <div class="alert alert-info" id="waitingMessage">
             Waiting for live data from ${DataTab.selectedDevice.node_id}...
         </div>
     `;
 
     // Initialize charts
     initCharts();
+
+    // Update connection status periodically
+    updateConnectionStatus();
+    DataTab.statusInterval = setInterval(updateConnectionStatus, 1000);
+}
+
+/**
+ * Update connection status badge
+ */
+function updateConnectionStatus() {
+    const statusElement = document.getElementById('connectionStatus');
+    if (!statusElement) return;
+
+    if (AppState.socket && AppState.socket.connected) {
+        statusElement.innerHTML = '<span class="badge bg-success">Connected</span>';
+    } else {
+        statusElement.innerHTML = '<span class="badge bg-warning">Reconnecting...</span>';
+    }
 }
 
 /**
@@ -231,6 +291,12 @@ function clearSensorDisplay() {
         if (chart) chart.destroy();
     });
     DataTab.charts = {};
+
+    // Clear status update interval
+    if (DataTab.statusInterval) {
+        clearInterval(DataTab.statusInterval);
+        DataTab.statusInterval = null;
+    }
 
     const sensorDisplay = document.getElementById('sensor-display');
     if (sensorDisplay) {
