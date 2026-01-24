@@ -66,18 +66,46 @@ function hashMacAddress(macAddress) {
 function initWebSocket() {
     console.log('Connecting to WebSocket...');
 
-    AppState.socket = io(CONFIG.WS_URL);
+    // Configure Socket.IO with mobile-friendly settings
+    AppState.socket = io(CONFIG.WS_URL, {
+        // Try polling first (better for mobile), then upgrade to WebSocket
+        transports: ['polling', 'websocket'],
+        // More aggressive reconnection for mobile browsers
+        reconnection: true,
+        reconnectionDelay: 500,
+        reconnectionDelayMax: 2000,
+        reconnectionAttempts: 10,
+        // Longer timeout for mobile networks
+        timeout: 20000,
+        // Force new connection to avoid cached state issues
+        forceNew: false
+    });
 
     AppState.socket.on('connect', () => {
-        console.log('WebSocket connected');
+        console.log('✅ WebSocket connected!');
+        console.log('Transport:', AppState.socket.io.engine.transport.name);
+        console.log('Session ID:', AppState.socket.id);
+
         // Notify other modules that WebSocket reconnected
         if (window.onWebSocketReconnect) {
             window.onWebSocketReconnect();
         }
     });
 
-    AppState.socket.on('disconnect', () => {
-        console.log('WebSocket disconnected');
+    AppState.socket.on('disconnect', (reason) => {
+        console.log('❌ WebSocket disconnected:', reason);
+    });
+
+    AppState.socket.on('connect_error', (error) => {
+        console.error('🔴 WebSocket connection error:', error.message);
+    });
+
+    AppState.socket.on('reconnect_attempt', (attemptNumber) => {
+        console.log(`🔄 Reconnecting... (attempt ${attemptNumber})`);
+    });
+
+    AppState.socket.on('reconnect', (attemptNumber) => {
+        console.log(`✅ Reconnected after ${attemptNumber} attempts`);
     });
 
     AppState.socket.on('connection_response', (data) => {

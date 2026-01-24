@@ -9,7 +9,10 @@ const DataTab = {
     selectedDevice: null,
     charts: {},
     sensorData: {},
-    statusInterval: null
+    statusInterval: null,
+    subscriptionConfirmed: false,
+    lastDataReceived: null,
+    dataStarted: false
 };
 
 /**
@@ -37,6 +40,9 @@ function initDataTab() {
         if (AppState.socket) {
             AppState.socket.on('subscription_response', (payload) => {
                 console.log(`✅ Subscription confirmed for ${payload.node_id} (status: ${payload.status})`);
+                if (payload.status === 'subscribed') {
+                    DataTab.subscriptionConfirmed = true;
+                }
             });
         }
     }, 1000);
@@ -101,16 +107,31 @@ function renderDeviceList() {
  * Subscribe to the currently selected device
  * Handles reconnection and retry logic
  */
-function subscribeToSelectedDevice() {
+function subscribeToSelectedDevice(retryCount = 0) {
     if (!DataTab.selectedDevice) return;
 
     if (!AppState.socket || !AppState.socket.connected) {
-        console.warn('WebSocket not connected, will retry subscription when connected...');
+        console.warn('⏳ WebSocket not connected, will retry subscription when connected...');
+
+        // Retry after a delay if we haven't exceeded max retries
+        if (retryCount < 5) {
+            setTimeout(() => subscribeToSelectedDevice(retryCount + 1), 1000);
+        }
         return;
     }
 
-    console.log(`📡 Subscribing to device ${DataTab.selectedDevice.node_id}...`);
+    console.log(`📡 Subscribing to device ${DataTab.selectedDevice.node_id}... (attempt ${retryCount + 1})`);
     AppState.socket.emit('subscribe_device', { node_id: DataTab.selectedDevice.node_id });
+
+    // Set up a timeout to check if we got confirmation
+    if (!DataTab.subscriptionConfirmed) {
+        setTimeout(() => {
+            if (!DataTab.subscriptionConfirmed && retryCount < 3) {
+                console.warn('⚠️ No subscription confirmation received, retrying...');
+                subscribeToSelectedDevice(retryCount + 1);
+            }
+        }, 2000);
+    }
 }
 
 /**
@@ -120,8 +141,10 @@ function subscribeToSelectedDevice() {
 window.onWebSocketReconnect = function() {
     console.log('♻️ WebSocket reconnected - re-subscribing to selected device...');
     if (DataTab.selectedDevice) {
-        // Wait a brief moment for the server to be ready
-        setTimeout(subscribeToSelectedDevice, 100);
+        // Reset confirmation flag
+        DataTab.subscriptionConfirmed = false;
+        // Wait a brief moment for the server to be ready, then retry with backoff
+        setTimeout(() => subscribeToSelectedDevice(0), 500);
     }
 };
 
@@ -139,6 +162,8 @@ window.selectDataDevice = function(nodeId) {
 
     // Select new device
     DataTab.selectedDevice = device;
+    DataTab.subscriptionConfirmed = false;
+    DataTab.lastDataReceived = null;
     console.log(`✅ Selected device: ${nodeId}`);
 
     // Re-render device list to show selection
@@ -150,8 +175,8 @@ window.selectDataDevice = function(nodeId) {
     // Initialize sensor display
     initSensorDisplay();
 
-    // Subscribe to WebSocket room for this device
-    subscribeToSelectedDevice();
+    // Subscribe to WebSocket room for this device (start with retry count 0)
+    subscribeToSelectedDevice(0);
 };
 
 /**
@@ -224,11 +249,31 @@ function updateConnectionStatus() {
     const statusElement = document.getElementById('connectionStatus');
     if (!statusElement) return;
 
+    let statusHTML = '';
+
     if (AppState.socket && AppState.socket.connected) {
-        statusElement.innerHTML = '<span class="badge bg-success">Connected</span>';
+        statusHTML = '<span class="badge bg-success">Connected</span>';
+
+        // Check if we're receiving data
+        if (DataTab.lastDataReceived) {
+            const timeSinceData = (new Date() - DataTab.lastDataReceived) / 1000;
+            if (timeSinceData < 2) {
+                statusHTML += ' <span class="badge bg-info ms-1">Receiving Data</span>';
+            } else if (timeSinceData < 10) {
+                statusHTML += ' <span class="badge bg-warning ms-1">Waiting...</span>';
+            } else {
+                statusHTML += ' <span class="badge bg-danger ms-1">No Data</span>';
+            }
+        } else if (DataTab.subscriptionConfirmed) {
+            statusHTML += ' <span class="badge bg-warning ms-1">Subscribed, waiting...</span>';
+        } else {
+            statusHTML += ' <span class="badge bg-secondary ms-1">Subscribing...</span>';
+        }
     } else {
-        statusElement.innerHTML = '<span class="badge bg-warning">Reconnecting...</span>';
+        statusHTML = '<span class="badge bg-danger">Disconnected</span>';
     }
+
+    statusElement.innerHTML = statusHTML;
 }
 
 /**
@@ -292,6 +337,11 @@ function clearSensorDisplay() {
     });
     DataTab.charts = {};
 
+    // Reset data tracking
+    DataTab.dataStarted = false;
+    DataTab.lastDataReceived = null;
+    DataTab.subscriptionConfirmed = false;
+
     // Clear status update interval
     if (DataTab.statusInterval) {
         clearInterval(DataTab.statusInterval);
@@ -315,7 +365,19 @@ window.updateSensorDisplay = function(payload) {
     const data = payload.data;
     const timestamp = new Date().toLocaleTimeString();
 
-    console.log('Updating sensor display:', data);
+    // Track data reception
+    DataTab.lastDataReceived = new Date();
+
+    // Log first data packet or periodically
+    if (!DataTab.dataStarted) {
+        console.log('🎉 First sensor data received! Live updates active.');
+        DataTab.dataStarted = true;
+    }
+
+    // Debug log (only occasionally to avoid spam)
+    if (Math.random() < 0.05) {  // 5% of packets
+        console.log('📊 Sensor data:', data);
+    }
 
     const maxDataPoints = 50;
 
