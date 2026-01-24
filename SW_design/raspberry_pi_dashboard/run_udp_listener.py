@@ -54,11 +54,15 @@ def main():
     # Initialize database
     db.init_app(app)
 
-    # Initialize SocketIO with threading mode
+    # Initialize SocketIO with Redis message queue
+    # This allows the UDP listener and web server to share WebSocket messages
     socketio = SocketIO(
         app,
         cors_allowed_origins=app.config['CORS_ORIGINS'],
-        async_mode='threading'
+        async_mode='threading',
+        message_queue='redis://localhost:6379/0',
+        logger=True,
+        engineio_logger=False
     )
 
     # Create database tables if needed

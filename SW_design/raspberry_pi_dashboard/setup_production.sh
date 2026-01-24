@@ -21,7 +21,7 @@ DASHBOARD_DIR="$SCRIPT_DIR"
 
 echo -e "${GREEN}Step 1: Installing system dependencies...${NC}"
 sudo apt-get update
-sudo apt-get install -y nginx avahi-daemon python3-pip python3-venv
+sudo apt-get install -y nginx avahi-daemon python3-pip python3-venv redis-server
 
 echo ""
 echo -e "${GREEN}Step 2: Setting up Python virtual environment...${NC}"
@@ -36,7 +36,7 @@ source venv/bin/activate
 echo ""
 echo -e "${GREEN}Step 3: Installing Python dependencies...${NC}"
 pip install --upgrade pip
-pip install gunicorn eventlet flask flask-cors flask-socketio python-socketio sqlalchemy flask-sqlalchemy python-dotenv
+pip install gunicorn eventlet flask flask-cors flask-socketio python-socketio sqlalchemy flask-sqlalchemy python-dotenv redis
 
 echo ""
 echo -e "${GREEN}Step 4: Creating log directories...${NC}"
@@ -66,7 +66,20 @@ if [ "$CURRENT_HOSTNAME" != "pocketlab" ]; then
 fi
 
 echo ""
-echo -e "${GREEN}Step 6: Configuring Nginx...${NC}"
+echo -e "${GREEN}Step 6: Configuring Redis (message queue for WebSocket)...${NC}"
+# Enable and start Redis
+sudo systemctl enable redis-server
+sudo systemctl start redis-server
+
+# Verify Redis is running
+if sudo systemctl is-active --quiet redis-server; then
+    echo -e "${GREEN}Redis is running${NC}"
+else
+    echo -e "${RED}Warning: Redis failed to start${NC}"
+fi
+
+echo ""
+echo -e "${GREEN}Step 7: Configuring Nginx...${NC}"
 # Copy Nginx configuration
 sudo cp "$DASHBOARD_DIR/nginx_pocketlab.conf" /etc/nginx/sites-available/pocketlab
 
@@ -85,7 +98,7 @@ sudo systemctl enable nginx
 sudo systemctl restart nginx
 
 echo ""
-echo -e "${GREEN}Step 7: Configuring systemd service...${NC}"
+echo -e "${GREEN}Step 8: Configuring systemd service...${NC}"
 # Copy systemd service file
 sudo cp "$DASHBOARD_DIR/pocketlab.service" /etc/systemd/system/pocketlab.service
 
@@ -102,7 +115,7 @@ sudo systemctl enable pocketlab.service
 sudo systemctl start pocketlab.service
 
 echo ""
-echo -e "${GREEN}Step 8: Configuring UDP listener service...${NC}"
+echo -e "${GREEN}Step 9: Configuring UDP listener service...${NC}"
 # Copy UDP listener systemd service file
 sudo cp "$DASHBOARD_DIR/pocketlab-listener.service" /etc/systemd/system/pocketlab-listener.service
 
@@ -119,8 +132,10 @@ sudo systemctl enable pocketlab-listener.service
 sudo systemctl start pocketlab-listener.service
 
 echo ""
-echo -e "${GREEN}Step 9: Checking service status...${NC}"
+echo -e "${GREEN}Step 10: Checking service status...${NC}"
 sleep 2
+sudo systemctl status redis-server --no-pager
+echo ""
 sudo systemctl status pocketlab.service --no-pager
 echo ""
 sudo systemctl status pocketlab-listener.service --no-pager
@@ -136,12 +151,14 @@ echo -e "${GREEN}  http://pocketlab${NC}"
 echo -e "${GREEN}  http://$(hostname -I | awk '{print $1}')${NC}"
 echo ""
 echo "Useful commands:"
+echo "  sudo systemctl status redis-server        # Check Redis status"
 echo "  sudo systemctl status pocketlab           # Check web server status"
 echo "  sudo systemctl status pocketlab-listener  # Check UDP listener status"
 echo "  sudo systemctl restart pocketlab          # Restart web server"
 echo "  sudo systemctl restart pocketlab-listener # Restart UDP listener"
 echo "  sudo journalctl -u pocketlab -f           # View web server logs"
 echo "  sudo journalctl -u pocketlab-listener -f  # View UDP listener logs"
+echo "  redis-cli ping                            # Test Redis connection (should return PONG)"
 echo ""
 echo -e "${YELLOW}Note: If you changed the hostname, please reboot for mDNS to work properly:${NC}"
 echo "  sudo reboot"

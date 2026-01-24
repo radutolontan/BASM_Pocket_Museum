@@ -1,6 +1,7 @@
 [Unit]
 Description=Pocket Lab UDP Listener
-After=network.target pocketlab.service
+After=network.target redis-server.service pocketlab.service
+Requires=redis-server.service
 
 [Service]
 Type=simple

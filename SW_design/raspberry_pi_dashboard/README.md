@@ -29,10 +29,36 @@ A web-based dashboard for the Raspberry Pi that receives sensor data from ESP32 
 
 ## Architecture
 
+### Development Mode
 - **Backend**: Python Flask + Flask-SocketIO
 - **Database**: SQLite (lightweight, perfect for Raspberry Pi)
 - **Communication**: UDP (port 5000) for ESP32 data, WebSocket for real-time browser updates
-- **Frontend**: HTML/CSS/JavaScript (will be implemented next)
+- **Frontend**: HTML/CSS/JavaScript
+
+### Production Mode (Multi-Service Architecture)
+The production setup runs three separate services that communicate via Redis:
+
+1. **Web Server (`pocketlab.service`)**
+   - Gunicorn WSGI server with eventlet workers
+   - Serves HTTP API and WebSocket connections
+   - Listens on `127.0.0.1:8080` (proxied by Nginx)
+
+2. **UDP Listener (`pocketlab-listener.service`)**
+   - Standalone service receiving ESP32 sensor data via UDP
+   - Saves data to SQLite database
+   - Broadcasts sensor updates via Redis message queue
+
+3. **Redis Server (`redis-server.service`)**
+   - Message queue enabling WebSocket communication between services
+   - Allows UDP listener broadcasts to reach web clients
+   - Essential for multi-process/multi-service architecture
+
+4. **Nginx (Reverse Proxy)**
+   - Serves frontend assets
+   - Proxies WebSocket and HTTP requests to Gunicorn
+   - Enables mDNS access via `http://pocketlab.local`
+
+**Why Redis?** In production, the web server runs with multiple Gunicorn workers (separate processes), and the UDP listener runs as an independent service. Without Redis, WebSocket messages from the UDP listener wouldn't reach clients connected to the web server. Redis acts as a message broker, synchronizing WebSocket events across all processes.
 
 ## Installation
 
@@ -89,27 +115,51 @@ You should see:
 
 ### Step 5: Run the Application
 
-For development:
+#### Development Mode
 ```bash
 python3 app.py
 ```
+This runs both the web server and UDP listener in a single process.
 
-For production (systemd service):
+#### Production Mode (Recommended)
+Use the automated setup script:
 ```bash
-sudo cp dashboard.service /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable dashboard
-sudo systemctl start dashboard
+chmod +x setup_production.sh
+./setup_production.sh
 ```
 
-Check status:
-```bash
-sudo systemctl status dashboard
-```
+This script will:
+1. Install system dependencies (Nginx, Redis, Avahi, Python3)
+2. Create Python virtual environment
+3. Install Python dependencies
+4. Configure mDNS (hostname: pocketlab.local)
+5. Configure Nginx reverse proxy
+6. Set up Redis message queue
+7. Install and start systemd services
+8. Verify all services are running
 
-View logs:
+After setup completes, access the dashboard at:
+- `http://pocketlab.local`
+- `http://pocketlab`
+- `http://<raspberry-pi-ip>`
+
+**Service Management**
 ```bash
-sudo journalctl -u dashboard -f
+# Check service status
+sudo systemctl status redis-server
+sudo systemctl status pocketlab
+sudo systemctl status pocketlab-listener
+
+# Restart services
+sudo systemctl restart pocketlab
+sudo systemctl restart pocketlab-listener
+
+# View logs
+sudo journalctl -u pocketlab -f
+sudo journalctl -u pocketlab-listener -f
+
+# Test Redis connection
+redis-cli ping  # Should return PONG
 ```
 
 ## Configuration
@@ -334,20 +384,66 @@ SELECT * FROM users;
 
 ### No ESP32 Data Received
 
-1. Check ESP32 is transmitting:
+1. **Check UDP listener is running**:
+```bash
+sudo systemctl status pocketlab-listener
+# Should show "active (running)"
+```
+
+2. **Check ESP32 is transmitting**:
 ```bash
 # Listen on UDP port 5000
 nc -ul 5000
+# You should see JSON packets from ESP32
 ```
 
-2. Check firewall:
+3. **Check Redis is running**:
 ```bash
-sudo ufw status
+sudo systemctl status redis-server
+redis-cli ping  # Should return PONG
 ```
 
-3. Check dashboard logs:
+4. **Check UDP listener logs**:
 ```bash
-sudo journalctl -u dashboard -f
+sudo journalctl -u pocketlab-listener -f
+# Look for "UDP listener started on port 5000"
+# Look for packet reception logs
+```
+
+5. **Check web server logs**:
+```bash
+sudo journalctl -u pocketlab -f
+# Look for WebSocket connection logs
+```
+
+### WebSocket Data Not Updating in Browser
+
+This usually indicates Redis message queue issues:
+
+1. **Verify Redis is running and accessible**:
+```bash
+sudo systemctl status redis-server
+redis-cli ping  # Should return PONG
+```
+
+2. **Check both services are using Redis**:
+```bash
+sudo journalctl -u pocketlab -n 50 | grep -i redis
+sudo journalctl -u pocketlab-listener -n 50 | grep -i redis
+# Look for connection messages
+```
+
+3. **Restart services in order**:
+```bash
+sudo systemctl restart redis-server
+sudo systemctl restart pocketlab-listener
+sudo systemctl restart pocketlab
+```
+
+4. **Check for Redis connection errors**:
+```bash
+redis-cli client list
+# Should show connections from both services
 ```
 
 ### Database Errors
