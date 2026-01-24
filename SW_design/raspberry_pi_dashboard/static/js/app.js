@@ -66,20 +66,35 @@ function hashMacAddress(macAddress) {
 function initWebSocket() {
     console.log('Connecting to WebSocket...');
 
+    // Detect iOS/Safari for special handling
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+    console.log('Browser detection - iOS:', isIOS, 'Safari:', isSafari);
+
     // Configure Socket.IO with mobile-friendly settings
-    AppState.socket = io(CONFIG.WS_URL, {
-        // Try polling first (better for mobile), then upgrade to WebSocket
-        transports: ['polling', 'websocket'],
+    // For iOS, try WebSocket first as polling can have issues
+    const socketConfig = {
+        // iOS: try WebSocket first, fallback to polling
+        // Others: try polling first (more reliable), then upgrade to WebSocket
+        transports: isIOS ? ['websocket', 'polling'] : ['polling', 'websocket'],
         // More aggressive reconnection for mobile browsers
         reconnection: true,
         reconnectionDelay: 500,
-        reconnectionDelayMax: 2000,
-        reconnectionAttempts: 10,
+        reconnectionDelayMax: 3000,
+        reconnectionAttempts: 15,
         // Longer timeout for mobile networks
         timeout: 20000,
-        // Force new connection to avoid cached state issues
-        forceNew: false
-    });
+        // Upgrade transport automatically when possible
+        upgrade: true,
+        // Allow reconnection even on transport errors
+        rememberUpgrade: true,
+        // Force new connection to avoid cached state issues on iOS
+        forceNew: isIOS
+    };
+
+    console.log('Socket.IO config:', socketConfig);
+    AppState.socket = io(CONFIG.WS_URL, socketConfig);
 
     AppState.socket.on('connect', () => {
         console.log('✅ WebSocket connected!');
@@ -98,6 +113,7 @@ function initWebSocket() {
 
     AppState.socket.on('connect_error', (error) => {
         console.error('🔴 WebSocket connection error:', error.message);
+        console.error('Error details:', error);
     });
 
     AppState.socket.on('reconnect_attempt', (attemptNumber) => {
@@ -106,6 +122,15 @@ function initWebSocket() {
 
     AppState.socket.on('reconnect', (attemptNumber) => {
         console.log(`✅ Reconnected after ${attemptNumber} attempts`);
+    });
+
+    AppState.socket.on('reconnect_failed', () => {
+        console.error('❌ Reconnection failed after all attempts');
+    });
+
+    // Listen for transport upgrades
+    AppState.socket.io.engine.on('upgrade', (transport) => {
+        console.log('🚀 Transport upgraded to:', transport.name);
     });
 
     AppState.socket.on('connection_response', (data) => {
