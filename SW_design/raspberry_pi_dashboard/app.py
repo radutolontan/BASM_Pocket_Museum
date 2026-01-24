@@ -36,13 +36,17 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize UDP listener
-udp_listener = UDPListener(
-    app,
-    socketio,
-    port=app.config['UDP_PORT'],
-    activity_timeout=app.config['ACTIVITY_TIMEOUT_SECONDS']
-)
+# Initialize UDP listener (only if not disabled via environment variable)
+# In production, the UDP listener runs as a separate service (pocketlab-listener)
+# Set DISABLE_UDP_LISTENER=1 when running the web server to avoid port conflicts
+udp_listener = None
+if not os.environ.get('DISABLE_UDP_LISTENER'):
+    udp_listener = UDPListener(
+        app,
+        socketio,
+        port=app.config['UDP_PORT'],
+        activity_timeout=app.config['ACTIVITY_TIMEOUT_SECONDS']
+    )
 
 
 # ============================================================================
@@ -512,8 +516,12 @@ def main():
         db.create_all()
         logger.info("Database tables verified/created")
 
-    # Start UDP listener
-    udp_listener.start()
+    # Start UDP listener (if enabled)
+    if udp_listener:
+        udp_listener.start()
+        logger.info("UDP listener started (integrated mode)")
+    else:
+        logger.info("UDP listener disabled (running as separate service)")
 
     # Start Flask-SocketIO server
     logger.info(f"Starting dashboard server on {app.config['BIND_ADDRESS']}:{app.config['WEB_PORT']}")

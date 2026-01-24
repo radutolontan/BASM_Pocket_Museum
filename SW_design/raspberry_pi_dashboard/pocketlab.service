@@ -8,6 +8,7 @@ User=pi
 Group=pi
 WorkingDirectory=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard
 Environment="PATH=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin"
+Environment="DISABLE_UDP_LISTENER=1"
 ExecStart=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin/gunicorn \
     --config gunicorn_config.py \
     --worker-class eventlet \
