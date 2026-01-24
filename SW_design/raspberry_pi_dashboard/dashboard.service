@@ -1,0 +1,20 @@
+[Unit]
+Description=BASM Pocket Museum Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard
+Environment="PATH=/home/pi/.local/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/usr/bin/python3 /home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/app.py
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=basm-dashboard
+
+[Install]
+WantedBy=multi-user.target

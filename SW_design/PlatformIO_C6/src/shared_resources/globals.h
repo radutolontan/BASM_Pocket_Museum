@@ -1,7 +1,7 @@
 #pragma once
 
 // =========== SW VERSION =============
-#define GIT_SHA "mag_check"
+#define GIT_SHA "raspberry_pi_dashboard"
 
 // ============================================================
 // ================= CHARGE CONFIGURATION =====================
@@ -18,8 +18,8 @@
 #define BMS_TIMER_STARTUP           2200 // [ms] - HOLD ON/OFF pressed before latching ON
 #define BMS_TIMER_SHUTDOWN          2200 // [ms] - HOLD ON/OFF pressed before latching OFF
 // [BMS] ChargeController and Feedback
-#define VBAT_VTHRESHOLD             3.55f// If the system is predicted to reach VBAT_VTHRESHOLD within VBAT_TIME_TO_VTHRESHOLD_MIN, LOW_POWER will be indicated
-#define VBAT_TIME_TO_VTHRESHOLD_MIN 30.0f
+#define VBAT_VTHRESHOLD             3.4f// If the system is predicted to reach VBAT_VTHRESHOLD within VBAT_TIME_TO_VTHRESHOLD_MIN, LOW_POWER will be indicated
+#define VBAT_TIME_TO_VTHRESHOLD_MIN 15.0f
 // In reality, if VBAT_VTHRESHOLD = 3.4V & VBAT_TIME_TO_VTHRESHOLD_MIN = 30 min , we hit 2.9V 18-19 min after entering LOW_POWER since we operate in the non-linear SoC regime
 // In reality, if VBAT_VTHRESHOLD = 3.45V& VBAT_TIME_TO_VTHRESHOLD_MIN = 30 min , we hit 2.9V 22-23 min after entering LOW_POWER since we operate in the non-linear SoC regime
 #define VBAT_SETTLING_PERIOD_SEC    90.0f// To avoid LiPo transients, within VBAT_SETTLING_PERIOD_SEC from transitioning to BATT_ONLY, no LOW_BATT predictions are made
@@ -140,15 +140,15 @@
 // [WiFi Settings]
 #define NETWORK_SSID                "BASM_Laborator"     // WiFi SSID to connect to
 #define NETWORK_PASSWORD            "hailamuzeu!"        // WiFi password
-#define NETWORK_NODE_ID             "LAB_01"             // Unique identifier for this ESP32 node
+#define NETWORK_NODE_ID             "harap_alb"          // Unique identifier for this ESP32 node
 
 // [IP Configuration - Static IP Only]
-#define NETWORK_STATIC_IP           192,168,10,11        // Static IP for this node (ESP32 #1: .11, ESP32 #2: .12, etc.)
+#define NETWORK_STATIC_IP           192,168,10,16        // Static IP for this node (ESP32 #1: .11, ESP32 #2: .12, etc.)
 #define NETWORK_GATEWAY             192,168,10,1         // Gateway IP (typically the router/AP)
 #define NETWORK_SUBNET              255,255,255,0        // Subnet mask
 #define NETWORK_PRIMARY_DNS         192,168,10,1         // Primary DNS (Google DNS)
 #define NETWORK_SECONDARY_DNS       192,168,10,2         // Secondary DNS (Google DNS)
-#define NETWORK_HOSTNAME            "ESP32-01"           // Network hostname for this device
+#define NETWORK_HOSTNAME            "ESP32-06"           // Network hostname for this device
 
 // [Server Configuration]
 #define SERVER_IP_ADDRESS           192,168,10,2         // Raspberry Pi server IP address

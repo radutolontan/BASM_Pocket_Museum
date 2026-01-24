@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASM Dashboard Style Guide</title>
+
+    <!-- Google Fonts - Work Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="/css/style-guide.css">
+</head>
+<body data-theme="light">
+    <div class="container">
+        <!-- Header -->
+        <header class="style-guide-header">
+            <div class="header-content">
+                <h1>BASM Pocket Museum</h1>
+                <p class="subtitle">Dashboard Style Guide</p>
+            </div>
+            <div class="theme-switcher">
+                <button id="themeToggle" class="theme-toggle-btn">
+                    <i class="bi bi-moon-fill"></i>
+                    <span>Dark Theme</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Table of Contents -->
+        <nav class="toc">
+            <h2>Contents</h2>
+            <ul>
+                <li><a href="#colors">Colors</a></li>
+                <li><a href="#typography">Typography</a></li>
+                <li><a href="#text-widths">Text Widths</a></li>
+                <li><a href="#cards">Cards & Border Radius</a></li>
+                <li><a href="#buttons">Buttons</a></li>
+                <li><a href="#forms">Form Elements</a></li>
+                <li><a href="#components">Component Examples</a></li>
+            </ul>
+        </nav>
+
+        <!-- Colors Section -->
+        <section id="colors" class="section">
+            <h2 class="section-title">Color Palette</h2>
+
+            <h3>Brand Colors</h3>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #f8c01c;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Sunshine Yellow</div>
+                        <div class="color-hex">#f8c01c</div>
+                        <div class="color-usage">Primary Accent, CTAs</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #375f83;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Ocean Blue</div>
+                        <div class="color-hex">#375f83</div>
+                        <div class="color-usage">Headers, Links</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #d782a0;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Rose Pink</div>
+                        <div class="color-hex">#d782a0</div>
+                        <div class="color-usage">Highlights, Info</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #bd2026;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Cardinal Red</div>
+                        <div class="color-hex">#bd2026</div>
+                        <div class="color-usage">Alerts, Important</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Light Theme Colors</h3>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #ffffff;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background</div>
+                        <div class="color-hex">#ffffff</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #f5f7fa;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Surface</div>
+                        <div class="color-hex">#f5f7fa</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #1a1a1a;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Primary</div>
+                        <div class="color-hex">#1a1a1a</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #6b7280;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Secondary</div>
+                        <div class="color-hex">#6b7280</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Dark Theme Colors</h3>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #0f1419;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background</div>
+                        <div class="color-hex">#0f1419</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #1a2332;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Surface</div>
+                        <div class="color-hex">#1a2332</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #e5e7eb;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Primary</div>
+                        <div class="color-hex">#e5e7eb</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: #9ca3af;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Secondary</div>
+                        <div class="color-hex">#9ca3af</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography Section -->
+        <section id="typography" class="section">
+            <h2 class="section-title">Typography</h2>
+            <p class="section-description">All text uses the Work Sans font family from Google Fonts.</p>
+
+            <div class="type-specimen">
+                <h1 class="type-sample">Heading 1 - Work Sans Bold</h1>
+                <div class="type-specs">48px / 3rem • Weight: 700 • Line Height: 1.2</div>
+            </div>
+
+            <div class="type-specimen">
+                <h2 class="type-sample">Heading 2 - Work Sans Semibold</h2>
+                <div class="type-specs">36px / 2.25rem • Weight: 600 • Line Height: 1.3</div>
+            </div>
+
+            <div class="type-specimen">
+                <h3 class="type-sample">Heading 3 - Work Sans Semibold</h3>
+                <div class="type-specs">28px / 1.75rem • Weight: 600 • Line Height: 1.3</div>
+            </div>
+
+            <div class="type-specimen">
+                <h4 class="type-sample">Heading 4 - Work Sans Medium</h4>
+                <div class="type-specs">24px / 1.5rem • Weight: 500 • Line Height: 1.4</div>
+            </div>
+
+            <div class="type-specimen">
+                <h5 class="type-sample">Heading 5 - Work Sans Medium</h5>
+                <div class="type-specs">20px / 1.25rem • Weight: 500 • Line Height: 1.4</div>
+            </div>
+
+            <div class="type-specimen">
+                <h6 class="type-sample">Heading 6 - Work Sans Medium</h6>
+                <div class="type-specs">16px / 1rem • Weight: 500 • Line Height: 1.5</div>
+            </div>
+
+            <div class="type-specimen">
+                <p class="type-sample body-large">Body Large - Work Sans Regular</p>
+                <div class="type-specs">18px / 1.125rem • Weight: 400 • Line Height: 1.6</div>
+            </div>
+
+            <div class="type-specimen">
+                <p class="type-sample">Body Regular - Work Sans Regular</p>
+                <div class="type-specs">16px / 1rem • Weight: 400 • Line Height: 1.6</div>
+            </div>
+
+            <div class="type-specimen">
+                <p class="type-sample body-small">Body Small - Work Sans Regular</p>
+                <div class="type-specs">14px / 0.875rem • Weight: 400 • Line Height: 1.5</div>
+            </div>
+
+            <div class="type-specimen">
+                <p class="type-sample caption">Caption - Work Sans Regular</p>
+                <div class="type-specs">12px / 0.75rem • Weight: 400 • Line Height: 1.4</div>
+            </div>
+        </section>
+
+        <!-- Text Widths Section -->
+        <section id="text-widths" class="section">
+            <h2 class="section-title">Text Widths</h2>
+            <p class="section-description">Different content widths for optimal readability.</p>
+
+            <div class="text-width-demo">
+                <h3>Full Width (100%)</h3>
+                <div class="demo-card width-full">
+                    <p>The BASM Pocket Museum dashboard provides real-time visualization of sensor data from multiple ESP32 "Pocket Lab" devices. Students can explore scientific principles through hands-on experiments, recording their observations and answering teacher-guided questions. This full-width text spans the entire container, useful for tables, charts, and data displays that need maximum horizontal space.</p>
+                </div>
+            </div>
+
+            <div class="text-width-demo">
+                <h3>Wide (80ch / ~960px)</h3>
+                <div class="demo-card width-wide">
+                    <p>The BASM Pocket Museum dashboard provides real-time visualization of sensor data from multiple ESP32 "Pocket Lab" devices. Students can explore scientific principles through hands-on experiments, recording their observations and answering teacher-guided questions. This width is optimal for technical content, documentation, and data-heavy interfaces.</p>
+                </div>
+            </div>
+
+            <div class="text-width-demo">
+                <h3>Reading Width (70ch / ~840px)</h3>
+                <div class="demo-card width-reading">
+                    <p>The BASM Pocket Museum dashboard provides real-time visualization of sensor data from multiple ESP32 "Pocket Lab" devices. Students can explore scientific principles through hands-on experiments, recording their observations and answering teacher-guided questions. This is the optimal width for comfortable reading of body text in articles and content pages.</p>
+                </div>
+            </div>
+
+            <div class="text-width-demo">
+                <h3>Comfortable (60ch / ~720px)</h3>
+                <div class="demo-card width-comfortable">
+                    <p>The BASM Pocket Museum dashboard provides real-time visualization of sensor data from multiple ESP32 "Pocket Lab" devices. Students can explore scientific principles through hands-on experiments. This width works well for blog posts, instructions, and narrative content.</p>
+                </div>
+            </div>
+
+            <div class="text-width-demo">
+                <h3>Narrow (50ch / ~600px)</h3>
+                <div class="demo-card width-narrow">
+                    <p>The BASM Pocket Museum dashboard provides real-time visualization of sensor data from multiple ESP32 "Pocket Lab" devices. Perfect for mobile layouts, sidebars, and focused content sections.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cards & Border Radius Section -->
+        <section id="cards" class="section">
+            <h2 class="section-title">Cards & Border Radius</h2>
+            <p class="section-description">Various card styles and corner radii options.</p>
+
+            <h3>Border Radius Variations</h3>
+            <div class="radius-grid">
+                <div class="radius-demo">
+                    <div class="demo-card radius-none">
+                        <h4>None (0px)</h4>
+                        <p>Sharp corners, modern and minimal.</p>
+                    </div>
+                    <code>border-radius: 0;</code>
+                </div>
+
+                <div class="radius-demo">
+                    <div class="demo-card radius-small">
+                        <h4>Small (4px)</h4>
+                        <p>Subtle rounding for compact components.</p>
+                    </div>
+                    <code>border-radius: 4px;</code>
+                </div>
+
+                <div class="radius-demo">
+                    <div class="demo-card radius-medium">
+                        <h4>Medium (8px)</h4>
+                        <p>Balanced, friendly appearance.</p>
+                    </div>
+                    <code>border-radius: 8px;</code>
+                </div>
+
+                <div class="radius-demo">
+                    <div class="demo-card radius-large">
+                        <h4>Large (12px)</h4>
+                        <p>Soft, approachable aesthetic.</p>
+                    </div>
+                    <code>border-radius: 12px;</code>
+                </div>
+
+                <div class="radius-demo">
+                    <div class="demo-card radius-xlarge">
+                        <h4>X-Large (16px)</h4>
+                        <p>Prominent, playful styling.</p>
+                    </div>
+                    <code>border-radius: 16px;</code>
+                </div>
+
+                <div class="radius-demo">
+                    <div class="demo-card radius-xxlarge">
+                        <h4>XX-Large (24px)</h4>
+                        <p>Bold, distinctive cards.</p>
+                    </div>
+                    <code>border-radius: 24px;</code>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem;">Card Examples with Brand Colors</h3>
+            <div class="card-examples-grid">
+                <div class="example-card card-yellow">
+                    <div class="card-icon">
+                        <i class="bi bi-brightness-high-fill"></i>
+                    </div>
+                    <h4>Temperature Sensor</h4>
+                    <div class="sensor-value">23.5°C</div>
+                    <p>Current ambient temperature reading from the pocket lab device.</p>
+                </div>
+
+                <div class="example-card card-blue">
+                    <div class="card-icon">
+                        <i class="bi bi-speedometer2"></i>
+                    </div>
+                    <h4>Pressure Sensor</h4>
+                    <div class="sensor-value">101.3 kPa</div>
+                    <p>Atmospheric pressure measured in kilopascals.</p>
+                </div>
+
+                <div class="example-card card-pink">
+                    <div class="card-icon">
+                        <i class="bi bi-lightbulb-fill"></i>
+                    </div>
+                    <h4>Light Intensity</h4>
+                    <div class="sensor-value">542 lux</div>
+                    <p>Ambient light level detected by the sensor.</p>
+                </div>
+
+                <div class="example-card card-red">
+                    <div class="card-icon">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <h4>Alert Status</h4>
+                    <div class="sensor-value">Active</div>
+                    <p>Device requires attention or has exceeded thresholds.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons Section -->
+        <section id="buttons" class="section">
+            <h2 class="section-title">Buttons</h2>
+            <p class="section-description">Button styles with brand colors.</p>
+
+            <div class="button-showcase">
+                <h3>Primary Buttons</h3>
+                <div class="button-group">
+                    <button class="btn btn-primary-yellow">Sunshine Yellow</button>
+                    <button class="btn btn-primary-blue">Ocean Blue</button>
+                    <button class="btn btn-primary-pink">Rose Pink</button>
+                    <button class="btn btn-primary-red">Cardinal Red</button>
+                </div>
+
+                <h3>Outline Buttons</h3>
+                <div class="button-group">
+                    <button class="btn btn-outline-yellow">Sunshine Yellow</button>
+                    <button class="btn btn-outline-blue">Ocean Blue</button>
+                    <button class="btn btn-outline-pink">Rose Pink</button>
+                    <button class="btn btn-outline-red">Cardinal Red</button>
+                </div>
+
+                <h3>Button Sizes</h3>
+                <div class="button-group">
+                    <button class="btn btn-primary-blue btn-sm">Small</button>
+                    <button class="btn btn-primary-blue btn-md">Medium</button>
+                    <button class="btn btn-primary-blue btn-lg">Large</button>
+                    <button class="btn btn-primary-blue btn-xl">Extra Large</button>
+                </div>
+
+                <h3>Button States</h3>
+                <div class="button-group">
+                    <button class="btn btn-primary-yellow">Normal</button>
+                    <button class="btn btn-primary-yellow" disabled>Disabled</button>
+                    <button class="btn btn-primary-yellow">
+                        <i class="bi bi-download"></i>
+                        With Icon
+                    </button>
+                    <button class="btn btn-primary-yellow btn-icon-only">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Forms Section -->
+        <section id="forms" class="section">
+            <h2 class="section-title">Form Elements</h2>
+            <p class="section-description">Input fields, checkboxes, and form controls.</p>
+
+            <div class="form-showcase">
+                <div class="form-group">
+                    <label for="input-text">Text Input</label>
+                    <input type="text" id="input-text" class="form-control" placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-select">Select Dropdown</label>
+                    <select id="input-select" class="form-control">
+                        <option>Select grade level...</option>
+                        <option>9th Grade</option>
+                        <option>10th Grade</option>
+                        <option>11th Grade</option>
+                        <option>12th Grade</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-textarea">Text Area</label>
+                    <textarea id="input-textarea" class="form-control" rows="4" placeholder="What interests you about science?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Sensor Selection (Checkboxes)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            <span>Temperature</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            <span>Pressure</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox">
+                            <span>Light Intensity</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox">
+                            <span>Acceleration</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Display Type (Radio)</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="display" value="stripchart" checked>
+                            <span>Stripchart</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="display" value="numeric">
+                            <span>Numeric</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="display" value="both">
+                            <span>Both</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component Examples Section -->
+        <section id="components" class="section">
+            <h2 class="section-title">Component Examples</h2>
+            <p class="section-description">Real dashboard components in action.</p>
+
+            <h3>Device Card</h3>
+            <div class="component-demo">
+                <div class="device-card-demo">
+                    <div class="device-status-indicator active"></div>
+                    <div class="device-icon">
+                        <i class="bi bi-cpu-fill"></i>
+                    </div>
+                    <h4>ESP32-01</h4>
+                    <div class="device-id">LAB_01</div>
+                    <div class="device-meta">
+                        <span>192.168.10.11</span>
+                        <span class="device-timestamp">Last seen: 2s ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Question Card</h3>
+            <div class="component-demo">
+                <div class="question-card-demo">
+                    <div class="question-header">
+                        <span class="question-type-badge">Multiple Choice</span>
+                        <span class="question-time">Posted 5 minutes ago</span>
+                    </div>
+                    <h4 class="question-text">What is the acceleration due to gravity on Earth?</h4>
+                    <div class="question-options">
+                        <label class="option-label">
+                            <input type="radio" name="q1">
+                            <span>9.8 m/s²</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1">
+                            <span>10 m/s²</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1">
+                            <span>8.9 m/s²</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1">
+                            <span>11.2 m/s²</span>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary-yellow">Submit Answer</button>
+                </div>
+            </div>
+
+            <h3>Sensor Display Card</h3>
+            <div class="component-demo">
+                <div class="sensor-display-card">
+                    <div class="sensor-header">
+                        <h4>Temperature</h4>
+                        <button class="btn-settings">
+                            <i class="bi bi-gear-fill"></i>
+                        </button>
+                    </div>
+                    <div class="sensor-reading">
+                        <span class="sensor-value-large">23.5</span>
+                        <span class="sensor-unit">°C</span>
+                    </div>
+                    <div class="sensor-chart-placeholder">
+                        <svg viewBox="0 0 200 60" style="width: 100%; height: 60px;">
+                            <polyline points="0,40 10,35 20,30 30,28 40,25 50,22 60,24 70,26 80,30 90,28 100,25 110,22 120,20 130,18 140,20 150,22 160,25 170,28 180,30 190,32 200,30"
+                                      fill="none" stroke="#f8c01c" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="sensor-meta">
+                        <span>Min: 22.1°C</span>
+                        <span>Max: 24.3°C</span>
+                        <span>Avg: 23.2°C</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="style-guide-footer">
+            <p>BASM Pocket Museum Dashboard Style Guide</p>
+            <p class="footer-meta">Using Work Sans font family • Version 1.0</p>
+        </footer>
+    </div>
+
+    <script src="/js/style-guide.js"></script>
+</body>
+</html>
