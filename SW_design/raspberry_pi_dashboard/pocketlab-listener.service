@@ -5,11 +5,11 @@ Requires=redis-server.service
 
 [Service]
 Type=simple
-User=pi
-Group=pi
-WorkingDirectory=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard
-Environment="PATH=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin"
-ExecStart=/home/pi/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin/python run_udp_listener.py
+User=basm
+Group=basm
+WorkingDirectory=/home/basm/code/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard
+Environment="PATH=/home/basm/code/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin"
+ExecStart=/home/basm/code/BASM_Pocket_Museum/SW_design/raspberry_pi_dashboard/venv/bin/python run_udp_listener.py
 
 # Restart policy
 Restart=always
