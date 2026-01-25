@@ -56,10 +56,11 @@ def main():
 
     # Initialize SocketIO with Redis message queue
     # This allows the UDP listener and web server to share WebSocket messages
+    # IMPORTANT: async_mode should match the main app for consistency
     socketio = SocketIO(
         app,
         cors_allowed_origins=app.config['CORS_ORIGINS'],
-        async_mode='threading',
+        async_mode='eventlet',  # Match main app async_mode for consistency
         message_queue='redis://localhost:6379/0',
         logger=True,
         engineio_logger=False

@@ -26,12 +26,13 @@ app.config.from_object(config_class)
 # Initialize extensions
 db.init_app(app)
 CORS(app, origins=app.config['CORS_ORIGINS'])
-# Use threading mode with Redis message queue for inter-process communication
+# Use eventlet mode with Redis message queue for inter-process communication
 # This allows the UDP listener (separate service) and web server to share WebSocket messages
+# IMPORTANT: async_mode must match Gunicorn worker_class (both must be 'eventlet')
 socketio = SocketIO(
     app,
     cors_allowed_origins=app.config['CORS_ORIGINS'],
-    async_mode='threading',
+    async_mode='eventlet',  # Must match Gunicorn worker_class
     message_queue='redis://localhost:6379/0',
     logger=True,
     engineio_logger=False
