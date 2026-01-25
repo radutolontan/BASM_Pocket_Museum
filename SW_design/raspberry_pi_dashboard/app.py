@@ -504,8 +504,8 @@ def handle_unsubscribe_device(data):
 
 @app.route('/')
 def index():
-    """Serve the main dashboard with tabs."""
-    return send_from_directory(app.static_folder, 'index.html')
+    """Redirect to the live dashboard (student-friendly URL)."""
+    return redirect('/pocket-lab-live.html')
 
 
 @app.route('/<path:path>')

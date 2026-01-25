@@ -270,22 +270,81 @@ function updateThemeButton(theme) {
 function connectWebSocket() {
     debugLog('🔌 Connecting to WebSocket...', 'info');
 
+    // Detect iOS/Safari for special handling
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+    debugLog(`Browser detection - iOS: ${isIOS}, Safari: ${isSafari}`, 'info');
+
+    // Configure Socket.IO with mobile-friendly settings
+    // For iOS, try WebSocket first as polling can have issues
+    const socketConfig = {
+        // iOS: try WebSocket first, fallback to polling
+        // Others: try polling first (more reliable), then upgrade to WebSocket
+        transports: isIOS ? ['websocket', 'polling'] : ['polling', 'websocket'],
+        // More aggressive reconnection for mobile browsers
+        reconnection: true,
+        reconnectionDelay: 500,
+        reconnectionDelayMax: 3000,
+        reconnectionAttempts: 15,
+        // Longer timeout for mobile networks
+        timeout: 20000,
+        // Upgrade transport automatically when possible
+        upgrade: true,
+        // Allow reconnection even on transport errors
+        rememberUpgrade: true,
+        // Force new connection to avoid cached state issues on iOS
+        forceNew: isIOS
+    };
+
+    debugLog('Socket.IO config:', 'info');
+    console.log(socketConfig);
+
     // Connect to Socket.IO server
-    AppState.socket = io();
+    AppState.socket = io(window.location.origin, socketConfig);
 
     // Connection successful
     AppState.socket.on('connect', () => {
         debugLog('✅ WebSocket connected!', 'success');
+        debugLog(`Transport: ${AppState.socket.io.engine.transport.name}`, 'info');
+        debugLog(`Session ID: ${AppState.socket.id}`, 'info');
+
+        // Re-subscribe to device if one was selected before disconnect
+        if (AppState.selectedDevice) {
+            debugLog(`📡 Re-subscribing to device ${AppState.selectedDevice.node_id} after reconnection...`, 'info');
+            AppState.socket.emit('subscribe_device', { node_id: AppState.selectedDevice.node_id });
+        }
     });
 
     // Connection error
     AppState.socket.on('connect_error', (error) => {
-        debugLog(`❌ WebSocket connection error: ${error.message}`, 'error');
+        debugLog(`🔴 WebSocket connection error: ${error.message}`, 'error');
+        console.error('Error details:', error);
     });
 
     // Disconnection
     AppState.socket.on('disconnect', (reason) => {
-        debugLog(`⚠️ WebSocket disconnected: ${reason}`, 'warning');
+        debugLog(`❌ WebSocket disconnected: ${reason}`, 'warning');
+    });
+
+    // Reconnection attempts
+    AppState.socket.on('reconnect_attempt', (attemptNumber) => {
+        debugLog(`🔄 Reconnecting... (attempt ${attemptNumber})`, 'info');
+    });
+
+    // Reconnected successfully
+    AppState.socket.on('reconnect', (attemptNumber) => {
+        debugLog(`✅ Reconnected after ${attemptNumber} attempts`, 'success');
+    });
+
+    // Reconnection failed
+    AppState.socket.on('reconnect_failed', () => {
+        debugLog('❌ Reconnection failed after all attempts', 'error');
+    });
+
+    // Listen for transport upgrades
+    AppState.socket.io.engine.on('upgrade', (transport) => {
+        debugLog(`🚀 Transport upgraded to: ${transport.name}`, 'success');
     });
 
     // Listen for sensor data (rate-limited logging to avoid browser slowdown)
@@ -527,13 +586,8 @@ function selectDevice(device) {
     // Update banner - show device ID only (once, in big letters)
     document.getElementById('selectedDeviceName').textContent = device.node_id;
 
-    // Subscribe to WebSocket room for this device
-    if (AppState.socket && AppState.socket.connected) {
-        debugLog(`📡 Subscribing to device ${device.node_id}...`, 'info');
-        AppState.socket.emit('subscribe_device', { node_id: device.node_id });
-    } else {
-        debugLog(`❌ Cannot subscribe - WebSocket not connected`, 'error');
-    }
+    // Subscribe to WebSocket room for this device with retry logic
+    subscribeToDevice(device.node_id);
 
     // Clear any active displays
     clearAllDisplays();
@@ -544,6 +598,24 @@ function selectDevice(device) {
 
     // Render measurement cards
     renderMeasurementGrid();
+}
+
+/**
+ * Subscribe to device with retry logic
+ */
+function subscribeToDevice(nodeId, retryCount = 0) {
+    if (!AppState.socket || !AppState.socket.connected) {
+        debugLog('⏳ WebSocket not connected, will retry subscription when connected...', 'warning');
+        if (retryCount < 5) {
+            setTimeout(() => subscribeToDevice(nodeId, retryCount + 1), 1000);
+        } else {
+            debugLog('❌ Failed to subscribe after 5 attempts - WebSocket still not connected', 'error');
+        }
+        return;
+    }
+
+    debugLog(`📡 Subscribing to device ${nodeId}... (attempt ${retryCount + 1})`, 'info');
+    AppState.socket.emit('subscribe_device', { node_id: nodeId });
 }
 
 function showDeviceSelection() {
