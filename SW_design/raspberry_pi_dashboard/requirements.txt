@@ -23,7 +23,7 @@ python-dateutil==2.8.2
 # WebSocket Server for production
 # Flask-SocketIO requires one of these async modes in production
 # Using eventlet (recommended for Flask-SocketIO)
-eventlet==0.33.3
+eventlet==0.40.3
 
 # Alternative async modes (uncomment if not using eventlet):
 # gevent==23.9.1
