@@ -934,9 +934,9 @@ function createSpectrumDisplay(displayId, mode) {
     if (mode === 'UV Spectrum') {
         modeInfo = '3 UV channels (200-400 nm)';
     } else if (mode === 'Visible Spectrum') {
-        modeInfo = '11 visible channels (395-865 nm)';
+        modeInfo = '10 visible channels (400-820 nm)';
     } else if (mode === 'Full Spectrum') {
-        modeInfo = '14 channels: UV + Visible (200-865 nm)';
+        modeInfo = '14 channels: UV + Visible (160-950 nm)';
     }
 
     return `
@@ -1666,18 +1666,18 @@ function initializeSpectrumChart(displayId, measurementKey, mode) {
         xMin = 160;  // Padding for leftmost UV bars
         xMax = 420;
     } else if (mode === 'Visible Spectrum') {
-        spectrumChannels = visibleChannels;
-        xMin = 360;  // Padding for leftmost visible bars
-        xMax = 900;  // Padding for rightmost NIR bar (865nm + padding)
+        spectrumChannels = visibleChannels.filter(ch => ch.name !== 'NIR');
+        xMin = 400;
+        xMax = 820;
     } else if (mode === 'Full Spectrum') {
         spectrumChannels = [...uvChannels, ...visibleChannels];
-        xMin = 160;  // Padding for leftmost UV bars
-        xMax = 900;  // Padding for rightmost NIR bar (865nm + padding)
+        xMin = 160;
+        xMax = 950;
     } else {
         // Default to visible spectrum
-        spectrumChannels = visibleChannels;
-        xMin = 360;
-        xMax = 900;
+        spectrumChannels = visibleChannels.filter(ch => ch.name !== 'NIR');
+        xMin = 400;
+        xMax = 820;
     }
 
     // Create a SINGLE dataset with all channels as data points
