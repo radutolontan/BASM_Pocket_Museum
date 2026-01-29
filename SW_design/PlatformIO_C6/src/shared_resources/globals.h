@@ -1,7 +1,7 @@
 #pragma once
 
 // =========== SW VERSION =============
-#define GIT_SHA "raspberry_pi_dashboard"
+#define GIT_SHA "racari_ws3"
 
 // ============================================================
 // ================= CHARGE CONFIGURATION =====================

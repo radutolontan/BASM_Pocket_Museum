@@ -50,3 +50,15 @@ logs/
 # Backups
 *.backup
 backups/
+
+# Node (used only to fetch offline JS libraries)
+node_modules/
+package.json
+package-lock.json
+
+# Offline JS/CSS libraries (downloaded via download_offline_resources.sh or npm)
+static/js/chart.min.js
+static/js/socket.io.min.js
+static/css/bootstrap-icons.min.css
+static/fonts/bootstrap-icons.woff
+static/fonts/bootstrap-icons.woff2
