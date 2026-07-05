@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"  
+#include "power/BMSTask.h"
 #include <functional>
 
 // Define your SDRequest structure (customize as needed)
@@ -20,15 +21,16 @@ enum class SDState {
     MOUNTING = 2,        // Mounting card after insertion
     READY = 3,           // Card is mounted and OPERATIONAL
     UNMOUNTING = 4,      // Clean unmount on removal
-    ERROR = 5            // Mount / unexpected failure
+    ERROR = 5,           // Mount / unexpected failure
+    SHUTDOWN = 6         // Final state with no re-entry
 };
 
 class SDManager {
 public:
     SDManager() = default;
 
-    // Initialize the SDManager Task
-    void setupSDManager();
+    // Initialize the SDManager Task (takes in pointer to BMSTask)
+    void setupSDManager(BMSTask* bms);
 
     // Runs the SDManager State Machine
     void runSDManager();
@@ -46,9 +48,8 @@ public:
     bool isReady() const;
 
 private:
-    // Helper functions
-    bool mountCard();
-    void unmountCard();
+    // Triggered ONLY by BMS unlatch
+    bool shuttingDown = false;   
 
     // SD Card read/write protector
     void handleRequest(const SDRequest& req);
@@ -60,7 +61,11 @@ private:
     void run_ready();
     void run_unmounting();
     void run_error();
+    void run_shutdown();
 
+
+    // Pointer to BMSTask instance
+    BMSTask* bmsTask = nullptr; 
 
     SDState current_state;
     QueueHandle_t sdQueue = nullptr;

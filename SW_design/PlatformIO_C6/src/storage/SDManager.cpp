@@ -6,9 +6,11 @@
 
 #define DEBOUNCE_DELAY_MS 300
 
-void SDManager::setupSDManager() {
+void SDManager::setupSDManager(BMSTask* bms) {
     // Go straight to boot mode
     setSDState(SDState::BOOT);
+    // Store BMS Task Pointer
+    this->bmsTask = bms;
 }
 
 void SDManager::setSDState(SDState new_state){
@@ -94,12 +96,21 @@ void SDManager::runSDManagerWrapper(void* param) {
 
 void SDManager::runSDManager() {
     while (true) {
+        // Check if BMS is still latched
+        if (bmsTask && !bmsTask->isLatched() && current_state != SDState::SHUTDOWN && current_state != SDState::BOOT) {
+            // Power not latched → permanently unmount
+            shuttingDown = true;
+            setSDState(SDState::UNMOUNTING);
+        }
+
         // Raw reading of SD_CARD_DETECT_PIN
         bool rawState = digitalRead(SD_CARD_DETECT_PIN) == LOW;
         // Check for debounce to confirm valid transition
         if (debounceCardDetect(rawState)) {
             Serial.printf("[SDManager] - Debounced card state change: %s\n", stableCardInserted ? "Inserted" : "Removed");
         }
+
+
         // State Machine
         switch (current_state) {
             case SDState::BOOT:
@@ -131,6 +142,11 @@ void SDManager::runSDManager() {
                 run_error();
                 // State transitions out of ERROR are handled internally                
                 break;
+
+            case SDState::SHUTDOWN:        
+                run_shutdown(); 
+                // NO State transitions out of SHUTDOWN are possible    
+                break;
         }
 
         // Wait until running the next step of the state machine
@@ -139,21 +155,24 @@ void SDManager::runSDManager() {
 }
 
 void SDManager::run_boot(){
-    // Initialize Card_Detect pin (LOW = card inserted)
-    pinMode(SD_CARD_DETECT_PIN, INPUT);  
+    // Check if BMS is Ready
+    if (bmsTask && bmsTask->isLatched()) {
+        // Initialize Card_Detect pin (LOW = card inserted)
+        pinMode(SD_CARD_DETECT_PIN, INPUT);  
 
-    // Initialize debounce tracking to actual Card_Detect state
-    bool initialState = digitalRead(SD_CARD_DETECT_PIN) == LOW;
-    stableCardInserted = initialState;
+        // Initialize debounce tracking to actual Card_Detect state
+        bool initialState = digitalRead(SD_CARD_DETECT_PIN) == LOW;
+        stableCardInserted = initialState;
 
-    // Create SD Queue ; if successful, set WAIT_FOR_INSERT mode
-    sdQueue = xQueueCreate(10, sizeof(SDRequest));
-    if (sdQueue == nullptr) {
-        //Serial.println("[SDManager] - Failed to create queue!");
-        setSDState(SDState::ERROR);
-    } else {
-        //Serial.println("[SDManager] - BOOT Successful!");
-        setSDState(SDState::WAIT_FOR_INSERT);
+        // Create SD Queue ; if successful, set WAIT_FOR_INSERT mode
+        sdQueue = xQueueCreate(10, sizeof(SDRequest));
+        if (sdQueue == nullptr) {
+            //Serial.println("[SDManager] - Failed to create queue!");
+            setSDState(SDState::ERROR);
+        } else {
+            //Serial.println("[SDManager] - BOOT Successful!");
+            setSDState(SDState::WAIT_FOR_INSERT);
+        }
     }
 }
 
@@ -202,7 +221,6 @@ void SDManager::run_mounting(){
 
 void SDManager::run_ready(){
     if (!stableCardInserted) {
-        //Serial.println("[SDManager] - Card removed → UNMOUNTING");
         // If card was removed, transition state to UNMOUNTING
         setSDState(SDState::UNMOUNTING);
     } else { 
@@ -215,17 +233,27 @@ void SDManager::run_ready(){
 }
 
 void SDManager::run_unmounting(){
-    //Serial.println("[SDManager] - Unmounting SD card...");
+    Serial.println("[SDManager] - Unmounting SD card...");
+    // End SD Card Transactions
     SD.end();
-    // Transition state to Ready for Insert
-    setSDState(SDState::WAIT_FOR_INSERT);
+    if (shuttingDown) {
+        Serial.println("[SDManager] - BMS unlatched, SD manager shutting down permanently.");
+        setSDState(SDState::SHUTDOWN);
+    } else {
+        // Normal card-removal unmount → go back to waiting for a card
+        setSDState(SDState::WAIT_FOR_INSERT);
+    }
 }
 
 void SDManager::run_error(){
-    //Serial.println("[SDManager] - ERROR");
-    if (!stableCardInserted) {
+    Serial.println("[SDManager] - ERROR");
+    if (!stableCardInserted && !shuttingDown) {
         setSDState(SDState::WAIT_FOR_INSERT);
     }
+}
+
+void SDManager::run_shutdown(){
+    // Terminal state: BMS has unlatched, SD card is unmounted for good.
 }
 
 bool SDManager::isReady() const {
