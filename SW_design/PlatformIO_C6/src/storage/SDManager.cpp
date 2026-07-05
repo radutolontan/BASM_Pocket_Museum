@@ -95,7 +95,7 @@ void SDManager::runSDManagerWrapper(void* param) {
 void SDManager::runSDManager() {
     while (true) {
         // Raw reading of SD_CARD_DETECT_PIN
-        bool rawState = digitalRead(SD_CARD_DETECT_PIN) == HIGH;
+        bool rawState = digitalRead(SD_CARD_DETECT_PIN) == LOW;
         // Check for debounce to confirm valid transition
         if (debounceCardDetect(rawState)) {
             Serial.printf("[SDManager] - Debounced card state change: %s\n", stableCardInserted ? "Inserted" : "Removed");
@@ -139,11 +139,11 @@ void SDManager::runSDManager() {
 }
 
 void SDManager::run_boot(){
-    // Initialize Card_Detect pin (HIGH = card inserted)
-    pinMode(SD_CARD_DETECT_PIN, INPUT_PULLDOWN);  
+    // Initialize Card_Detect pin (LOW = card inserted)
+    pinMode(SD_CARD_DETECT_PIN, INPUT);  
 
     // Initialize debounce tracking to actual Card_Detect state
-    bool initialState = digitalRead(SD_CARD_DETECT_PIN) == HIGH;
+    bool initialState = digitalRead(SD_CARD_DETECT_PIN) == LOW;
     stableCardInserted = initialState;
 
     // Create SD Queue ; if successful, set WAIT_FOR_INSERT mode
@@ -159,7 +159,7 @@ void SDManager::run_boot(){
 
 void SDManager::run_wait_for_insert(){
     if (stableCardInserted) {
-        //Serial.println("[SDManager] - Card Inserted! Proceeding with Mounting...");
+        Serial.println("[SDManager] - Card Inserted! Proceeding with Mounting...");
         // Sleep 500 ms before releasing (allow SD card to fully seat)
         vTaskDelay(pdMS_TO_TICKS(500)); 
         // If a card has been inserted, we can go ahead and mount it
@@ -243,7 +243,7 @@ bool SDManager::debounceCardDetect(bool rawState) {
         // Detected a possible change — check if it's stable
         if (millis() - lastDetectChange >= DEBOUNCE_DELAY_MS) {
             // Reconfirm the change
-            bool confirmedState = digitalRead(SD_CARD_DETECT_PIN) == HIGH;
+            bool confirmedState = digitalRead(SD_CARD_DETECT_PIN) == LOW;
             if (confirmedState == rawState) {
                 stableCardInserted = rawState;
                 lastDetectChange = millis();
