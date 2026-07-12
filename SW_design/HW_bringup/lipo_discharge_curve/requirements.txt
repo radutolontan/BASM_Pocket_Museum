@@ -1,0 +1,5 @@
+logic2-automation
+pyserial
+matplotlib
+pandas
+scipy
