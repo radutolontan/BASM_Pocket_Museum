@@ -216,6 +216,8 @@ void NetworkTask::run_no_network() {
     // LED is off, do nothing
     // This state is terminal - no retry logic
     ledOff();
+    WiFi.disconnect(true, true);
+    WiFi.mode(WIFI_OFF);
 }
 
 // Configure static IP
