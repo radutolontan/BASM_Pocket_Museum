@@ -25,6 +25,8 @@ Two test conditions were considered - with and without the ESP32's WiFi Modem en
 
 Data captures were made every 10 seconds, for one second, at a sample rate of 50Hz. All resulting 50 samples were averaged to generate one data-point every 10 seconds.
 
+![Physics and Instrumentation Model Used for Measuring Voltage and Current](lipo_discharge_curve/Resources/simple_math.jpg "MATH")
+
 ### Results
 
 1. The ESP32 ADC reliable measures Battery Voltage within 3%.
@@ -33,6 +35,7 @@ Data captures were made every 10 seconds, for one second, at a sample rate of 50
 4. While observing sample data collected at a higher rate (10 kHz), large current spikes were observed when the ESP32's WiFi Modem was enabled. In turn, large voltage dips on the *VBAT_ALW_ON* bus, especially toward the lower end of the battery's capacity envelope,  triggered the 2.9V UVLO sooner than in the WiFi-OFF test. This results in **unreliable operation below an average battery voltage of 3.5V when the WiFi Modem is enabled**.
 5. Across both discharge tests, **capacities of 437 and 452 mAh respectively were estimated**. This is likely a cumulation between bullet point 2. (see above) and the little capacity left in the battery when the UVLO triggered, thus ending the test. In other words, the HW configuration yields a **usable capacity of approx. 87% for the 500mAh cell**. 
 
+![Result Figures](lipo_discharge_curve/Resources/results_figure.png "FIGURES")
 
 ### Conclusions
 1. Battery Voltage is corrected from the ADC's measurement using the formula 
@@ -45,3 +48,6 @@ Data captures were made every 10 seconds, for one second, at a sample rate of 50
 ### Limitations
 
 * This method for determining SoC from Voltage assumes a very low discharge rate, compared to the battery's C rating. In our case, when operating at 120 mA, that represents a 0.24C discharge.
+
+### Resources
+* As always, full datasets, and analysis scripts are available inside the ***lipo_discharge_curve*** directory.
