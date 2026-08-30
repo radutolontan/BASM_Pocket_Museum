@@ -7,27 +7,7 @@
 // ================= CHARGE CONFIGURATION =====================
 // ============================================================
 
-// [BMS]
-#define BMS_LDO_ATTACH_CMD_PIN      1
-#define BMS_VBAT_VOLT_PIN           0
-#define BMS_CHG_FDBCK_PIN           6
-#define BMS_POWOK_FDBCK_PIN         7
-#define BMS_ONOFF_PUSHBUTTON_PIN    4
-#define VBAT_DIVIDER_RTOP           178e3f
-#define VBAT_DIVIDER_RBOTTOM        61.9e3f
-#define BMS_TIMER_STARTUP           2200 // [ms] - HOLD ON/OFF pressed before latching ON
-#define BMS_TIMER_SHUTDOWN          2200 // [ms] - HOLD ON/OFF pressed before latching OFF
-// [BMS] ChargeController and Feedback
-#define VBAT_VTHRESHOLD             3.4f// If the system is predicted to reach VBAT_VTHRESHOLD within VBAT_TIME_TO_VTHRESHOLD_MIN, LOW_POWER will be indicated
-#define VBAT_TIME_TO_VTHRESHOLD_MIN 15.0f
-// In reality, if VBAT_VTHRESHOLD = 3.4V & VBAT_TIME_TO_VTHRESHOLD_MIN = 30 min , we hit 2.9V 18-19 min after entering LOW_POWER since we operate in the non-linear SoC regime
-// In reality, if VBAT_VTHRESHOLD = 3.45V& VBAT_TIME_TO_VTHRESHOLD_MIN = 30 min , we hit 2.9V 22-23 min after entering LOW_POWER since we operate in the non-linear SoC regime
-#define VBAT_SETTLING_PERIOD_SEC    90.0f// To avoid LiPo transients, within VBAT_SETTLING_PERIOD_SEC from transitioning to BATT_ONLY, no LOW_BATT predictions are made
-#define VBAT_CHECK_INTERVAL_SEC     30.0f// [s] - sample Battery voltage every X seconds
-#define VBAT_HISTORY_LEN            60   // number of samples in VBat History
-#define VBAT_AVG_SAMPLES            4    // Number of averaged ADC readings per sample
-#define VBAT_MIN_VOLTAGE            2.85f// Acceptable physical range for battery voltage (Volts) - MAX
-#define VBAT_MAX_VOLTAGE            4.30f// Acceptable physical range for battery voltage (Volts) - MIN
+
 
 // ============================================================
 // ================ DISPLAY CONFIGURATION =====================
@@ -138,8 +118,8 @@
 // ============================================================
 
 // [WiFi Settings]
-#define NETWORK_SSID                "BASM_Laborator"     // WiFi SSID to connect to
-#define NETWORK_PASSWORD            "hailamuzeu!"        // WiFi password
+#define NETWORK_SSID                "TN_24GHz_333F99"     // WiFi SSID to connect to
+#define NETWORK_PASSWORD            "kaka"        // WiFi password
 #define NETWORK_NODE_ID             "harap_alb"          // Unique identifier for this ESP32 node
 
 // [IP Configuration - Static IP Only]

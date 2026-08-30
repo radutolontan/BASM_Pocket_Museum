@@ -3,6 +3,7 @@
 
 #include "shared_resources/globals.h"
 #include "power/BMSTask.h"
+#include "power/ChargeMonitor.h"
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -65,6 +66,7 @@ private:
 
     // Pointer to BMSTask instance
     BMSTask* bmsTask = nullptr; 
+    const ChargeMonitor* chargeMonitor = nullptr;
 
     // FOR TRACKING ACTUAL RATE
     unsigned long lastFreqPrintTime = 0;   // for printing every 1 second

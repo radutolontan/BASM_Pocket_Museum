@@ -2,6 +2,8 @@
 #define BMS_TASK_H
 
 #include "shared_resources/globals.h"
+#include "power/ChargeMonitor.h"
+#include "power/SoCMonitor.h"
 #include <vector>
 #include <Arduino.h>
 
@@ -13,18 +15,8 @@ enum class BMSState {
     SHUTDOWN_PENDING      // SHUTDOWN COMMANDED
 };
 
-// BMS Charge Controller States
-enum class ChargeControllerState {
-    BATTERY_ONLY,   // ON BATTERY, BUT MORE THAN VBAT_TIME_TO_VTHRESHOLD FROM VBAT_THRESHOLD
-    CHARGING,       // CHARGING IN PROGRESS
-    DONE_CHARGING,  // PREVIOUSLY CHARGING, BUT USB STILL PLUGGED IN
-    LOW_BATTERY,    // ON BATTERY (NO USB), WITHIN VBAT_TIME_TO_VTHRESHOLD FROM VBAT_THRESHOLD
-    UNKNOWN
-};
-
-
-
-// DisplayTask class handles the display state machine
+// BMSTask class handles the Battery Management System state machine. 
+// This includes power-up and shut-down logic for the Pocket Lab, as well as the Charge and SoC Monitors, 
 class BMSTask {
 public:
     BMSTask();
@@ -41,23 +33,18 @@ public:
     // Safely request a state change from other modules
     void setBMSState(BMSState newState);
 
-    // Safely request a source change
-    void updateChargeControllerState(bool powOk, bool chg);        // Complex Method which navigates logic
-    void setChargeControllerState(ChargeControllerState newState); // Simple method for changing the state
-
     // Accessors
     bool isLatched() const;           // TRUE if BMS Latched
-    ChargeControllerState getChargeControllerState() const;
-    BMSState getBMSState() const;
-
+    BMSState getBMSState() const;     
+    const ChargeMonitor& getChargeMonitor() const { return chargeMonitor; } // expose a read-only accessor to the whole monitor
 
 private:
-    unsigned long lastStateChange;
-    unsigned long lastUpdateTime;
+    // Class Children
+    ChargeMonitor chargeMonitor;
+    SoCMonitor socMonitor;
 
     // States and accessors
     BMSState current_state;
-    ChargeControllerState current_charge_controller_state;    
 
     // VBat Prediction vars. and methods
     std::vector<float> vbatHistory;

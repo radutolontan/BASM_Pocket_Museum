@@ -3,7 +3,7 @@
 #include "shared_resources/globals.h"
 #include "shared_resources/global_functions.h"
 #include "shared_resources/global_debug.h"
-
+#include "power/ChargeMonitor.h"
 #include <Adafruit_NeoPixel.h>
 #include <random>
 #include <bitset>
@@ -58,8 +58,9 @@ void DisplayTask::setupDisplayTask(BMSTask* bms) {
     setDisplayState(DisplayState::BOOT);
     // GPIO for Push-button which toggles display mode (external pull-up in circuit)
     pinMode(DISPLAY_MODE_PUSHBUTTON_PIN, INPUT);
-    // Store BMS Task Pointer
+    // Store BMS Task and Charge Monitor Pointers
     this->bmsTask = bms;
+    this->chargeMonitor = bms ? &bms->getChargeMonitor() : nullptr;
 }
 
 void DisplayTask::setDisplayState(DisplayState new_state) {
@@ -463,15 +464,15 @@ void DisplayTask::updateModeDisplay() {
     for (int i = 0; i < MODE_DISPLAY_COUNT; i++) {
         uint32_t color = applyBreathing(baseColor, now);
         // I
-        if (i == 1 && bmsTask) {
-            auto state = bmsTask->getChargeControllerState();
+        if (i == 1 && chargeMonitor) {
+            auto state = chargeMonitor->getChargeMonitorState();
             // Default: keep color as-is
             int colorIndex = -1; 
             // Check if any of the special ChargeController states is active
             switch (state) {
-                case ChargeControllerState::LOW_BATTERY:   colorIndex = 6; break; // ORANGE
-                case ChargeControllerState::CHARGING:      colorIndex = 3; break; // e.g. GREEN
-                case ChargeControllerState::DONE_CHARGING: colorIndex = 1; break; // e.g. BLUE
+                case ChargeMonitorState::LOW_BATTERY:   colorIndex = 6; break; // ORANGE
+                case ChargeMonitorState::CHARGING:      colorIndex = 3; break; // e.g. GREEN
+                case ChargeMonitorState::DONE_CHARGING: colorIndex = 1; break; // e.g. BLUE
                 default: break; // UNKNOWN / BATTERY_ONLY → no override
             }
             // Only apply override if the colorIndex had been changed
