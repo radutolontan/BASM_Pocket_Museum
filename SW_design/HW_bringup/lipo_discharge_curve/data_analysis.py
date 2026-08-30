@@ -57,6 +57,79 @@ def average_curve(x1, y1, x2, y2, num=200):
     return x_common, y_avg
 
 
+# --- Helper: polynomial fit on SoC%>threshold data, extrapolated to 100% SoC ---
+def fit_and_extrapolate_soc(soc_vec, voltage_vec, soc_min=20, soc_full=100, degree=2, num=200):
+    """
+    Fits a polynomial (voltage as a function of SoC%) using only points with
+    soc_vec > soc_min, then extrapolates that fit out to soc_full (100% SoC).
+
+    Returns:
+        poly            - np.poly1d fit object
+        (x_fitted, y_fitted)   - curve over the domain actually covered by data
+        (x_extrap, y_extrap)   - curve over the extrapolated domain (no data)
+    """
+    mask = soc_vec > soc_min
+    x_data = soc_vec[mask]
+    y_data = voltage_vec[mask]
+
+    coeffs = np.polyfit(x_data, y_data, degree)
+    poly = np.poly1d(coeffs)
+
+    x_actual_max = x_data.max()  # highest SoC% actually reached in the discharge test
+
+    x_fitted = np.linspace(soc_min, x_actual_max, num)
+    y_fitted = poly(x_fitted)
+
+    x_extrap = np.linspace(x_actual_max, soc_full, num)
+    y_extrap = poly(x_extrap)
+
+    return poly, (x_fitted, y_fitted), (x_extrap, y_extrap)
+
+
+# --- Helper: build a voltage->SoC lookup table from the averaged discharge curve ---
+def build_soc_voltage_table(soc_avg, v_avg, poly_avg, x_actual_max, soc_full=100, n_points=101):
+    """
+    soc_avg, v_avg   - measured average curve (SoC%, voltage), SoC ascending
+    poly_avg         - polynomial fit (SoC>threshold) used to extrapolate up to soc_full
+    x_actual_max     - highest SoC% actually reached by measurement (fit/extrapolation boundary)
+    Returns (voltage, soc) arrays, n_points long, sorted ascending by voltage.
+    """
+    mask = (soc_avg >= 0) & (soc_avg <= soc_full)
+    soc_meas, v_meas = soc_avg[mask], v_avg[mask]
+
+    soc_tail = np.linspace(x_actual_max, soc_full, 200)
+    v_tail = poly_avg(soc_tail)
+
+    soc_combined = np.concatenate([soc_meas, soc_tail[1:]])
+    v_combined = np.concatenate([v_meas, v_tail[1:]])
+
+    soc_samples = np.linspace(0, soc_full, n_points)
+    v_samples = np.interp(soc_samples, soc_combined, v_combined)
+
+    order = np.argsort(v_samples)
+    return v_samples[order], soc_samples[order]
+
+
+def write_soc_table_header(v_sorted, soc_sorted, path="BatterySoCTable.h"):
+    lines = [
+        "// BatterySoCTable.h",
+        "// Auto-generated from averaged discharge curve (subplot 4 'Average' line)",
+        "// Voltage -> State of Charge lookup table",
+        "#pragma once",
+        "#include <stddef.h>",
+        "",
+        "struct SoCPoint { float voltage; float soc; };",
+        "// Sorted ascending by voltage",
+        "static const SoCPoint socTable[] = {",
+    ]
+    for v, s in zip(v_sorted, soc_sorted):
+        lines.append(f"    {{{v:.4f}f, {s:.2f}f}},")
+    lines.append("};")
+    lines.append("static const size_t socTableSize = sizeof(socTable) / sizeof(socTable[0]);")
+    with open(path, "w") as f:
+        f.write("\n".join(lines) + "\n")
+
+
 # --- Helper: plot one dataset onto the shared axes ---
 def plot_dataset(ax1, ax2, ax3, ax4, data, color, label):
     time_vec = data["time_vec"]
@@ -78,7 +151,8 @@ def plot_dataset(ax1, ax2, ax3, ax4, data, color, label):
     formula_str = f"y = {slope:.4f}x {sign} {abs(intercept):.4f}"
     ax3.plot(fit_x, fit_y, color=color, linewidth=1.5, linestyle="--", label=f"{label} fit: {formula_str}")
 
-    ax4.plot(soc_pct_vec-12.3, voltage_coorected_yellow_vec, color=color, linewidth=1, label=label)
+    soc_shifted = soc_pct_vec - 12.3
+    ax4.plot(soc_shifted, voltage_coorected_yellow_vec, color=color, linewidth=1, label=label)
 
     return slope, intercept
 
@@ -115,7 +189,24 @@ x_avg4, y_avg4 = average_curve(
     data1["soc_pct_vec"], data1["voltage_coorected_yellow_vec"],
     data2["soc_pct_vec"], data2["voltage_coorected_yellow_vec"]
 )
-ax4.plot(x_avg4-12.3, y_avg4, color="black", linewidth=1.5, linestyle="--", label="Average")
+x_avg4_shifted = x_avg4 - 12.3
+ax4.plot(x_avg4_shifted, y_avg4, color="black", linewidth=1.5, linestyle="--", label="Average")
+
+# Polynomial fit on the averaged curve (SoC%>20 points), extrapolated to 100% SoC
+poly_avg, (x_fit_avg, y_fit_avg), (x_extrap_avg, y_extrap_avg) = fit_and_extrapolate_soc(
+    x_avg4_shifted, y_avg4, soc_min=20, soc_full=100, degree=2
+)
+ax4.plot(x_fit_avg, y_fit_avg, color="black", linewidth=1.5, linestyle=":", alpha=0.8)
+ax4.plot(x_extrap_avg, y_extrap_avg, color="black", linewidth=1.5, linestyle="--", alpha=0.5,
+          label=f"Average fit (extrap. to 100%): V(100%)={poly_avg(100):.3f}V")
+
+# --- Generate BatterySoCTable.h from the averaged curve ---
+v_table, soc_table = build_soc_voltage_table(
+    x_avg4_shifted, y_avg4, poly_avg, x_avg4_shifted.max(), soc_full=100, n_points=101
+)
+write_soc_table_header(v_table, soc_table, "BatterySoCTable.h")
+print(f"Wrote BatterySoCTable.h with {len(v_table)} points "
+      f"(voltage range {v_table.min():.3f}V - {v_table.max():.3f}V)")
 
 # --- Labels/titles ---
 ax1.set_xlabel("Time since start (min)")
